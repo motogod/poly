@@ -1,0 +1,11 @@
+.listContainer {
+	position: relative;
+	width: 100%;
+	overflow: scroll;
+	margin: 30px 0px;
+	.list {
+		display: grid;
+		grid-auto-flow: column;
+		margin: 1px 0px;
+	}
+}
