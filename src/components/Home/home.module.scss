@@ -1,0 +1,10 @@
+@import '@/styles/screen.scss';
+
+.homeWrapper {
+	height: 100%;
+	overflow: hidden;
+	padding-top: calc(46px + 15px);
+	@include lg {
+		padding-top: 73.8px;
+	}
+}
