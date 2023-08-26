@@ -1,20 +1,20 @@
 @import '@/styles/screen.scss';
 
-.wrapper {
-	display: grid;
-	gap: 24px;
-	width: 100%;
-	@include md {
-		gap: 32px;
-		grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-	}
-}
+// .wrapper {
+// 	display: grid;
+// 	gap: 10px;
+// 	width: 100%;
+// 	@include md {
+// 		gap: 16px;
+// 		grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+// 	}
+// }
 
-.card {
-	min-height: 522px;
-	box-sizing: border-box;
-	border: 1px solid;
-	border-radius: 24px;
-	padding: 16px;
-	width: 100%;
-}
+// .card {
+// 	min-height: 522px;
+// 	box-sizing: border-box;
+// 	border: 1px solid;
+// 	border-radius: 24px;
+// 	padding: 16px;
+// 	width: 100%;
+// }

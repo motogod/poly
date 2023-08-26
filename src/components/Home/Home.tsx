@@ -1,7 +1,9 @@
-import React from 'react';
-import styles from './home.module.scss';
+import React, { useEffect } from 'react';
+import { Heading, Center, Tabs, TabList, Tab, TabPanel, TabPanels, Text } from '@chakra-ui/react';
+
 import TopTopicSection from './TopTopicSection';
 import CategorySection from './CategorySection';
+import styles from './home.module.scss';
 
 function Home() {
 	return (
