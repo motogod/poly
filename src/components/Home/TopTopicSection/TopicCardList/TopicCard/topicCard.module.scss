@@ -1,9 +1,10 @@
 @import '@/styles/screen.scss';
 
 .cardContainer {
-	width: 256px;
+	width: 356px;
 	min-height: 200px;
 	margin-left: 20px;
+	cursor: pointer;
 	@include lg {
 		width: 356px;
 	}
