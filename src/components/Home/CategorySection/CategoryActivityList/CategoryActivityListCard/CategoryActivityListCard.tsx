@@ -1,10 +1,10 @@
 import React from 'react';
-import { Card, CardBody, Stack, Image, Text, Heading, Code } from '@chakra-ui/react';
+import { Card, CardBody, Stack, Image, Text, Heading, GridItem } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 
 function CategoryActivityListCard() {
 	return (
-		<Stack>
+		<GridItem w="100%">
 			<Card cursor="pointer" shadow="md" borderRadius="3xl">
 				<CardBody>
 					<Stack direction="row">
@@ -62,7 +62,7 @@ function CategoryActivityListCard() {
 					</Stack>
 				</CardBody>
 			</Card>
-		</Stack>
+		</GridItem>
 	);
 }
 

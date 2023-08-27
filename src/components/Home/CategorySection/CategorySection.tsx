@@ -18,7 +18,7 @@ function CategorySection() {
 	const [value, setValue] = React.useState('1');
 
 	return (
-		<div className={styles.wrapper}>
+		<Stack>
 			<Center h="120px" color="white">
 				<Heading size="xl" color="gray.700">
 					{'Markets'}
@@ -31,7 +31,6 @@ function CategorySection() {
 						p={3}
 						mb={12}
 						border="1px"
-						color="gray.50"
 						backgroundColor="gray.50"
 						borderColor="gray.50"
 						size="lg"
@@ -40,12 +39,12 @@ function CategorySection() {
 						shadow="md"
 					>
 						<TabList>
-							<Tab>All</Tab>
-							<Tab>Business</Tab>
-							<Tab>Crypto</Tab>
-							<Tab>AI</Tab>
-							<Tab>Politics</Tab>
-							<Tab>Sports</Tab>
+							<Tab color="gray.800">All</Tab>
+							<Tab color="gray.800">Business</Tab>
+							<Tab color="gray.800">Crypto</Tab>
+							<Tab color="gray.800">AI</Tab>
+							<Tab color="gray.800">Politics</Tab>
+							<Tab color="gray.800">Sports</Tab>
 						</TabList>
 					</Tag>
 				</Center>
@@ -60,8 +59,7 @@ function CategorySection() {
 					<TabPanel></TabPanel>
 				</TabPanels>
 			</Tabs>
-			<div className={styles.categoryContainer}></div>
-		</div>
+		</Stack>
 	);
 }
 
