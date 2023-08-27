@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Stack } from '@chakra-ui/react';
 import Header from '@/layouts/components/common/Header';
 import styles from './layout.module.scss';
 
@@ -9,10 +10,10 @@ type Props = {
 function Layout({ children }: Props) {
 	return (
 		<>
-			<div className={styles.wrapper}>
+			<Stack>
 				<Header />
 				<main className={styles.main}>{children}</main>
-			</div>
+			</Stack>
 		</>
 	);
 }
