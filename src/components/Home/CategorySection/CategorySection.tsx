@@ -9,6 +9,7 @@ import {
 	TabPanels,
 	Tag,
 	TagLabel,
+	Button,
 } from '@chakra-ui/react';
 import { Radio, RadioGroup, Stack } from '@chakra-ui/react';
 import CategoryActivityList from './CategoryActivityList';
@@ -42,9 +43,9 @@ function CategorySection() {
 							<Tab color="gray.800">All</Tab>
 							<Tab color="gray.800">Business</Tab>
 							<Tab color="gray.800">Crypto</Tab>
-							<Tab color="gray.800">AI</Tab>
+							{/* <Tab color="gray.800">AI</Tab>
 							<Tab color="gray.800">Politics</Tab>
-							<Tab color="gray.800">Sports</Tab>
+							<Tab color="gray.800">Sports</Tab> */}
 						</TabList>
 					</Tag>
 				</Center>
@@ -58,6 +59,17 @@ function CategorySection() {
 					<TabPanel></TabPanel>
 					<TabPanel></TabPanel>
 				</TabPanels>
+				<Center mt="20">
+					<Button
+						onClick={() => alert('View More')}
+						px="7"
+						py="6"
+						borderRadius="3xl"
+						colorScheme="orange"
+					>
+						View More
+					</Button>
+				</Center>
 			</Tabs>
 		</Stack>
 	);

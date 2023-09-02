@@ -1,11 +1,17 @@
 import React from 'react';
 import { Card, CardBody, Stack, Heading, Text, Image, Tag, TagLabel } from '@chakra-ui/react';
 import styles from './topicCard.module.scss';
-function TopicCard({ data }: any) {
+
+function TopicCard({ data, index }: any) {
 	const { title } = data;
 
 	return (
-		<Card width="xs" ml="5" shadow="md" borderRadius="3xl">
+		<Card
+			width="xs"
+			ml={{ md: index === 0 ? '116' : '5', sm: index === 0 ? '6' : '5' }}
+			shadow="md"
+			borderRadius="3xl"
+		>
 			<CardBody p={0}>
 				<Tag
 					px={4}
