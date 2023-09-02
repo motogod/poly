@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, GridItem, Heading, Stack, Text } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import styles from './header.module.scss';
+import { PrimaryPink } from '@/utils/color';
 
 const CircleIcon = (props: any) => (
 	<Icon viewBox="0 0 200 200" {...props}>
@@ -13,15 +14,16 @@ function Header() {
 	return (
 		<Stack
 			px={{ md: 132, sm: 6 }}
-			py={{ md: 14, sm: 4 }}
+			py={{ md: 6, sm: 4 }}
 			w="100%"
 			position="fixed"
 			zIndex={5}
 			flexDirection="row"
 			justifyContent="space-between"
+			backgroundColor="gray.50"
 		>
 			<Stack direction="row" alignItems="center" spacing={1}>
-				<CircleIcon cursor="pointer" boxSize={8} color="gray.700" />
+				<CircleIcon cursor="pointer" boxSize={12} color={PrimaryPink} />
 				<Heading cursor="pointer" size="md" color="gray.700" mr={5}>
 					Gomarket
 				</Heading>
