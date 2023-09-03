@@ -15,6 +15,11 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 }: AppLayoutProps) => {
 	const getLayout = Component.getLayout ?? ((page: ReactNode) => <Layout>{page}</Layout>);
 
+	const fonts = {
+		heading: `'Open Sans', sans-serif`,
+		body: `'Raleway', sans-serif`,
+	};
+
 	// 2. Update the breakpoints as key-value pairs
 	const breakpoints = {
 		base: '0px',
@@ -26,7 +31,7 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 	};
 
 	// 3. Extend the theme
-	const theme = extendTheme({ breakpoints });
+	const theme = extendTheme({ breakpoints, fonts });
 
 	return (
 		<>
