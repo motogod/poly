@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Stack } from '@chakra-ui/react';
+import { Stack, Heading } from '@chakra-ui/react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 import TopTopicSection from './TopTopicSection';
 import CategorySection from './CategorySection';
@@ -33,6 +33,15 @@ function Home() {
 					<YAxis />
 				</LineChart> */}
 				<Stack py={paddingMainVertical}>
+					<p>P tag</p>
+					<p style={{ fontSize: '32px' }}>P tag with 32px</p>
+					<h2>H2 tag</h2>
+					<Heading cursor="pointer" size="md" color="gray.700" mr={5}>
+						chakra-ui Heading tag size is md
+					</Heading>
+					<Heading cursor="pointer" size="sm" color="gray.700" mr={5}>
+						chakra-ui Heading tag size is sm
+					</Heading>
 					<TopTopicSection />
 				</Stack>
 				<Stack px={paddingMainHorizontal} py={paddingMainVertical}>
