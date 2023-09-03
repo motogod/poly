@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { Grid, GridItem, Heading, Stack, Text } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import styles from './header.module.scss';
@@ -11,6 +12,8 @@ const CircleIcon = (props: any) => (
 );
 
 function Header() {
+	const router = useRouter();
+
 	return (
 		<Stack
 			px={{ md: 132, sm: 6 }}
@@ -24,10 +27,22 @@ function Header() {
 		>
 			<Stack direction="row" alignItems="center" spacing={1}>
 				<CircleIcon cursor="pointer" boxSize={12} color={PrimaryPink} />
-				<Heading cursor="pointer" size="md" color="gray.700" mr={5}>
+				<Heading
+					onClick={() => router.push('/')}
+					cursor="pointer"
+					size="md"
+					color="gray.700"
+					mr={5}
+				>
 					Gomarket
 				</Heading>
-				<Heading cursor="pointer" size="sm" color="gray.800" mr={5}>
+				<Heading
+					onClick={() => router.push('./markets')}
+					cursor="pointer"
+					size="sm"
+					color="gray.800"
+					mr={5}
+				>
 					Markets
 				</Heading>
 				<Heading cursor="pointer" size="sm" color="gray.800">
