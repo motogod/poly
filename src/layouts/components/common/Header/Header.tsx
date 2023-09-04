@@ -16,7 +16,7 @@ function Header() {
 
 	return (
 		<Stack
-			px={{ md: 132, sm: 6 }}
+			px={{ md: 105, sm: 6 }}
 			py={{ md: 6, sm: 4 }}
 			w="100%"
 			position="fixed"
