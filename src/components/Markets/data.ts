@@ -22,7 +22,7 @@ export const leftMenuItem: MenuType[] = [
 	{
 		menuId: 0,
 		menu: 'Markets',
-		menuSelected: false,
+		menuSelected: true,
 		subMenu: [
 			{
 				subMenuId: 0,
@@ -57,6 +57,30 @@ export const leftMenuItem: MenuType[] = [
 			{
 				subMenuId: 3,
 				subMenu: 'Politics',
+				subMenuSelected: false,
+				subMenuItem: [
+					{ itemId: 0, item: 'Biden', itemSelected: false },
+					{ itemId: 1, item: 'Elections', itemSelected: false },
+					{ itemId: 2, item: 'Global Politics', itemSelected: false },
+					{ itemId: 3, item: 'Trump', itemSelected: false },
+					{ itemId: 4, item: 'US ploitics', itemSelected: false },
+				],
+			},
+			{
+				subMenuId: 4,
+				subMenu: 'Test 1',
+				subMenuSelected: false,
+				subMenuItem: [
+					{ itemId: 0, item: 'Biden', itemSelected: false },
+					{ itemId: 1, item: 'Elections', itemSelected: false },
+					{ itemId: 2, item: 'Global Politics', itemSelected: false },
+					{ itemId: 3, item: 'Trump', itemSelected: false },
+					{ itemId: 4, item: 'US ploitics', itemSelected: false },
+				],
+			},
+			{
+				subMenuId: 5,
+				subMenu: 'Test 2',
 				subMenuSelected: false,
 				subMenuItem: [
 					{ itemId: 0, item: 'Biden', itemSelected: false },

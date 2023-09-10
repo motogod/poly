@@ -1,13 +1,30 @@
-import { useState } from 'react';
-import { Text, Stack, Switch, Checkbox, CheckboxGroup } from '@chakra-ui/react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
+import {
+	Text,
+	Stack,
+	Switch,
+	Checkbox,
+	CheckboxGroup,
+	Divider,
+	Grid,
+	useDisclosure,
+	SlideFade,
+	Collapse,
+	calc,
+} from '@chakra-ui/react';
 import { HamburgerIcon, ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import { ChangeEvent } from 'react';
+import { CategoryCard } from '../../../src/components/common';
 
 import { leftMenuItem } from './data';
 
 function Markets() {
 	const [menuData, setMenuData] = useState(leftMenuItem);
+
+	const [isOpen, setIsOpen] = useState(true);
+
+	useEffect(() => {}, [isOpen]);
 
 	const handleClickMenu = (clickMenuId: number) => {
 		const newMenuData = menuData.map(value => {
@@ -66,111 +83,164 @@ function Markets() {
 		setMenuData(newMenuData);
 	};
 
-	return (
-		<Stack h="100vh" px={paddingMainHorizontal} py={paddingMainVertical}>
-			<Stack direction="row" align="center">
-				<HamburgerIcon />
-				<Text color="teal.500" size="md" fontWeight="600">
-					Filter
-				</Text>
-				<Switch
-					onChange={(event: ChangeEvent<HTMLInputElement>) => console.log(event.target.checked)}
-					ml="150px"
-					size="lg"
-					colorScheme="teal"
-				/>
-			</Stack>
-			<Stack direction="row">
-				<Stack w="260px" h="100vh" overflowY="scroll">
-					<Stack>
-						{menuData.map((value, index): any => {
-							return (
-								<>
-									<Stack
-										onClick={() => handleClickMenu(value.menuId)}
-										cursor="pointer"
-										alignItems="center"
-										key={index}
-										direction="row"
-										justify="space-between"
-									>
-										<Text color="gray.800" size="md" fontWeight="500" lineHeight="24px">
-											{value.menu}
-										</Text>
-										{value.menuSelected ? (
-											<ChevronDownIcon boxSize={6} />
-										) : (
-											<ChevronUpIcon boxSize={6} />
-										)}
-									</Stack>
-									{value.menuSelected &&
-										value.subMenu.map((subValue, subIndex) => {
-											return (
-												<>
-													<Stack
-														zIndex={1}
-														onClick={() => handleClickSubMenu(subValue.subMenuId)}
-														cursor="pointer"
-														key={subIndex}
-														direction="row"
-														justify="space-between"
-													>
-														<Text color="gray.800" size="md" fontWeight="500" lineHeight="24px">
-															{subValue.subMenu}
-														</Text>
-														<Checkbox
-															isChecked={subValue.subMenuSelected}
-															onChange={() => handleClickSubMenu(subValue.subMenuId)}
-															size="lg"
-															borderColor="gray.200"
-															defaultChecked
-															colorScheme="teal"
-														></Checkbox>
-													</Stack>
-													{subValue.subMenuItem.map((itemValue, itemIndex) => {
-														return (
-															<>
-																<Stack
-																	onClick={() =>
+	const Filter = useCallback(
+		() => (
+			<>
+				<Stack direction="row" align="center" justify="space-between">
+					<Stack direction="row" align="center">
+						<HamburgerIcon />
+						<Text color="teal.500" size="md" fontWeight="600">
+							Filter
+						</Text>
+					</Stack>
+					<Switch
+						defaultChecked={isOpen}
+						onChange={(event: ChangeEvent<HTMLInputElement>) => {
+							console.log(event.target.checked);
+							setIsOpen(event.target.checked);
+						}}
+						ml="0px"
+						size="lg"
+						colorScheme="teal"
+					/>
+				</Stack>
+			</>
+		),
+		[isOpen]
+	);
+
+	const LeftMenu = () => {
+		return (
+			<Stack h="100vh" overflowY="scroll">
+				<Stack>
+					{menuData.map((value, index): any => {
+						return (
+							<>
+								<Stack
+									onClick={() => handleClickMenu(value.menuId)}
+									cursor="pointer"
+									alignItems="center"
+									key={index}
+									direction="row"
+									justify="space-between"
+									mr="5"
+								>
+									<Text color="gray.800" size="md" fontWeight="500" lineHeight="24px">
+										{value.menu}
+									</Text>
+									{value.menuSelected ? (
+										<ChevronDownIcon boxSize={6} />
+									) : (
+										<ChevronUpIcon boxSize={6} />
+									)}
+								</Stack>
+								{value.menuSelected &&
+									value.subMenu.map((subValue, subIndex) => {
+										return (
+											<>
+												<Stack
+													zIndex={1}
+													onClick={() => handleClickSubMenu(subValue.subMenuId)}
+													cursor="pointer"
+													key={subIndex}
+													direction="row"
+													justify="space-between"
+													mt="2"
+													mr="5"
+												>
+													<Text color="gray.800" size="md" fontWeight="500" lineHeight="24px">
+														{subValue.subMenu}
+													</Text>
+													<Checkbox
+														isChecked={subValue.subMenuSelected}
+														onChange={() => handleClickSubMenu(subValue.subMenuId)}
+														size="lg"
+														borderColor="gray.200"
+														defaultChecked
+														colorScheme="teal"
+													></Checkbox>
+												</Stack>
+												{subValue.subMenuItem.map((itemValue, itemIndex) => {
+													return (
+														<>
+															<Stack
+																onClick={() =>
+																	handleClickSubMenuItem(itemValue.itemId, itemValue.item)
+																}
+																cursor="pointer"
+																key={itemIndex}
+																direction="row"
+																justify="space-between"
+																mr="5"
+															>
+																<Text
+																	ml="16px"
+																	color="gray.600"
+																	size="md"
+																	fontWeight="400"
+																	lineHeight="24px"
+																>
+																	{itemValue.item}
+																</Text>
+																<Checkbox
+																	isChecked={itemValue.itemSelected}
+																	onChange={() =>
 																		handleClickSubMenuItem(itemValue.itemId, itemValue.item)
 																	}
-																	cursor="pointer"
-																	key={itemIndex}
-																	direction="row"
-																	justify="space-between"
-																>
-																	<Text
-																		ml="16px"
-																		color="gray.600"
-																		size="md"
-																		fontWeight="400"
-																		lineHeight="24px"
-																	>
-																		{itemValue.item}
-																	</Text>
-																	<Checkbox
-																		isChecked={itemValue.itemSelected}
-																		onChange={() =>
-																			handleClickSubMenuItem(itemValue.itemId, itemValue.item)
-																		}
-																		size="lg"
-																		borderColor="gray.200"
-																		defaultChecked
-																		colorScheme="teal"
-																	></Checkbox>
-																</Stack>
-															</>
-														);
-													})}
-												</>
-											);
-										})}
-								</>
-							);
-						})}
-					</Stack>
+																	size="lg"
+																	borderColor="gray.200"
+																	defaultChecked
+																	colorScheme="teal"
+																></Checkbox>
+															</Stack>
+														</>
+													);
+												})}
+											</>
+										);
+									})}
+							</>
+						);
+					})}
 				</Stack>
-				<Stack w="100vw" backgroundColor="blue"></Stack>
+			</Stack>
+		);
+	};
+
+	return (
+		<Stack px={paddingMainHorizontal} py={paddingMainVertical}>
+			<Stack w="290px" mb="3">
+				<Filter />
+			</Stack>
+			<Stack mt="0" direction="row" flex="auto">
+				<Stack
+					w={'290px'}
+					display={isOpen ? 'block' : 'none'}
+					// transition="all 0.5s ease-in-out;"
+					// transform="translateX(-10px);"
+					// transition="all 0.5s ease-in-out;"
+					transition="all 0.5s ease-in-out;"
+					// visibility={isOpen ? 'visible' : 'hidden'}
+					transform={isOpen ? 'translate(0, 0);' : 'translate(-290px, 0);'}
+				>
+					<LeftMenu />
+				</Stack>
+
+				<Grid flex="auto" templateColumns={'repeat(auto-fill, minmax(290px, 1fr))'} gap={4}>
+					<CategoryCard />
+					<CategoryCard />
+					<CategoryCard />
+					<CategoryCard />
+					<CategoryCard />
+					<CategoryCard />
+					<CategoryCard />
+					<CategoryCard />
+					<CategoryCard />
+					<CategoryCard />
+					<CategoryCard />
+					<CategoryCard />
+					<CategoryCard />
+				</Grid>
 			</Stack>
 		</Stack>
 	);
