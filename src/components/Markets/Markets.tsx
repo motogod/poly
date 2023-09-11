@@ -1,12 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Text, Stack, Switch, Divider, Grid } from '@chakra-ui/react';
+import { Text, Stack, Switch, Divider, Grid, Center } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import { ChangeEvent } from 'react';
 import LeftMenu from './LeftMenu';
 import { CategoryCard } from '@/components/common';
-
-import { leftMenuItem } from './data';
 
 const empty_array = [...Array(13)];
 
@@ -58,6 +56,9 @@ function Markets() {
 				>
 					<Stack h="100vh" overflow="auto">
 						<LeftMenu />
+						<Center>
+							<Divider m={6} borderColor="gray" />
+						</Center>
 					</Stack>
 				</Stack>
 
