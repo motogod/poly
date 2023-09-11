@@ -64,6 +64,7 @@ function Markets() {
 
 				<Grid
 					w="100%"
+					h="100%"
 					// w={isOpen ? '80%' : 'calc(100% + 290px)'}
 					// transition="all 0.5s ease-in-out;"
 					// transform={isOpen ? 'translate(0, 0);' : 'translate(-290px, 0);'}
