@@ -1,16 +1,7 @@
-import { useEffect, useState, useCallback } from 'react';
-import {
-	Text,
-	Stack,
-	Switch,
-	Checkbox,
-	CheckboxGroup,
-	Divider,
-	Grid,
-	VStack,
-} from '@chakra-ui/react';
-import { HamburgerIcon, ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import { leftMenuItem, testMenuItem } from '../data';
+import { useState } from 'react';
+import { Text, Stack, Checkbox } from '@chakra-ui/react';
+import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import { leftMenuItem } from '../data';
 
 const LeftMenu = () => {
 	const [menuData, setMenuData] = useState(leftMenuItem);
