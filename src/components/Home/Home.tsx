@@ -5,17 +5,6 @@ import TopTopicSection from './TopTopicSection';
 import CategorySection from './CategorySection';
 import HowItWorkSection from './HowItWorkSection';
 import { paddingMainHorizontal, paddingMainVertical } from '../../utils/screen';
-import styles from './home.module.scss';
-
-const data = [
-	{ name: 'A', uv: 400, pv: 2400, amt: 2400 },
-	{ name: 'B', uv: 300, pv: 2400, amt: 2400 },
-	{ name: 'C', uv: 200, pv: 2400, amt: 2400 },
-	{ name: 'D', uv: 260, pv: 2400, amt: 2400 },
-	{ name: 'E', uv: 333, pv: 2400, amt: 2400 },
-	{ name: 'F', uv: 176, pv: 2400, amt: 2400 },
-	{ name: 'G', uv: 234, pv: 2400, amt: 2400 },
-];
 
 function Home() {
 	return (

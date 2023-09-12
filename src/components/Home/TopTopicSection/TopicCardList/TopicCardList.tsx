@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
-import ScrollContainer from 'react-indiana-drag-scroll';
+// import ScrollContainer from 'react-indiana-drag-scroll';
 import { Element, scroller } from 'react-scroll';
-import { Button, Stack, IconButton, Heading } from '@chakra-ui/react';
+import { Stack, IconButton, Heading } from '@chakra-ui/react';
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import styles from './topicCardList.module.scss';
 import TopicCard from './TopicCard/TopicCard';
@@ -22,15 +22,21 @@ const dummyDataArray = [
 
 function TopicCardList() {
 	const [scrollIndex, setScrollIndex] = useState<number>(0);
+	const [disableScroll, setDisableScroll] = useState(false);
 
-	const scrollHorizontal = (index: number) => {
-		const elementIndex = scrollIndex + index;
+	const scrollHorizontal = (count: number) => {
+		setDisableScroll(true);
+		setTimeout(() => {
+			setDisableScroll(false);
+		}, 500);
+
+		const elementIndex = scrollIndex + count;
 
 		if (elementIndex < 0 || elementIndex > dummyDataArray.length) {
 			return;
 		}
 
-		setScrollIndex(prev => prev + index);
+		setScrollIndex(prev => prev + count);
 
 		scroller.scrollTo(`com-${elementIndex}`, {
 			containerId: 'topicCard', // <= add this
@@ -59,7 +65,7 @@ function TopicCardList() {
 					spacing="6"
 				>
 					<IconButton
-						onClick={() => scrollHorizontal(-4)}
+						onClick={() => (disableScroll ? null : scrollHorizontal(-4))}
 						isRound={true}
 						variant="solid"
 						colorScheme="blackAlpha"
@@ -68,7 +74,7 @@ function TopicCardList() {
 						icon={<ChevronLeftIcon />}
 					/>
 					<IconButton
-						onClick={() => scrollHorizontal(4)}
+						onClick={() => (disableScroll ? null : scrollHorizontal(4))}
 						ml="2"
 						isRound={true}
 						variant="solid"
