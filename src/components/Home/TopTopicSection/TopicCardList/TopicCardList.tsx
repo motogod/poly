@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // import ScrollContainer from 'react-indiana-drag-scroll';
 import { Element, scroller } from 'react-scroll';
 import { Stack, IconButton, Heading } from '@chakra-ui/react';
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import styles from './topicCardList.module.scss';
 import TopicCard from './TopicCard/TopicCard';
+import Draggable from '@/components/common/Draggable';
 
 const dummyDataArray = [
 	{ title: 'One' },
@@ -21,9 +22,13 @@ const dummyDataArray = [
 ];
 
 function TopicCardList() {
+	const listRef = useRef<any>(null);
+
+	// for 點擊滑動
 	const [scrollIndex, setScrollIndex] = useState<number>(0);
 	const [disableScroll, setDisableScroll] = useState(false);
 
+	// 點擊水平滑動
 	const scrollHorizontal = (count: number) => {
 		setDisableScroll(true);
 		setTimeout(() => {
@@ -95,6 +100,27 @@ function TopicCardList() {
 						</>
 					))}
 				</Stack>
+			</Stack>
+
+			{/* <Draggable innerRef={listRef}>
+				{dummyDataArray.map((value, index) => (
+					<>
+						<Element name={`com-${index}`}>
+							<TopicCard key={index} data={value} index={index} />
+						</Element>
+					</>
+				))}
+			</Draggable> */}
+
+			<Stack display="flex" direction="row">
+				{/* <Stack width="100vw" justify="space-between" backgroundColor="black">
+					<Stack w="20%" borderBottom="50px solid black" borderLeft="100vw solid #fff" />
+					<Stack borderBottom="50px solid #fff" borderLeft="100vw solid black" />
+				</Stack> */}
+				{/* <Stack pb="100px" justify="space-between">
+					<Stack borderBottom="50px solid #FF1EAB" borderLeft="1200px solid #fff" />
+					<Stack borderBottom="50px solid #fff" borderLeft="1200px solid #FF1EAB" />
+				</Stack> */}
 			</Stack>
 		</Stack>
 	);
