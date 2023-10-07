@@ -5,3 +5,9 @@
 		background-color: pink;
 	}
 }
+.tabsContainer {
+	overflow-x: scroll;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}

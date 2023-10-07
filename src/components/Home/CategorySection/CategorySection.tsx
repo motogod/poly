@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
 	Heading,
 	Center,
@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { Radio, RadioGroup, Stack } from '@chakra-ui/react';
 import CategoryActivityList from './CategoryActivityList';
+import CustomTabsOption from './CustomTabsOption';
 import styles from './categorySection.module.scss';
 
 function CategorySection() {
@@ -27,27 +28,17 @@ function CategorySection() {
 			</Center>
 
 			<Tabs variant="soft-rounded" colorScheme="purple">
-				<Center>
-					<Tag
-						p={3}
-						mb={12}
-						border="1px"
-						backgroundColor="gray.50"
-						borderColor="gray.50"
-						size="lg"
-						colorScheme="undefined"
-						borderRadius="full"
-						shadow="md"
-					>
+				<Center className={styles.tabsContainer}>
+					<CustomTabsOption>
 						<TabList>
 							<Tab color="gray.800">All</Tab>
 							<Tab color="gray.800">Business</Tab>
 							<Tab color="gray.800">Crypto</Tab>
-							{/* <Tab color="gray.800">AI</Tab>
+							<Tab color="gray.800">AI</Tab>
 							<Tab color="gray.800">Politics</Tab>
-							<Tab color="gray.800">Sports</Tab> */}
+							<Tab color="gray.800">Sports</Tab>
 						</TabList>
-					</Tag>
+					</CustomTabsOption>
 				</Center>
 				<TabPanels>
 					<TabPanel>
