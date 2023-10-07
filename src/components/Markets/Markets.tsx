@@ -1,4 +1,5 @@
-import { Stack, Divider, Grid, Center } from '@chakra-ui/react';
+import { Stack, Divider, Grid, Center, Button } from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import { paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import useFilter from './useFilter';
 import LeftMenu from './LeftMenu';
@@ -11,10 +12,26 @@ function Markets() {
 
 	return (
 		<Stack px={paddingMainHorizontal} py={paddingMainVertical}>
-			<Stack w="290px" mb="3">
+			<Stack display={{ sm: 'none', md: 'inline' }} w="290px" mb="3">
 				<Filter />
 			</Stack>
-			<Stack mt="0" direction="row" flex="auto">
+			<Stack
+				display={{ sm: 'inline', md: 'none' }}
+				pl={{ sm: 4, md: 0 }}
+				pr={{ sm: 4, md: 0 }}
+				mb={4}
+			>
+				<Button
+					w={'100%'}
+					onClick={() => alert('View More')}
+					leftIcon={<HamburgerIcon />}
+					colorScheme="teal"
+					variant="solid"
+				>
+					Filter
+				</Button>
+			</Stack>
+			<Stack pl={{ sm: 4, md: 0 }} pr={{ sm: 4, md: 0 }} mt="0" direction="row" flex="auto">
 				<Stack
 					w={isOpen ? '290px' : '0px'}
 					mr={isOpen ? '3' : '-2'}
