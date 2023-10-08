@@ -78,7 +78,7 @@ const LeftMenu = () => {
 							key={index}
 							direction="row"
 							justify="space-between"
-							mr="5"
+							mr={{ base: '1', sm: '1', md: '5' }}
 						>
 							<Text color="gray.800" size="md" fontWeight="500" lineHeight="24px">
 								{value.menu}
@@ -100,7 +100,7 @@ const LeftMenu = () => {
 											direction="row"
 											justify="space-between"
 											mt="2"
-											mr="5"
+											mr={{ base: '1', sm: '1', md: '5' }}
 										>
 											<Text color="gray.800" size="md" fontWeight="500" lineHeight="24px">
 												{subValue.subMenu}
@@ -129,7 +129,7 @@ const LeftMenu = () => {
 														key={itemIndex}
 														direction="row"
 														justify="space-between"
-														mr="5"
+														mr={{ base: '1', sm: '1', md: '5' }}
 													>
 														<Text
 															ml="16px"

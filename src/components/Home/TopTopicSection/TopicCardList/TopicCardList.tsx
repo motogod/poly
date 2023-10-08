@@ -1,7 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 // import ScrollContainer from 'react-indiana-drag-scroll';
 import { Element, scroller } from 'react-scroll';
-import { Stack, IconButton, Heading } from '@chakra-ui/react';
+import {
+	Stack,
+	IconButton,
+	Heading,
+	Tabs,
+	Center,
+	TabList,
+	Tab,
+	TabPanel,
+	TabPanels,
+	Tag,
+	TagLabel,
+} from '@chakra-ui/react';
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import styles from './topicCardList.module.scss';
 import TopicCard from './TopicCard/TopicCard';
@@ -54,9 +66,40 @@ function TopicCardList() {
 
 	return (
 		<Stack>
+			<Tabs
+				display={{ lg: 'none', md: 'inline', sm: 'inline' }}
+				variant="soft-rounded"
+				colorScheme="purple"
+			>
+				<Center className={styles.tabsContainer}>
+					<Tag
+						p={0}
+						mb={2}
+						ml={8}
+						border="0px"
+						backgroundColor="transparent"
+						borderColor="transparent"
+						size="lg"
+						colorScheme="undefined"
+						borderRadius="full"
+						shadow=""
+					>
+						<TabList>
+							<Tab onClick={() => alert('Markets')} color="gray.800">
+								Markets
+							</Tab>
+							<Tab color="gray.800">Business</Tab>
+							<Tab color="gray.800">Crypto</Tab>
+							<Tab color="gray.800">AI</Tab>
+							<Tab color="gray.800">Politics</Tab>
+							<Tab color="gray.800">Sports</Tab>
+						</TabList>
+					</Tag>
+				</Center>
+			</Tabs>
 			<Stack justify="center" direction="row">
 				<Stack>
-					<Heading size="xl" color="gray.700">
+					<Heading size="lg" color="gray.700">
 						{'Bet on markets spotlight'}
 					</Heading>
 				</Stack>
@@ -94,7 +137,7 @@ function TopicCardList() {
 				<Stack display="grid" gridAutoFlow="column" my="0.5">
 					{dummyDataArray.map((value, index) => (
 						<>
-							<Element name={`com-${index}`}>
+							<Element name={`com-${index}`} key={index}>
 								<TopicCard key={index} data={value} index={index} />
 							</Element>
 						</>
