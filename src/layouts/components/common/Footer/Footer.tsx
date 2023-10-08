@@ -60,10 +60,8 @@ export default function LargeWithAppLinksAndSocial() {
 							</Heading>
 						</Stack>
 						<Box mt="2" as={Stack}>
-							<Select w="320px" placeholder="" size="md">
-								<option value="english" selected>
-									English
-								</option>
+							<Select w="320px" placeholder="" size="md" defaultValue={'english'}>
+								<option value="english">English</option>
 								<option value="chinese">Chinese</option>
 								<option value="japanese">Japanese</option>
 							</Select>

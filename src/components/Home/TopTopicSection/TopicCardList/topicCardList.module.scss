@@ -1,3 +1,9 @@
+.tabsContainer {
+	overflow-x: scroll;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
 .listContainer {
 	position: relative;
 	width: 100%;

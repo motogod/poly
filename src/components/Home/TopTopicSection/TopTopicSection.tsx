@@ -7,7 +7,8 @@ import styles from './topTopicSection.module.scss';
 
 function TopTopicSection() {
 	return (
-		<Stack py={paddingMainVertical}>
+		// <Stack py={paddingMainVertical}>
+		<Stack py={0}>
 			<TopicCardList />
 		</Stack>
 	);
