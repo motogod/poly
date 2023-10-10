@@ -562,11 +562,11 @@ function MarketsDetail() {
 								About
 							</Heading>
 							<Text mt={'20px'} fontSize={'md'}>
-								In this distant spot, the furthest from any solid ground on Earth, there is little
+								{`In this distant spot, the furthest from any solid ground on Earth, there is little
 								chance of rescue if you get into trouble. The only signs of life are triangular
 								shark fin-like sails just above the water line in the distance – if you happen to
 								visit at the same time as The Ocean Race, an annual round-the-world yachting
-								competition. If not, you're out of luck
+								competition. If not, you're out of luck`}
 							</Text>
 							<Heading mt={'19px'} size={'sm'} color={'gray.600'}>
 								Show
