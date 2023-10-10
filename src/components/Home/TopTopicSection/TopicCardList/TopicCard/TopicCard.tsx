@@ -1,12 +1,17 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { Card, CardBody, Stack, Heading, Text, Image, Tag, TagLabel } from '@chakra-ui/react';
 import styles from './topicCard.module.scss';
 
 function TopicCard({ data, index }: any) {
 	const { title } = data;
 
+	const router = useRouter();
+
 	return (
 		<Card
+			onClick={() => router.push('./marketsDetail')}
+			cursor="pointer"
 			width="xs"
 			ml={{ md: index === 0 ? '116' : '5', sm: index === 0 ? '6' : '5' }}
 			shadow="md"

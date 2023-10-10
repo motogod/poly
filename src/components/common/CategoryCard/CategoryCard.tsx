@@ -1,11 +1,19 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { Card, CardBody, Stack, Image, Text, Heading, GridItem, Divider } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 
 function CategoryCard() {
+	const router = useRouter();
+
 	return (
 		<GridItem w="100%">
-			<Card cursor="pointer" shadow="md" borderRadius="3xl">
+			<Card
+				onClick={() => router.push('./marketsDetail')}
+				cursor="pointer"
+				shadow="md"
+				borderRadius="3xl"
+			>
 				<CardBody>
 					<Stack direction="row">
 						<Image

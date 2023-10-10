@@ -97,9 +97,9 @@ function Header() {
 				<Button
 					// display={{ base: 'inline', sm: 'inline', md: 'none' }}
 					display={{ lg: 'none', md: 'inline', sm: 'inline' }}
-					w="74px"
+					w="54px"
 					leftIcon={<AtSignIcon boxSize={5} />}
-					rightIcon={<HamburgerIcon boxSize={5} />}
+					// rightIcon={<HamburgerIcon boxSize={5} />}
 					onClick={onOpen}
 					bg="#fff"
 					color="gray.700"
