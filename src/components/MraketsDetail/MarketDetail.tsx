@@ -93,10 +93,11 @@ function MarketsDetail() {
 	});
 
 	return (
-		<Stack px={paddingMainHorizontal} py={paddingMainVertical}>
+		<Stack px={{ md: 116, sm: 8 }} py={paddingMainVertical}>
 			<Stack gap={'28px'} direction="row">
 				<Stack spacing={'20px'} width={'100%'}>
 					<Card
+						border="1px solid #E2E8F0;"
 						display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 						w={'100%'}
 						cursor="pointer"
@@ -194,7 +195,7 @@ function MarketsDetail() {
 						</Tabs>
 					</Card>
 
-					<Card shadow="lg" borderRadius="3xl">
+					<Card shadow="lg" border="1px solid #E2E8F0;" borderRadius="3xl">
 						<CardBody>
 							<Stack direction="row">
 								<Image
@@ -238,7 +239,7 @@ function MarketsDetail() {
 							</Stack>
 							<Tabs mt={'28px'} align="end" position="relative" variant="unstyled">
 								<TabList>
-									{isDesktop && (
+									{/* {isDesktop && (
 										<Stack position={'absolute'} top={0} left={0} align="start">
 											<Heading
 												fontSize={'xs'}
@@ -252,7 +253,7 @@ function MarketsDetail() {
 												0.6 USDT
 											</Heading>
 										</Stack>
-									)}
+									)} */}
 									<Tab fontSize={'14px'} color={'blue.600'} fontWeight={'500'} lineHeight={'20px'}>
 										6 Hour
 									</Tab>
@@ -270,22 +271,20 @@ function MarketsDetail() {
 								<TabPanels>
 									<TabPanel p={0}>
 										<Stack w={'100%'} h={'100%'}>
-											{!isDesktop && (
-												<Stack mt={'24px'} direction={'row'} align="center">
-													<Heading
-														fontSize={'xs'}
-														color={'gray.500'}
-														fontWeight={'700'}
-														lineHeight={'17px'}
-													>
-														Yes
-													</Heading>
-													<Heading fontSize={'lg'} color={'gray.800'} fontWeight={'700'}>
-														0.6 USDT
-													</Heading>
-												</Stack>
-											)}
-											<Stack align="start" direction={'row'} mt={isDesktop ? '24px' : '2px'}>
+											<Stack mt={'24px'} direction={'row'} align="center">
+												<Heading
+													fontSize={'xs'}
+													color={'gray.500'}
+													fontWeight={'700'}
+													lineHeight={'17px'}
+												>
+													Yes
+												</Heading>
+												<Heading fontSize={'lg'} color={'gray.800'} fontWeight={'700'}>
+													0.6 USDT
+												</Heading>
+											</Stack>
+											<Stack align="start" direction={'row'} mt={'0px'}>
 												<Heading fontSize={'xs'} color={'green.600'} fontWeight={'700'}>
 													(+73.87%)
 												</Heading>
@@ -336,7 +335,7 @@ function MarketsDetail() {
 							</Tabs>
 						</CardBody>
 					</Card>
-					<Card minH={'434px'} shadow="lg" borderRadius="3xl">
+					<Card minH={'434px'} shadow="lg" border="1px solid #E2E8F0;" borderRadius="3xl">
 						<CardBody>
 							<Heading size={'md'} color={'gray.800'}>
 								Order Book
@@ -556,7 +555,7 @@ function MarketsDetail() {
 							</Tabs>
 						</CardBody>
 					</Card>
-					<Card shadow="lg" borderRadius="3xl">
+					<Card shadow="lg" border="1px solid #E2E8F0;" borderRadius="3xl">
 						<CardBody>
 							<Heading size={'md'} color={'gray.800'}>
 								About
@@ -575,7 +574,13 @@ function MarketsDetail() {
 					</Card>
 				</Stack>
 				<Stack display={{ lg: 'inline', md: 'none', sm: 'none' }} w={'452px'}>
-					<Card w={'100%'} cursor="pointer" shadow="lg" borderRadius="3xl">
+					<Card
+						w={'100%'}
+						cursor="pointer"
+						shadow="lg"
+						border="1px solid #E2E8F0;"
+						borderRadius="3xl"
+					>
 						<Tabs p={'16px'} position="relative" variant="unstyled">
 							<TabList>
 								<Tab color={'gray.700'} fontWeight={'700'}>
