@@ -68,36 +68,86 @@ function TopicCardList() {
 		<Stack>
 			<Tabs
 				display={{ lg: 'none', md: 'inline', sm: 'inline' }}
+				alignItems={'center'}
+				justifyContent={'center'}
+				position={'fixed'}
+				left="0"
+				right="0"
+				overflowY={'auto'}
+				overflowX={'hidden'}
+				bg={'gray.50'}
+				zIndex={1}
+				shadow={'md'}
 				variant="soft-rounded"
 				colorScheme="purple"
 			>
 				<Center className={styles.tabsContainer}>
 					<Tag
-						p={0}
-						mb={2}
-						ml={8}
+						h={'64px'}
+						p={'0px 16px 0px 16px'}
 						border="0px"
-						backgroundColor="transparent"
+						bg={'transparent'}
 						borderColor="transparent"
 						size="lg"
 						colorScheme="undefined"
 						borderRadius="full"
 						shadow=""
 					>
-						<TabList>
-							<Tab onClick={() => alert('Markets')} color="gray.800">
+						<TabList gap={'16px'}>
+							<Tab
+								onClick={() => alert('Markets')}
+								border={'1px'}
+								_selected={{ bg: 'teal.500', color: '#fff' }}
+								color={'black'}
+								borderColor={'gray.200'}
+							>
 								Markets
 							</Tab>
-							<Tab color="gray.800">Business</Tab>
-							<Tab color="gray.800">Crypto</Tab>
-							<Tab color="gray.800">AI</Tab>
-							<Tab color="gray.800">Politics</Tab>
-							<Tab color="gray.800">Sports</Tab>
+							<Tab
+								border={'1px'}
+								_selected={{ bg: 'teal.500', color: '#fff' }}
+								color={'black'}
+								borderColor={'gray.200'}
+							>
+								Business
+							</Tab>
+							<Tab
+								border={'1px'}
+								_selected={{ bg: 'teal.500', color: '#fff' }}
+								color={'black'}
+								borderColor={'gray.200'}
+							>
+								Crypto
+							</Tab>
+							<Tab
+								border={'1px'}
+								_selected={{ bg: 'teal.500', color: '#fff' }}
+								color={'black'}
+								borderColor={'gray.200'}
+							>
+								AI
+							</Tab>
+							<Tab
+								border={'1px'}
+								_selected={{ bg: 'teal.500', color: '#fff' }}
+								color={'black'}
+								borderColor={'gray.200'}
+							>
+								Politics
+							</Tab>
+							<Tab
+								border={'1px'}
+								_selected={{ bg: 'teal.500', color: '#fff' }}
+								color={'black'}
+								borderColor={'gray.200'}
+							>
+								Sports
+							</Tab>
 						</TabList>
 					</Tag>
 				</Center>
 			</Tabs>
-			<Stack justify="center" direction="row">
+			<Stack mt={{ lg: '64px', md: '112px', sm: '112px' }} justify="center" direction="row">
 				<Stack>
 					<Heading size="lg" color="gray.700">
 						{'Bet on markets spotlight'}

@@ -16,6 +16,7 @@ import {
 import { Icon } from '@chakra-ui/react';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { PrimaryPink } from '@/utils/color';
+import { CommunityIcon } from '../../../../../public/assets/svg';
 
 const CircleIcon = (props: any) => (
 	<Icon viewBox="0 0 200 200" {...props}>
@@ -60,7 +61,15 @@ export default function LargeWithAppLinksAndSocial() {
 							</Heading>
 						</Stack>
 						<Box mt="2" as={Stack}>
-							<Select w="320px" placeholder="" size="md" defaultValue={'english'}>
+							<Select
+								border={'1px'}
+								borderColor={'gray.200'}
+								bg={'#fff'}
+								w="320px"
+								placeholder=""
+								size="md"
+								defaultValue={'english'}
+							>
 								<option value="english">English</option>
 								<option value="chinese">Chinese</option>
 								<option value="japanese">Japanese</option>
@@ -84,10 +93,8 @@ export default function LargeWithAppLinksAndSocial() {
 					</Stack>
 
 					<Stack align={'flex-start'}>
-						<ListHeader>Install App</ListHeader>
-						<Box as="a" href={'#'}>
-							About Us
-						</Box>
+						<ListHeader>Support</ListHeader>
+						<Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} />
 						{/* <AppStoreBadge />
 		        <PlayStoreBadge /> */}
 					</Stack>
@@ -103,12 +110,13 @@ export default function LargeWithAppLinksAndSocial() {
 					as={Stack}
 					maxW={'100%'}
 					py={14}
+					mb={{ md: '72px', sm: '72px' }}
 					direction={{ base: 'column', md: 'row' }}
 					spacing={4}
 					justify={{ md: 'space-between' }}
 					align={{ md: 'center' }}
 				>
-					<Text>© 2023 Test. All rights reserved</Text>
+					<Text>© 2023 gomarket.com</Text>
 				</Container>
 			</Box>
 		</Box>
