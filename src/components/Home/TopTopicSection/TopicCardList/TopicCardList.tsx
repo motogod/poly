@@ -15,6 +15,7 @@ import {
 	TagLabel,
 } from '@chakra-ui/react';
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { useCategoryTabsList } from '@/hooks';
 import styles from './topicCardList.module.scss';
 import TopicCard from './TopicCard/TopicCard';
 import Draggable from '@/components/common/Draggable';
@@ -35,6 +36,8 @@ const dummyDataArray = [
 
 function TopicCardList() {
 	const listRef = useRef<any>(null);
+
+	const [TabDom, selectedTab] = useCategoryTabsList();
 
 	// for 點擊滑動
 	const [scrollIndex, setScrollIndex] = useState<number>(0);
@@ -66,7 +69,8 @@ function TopicCardList() {
 
 	return (
 		<Stack>
-			<Tabs
+			{TabDom}
+			{/* <Tabs
 				display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 				alignItems={'center'}
 				justifyContent={'center'}
@@ -146,7 +150,7 @@ function TopicCardList() {
 						</TabList>
 					</Tag>
 				</Center>
-			</Tabs>
+			</Tabs> */}
 			<Stack mt={{ lg: '64px', md: '112px', sm: '112px' }} justify="center" direction="row">
 				<Stack>
 					<Heading size="lg" color="gray.700">

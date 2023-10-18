@@ -13,11 +13,15 @@ import {
 	ModalBody,
 	ModalCloseButton,
 	useDisclosure,
-	HStack,
-	Tag,
-	TagLabel,
-	TagRightIcon,
-	TagLeftIcon,
+	Popover,
+	PopoverTrigger,
+	PopoverContent,
+	PopoverHeader,
+	PopoverBody,
+	PopoverFooter,
+	PopoverArrow,
+	PopoverCloseButton,
+	PopoverAnchor,
 } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
@@ -26,7 +30,7 @@ import { BiSolidUserCircle, BiMenuAltLeft } from 'react-icons/bi';
 import styles from './header.module.scss';
 import { PrimaryPink } from '@/utils/color';
 import { headerHeight } from '@/utils/screen';
-import { CommunityIcon } from '../../../../../public/assets/svg';
+import { CommunityIcon, ArbIcon } from '../../../../../public/assets/svg';
 
 const CircleIcon = (props: any) => (
 	<Icon viewBox="0 0 200 200" {...props}>
@@ -108,11 +112,48 @@ function Header() {
 					justify={'center'}
 					borderRadius={'19px'}
 					border={'1px'}
-					borderColor={'gray.500'}
+					borderColor={'gray.400'}
 				>
 					<Icon as={BiSolidUserCircle} boxSize={6} mr={'-10px'} />
 					<Icon as={BiMenuAltLeft} boxSize={6} />
 				</Stack>
+				{/* <Popover>
+					<PopoverTrigger>
+						<Stack
+							cursor={'pointer'}
+							w={'74px'}
+							h={'38px'}
+							direction={'row'}
+							align={'center'}
+							justify={'center'}
+							borderRadius={'19px'}
+							border={'1px'}
+							borderColor={'gray.400'}
+						>
+							<Icon as={ArbIcon} boxSize={6} borderRadius={'12px'} mr={'-8px'} />
+							<Icon as={BiMenuAltLeft} boxSize={6} />
+						</Stack>
+					</PopoverTrigger>
+
+					<PopoverContent
+						border={'0px'}
+						borderColor={'transparent'}
+						borderRadius={'12px'}
+						bg={'#fff'}
+						shadow={'md'}
+					>
+						<PopoverHeader>
+							<Stack direction={'row'}>
+								<Icon as={ArbIcon} boxSize={6} borderRadius={'12px'} />
+							</Stack>
+						</PopoverHeader>
+
+						<PopoverBody>
+							<Button colorScheme="blue">Button</Button>
+						</PopoverBody>
+						<PopoverFooter>This is the footer</PopoverFooter>
+					</PopoverContent>
+				</Popover> */}
 			</Stack>
 
 			<Modal size="full" isOpen={isModalOpen} onClose={onClose}>
