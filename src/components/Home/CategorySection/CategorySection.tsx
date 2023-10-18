@@ -31,12 +31,12 @@ function CategorySection() {
 				<Center className={styles.tabsContainer}>
 					<CustomTabsOption>
 						<TabList>
-							<Tab color="gray.800">All</Tab>
-							<Tab color="gray.800">Business</Tab>
-							<Tab color="gray.800">Crypto</Tab>
-							<Tab color="gray.800">AI</Tab>
-							<Tab color="gray.800">Politics</Tab>
-							<Tab color="gray.800">Sports</Tab>
+							<Tab _selected={{ bg: 'teal.500', color: '#fff' }}>All</Tab>
+							<Tab _selected={{ bg: 'teal.500', color: '#fff' }}>Business</Tab>
+							<Tab _selected={{ bg: 'teal.500', color: '#fff' }}>Crypto</Tab>
+							<Tab _selected={{ bg: 'teal.500', color: '#fff' }}>AI</Tab>
+							<Tab _selected={{ bg: 'teal.500', color: '#fff' }}>Politics</Tab>
+							<Tab _selected={{ bg: 'teal.500', color: '#fff' }}>Sports</Tab>
 						</TabList>
 					</CustomTabsOption>
 				</Center>
@@ -56,7 +56,8 @@ function CategorySection() {
 						px="7"
 						py="6"
 						borderRadius="3xl"
-						colorScheme="orange"
+						bg="teal.500"
+						color="#fff"
 					>
 						View More
 					</Button>

@@ -1,14 +1,13 @@
 import React from 'react';
 import { Stack } from '@chakra-ui/react';
 import TopicCardList from './TopicCardList';
-import { paddingMainVertical } from '@/utils/screen';
+import { headerHeight, paddingMainVertical } from '@/utils/screen';
 
 import styles from './topTopicSection.module.scss';
 
 function TopTopicSection() {
 	return (
-		// <Stack py={paddingMainVertical}>
-		<Stack py={0}>
+		<Stack>
 			<TopicCardList />
 		</Stack>
 	);
