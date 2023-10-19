@@ -13,8 +13,10 @@ import {
 	ModalCloseButton,
 	useDisclosure,
 } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
-import { paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
+import { Icon } from '@chakra-ui/react';
+import { BiFilter } from 'react-icons/bi';
+import { useCategoryTabsList } from '@/hooks';
+import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import useFilter from './useFilter';
 import LeftMenu from './LeftMenu';
 import { CategoryCard } from '@/components/common';
@@ -25,22 +27,25 @@ const empty_array = [...Array(13)];
 function Markets() {
 	const { Filter, isOpen } = useFilter();
 	const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
-
+	const [TabDom, selectedTab] = useCategoryTabsList();
+	// display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 	return (
 		<Stack px={paddingMainHorizontal} py={paddingMainVertical}>
-			<Stack display={{ base: 'none', sm: 'none', md: 'inline' }} w="290px" mb="3">
+			{TabDom}
+			<Stack display={{ base: 'none', sm: 'inline', md: 'inline' }} w="290px" mb="3">
 				<Filter />
 			</Stack>
 			<Stack
-				display={{ base: 'inline', sm: 'inline', md: 'none' }}
+				mt={'32px'}
+				mb={'16px'}
+				display={{ base: 'inline', sm: 'inline', md: 'inline', lg: 'none' }}
 				pl={{ sm: 4, md: 0 }}
 				pr={{ sm: 4, md: 0 }}
-				mb={4}
 			>
 				<Button
 					w={'100%'}
 					onClick={onOpen}
-					leftIcon={<HamburgerIcon />}
+					leftIcon={<Icon as={BiFilter} />}
 					colorScheme="teal"
 					variant="solid"
 				>
@@ -49,7 +54,7 @@ function Markets() {
 			</Stack>
 			<Stack pl={{ sm: 4, md: 0 }} pr={{ sm: 4, md: 0 }} mt="0" direction="row" flex="auto">
 				<Stack
-					display={{ base: 'none', sm: 'none', md: 'inline' }}
+					display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline' }}
 					w={isOpen ? '290px' : '0px'}
 					mr={isOpen ? '3' : '-2'}
 					flex="none"
