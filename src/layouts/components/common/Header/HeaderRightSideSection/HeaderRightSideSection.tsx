@@ -87,6 +87,7 @@ function HeaderRightSideSection() {
 						</PopoverTrigger>
 
 						<PopoverContent
+							zIndex={6}
 							px={'6px'}
 							py={'22px'}
 							mt={'34px'}
