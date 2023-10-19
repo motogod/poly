@@ -184,7 +184,15 @@ function HeaderRightSideSection() {
 								borderBottom={'1px'}
 								borderColor={'gray.100'}
 							>
-								<Text onClick={onPopClose} cursor={'pointer'} size={'md'} color={'gray.800'}>
+								<Text
+									onClick={() => {
+										router.push('./portfolio');
+										onPopClose();
+									}}
+									cursor={'pointer'}
+									size={'md'}
+									color={'gray.800'}
+								>
 									Profile
 								</Text>
 								<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
