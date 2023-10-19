@@ -13,6 +13,7 @@ import {
 	Tab,
 	TabPanels,
 	TabPanel,
+	Icon,
 } from '@chakra-ui/react';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import {
@@ -26,6 +27,7 @@ import {
 	Legend,
 } from 'recharts';
 import { SettingsIcon } from '@chakra-ui/icons';
+import { HiChartBar, HiClock } from 'react-icons/hi';
 
 const data = [
 	{
@@ -84,7 +86,7 @@ function LineChartCard() {
 						alt="Green double couch with wooden legs"
 						borderRadius="lg"
 					/>
-					<Stack pl={4} pt={'26px'} pb={4} w={'100%'}>
+					<Stack pl={4} pt={{ base: '0px', sm: '0px', md: '0px', lg: '26px' }} pb={4} w={'100%'}>
 						<Stack direction="row" justify="space-between">
 							<Tag
 								px={4}
@@ -106,15 +108,24 @@ function LineChartCard() {
 						</Stack>
 					</Stack>
 				</Stack>
-				<Stack alignItems="center" mt={'25px'} spacing={2} direction="row">
-					<SettingsIcon color="gray.500" />
-					<Text fontSize="xs" color="gray.800" fontWeight={'400'} lineHeight={'18px'}>
-						$2,186,639 USDT
-					</Text>
-					<SettingsIcon ml={'16px'} color="gray.500" />
-					<Text fontSize="xs" color="gray.800" fontWeight={'400'} lineHeight={'18px'}>
-						Expires: Dec 28, 2023
-					</Text>
+				<Stack
+					// alignItems="center"
+					mt={'25px'}
+					spacing={2}
+					direction={{ base: 'column', sm: 'column', md: 'column', lg: 'row' }}
+				>
+					<Stack align={'center'} direction={'row'}>
+						<Icon as={HiChartBar} w={'16px'} h={'14px'} />
+						<Text fontSize="sm" color="gray.800" fontWeight={'400'} lineHeight={'18px'}>
+							Volume: $2,186,639 USDT
+						</Text>
+					</Stack>
+					<Stack align={'center'} direction={'row'}>
+						<Icon as={HiClock} w={'16px'} h={'16px'} />
+						<Text fontSize="sm" color="gray.800" fontWeight={'400'} lineHeight={'18px'}>
+							Expires: Dec 28, 2023
+						</Text>
+					</Stack>
 				</Stack>
 				<Stack mt={'32px'} align={'start'}>
 					<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'} lineHeight={'17px'}>
