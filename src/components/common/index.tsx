@@ -1,3 +1,4 @@
 import CategoryCard from './CategoryCard';
+import Container from './Container';
 
-export { CategoryCard };
+export { CategoryCard, Container };
