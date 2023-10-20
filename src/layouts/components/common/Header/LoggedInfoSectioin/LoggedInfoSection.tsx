@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Stack, Text, Button, Icon } from '@chakra-ui/react';
+import { useAccount, useBalance, useContractRead } from 'wagmi';
+import { Stack, Text, Button, Icon, useToast } from '@chakra-ui/react';
 import {
 	HiOutlineDocumentDuplicate,
 	HiCollection,
@@ -10,6 +11,31 @@ import {
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
 
 function LoggedInfoSection() {
+	const { address } = useAccount();
+	const { data, isError, isLoading } = useBalance({ address });
+	const toast = useToast();
+
+	const sliceWalletAddress = (walletAddress: string | undefined) => {
+		if (walletAddress) {
+			const firstSix = walletAddress?.slice(0, 6);
+			const lastFour = walletAddress?.slice(-4);
+
+			return `${firstSix}...${lastFour}`;
+		}
+
+		return '';
+	};
+
+	const checkBalance = () => {
+		if (isLoading) return <div>Fetching balance…</div>;
+		if (isError) return <div>Error fetching balance</div>;
+		return (
+			<p>
+				Balance: {data?.formatted} {data?.symbol}
+			</p>
+		);
+	};
+
 	return (
 		<>
 			<Stack align={'center'} direction={'row'}>
@@ -23,9 +49,20 @@ function LoggedInfoSection() {
 					color={'gray.800'}
 					border={'0px'}
 					borderRadius={'4px'}
-					onClick={() => alert('copy')}
+					onClick={() => {
+						if (address) {
+							navigator.clipboard.writeText(address);
+							toast({
+								title: 'Copied',
+								position: 'top',
+								status: 'success',
+								duration: 1000,
+								isClosable: true,
+							});
+						}
+					}}
 				>
-					0x93eA...a00F
+					{sliceWalletAddress(address)}
 				</Button>
 			</Stack>
 			<Stack mt={'12px'} gap={'12px'} align={'center'} direction={'row'} justify={'space-between'}>

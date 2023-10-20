@@ -1,0 +1,17 @@
+.triangle {
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 0 80px 100vw;
+	border-color: transparent transparent #1a202c;
+}
+.skewRectangle {
+	position: absolute;
+	top: 27px;
+	right: 0;
+	width: 70%;
+	height: 6px;
+	background-color: #81e6d9;
+	// background: linear-gradient(90deg, #edf2f7 44%, #d53f8c 30%);
+	transform: skewY(-12deg);
+}

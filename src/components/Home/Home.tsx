@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
-import { Stack, Button } from '@chakra-ui/react';
+import { Stack, Button, useToast } from '@chakra-ui/react';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { useAccount, useDisconnect } from 'wagmi';
 import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
 import TopTopicSection from './TopTopicSection';
@@ -7,7 +9,7 @@ import CategorySection from './CategorySection';
 import HowItWorkSection from './HowItWorkSection';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '../../utils/screen';
 import { TestApi } from '@/api';
-
+import styles from './home.module.scss';
 interface loginTypes {
 	auth: Array<string>;
 	userInfo: {
@@ -18,6 +20,23 @@ interface loginTypes {
 }
 
 function Home() {
+	const { open } = useWeb3Modal();
+	const { status, isConnected, address } = useAccount();
+	const { disconnect } = useDisconnect();
+	const toast = useToast();
+
+	// useEffect(() => {
+	// 	if (isConnected && address) {
+	// 		toast({
+	// 			title: 'Connected Sucessfully',
+	// 			position: 'top',
+	// 			status: 'success',
+	// 			duration: 2000,
+	// 			isClosable: true,
+	// 		});
+	// 	}
+	// }, [isConnected, address, toast]);
+
 	useEffect(() => {
 		console.log('Home');
 		TestApi<loginTypes>({})
@@ -56,13 +75,14 @@ function Home() {
 				borderTop="1px solid #E2E8F0;"
 			>
 				<Button
+					onClick={() => (status === 'disconnected' ? open() : disconnect())}
 					leftIcon={<Icon as={BiWalletAlt} />}
 					w={'100%'}
 					size="lg"
-					bg="teal.500"
+					bg={status === 'disconnected' ? 'teal.500' : 'red.500'}
 					color="#fff"
 				>
-					Connect Wallet
+					{status === 'disconnected' ? 'Connect Wallet' : 'Disconnect'}
 				</Button>
 			</Stack>
 		</Stack>

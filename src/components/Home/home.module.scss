@@ -10,3 +10,10 @@
 		padding-right: 116px;
 	}
 }
+
+.skewRectangle {
+	width: 100vw;
+	height: 214px;
+	background: linear-gradient(90deg, #edf2f7 60%, #d53f8c 50%);
+	transform: skewY(-5deg);
+}

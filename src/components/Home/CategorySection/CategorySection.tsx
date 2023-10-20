@@ -21,7 +21,7 @@ function CategorySection() {
 
 	return (
 		<Stack>
-			<Center h="120px" color="white">
+			<Center mt={{ sm: '90px', md: '90px', lg: '240px' }} color="white">
 				<Heading size="xl" color="gray.700">
 					{'Markets'}
 				</Heading>

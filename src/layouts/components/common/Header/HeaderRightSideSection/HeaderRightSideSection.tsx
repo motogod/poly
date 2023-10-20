@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { useAccount, useDisconnect } from 'wagmi';
 import { useMediaQuery } from 'react-responsive';
 import {
 	Heading,
@@ -32,6 +34,10 @@ const isLogin = true;
 
 function HeaderRightSideSection() {
 	const router = useRouter();
+	const { open } = useWeb3Modal();
+	const { status } = useAccount();
+	const { disconnect } = useDisconnect();
+
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
 	});
@@ -98,13 +104,24 @@ function HeaderRightSideSection() {
 				<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
 					Affiliate
 				</Text>
+				<Text
+					cursor={'pointer'}
+					onClick={() => {
+						disconnect();
+						close();
+					}}
+					size={'md'}
+					color={'gray.800'}
+				>
+					Disconnect
+				</Text>
 			</Stack>
 		);
 	};
 
 	return (
 		<Stack direction="row" alignItems="center" spacing={6}>
-			{isLogin ? (
+			{status === 'connected' ? (
 				<Stack direction={'row'} align={'center'} spacing={'32px'}>
 					<Stack
 						display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline-flex' }}
@@ -155,7 +172,7 @@ function HeaderRightSideSection() {
 								border={'1px'}
 								borderColor={'gray.400'}
 							>
-								<Icon as={ArbIcon} boxSize={6} borderRadius={'12px'} mr={'-8px'} />
+								<Icon as={ArbIcon} boxSize={5} borderRadius={'12px'} mr={'-8px'} />
 								<Icon as={BiMenuAltLeft} boxSize={6} />
 							</Stack>
 						</PopoverTrigger>
@@ -189,6 +206,7 @@ function HeaderRightSideSection() {
 			) : (
 				<>
 					<Heading
+						onClick={() => (status === 'disconnected' ? open() : disconnect())}
 						display={{ lg: 'inline', md: 'none', sm: 'none' }}
 						cursor="pointer"
 						size="sm"
@@ -286,13 +304,17 @@ function HeaderRightSideSection() {
 						borderTop="1px solid #E2E8F0;"
 					>
 						<Button
+							onClick={() => {
+								onNotLoggedClose();
+								status === 'disconnected' ? open() : disconnect();
+							}}
 							leftIcon={<Icon as={BiWalletAlt} />}
 							w={'100%'}
 							size="lg"
 							bg="teal.500"
 							color="#fff"
 						>
-							Connect Wallet
+							{status === 'disconnected' ? 'Connect Wallet' : 'Disconnect'}
 						</Button>
 					</Stack>
 				</ModalContent>
