@@ -51,25 +51,67 @@ function PositionsTableCard() {
 				<Table variant="unstyled" style={{ borderCollapse: 'separate', borderSpacing: '0 4px' }}>
 					<Thead>
 						<Tr>
-							<Th fontSize={'xs'} color={'gray.700'} fontWeight={'700'} lineHeight={'16px'}>
+							<Th
+								textTransform={'none'}
+								fontSize={'xs'}
+								color={'gray.700'}
+								fontWeight={'700'}
+								lineHeight={'16px'}
+							>
 								Market
 							</Th>
-							<Th fontSize={'xs'} color={'gray.700'} fontWeight={'700'} lineHeight={'16px'}>
+							<Th
+								textTransform={'none'}
+								fontSize={'xs'}
+								color={'gray.700'}
+								fontWeight={'700'}
+								lineHeight={'16px'}
+							>
 								Outcome
 							</Th>
-							<Th fontSize={'xs'} color={'gray.700'} fontWeight={'700'} lineHeight={'16px'}>
+							<Th
+								textTransform={'none'}
+								fontSize={'xs'}
+								color={'gray.700'}
+								fontWeight={'700'}
+								lineHeight={'16px'}
+							>
 								Share Price
 							</Th>
-							<Th fontSize={'xs'} color={'gray.700'} fontWeight={'700'} lineHeight={'16px'}>
+							<Th
+								textTransform={'none'}
+								fontSize={'xs'}
+								color={'gray.700'}
+								fontWeight={'700'}
+								lineHeight={'16px'}
+							>
 								{`Price(24H)`}
 							</Th>
-							<Th fontSize={'xs'} color={'gray.700'} fontWeight={'700'} lineHeight={'16px'}>
+							<Th
+								textTransform={'none'}
+								fontSize={'xs'}
+								color={'gray.700'}
+								fontWeight={'700'}
+								lineHeight={'16px'}
+							>
 								Shares
 							</Th>
-							<Th fontSize={'xs'} color={'gray.700'} fontWeight={'700'} lineHeight={'16px'}>
+							<Th
+								textTransform={'none'}
+								fontSize={'xs'}
+								color={'gray.700'}
+								fontWeight={'700'}
+								lineHeight={'16px'}
+							>
 								Value
 							</Th>
-							<Th fontSize={'xs'} color={'gray.700'} fontWeight={'700'} lineHeight={'16px'}>
+							<Th
+								textTransform={'none'}
+								fontSize={'xs'}
+								color={'gray.700'}
+								fontWeight={'700'}
+								lineHeight={'16px'}
+							>
 								Action
 							</Th>
 						</Tr>

@@ -14,6 +14,9 @@ const nextConfig = {
 		domains: ['media.newyorker.com'],
 		formats: ['image/avif', 'image/webp'],
 	},
+	env: {
+		WALLET_CONNECT_PROJECT_ID: process.env.WALLET_CONNECT_PROJECT_ID,
+	},
 };
 
 module.exports = nextConfig;

@@ -8,3 +8,15 @@
 		@include text(42px, 600, 44px);
 	}
 }
+.skewRectangle {
+	position: absolute;
+	top: 70%;
+	left: 0;
+	width: 100vw;
+	height: 214px;
+	background: linear-gradient(90deg, #edf2f7 44%, #d53f8c 30%);
+	transform: skewY(-5deg);
+}
+.mobileSkewRectangle {
+	background: #d53f8c;
+}

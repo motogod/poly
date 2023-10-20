@@ -68,7 +68,7 @@ function TopicCardList() {
 	};
 
 	return (
-		<Stack>
+		<Stack zIndex={1}>
 			{TabDom}
 			{/* <Tabs
 				display={{ lg: 'none', md: 'inline', sm: 'inline' }}
@@ -192,7 +192,7 @@ function TopicCardList() {
 					{dummyDataArray.map((value, index) => (
 						<>
 							<Element name={`com-${index}`} key={index}>
-								<TopicCard key={index} data={value} index={index} />
+								<TopicCard data={value} index={index} />
 							</Element>
 						</>
 					))}
