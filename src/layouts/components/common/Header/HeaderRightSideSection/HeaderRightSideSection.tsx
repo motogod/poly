@@ -1,5 +1,7 @@
 import React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useMediaQuery } from 'react-responsive';
 import {
 	Heading,
 	Stack,
@@ -19,23 +21,86 @@ import {
 	PopoverHeader,
 	PopoverBody,
 	PopoverFooter,
+	Icon,
 } from '@chakra-ui/react';
-import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt, BiSolidUserCircle, BiMenuAltLeft } from 'react-icons/bi';
-import {
-	HiOutlineDocumentDuplicate,
-	HiCollection,
-	HiCreditCard,
-	HiChevronRight,
-} from 'react-icons/hi';
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
+import SocialPng from './social.png';
+import LoggedInfoSectioin from '../LoggedInfoSectioin';
 
 const isLogin = true;
 
 function HeaderRightSideSection() {
 	const router = useRouter();
-	const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
-	const { isOpen, onToggle, onClose: onPopClose } = useDisclosure();
+	const isDesktop = useMediaQuery({
+		query: '(min-width: 768px)',
+	});
+
+	// full Modal when not login yet
+	const {
+		isOpen: isModalOpen,
+		onOpen: onNotLoggedOpen,
+		onClose: onNotLoggedClose,
+	} = useDisclosure();
+	// full Modal when Logged in
+	const {
+		isOpen: isLoggedModalOpen,
+		onOpen: onLoggedOpen,
+		onClose: onLoggedClose,
+	} = useDisclosure();
+	// for Pop
+	const { isOpen: isPopOpen, onToggle, onClose: onPopClose } = useDisclosure();
+
+	const loggedMenuInfoSection = (close: () => void, type: string) => {
+		const textAlign = type === 'pop' ? 'left' : 'center';
+		const spacing = type === 'pop' ? '4px' : '12px';
+
+		return (
+			<Stack
+				py={'32px'}
+				mt={'32px'}
+				mb={'44px'}
+				mx={'16px'}
+				spacing={spacing}
+				textAlign={textAlign}
+				borderTop={type === 'pop' ? '1px' : '0px'}
+				borderBottom={type === 'pop' ? '1px' : '0px'}
+				borderColor={'gray.100'}
+			>
+				<Text
+					onClick={() => {
+						router.push('./portfolio');
+						close();
+					}}
+					cursor={'pointer'}
+					size={'md'}
+					color={'gray.800'}
+				>
+					Profile
+				</Text>
+				<Text
+					onClick={() => {
+						router.push('./markets');
+						close();
+					}}
+					cursor={'pointer'}
+					size={'md'}
+					color={'gray.800'}
+				>
+					Markets
+				</Text>
+				<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
+					Leaderboard
+				</Text>
+				<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
+					How it works
+				</Text>
+				<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
+					Affiliate
+				</Text>
+			</Stack>
+		);
+	};
 
 	return (
 		<Stack direction="row" alignItems="center" spacing={6}>
@@ -67,10 +132,19 @@ function HeaderRightSideSection() {
 							Deposit
 						</Button>
 					</Stack>
-					<Popover placement="bottom-start" isOpen={isOpen} onClose={onPopClose}>
+					<Popover
+						placement="bottom-start"
+						isOpen={isPopOpen}
+						onClose={() => {
+							onPopClose();
+							onLoggedClose();
+						}}
+					>
 						<PopoverTrigger>
 							<Stack
-								onClick={onToggle}
+								onClick={() => {
+									isDesktop ? onToggle() : onLoggedOpen();
+								}}
 								cursor={'pointer'}
 								w={'74px'}
 								h={'38px'}
@@ -87,6 +161,7 @@ function HeaderRightSideSection() {
 						</PopoverTrigger>
 
 						<PopoverContent
+							_focus={{ boxShadow: 'md' }}
 							zIndex={6}
 							px={'6px'}
 							py={'22px'}
@@ -98,116 +173,10 @@ function HeaderRightSideSection() {
 							shadow={'md'}
 						>
 							<PopoverHeader>
-								<Stack align={'center'} direction={'row'}>
-									<Icon as={ArbIcon} boxSize={6} borderRadius={'12px'} w={'26px'} h={'26px'} />
-									<Button
-										w={'100%'}
-										ml={'4px'}
-										style={{ justifyContent: 'space-between' }}
-										rightIcon={<Icon as={HiOutlineDocumentDuplicate} color={'gray.500'} />}
-										bg={'gray.50'}
-										color={'gray.800'}
-										border={'0px'}
-										borderRadius={'4px'}
-										onClick={() => alert('copy')}
-									>
-										0x93eA...a00F
-									</Button>
-								</Stack>
-								<Stack
-									mt={'12px'}
-									gap={'12px'}
-									align={'center'}
-									direction={'row'}
-									justify={'space-between'}
-								>
-									<Stack w={'100%'} p={'8px'} bg={'gray.50'}>
-										<Stack align={'center'} direction={'row'}>
-											<Stack
-												w={'100%'}
-												align={'center'}
-												direction={'row'}
-												justify={'space-between'}
-											>
-												<Stack align={'center'} direction={'row'}>
-													<Icon as={HiCollection} w={'20px'} h={'20px'} />
-													<Text size={'sm'} color={'gray.800'}>
-														Portfolio
-													</Text>
-												</Stack>
-												<Stack>
-													<Icon as={HiChevronRight} w={'20px'} h={'20px'} />
-												</Stack>
-											</Stack>
-										</Stack>
-										<Stack>
-											<Text size={'md'} color={'gray.800'} fontWeight={'800'}>
-												$24000.73
-											</Text>
-										</Stack>
-									</Stack>
-									<Stack w={'100%'} p={'8px'} bg={'gray.50'}>
-										<Stack align={'center'} direction={'row'}>
-											<Stack
-												w={'100%'}
-												align={'center'}
-												direction={'row'}
-												justify={'space-between'}
-											>
-												<Stack align={'center'} direction={'row'}>
-													<Icon as={HiCreditCard} w={'20px'} h={'20px'} />
-													<Text size={'sm'} color={'gray.800'}>
-														Funds
-													</Text>
-												</Stack>
-												<Stack>
-													<Icon as={HiChevronRight} w={'20px'} h={'20px'} />
-												</Stack>
-											</Stack>
-										</Stack>
-										<Stack>
-											<Text size={'md'} color={'gray.800'} fontWeight={'800'}>
-												$32000.16
-											</Text>
-										</Stack>
-									</Stack>
-								</Stack>
+								<LoggedInfoSectioin />
 							</PopoverHeader>
 
-							<Stack
-								py={'32px'}
-								mt={'32px'}
-								mb={'44px'}
-								mx={'16px'}
-								spacing={'4px'}
-								borderTop={'1px'}
-								borderBottom={'1px'}
-								borderColor={'gray.100'}
-							>
-								<Text
-									onClick={() => {
-										router.push('./portfolio');
-										onPopClose();
-									}}
-									cursor={'pointer'}
-									size={'md'}
-									color={'gray.800'}
-								>
-									Profile
-								</Text>
-								<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
-									Markets
-								</Text>
-								<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
-									Leaderboard
-								</Text>
-								<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
-									How it works
-								</Text>
-								<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
-									Affiliate
-								</Text>
-							</Stack>
+							{loggedMenuInfoSection(onPopClose, 'pop')}
 							<PopoverFooter>
 								<Heading size={'sx'} color={'gray.800'} fontWeight={'800'}>
 									Community
@@ -236,7 +205,7 @@ function HeaderRightSideSection() {
 						Leaderboard
 					</Heading>
 					<Stack
-						onClick={onOpen}
+						onClick={onNotLoggedOpen}
 						cursor={'pointer'}
 						w={'74px'}
 						h={'38px'}
@@ -252,17 +221,17 @@ function HeaderRightSideSection() {
 					</Stack>
 				</>
 			)}
-
-			<Modal size="full" isOpen={isModalOpen} onClose={onClose}>
+			{/* Not Logged Modal */}
+			<Modal size="full" isOpen={isModalOpen} onClose={onNotLoggedClose}>
 				<ModalOverlay />
-				<ModalContent maxHeight="100vh" borderRadius={20}>
+				<ModalContent _focus={{ boxShadow: 'md' }} maxHeight="100vh" borderRadius={20}>
 					<ModalHeader fontWeight="700" color="gray.800"></ModalHeader>
-					<ModalCloseButton size="lg" mt={1} mr={2} />
+					<ModalCloseButton _focus={{ boxShadow: 'none' }} size="lg" mt={1} mr={2} />
 					<ModalBody overflowY={'scroll'}>
 						<Stack gap={'12px'} mt={'24px'} alignItems={'center'} position={'relative'}>
 							<Text
 								onClick={() => {
-									onClose();
+									onNotLoggedClose();
 									router.push('./markets');
 								}}
 								cursor="pointer"
@@ -324,6 +293,45 @@ function HeaderRightSideSection() {
 							color="#fff"
 						>
 							Connect Wallet
+						</Button>
+					</Stack>
+				</ModalContent>
+			</Modal>
+			{/* Logged Modal */}
+			<Modal size="full" isOpen={isLoggedModalOpen} onClose={onLoggedClose}>
+				<ModalOverlay />
+				<ModalContent maxHeight="100vh" borderRadius={20}>
+					<ModalHeader fontWeight="700" color="gray.800"></ModalHeader>
+					<ModalCloseButton _focus={{ boxShadow: 'none' }} size="lg" mt={1} mr={2} />
+					<ModalBody>
+						<Stack mt={'24px'}>
+							<LoggedInfoSectioin />
+							<Stack w={'100%'} h={'1px'} bg={'gray.100'} mt={'8px'} />
+						</Stack>
+						<Stack align={'center'}>
+							{loggedMenuInfoSection(onLoggedClose, 'modal')}
+							<Heading mt={'60px'} mb={'16px'} size={'xs'} color={'gray.800'}>
+								Community
+							</Heading>
+							<Image src={SocialPng} width={36} height={36} alt="socialPng" />
+						</Stack>
+					</ModalBody>
+					<Stack
+						w={'100%'}
+						flexDirection="row"
+						position="fixed"
+						bottom={0}
+						zIndex={5}
+						pl={6}
+						pr={6}
+						pt={4}
+						pb={4}
+						bg={'#FFFFFF'}
+						borderColor={'black'}
+						borderTop="1px solid #E2E8F0;"
+					>
+						<Button w={'100%'} size="lg" bg="teal.500" color="#fff">
+							Deposit
 						</Button>
 					</Stack>
 				</ModalContent>
