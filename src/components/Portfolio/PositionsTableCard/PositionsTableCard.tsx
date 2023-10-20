@@ -60,40 +60,16 @@ function PositionsTableCard() {
 							<Th fontSize={'xs'} color={'gray.700'} fontWeight={'700'} lineHeight={'16px'}>
 								Share Price
 							</Th>
-							<Th
-								fontSize={'xs'}
-								color={'gray.700'}
-								fontWeight={'700'}
-								lineHeight={'16px'}
-								isNumeric
-							>
+							<Th fontSize={'xs'} color={'gray.700'} fontWeight={'700'} lineHeight={'16px'}>
 								{`Price(24H)`}
 							</Th>
-							<Th
-								fontSize={'xs'}
-								color={'gray.700'}
-								fontWeight={'700'}
-								lineHeight={'16px'}
-								isNumeric
-							>
+							<Th fontSize={'xs'} color={'gray.700'} fontWeight={'700'} lineHeight={'16px'}>
 								Shares
 							</Th>
-							<Th
-								fontSize={'xs'}
-								color={'gray.700'}
-								fontWeight={'700'}
-								lineHeight={'16px'}
-								isNumeric
-							>
+							<Th fontSize={'xs'} color={'gray.700'} fontWeight={'700'} lineHeight={'16px'}>
 								Value
 							</Th>
-							<Th
-								fontSize={'xs'}
-								color={'gray.700'}
-								fontWeight={'700'}
-								lineHeight={'16px'}
-								isNumeric
-							>
+							<Th fontSize={'xs'} color={'gray.700'} fontWeight={'700'} lineHeight={'16px'}>
 								Action
 							</Th>
 						</Tr>
@@ -116,7 +92,7 @@ function PositionsTableCard() {
 							</Td>
 							<Td>
 								<Stack>
-									<Badge mb={'0px'} px={'14px'} py={'4px'} variant="solid" colorScheme="green">
+									<Badge px={'14px'} py={'4px'} variant="solid" colorScheme="green">
 										Yes
 									</Badge>
 								</Stack>
@@ -126,47 +102,23 @@ function PositionsTableCard() {
 									<Text>0.60</Text>
 								</Stack>
 							</Td>
-							<Td
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-								isNumeric
-							>
+							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 								<Stack>
 									<Text>27.00 USDT</Text>
 								</Stack>
 							</Td>
-							<Td
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-								isNumeric
-							>
+							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 								<Stack>
 									<Text>2.00</Text>
 								</Stack>
 							</Td>
-							<Td
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-								isNumeric
-							>
+							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 								<Stack align={'center'} direction={'row'}>
 									<Text color={'gray.700'}>1.60</Text>
 									<Text color={'green.500'}>{`(+133.33%)`}</Text>
 								</Stack>
 							</Td>
-							<Td
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-								isNumeric
-							>
+							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 								<Button
 									top={'26%'}
 									size="sm"
@@ -206,47 +158,23 @@ function PositionsTableCard() {
 									<Text>0.60</Text>
 								</Stack>
 							</Td>
-							<Td
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-								isNumeric
-							>
+							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 								<Stack>
 									<Text>27.00 USDT</Text>
 								</Stack>
 							</Td>
-							<Td
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-								isNumeric
-							>
+							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 								<Stack>
 									<Text>2.00</Text>
 								</Stack>
 							</Td>
-							<Td
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-								isNumeric
-							>
+							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 								<Stack align={'center'} direction={'row'}>
 									<Text color={'gray.700'}>1.60</Text>
 									<Text color={'green.500'}>{`(+133.33%)`}</Text>
 								</Stack>
 							</Td>
-							<Td
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-								isNumeric
-							>
+							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 								<Button
 									top={'26%'}
 									size="sm"
@@ -286,47 +214,23 @@ function PositionsTableCard() {
 									<Text>0.60</Text>
 								</Stack>
 							</Td>
-							<Td
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-								isNumeric
-							>
+							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 								<Stack top={'35%'}>
 									<Text>27.00 USDT</Text>
 								</Stack>
 							</Td>
-							<Td
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-								isNumeric
-							>
+							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 								<Stack top={'35%'}>
 									<Text>2.00</Text>
 								</Stack>
 							</Td>
-							<Td
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-								isNumeric
-							>
+							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 								<Stack align={'center'} direction={'row'}>
 									<Text color={'gray.700'}>1.60</Text>
 									<Text color={'green.500'}>{`(+133.33%)`}</Text>
 								</Stack>
 							</Td>
-							<Td
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-								isNumeric
-							>
+							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 								<Button
 									size="sm"
 									bg="#fff"

@@ -11,6 +11,15 @@ import {
 	Tab,
 	TabPanels,
 	TabPanel,
+	TableContainer,
+	Table,
+	Thead,
+	Tr,
+	Th,
+	Tbody,
+	Td,
+	Tfoot,
+	Image,
 } from '@chakra-ui/react';
 import AppContainer from '@/components/common/Container';
 import PositionsTableCard from './PositionsTableCard';
@@ -22,12 +31,11 @@ function Portfolio() {
 				<Grid
 					w={'100%'}
 					templateColumns={{ lg: 'repeat(3, 1fr)', md: 'repeat(2, 1fr)', sm: 'repeat(1, 1fr)' }}
-					gap={6}
+					gap={'10px'}
 				>
 					<Container
 						p={'24px'}
 						borderRadius={'6px'}
-						maxW="md"
 						bg="linear-gradient(#D69E2E, #D69E2E);"
 						color="white"
 					>
@@ -41,7 +49,6 @@ function Portfolio() {
 					<Container
 						p={'24px'}
 						borderRadius={'6px'}
-						maxW="md"
 						bg="linear-gradient(#319795, #319795);"
 						color="white"
 					>
@@ -55,7 +62,6 @@ function Portfolio() {
 					<Container
 						p={'24px'}
 						borderRadius={'6px'}
-						maxW="md"
 						bg="linear-gradient(#D53F8C, #D53F8C);"
 						color="white"
 					>
@@ -85,10 +91,10 @@ function Portfolio() {
 						<PositionsTableCard />
 					</TabPanel>
 					<TabPanel>
-						<p>1 Day</p>
+						<p>Order</p>
 					</TabPanel>
 					<TabPanel>
-						<p>1 Week</p>
+						<p>History</p>
 					</TabPanel>
 				</TabPanels>
 			</Tabs>

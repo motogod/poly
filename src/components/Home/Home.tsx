@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Stack, Button } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
 import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
 import TopTopicSection from './TopTopicSection';
 import CategorySection from './CategorySection';
 import HowItWorkSection from './HowItWorkSection';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '../../utils/screen';
+import { TestApi } from '@/api';
+
+interface loginTypes {
+	auth: Array<string>;
+	userInfo: {
+		account: string;
+		username: string;
+	};
+	token: string;
+}
 
 function Home() {
+	useEffect(() => {
+		console.log('Home');
+		TestApi<loginTypes>({})
+			.then(value => {
+				console.log('TestApi', value);
+			})
+			.catch(err => console.log('TestApi err', err));
+	}, []);
+
 	return (
 		<Stack backgroundColor="gray.50">
 			<Stack mt={headerHeight}>

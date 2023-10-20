@@ -1,17 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import {
-	Stack,
-	IconButton,
-	Heading,
-	Tabs,
-	Center,
-	TabList,
-	Tab,
-	TabPanel,
-	TabPanels,
-	Tag,
-	TagLabel,
-} from '@chakra-ui/react';
+import { Tabs, Center, TabList, Tab, Tag } from '@chakra-ui/react';
 import styles from './useCategoryTabsList.module.scss';
 
 function useCategoryTabsList() {
