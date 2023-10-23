@@ -8,7 +8,7 @@ let baseURL =
 
 const timeout = 30000;
 
-//创建axios实例
+// create axios instance
 const service = axios.create({
 	timeout,
 	baseURL,
@@ -20,7 +20,8 @@ const service = axios.create({
 service.interceptors.request.use(
 	(config: any) => {
 		let customHeaders: any = {
-			language: 'zh-cn',
+			// language: 'zh-cn',
+			'content-type': 'application/json',
 		};
 		config.headers = customHeaders;
 		return config;
@@ -38,16 +39,14 @@ interface axiosTypes<T> {
 	statusText: string;
 }
 
-//后台响应数据格式
-//###该接口用于规定后台返回的数据格式，意为必须携带code、msg以及result
-//###而result的数据格式 由外部提供。如此即可根据不同需求，定制不同的数据格式
+// custome response Type
 interface responseTypes<T> {
 	code: number;
 	msg: string;
 	result: T;
 }
 
-//核心处理代码 将返回一个promise 调用then将可获取响应的业务数据
+// return promise
 const requestHandler = <T>(
 	method: 'get' | 'post' | 'put' | 'delete',
 	url: string,
@@ -77,11 +76,11 @@ const requestHandler = <T>(
 				const data = res.data;
 				if (data.code !== 200) {
 					if (data.code == 401) {
-						console.log('登录异常，执行登出...');
+						console.log('Error handle...');
 					}
 
 					let e = JSON.stringify(data);
-					console.log(`请求错误：${e}`);
+					console.log(`Request error：${e}`);
 					// return error
 					reject(data);
 				} else {

@@ -114,10 +114,11 @@ function HeaderRightSideSection() {
 						>
 							Affilate
 						</Text>
-						<Heading mt={'60px'} size={'md'} color={'gray.800'}>
+						<Heading mt={'60px'} size={'md'} color={'gray.800'} mb={'16px'}>
 							Community
 						</Heading>
-						<Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} mt={'16px'} />
+						<Image src={SocialPng} width={36} height={36} alt="socialPng" />
+						{/* <Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} mt={'16px'} /> */}
 					</Stack>
 				</ModalBody>
 				<Stack

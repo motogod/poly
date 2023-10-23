@@ -4,11 +4,13 @@ import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount, useDisconnect } from 'wagmi';
 import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
+import { useDispatch } from 'react-redux';
+import { getTestApi, AppDispatch } from '@/store';
 import TopTopicSection from './TopTopicSection';
 import CategorySection from './CategorySection';
 import HowItWorkSection from './HowItWorkSection';
-import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '../../utils/screen';
-import { TestApi } from '@/api';
+import { headerHeight } from '../../utils/screen';
+import { TestApi, TestApiType } from '@/api';
 import styles from './home.module.scss';
 interface loginTypes {
 	auth: Array<string>;
@@ -23,6 +25,7 @@ function Home() {
 	const { open } = useWeb3Modal();
 	const { status, isConnected, address } = useAccount();
 	const { disconnect } = useDisconnect();
+	const dispatch = useDispatch<AppDispatch>();
 	const toast = useToast();
 
 	// useEffect(() => {
@@ -39,12 +42,13 @@ function Home() {
 
 	useEffect(() => {
 		console.log('Home');
-		TestApi<loginTypes>({})
-			.then(value => {
-				console.log('TestApi', value);
-			})
-			.catch(err => console.log('TestApi err', err));
-	}, []);
+		dispatch(getTestApi());
+		// TestApi<loginTypes>({})
+		// 	.then(value => {
+		// 		console.log('TestApi', value);
+		// 	})
+		// 	.catch(err => console.log('TestApi err', err));
+	}, [dispatch]);
 
 	return (
 		<Stack backgroundColor="gray.50">
