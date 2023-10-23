@@ -19,6 +19,7 @@ import { useCategoryTabsList } from '@/hooks';
 import styles from './topicCardList.module.scss';
 import TopicCard from './TopicCard/TopicCard';
 import Draggable from '@/components/common/Draggable';
+import { paddingMainHorizontal } from '@/utils/screen';
 
 const dummyDataArray = [
 	{ title: 'One' },
@@ -70,88 +71,7 @@ function TopicCardList() {
 	return (
 		<Stack zIndex={1}>
 			{TabDom}
-			{/* <Tabs
-				display={{ lg: 'none', md: 'inline', sm: 'inline' }}
-				alignItems={'center'}
-				justifyContent={'center'}
-				position={'fixed'}
-				left="0"
-				right="0"
-				overflowY={'auto'}
-				overflowX={'hidden'}
-				bg={'gray.50'}
-				zIndex={1}
-				shadow={'md'}
-				variant="soft-rounded"
-				colorScheme="purple"
-			>
-				<Center className={styles.tabsContainer}>
-					<Tag
-						h={'64px'}
-						p={'0px 16px 0px 16px'}
-						border="0px"
-						bg={'transparent'}
-						borderColor="transparent"
-						size="lg"
-						colorScheme="undefined"
-						borderRadius="full"
-						shadow=""
-					>
-						<TabList gap={'16px'}>
-							<Tab
-								onClick={() => alert('Markets')}
-								border={'1px'}
-								_selected={{ bg: 'teal.500', color: '#fff' }}
-								color={'black'}
-								borderColor={'gray.200'}
-							>
-								Markets
-							</Tab>
-							<Tab
-								border={'1px'}
-								_selected={{ bg: 'teal.500', color: '#fff' }}
-								color={'black'}
-								borderColor={'gray.200'}
-							>
-								Business
-							</Tab>
-							<Tab
-								border={'1px'}
-								_selected={{ bg: 'teal.500', color: '#fff' }}
-								color={'black'}
-								borderColor={'gray.200'}
-							>
-								Crypto
-							</Tab>
-							<Tab
-								border={'1px'}
-								_selected={{ bg: 'teal.500', color: '#fff' }}
-								color={'black'}
-								borderColor={'gray.200'}
-							>
-								AI
-							</Tab>
-							<Tab
-								border={'1px'}
-								_selected={{ bg: 'teal.500', color: '#fff' }}
-								color={'black'}
-								borderColor={'gray.200'}
-							>
-								Politics
-							</Tab>
-							<Tab
-								border={'1px'}
-								_selected={{ bg: 'teal.500', color: '#fff' }}
-								color={'black'}
-								borderColor={'gray.200'}
-							>
-								Sports
-							</Tab>
-						</TabList>
-					</Tag>
-				</Center>
-			</Tabs> */}
-			<Stack mt={{ lg: '64px', md: '112px', sm: '112px' }} justify="center" direction="row">
+			<Stack mt={{ lg: '120px', md: '112px', sm: '112px' }} justify="center" direction="row">
 				<Stack>
 					<Heading size="lg" color="gray.700">
 						{'Bet on markets spotlight'}
@@ -188,7 +108,7 @@ function TopicCardList() {
 				</Stack>
 			</Stack>
 			<Stack id="topicCard" className={styles.listContainer}>
-				<Stack display="grid" gridAutoFlow="column" my="0.5">
+				<Stack spacing={'16px'} display="grid" gridAutoFlow="column" my="0.5">
 					{dummyDataArray.map((value, index) => (
 						<>
 							<Element name={`com-${index}`} key={index}>

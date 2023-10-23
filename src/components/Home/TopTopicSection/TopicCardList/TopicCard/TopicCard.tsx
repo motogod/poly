@@ -13,7 +13,7 @@ function TopicCard({ data, index }: any) {
 			onClick={() => router.push('./marketsDetail')}
 			cursor="pointer"
 			width="xs"
-			ml={{ md: index === 0 ? '116' : '5', sm: index === 0 ? '6' : '5' }}
+			ml={{ md: index === 0 ? '116px' : '0px', sm: index === 0 ? '16px' : '0px' }}
 			shadow="md"
 			borderRadius="3xl"
 		>

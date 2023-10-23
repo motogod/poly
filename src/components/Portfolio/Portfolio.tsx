@@ -16,7 +16,7 @@ import PositionsTableCard from './PositionsTableCard';
 
 function Portfolio() {
 	return (
-		<AppContainer paddingX="16px" paddingY={'60px'}>
+		<AppContainer>
 			<HStack>
 				<Grid
 					w={'100%'}

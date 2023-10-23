@@ -5,7 +5,7 @@ import { Icon } from '@chakra-ui/react';
 import HeaderRightSideSection from './HeaderRightSideSection';
 
 import { PrimaryPink } from '@/utils/color';
-import { headerHeight } from '@/utils/screen';
+import { headerHeight, paddingMainHorizontal } from '@/utils/screen';
 
 const CircleIcon = (props: any) => (
 	<Icon viewBox="0 0 200 200" {...props}>
@@ -18,8 +18,8 @@ function Header() {
 
 	return (
 		<Stack
-			px={{ md: '116px', sm: '16px' }}
-			py={{ md: 6, sm: 4 }}
+			px={paddingMainHorizontal}
+			py={{ md: '12px', sm: '4px' }}
 			w="100%"
 			h={headerHeight}
 			position="fixed"

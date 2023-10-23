@@ -15,6 +15,7 @@ import { Radio, RadioGroup, Stack } from '@chakra-ui/react';
 import CategoryActivityList from './CategoryActivityList';
 import CustomTabsOption from './CustomTabsOption';
 import styles from './categorySection.module.scss';
+import { paddingMainHorizontal } from '@/utils/screen';
 
 function CategorySection() {
 	const [value, setValue] = React.useState('1');
@@ -41,7 +42,7 @@ function CategorySection() {
 					</CustomTabsOption>
 				</Center>
 				<TabPanels>
-					<TabPanel>
+					<TabPanel px={paddingMainHorizontal}>
 						<CategoryActivityList />
 					</TabPanel>
 					<TabPanel></TabPanel>
