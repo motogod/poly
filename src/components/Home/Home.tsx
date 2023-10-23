@@ -49,10 +49,10 @@ function Home() {
 	return (
 		<Stack backgroundColor="gray.50">
 			<Stack mt={headerHeight}>
-				<Stack mt={{ lg: '56px', md: '0px', sm: '0px' }}>
+				<Stack>
 					<TopTopicSection />
 				</Stack>
-				<Stack px={paddingMainHorizontal} py={0}>
+				<Stack>
 					<CategorySection />
 				</Stack>
 			</Stack>

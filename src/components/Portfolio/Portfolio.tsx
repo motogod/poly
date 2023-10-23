@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-	Stack,
 	Container,
 	HStack,
 	Heading,
@@ -11,22 +10,13 @@ import {
 	Tab,
 	TabPanels,
 	TabPanel,
-	TableContainer,
-	Table,
-	Thead,
-	Tr,
-	Th,
-	Tbody,
-	Td,
-	Tfoot,
-	Image,
 } from '@chakra-ui/react';
 import AppContainer from '@/components/common/Container';
 import PositionsTableCard from './PositionsTableCard';
 
 function Portfolio() {
 	return (
-		<AppContainer paddingY="60px">
+		<AppContainer>
 			<HStack>
 				<Grid
 					w={'100%'}

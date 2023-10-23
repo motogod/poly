@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { AtSignIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { useMediaQuery } from 'react-responsive';
-import { paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
+import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import LineChartCard from './LineChartCard';
 import OrderBookCard from './OrderBookCard';
 import BuyOrSellCard from './BuyOrSellCard';
@@ -36,10 +36,11 @@ function MarketsDetail() {
 	});
 
 	return (
-		<Stack>
+		<Stack mt={headerHeight}>
 			<Stack
-				px={{ md: 116, sm: 8 }}
-				py={{ lg: '132px', md: '112px', sm: '112px' }}
+				// px={{ md: 116, sm: 8 }}
+				px={paddingMainHorizontal}
+				py={{ md: '60px', sm: '40px' }}
 				gap={'28px'}
 				direction="row"
 			>

@@ -127,7 +127,7 @@ function PositionsTableCard() {
 										alt="Green double couch with wooden legs"
 										borderRadius="lg"
 									/>
-									<Text fontSize={'14px'} color={'gray.700'}>
+									<Text fontSize={'14px'} color={'gray.700'} mr={'16px'}>
 										Trump arrest full recap: Mugshot, surrender
 									</Text>
 								</Stack>
@@ -205,8 +205,8 @@ function PositionsTableCard() {
 										alt="Green double couch with wooden legs"
 										borderRadius="lg"
 									/>
-									<Text fontSize={'14px'} color={'gray.700'}>
-										Trump arrest full recap: Mugshot, surrender
+									<Text fontSize={'14px'} color={'gray.700'} mr={'16px'}>
+										Trump arrest full recap: Mugshot, surrender test test
 									</Text>
 								</Stack>
 							</Td>
@@ -283,7 +283,7 @@ function PositionsTableCard() {
 										alt="Green double couch with wooden legs"
 										borderRadius="lg"
 									/>
-									<Text fontSize={'14px'} color={'gray.700'}>
+									<Text fontSize={'14px'} color={'gray.700'} mr={'16px'}>
 										Trump arrest full recap: Mugshot, surrender
 									</Text>
 								</Stack>
