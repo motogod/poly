@@ -3,6 +3,8 @@ import Head from 'next/head';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { WagmiConfig } from 'wagmi';
 import { arbitrum, mainnet } from 'wagmi/chains';
+import { store } from '@/store';
+import { Provider } from 'react-redux';
 import Layout from '@/layouts/Layout';
 import { ChakraProvider } from '@chakra-ui/react';
 import { WarningIcon } from '@chakra-ui/icons';
@@ -55,18 +57,20 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 
 	return (
 		<>
-			<WagmiConfig config={wagmiConfig}>
-				<ChakraProvider theme={theme}>
-					<Head>
-						<title>{`Poly`}</title>
-						<meta name="description" content={`poly`} />
-						<meta name="keywords" content="poly" />
-						<meta name="viewport" content="initial-scale=1, width=device-width" />
-					</Head>
-					{/* <Header /> */}
-					{getLayout(<Component {...pageProps} />)}
-				</ChakraProvider>
-			</WagmiConfig>
+			<Provider store={store}>
+				<WagmiConfig config={wagmiConfig}>
+					<ChakraProvider theme={theme}>
+						<Head>
+							<title>{`Poly`}</title>
+							<meta name="description" content={`poly`} />
+							<meta name="keywords" content="poly" />
+							<meta name="viewport" content="initial-scale=1, width=device-width" />
+						</Head>
+						{/* <Header /> */}
+						{getLayout(<Component {...pageProps} />)}
+					</ChakraProvider>
+				</WagmiConfig>
+			</Provider>
 		</>
 	);
 };

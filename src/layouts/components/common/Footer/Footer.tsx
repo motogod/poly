@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
+import Image from 'next/image';
 import {
 	Box,
 	Container,
@@ -12,11 +13,13 @@ import {
 	useColorModeValue,
 	Heading,
 	Select,
+	Icon,
 } from '@chakra-ui/react';
-import { Icon } from '@chakra-ui/react';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { PrimaryPink } from '@/utils/color';
 import { CommunityIcon } from '../../../../../public/assets/svg';
+import SocialIcon from '../../../../../public/assets/svg/socialIcons.png';
+import NextIcon from '../../../../../public/next.svg';
 
 const CircleIcon = (props: any) => (
 	<Icon viewBox="0 0 200 200" {...props}>
@@ -94,7 +97,8 @@ export default function LargeWithAppLinksAndSocial() {
 
 					<Stack align={'flex-start'}>
 						<ListHeader>Support</ListHeader>
-						<Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} />
+						{/* <Icon cursor={'pointer'} as={SocialIcon} w={'36px'} h={'36px'} /> */}
+						<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
 						{/* <AppStoreBadge />
 		        <PlayStoreBadge /> */}
 					</Stack>

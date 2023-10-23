@@ -1,8 +1,0 @@
-@import '@/styles/screen.scss';
-
-.testDiv {
-	background-color: gray;
-	@include lg {
-		background-color: pink;
-	}
-}
