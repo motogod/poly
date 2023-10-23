@@ -118,7 +118,7 @@ function PositionsTableCard() {
 					</Thead>
 					<Tbody>
 						<Tr>
-							<Td>
+							<Td verticalAlign={'middle'}>
 								<Stack align={'center'} direction={'row'}>
 									<Image
 										height="48px"
@@ -132,35 +132,57 @@ function PositionsTableCard() {
 									</Text>
 								</Stack>
 							</Td>
-							<Td>
-								<Stack>
-									<Badge px={'14px'} py={'4px'} variant="solid" colorScheme="green">
-										Yes
-									</Badge>
-								</Stack>
+							<Td verticalAlign={'middle'}>
+								<Badge px={'14px'} py={'4px'} variant="solid" colorScheme="green">
+									Yes
+								</Badge>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-								<Stack>
-									<Text>0.60</Text>
-								</Stack>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text>0.60</Text>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-								<Stack>
-									<Text>27.00 USDT</Text>
-								</Stack>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text>27.00 USDT</Text>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-								<Stack>
-									<Text>2.00</Text>
-								</Stack>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text>2.00</Text>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
 								<Stack align={'center'} direction={'row'}>
 									<Text color={'gray.700'}>1.60</Text>
 									<Text color={'green.500'}>{`(+133.33%)`}</Text>
 								</Stack>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
 								<Button
 									top={'26%'}
 									size="sm"
@@ -174,7 +196,7 @@ function PositionsTableCard() {
 							</Td>
 						</Tr>
 						<Tr>
-							<Td>
+							<Td verticalAlign={'middle'}>
 								<Stack align={'center'} direction={'row'}>
 									<Image
 										height="48px"
@@ -188,35 +210,57 @@ function PositionsTableCard() {
 									</Text>
 								</Stack>
 							</Td>
-							<Td>
-								<Stack top={'30%'}>
-									<Badge mb={'0px'} px={'14px'} py={'4px'} variant="solid" colorScheme="red">
-										No
-									</Badge>
-								</Stack>
+							<Td verticalAlign={'middle'}>
+								<Badge mb={'0px'} px={'14px'} py={'4px'} variant="solid" colorScheme="red">
+									No
+								</Badge>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-								<Stack>
-									<Text>0.60</Text>
-								</Stack>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text>0.60</Text>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-								<Stack>
-									<Text>27.00 USDT</Text>
-								</Stack>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text>27.00 USDT</Text>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-								<Stack>
-									<Text>2.00</Text>
-								</Stack>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text>2.00</Text>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
 								<Stack align={'center'} direction={'row'}>
 									<Text color={'gray.700'}>1.60</Text>
 									<Text color={'green.500'}>{`(+133.33%)`}</Text>
 								</Stack>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
 								<Button
 									top={'26%'}
 									size="sm"
@@ -230,7 +274,7 @@ function PositionsTableCard() {
 							</Td>
 						</Tr>
 						<Tr>
-							<Td>
+							<Td verticalAlign={'middle'}>
 								<Stack align={'center'} direction={'row'}>
 									<Image
 										height="48px"
@@ -244,35 +288,57 @@ function PositionsTableCard() {
 									</Text>
 								</Stack>
 							</Td>
-							<Td>
-								<Stack top={'30%'}>
-									<Badge px={'14px'} py={'4px'} variant="solid" colorScheme="green">
-										Yes
-									</Badge>
-								</Stack>
+							<Td verticalAlign={'middle'}>
+								<Badge px={'14px'} py={'4px'} variant="solid" colorScheme="green">
+									Yes
+								</Badge>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-								<Stack top={'35%'}>
-									<Text>0.60</Text>
-								</Stack>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text>0.60</Text>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-								<Stack top={'35%'}>
-									<Text>27.00 USDT</Text>
-								</Stack>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text>27.00 USDT</Text>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-								<Stack top={'35%'}>
-									<Text>2.00</Text>
-								</Stack>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text>2.00</Text>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
 								<Stack align={'center'} direction={'row'}>
 									<Text color={'gray.700'}>1.60</Text>
 									<Text color={'green.500'}>{`(+133.33%)`}</Text>
 								</Stack>
 							</Td>
-							<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
 								<Button
 									size="sm"
 									bg="#fff"

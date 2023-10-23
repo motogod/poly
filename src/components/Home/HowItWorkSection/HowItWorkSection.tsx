@@ -1,5 +1,6 @@
-import { Center, Heading, Stack, Text, Grid, GridItem, Button } from '@chakra-ui/react';
+import { Center, Heading, Stack, Text, Grid, GridItem, Button, Image } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
+import NextImage from 'next/image';
 import { Icon } from '@chakra-ui/react';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { HiCreditCard, PlaceIcon, ChooseMarketIcon, EarnIcon } from '../../../../public/assets/svg';

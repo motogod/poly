@@ -1,7 +1,8 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Card, CardBody, Stack, Image, Text, Heading, GridItem, Divider } from '@chakra-ui/react';
+import { Card, CardBody, Stack, Image, Text, Heading, GridItem, Icon } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
+import { HiChartBar } from 'react-icons/hi';
 
 function CategoryCard() {
 	const router = useRouter();
@@ -77,7 +78,7 @@ function CategoryCard() {
 						</Stack>
 					</Stack>
 					<Stack alignItems="center" mt={3} spacing={2} direction="row">
-						<SettingsIcon color="gray.500" />
+						<Icon as={HiChartBar} w={'16px'} h={'14px'} />
 						<Text fontSize="xs" color="gray.800">
 							$2,186,639 USDT
 						</Text>
