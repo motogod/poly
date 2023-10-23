@@ -30,17 +30,23 @@ function Markets() {
 	const [TabDom, selectedTab] = useCategoryTabsList();
 	// display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 	return (
-		<Stack px={paddingMainHorizontal} py={paddingMainVertical}>
-			{TabDom}
-			<Stack display={{ base: 'none', sm: 'inline', md: 'inline' }} w="290px" mb="3">
+		// <Stack px={paddingMainHorizontal} py={paddingMainVertical}>
+		<Stack
+			mt={headerHeight}
+			pl={{ md: '120px', sm: '16px' }}
+			pr={{ md: '116px', sm: '16px' }}
+			py={{ lg: '40px' }}
+		>
+			{/* for Desktop filter */}
+			<Stack display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline' }} w="290px" mb="3">
 				<Filter />
 			</Stack>
+			{/* for Mobile filter TabDom height is 64px */}
+			{TabDom}
 			<Stack
-				mt={'32px'}
+				mt={'80px'}
 				mb={'16px'}
 				display={{ base: 'inline', sm: 'inline', md: 'inline', lg: 'none' }}
-				pl={{ sm: 4, md: 0 }}
-				pr={{ sm: 4, md: 0 }}
 			>
 				<Button
 					w={'100%'}
@@ -52,7 +58,7 @@ function Markets() {
 					Filter
 				</Button>
 			</Stack>
-			<Stack pl={{ sm: 4, md: 0 }} pr={{ sm: 4, md: 0 }} mt="0" direction="row" flex="auto">
+			<Stack mt="0" direction="row" flex="auto">
 				<Stack
 					display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline' }}
 					w={isOpen ? '290px' : '0px'}
@@ -68,7 +74,12 @@ function Markets() {
 						</Center>
 					</Stack>
 				</Stack>
-				<Grid w="100%" h="100%" templateColumns={'repeat(auto-fill, minmax(290px, 1fr))'} gap={4}>
+				<Grid
+					w="100%"
+					h="100%"
+					templateColumns={'repeat(auto-fill, minmax(290px, 1fr))'}
+					gap={'16px'}
+				>
 					{empty_array.map((value, index) => {
 						return <CategoryCard key={index} />;
 					})}
