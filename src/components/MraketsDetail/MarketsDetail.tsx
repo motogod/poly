@@ -20,7 +20,7 @@ import LineChartCard from './LineChartCard';
 import OrderBookCard from './OrderBookCard';
 import BuyOrSellCard from './BuyOrSellCard';
 import BuyOrSellButton from './Buttons/BuyOrSellButton';
-import BuyOrSellModalContent from './BuyOrSellModalContent';
+import BuyOrSellModal from './BuyOrSellModal';
 import { TransactionEnum } from './type';
 
 const empty_array = [...Array(13)];
@@ -91,7 +91,7 @@ function MarketsDetail() {
 					<ModalCloseButton size="lg" mt={1} mr={2} />
 					<ModalBody overflowY={'scroll'}>
 						<Stack alignItems={'center'} position={'relative'}>
-							<BuyOrSellModalContent transactionType={transactionType} />
+							<BuyOrSellModal transactionType={transactionType} />
 						</Stack>
 					</ModalBody>
 				</ModalContent>
