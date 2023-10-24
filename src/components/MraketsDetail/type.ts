@@ -3,6 +3,6 @@ export enum TransactionEnum {
 	sell = 'Sell',
 }
 
-export type BuyOrSellModalContentType = {
+export type BuyOrSellModalType = {
 	transactionType: TransactionEnum;
 };
