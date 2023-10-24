@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import AppContainer from '@/components/common/Container';
 import PositionsTableCard from './PositionsTableCard';
+import OrdersTableCard from './OrdersTableCard';
 
 function Portfolio() {
 	return (
@@ -80,8 +81,8 @@ function Portfolio() {
 					<TabPanel p={0}>
 						<PositionsTableCard />
 					</TabPanel>
-					<TabPanel>
-						<p>Order</p>
+					<TabPanel p={0}>
+						<OrdersTableCard />
 					</TabPanel>
 					<TabPanel>
 						<p>History</p>
