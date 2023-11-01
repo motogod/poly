@@ -1,10 +1,12 @@
 // https://www.jianshu.com/p/efa82d282c1d
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 
+// let baseURL =
+// 	process.env.NODE_ENV === 'development'
+// 		? 'https://jsonplaceholder.typicode.com'
+// 		: 'https://your.domain.com/api';
 let baseURL =
-	process.env.NODE_ENV === 'development'
-		? 'https://jsonplaceholder.typicode.com'
-		: 'https://your.domain.com/api';
+	process.env.NODE_ENV === 'development' ? process.env.DEV_API : 'https://your.domain.com/api';
 
 const timeout = 30000;
 
@@ -13,7 +15,7 @@ const service = axios.create({
 	timeout,
 	baseURL,
 	// if needs cookie, set true
-	withCredentials: true,
+	// withCredentials: true,
 });
 
 // set interceptors, and headers like language、token...
@@ -21,13 +23,14 @@ service.interceptors.request.use(
 	(config: any) => {
 		let customHeaders: any = {
 			// language: 'zh-cn',
-			'content-type': 'application/json',
+			'Content-Type': 'application/json',
+			// 'ngrok-skip-browser-warning': true,
 		};
 		config.headers = customHeaders;
 		return config;
 	},
 	error => {
-		console.log(error);
+		console.log('interceptors error', error);
 		Promise.reject(error);
 	}
 );
@@ -74,8 +77,9 @@ const requestHandler = <T>(
 			.then(res => {
 				console.log('request res', res);
 				const data = res.data;
-				if (data.code !== 200) {
-					if (data.code == 401) {
+				const status = res.status;
+				if (status !== 200 && status !== 201) {
+					if (status == 401) {
 						console.log('Error handle...');
 					}
 
@@ -85,7 +89,8 @@ const requestHandler = <T>(
 					reject(data);
 				} else {
 					// return correct data
-					resolve(data.result);
+					console.log('data', data);
+					resolve(data as any);
 				}
 			})
 			.catch(error => {

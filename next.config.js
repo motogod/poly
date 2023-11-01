@@ -16,6 +16,7 @@ const nextConfig = {
 	},
 	env: {
 		WALLET_CONNECT_PROJECT_ID: process.env.WALLET_CONNECT_PROJECT_ID,
+		DEV_API: process.env.DEV_API,
 	},
 };
 
