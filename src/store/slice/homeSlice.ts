@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getTestApi } from '../thunks/fetchHome';
+import { getMarkets } from '../thunks/fetchHome';
+import { GetMarketsType } from '@/api';
 
 type HomeState = {
-	testData: [];
+	markets: GetMarketsType;
 };
 
 const initialState: HomeState = {
-	testData: [],
+	markets: {} as GetMarketsType,
 };
 
 const homeSlice = createSlice({
@@ -14,14 +15,15 @@ const homeSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: builder => {
-		builder.addCase(getTestApi.pending, state => {
-			console.log('getTestApi pending');
+		builder.addCase(getMarkets.pending, state => {
+			console.log('getMarkets pending');
 		});
-		builder.addCase(getTestApi.fulfilled, (state, action) => {
-			console.log('getTestApi fulfilled', action);
+		builder.addCase(getMarkets.fulfilled, (state, action) => {
+			console.log('getMarkets fulfilled', action);
+			state.markets = action.payload;
 		});
-		builder.addCase(getTestApi.rejected, state => {
-			console.log('getTestApi rejected');
+		builder.addCase(getMarkets.rejected, state => {
+			console.log('getMarkets rejected');
 		});
 	},
 });
