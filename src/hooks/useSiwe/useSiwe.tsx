@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserProvider } from 'ethers';
 import { SiweMessage } from 'siwe';
+import { useSignMessage } from 'wagmi';
 import { useDispatch } from 'react-redux';
-import { getNonce, login, AppDispatch } from '@/store';
+import { login, AppDispatch } from '@/store';
 
 function useCategoryTabsList() {
 	const [provider, setProvider] = useState<any>();
+
+	const { signMessageAsync } = useSignMessage();
 
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -17,7 +20,7 @@ function useCategoryTabsList() {
 		}
 	}, []);
 
-	const createSiweMessage = async (address: string, statement: string) => {
+	const createSiweMessage = async (address: string, statement: string, chainId: number) => {
 		const domain = window.location.host;
 		const origin = window.location.origin;
 		console.log('domain', domain);
@@ -28,23 +31,29 @@ function useCategoryTabsList() {
 			statement,
 			uri: origin,
 			version: '1',
-			chainId: 1,
+			chainId,
 		});
 
 		return message.prepareMessage();
 	};
 
-	const signInWithEthereum = async () => {
+	const signInWithEthereum = async (address: string, chainId: number) => {
 		if (typeof window !== undefined) {
-			const provider = new BrowserProvider(window.ethereum as any);
+			// const provider = new BrowserProvider(window.ethereum as any);
 
 			try {
-				const signer = await provider.getSigner();
+				// const signer = await provider.getSigner();
+				// const message = await createSiweMessage(
+				// 	signer.address,
+				// 	'Sign in with Ethereum to the app.'
+				// );
 				const message = await createSiweMessage(
-					signer.address,
-					'Sign in with Ethereum to the app.'
+					address,
+					'Sign in with Ethereum to the app.',
+					chainId
 				);
-				const signature = await signer.signMessage(message);
+				// const signature = await signer.signMessage(message);
+				const signature = await signMessageAsync({ message });
 				// get nonce from backend
 				const nonceData = await axios.get(`${process.env.DEV_API}/auth/nonce`);
 				const { nonce } = nonceData?.data;
@@ -66,7 +75,7 @@ function useCategoryTabsList() {
 		}
 	};
 
-	const connectWallet = () => {
+	const connectWallet = async () => {
 		provider.send('eth_requestAccounts', []).catch(() => console.log('User rejected request'));
 	};
 

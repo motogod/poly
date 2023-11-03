@@ -32,7 +32,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 
 	const router = useRouter();
 
-	const { open } = useWeb3Modal();
+	// const { open } = useWeb3Modal();
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
@@ -76,7 +76,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 
 		return (
 			<Stack gap={'12px'} mt={'24px'} alignItems={'center'} position={'relative'}>
-				<Text
+				{/* <Text
 					onClick={() => {
 						onPopClose();
 						open();
@@ -86,7 +86,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 					color="gray.800"
 				>
 					Connect
-				</Text>
+				</Text> */}
 				<Text
 					onClick={() => {
 						onPopClose();
