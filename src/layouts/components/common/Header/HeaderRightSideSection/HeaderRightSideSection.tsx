@@ -2,7 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import { useAccount, useDisconnect } from 'wagmi';
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import { useAccount, useDisconnect, useConnect } from 'wagmi';
 import {
 	Heading,
 	Stack,
@@ -18,6 +19,7 @@ import {
 	Icon,
 } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
+import { useSiwe } from '@/hooks';
 import { CommunityIcon } from '../../../../../../public/assets/svg';
 import SocialPng from './social.png';
 import HeaderPopover from '../HeaderPopover';
@@ -26,14 +28,24 @@ import LoggedMenuSection from '../LoggedMenuSection';
 
 function HeaderRightSideSection() {
 	const router = useRouter();
-	const { open } = useWeb3Modal();
+	// const { open } = useWeb3Modal();
 	const { status } = useAccount();
 	const { disconnect } = useDisconnect();
+	const { connectAsync } = useConnect();
+	const { signInWithEthereum, connectWallet } = useSiwe();
 
 	// full Modal
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const isLogin = status === 'connected' ? true : false;
+
+	const triggerMeta = async () => {
+		const { account, chain } = await connectAsync({
+			connector: new MetaMaskConnector({}),
+		});
+
+		signInWithEthereum(account);
+	};
 
 	const renderModalContent = () => {
 		if (isLogin) {
@@ -135,7 +147,7 @@ function HeaderRightSideSection() {
 					borderColor={'black'}
 					borderTop="1px solid #E2E8F0;"
 				>
-					<Button
+					{/* <Button
 						onClick={() => {
 							onClose();
 							isLogin ? disconnect() : open();
@@ -147,7 +159,7 @@ function HeaderRightSideSection() {
 						color="#fff"
 					>
 						{isLogin ? 'Disconnect' : 'Connect Wallet'}
-					</Button>
+					</Button> */}
 				</Stack>
 			</>
 		);
@@ -186,13 +198,13 @@ function HeaderRightSideSection() {
 				) : (
 					<>
 						<Heading
-							onClick={() => (status === 'disconnected' ? open() : disconnect())}
+							onClick={() => (status === 'disconnected' ? triggerMeta() : disconnect())}
 							display={{ lg: 'inline', md: 'none', sm: 'none' }}
 							cursor="pointer"
 							size="sm"
 							color="gray.800"
 						>
-							Connect
+							Connec
 						</Heading>
 						<Heading
 							display={{ lg: 'inline', md: 'none', sm: 'none' }}

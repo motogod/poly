@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Stack, Button, useToast } from '@chakra-ui/react';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import { useAccount, useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect, useConnect, useEnsName, useNetwork } from 'wagmi';
+import { InjectedConnector } from 'wagmi/connectors/injected';
 import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
 import { useDispatch } from 'react-redux';
@@ -23,23 +24,45 @@ interface loginTypes {
 }
 
 function Home() {
-	const { open } = useWeb3Modal();
+	// const { open } = useWeb3Modal();
 	const { status, isConnected, address } = useAccount();
+	// const { isSuccess, isLoading } = useConnect();
 	const { signInWithEthereum, connectWallet } = useSiwe();
+	const { chain } = useNetwork();
+
+	const { data: ensName } = useEnsName({ address });
+	// callback onSuccess 登入成功時，簽名
+	const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
+		onSuccess(data, variables, context) {
+			const { account, chain } = data;
+			signInWithEthereum(account, chain.id);
+		},
+	});
 	const [provider, setProvider] = useState<any>();
 	const { disconnect } = useDisconnect();
 	const dispatch = useDispatch<AppDispatch>();
 
 	useEffect(() => {
-		console.log('Home');
 		dispatch(getMarkets());
 	}, [dispatch]);
 
 	return (
 		<Stack backgroundColor="gray.50">
 			<Stack mt={headerHeight}>
-				<Button onClick={() => connectWallet()}>Connect Wallet</Button>
-				<Button onClick={() => signInWithEthereum()}>signInWithEthereum</Button>
+				{connectors.map(connector => (
+					<button
+						disabled={!connector.ready}
+						key={connector.id}
+						onClick={() => connect({ connector })}
+					>
+						{connector.name}
+						{!connector.ready && ' (unsupported)'}
+						{isLoading && connector.id === pendingConnector?.id && ' (connecting)'}
+					</button>
+				))}
+				<Button onClick={() => connectWallet()}>MetaMask</Button>
+				<Button onClick={() => connectWallet()}>WalletConnect</Button>
+
 				<Stack>
 					<TopTopicSection />
 				</Stack>
@@ -65,7 +88,7 @@ function Home() {
 				borderColor={'black'}
 				borderTop="1px solid #E2E8F0;"
 			>
-				<Button
+				{/* <Button
 					onClick={() => (status === 'disconnected' ? open() : disconnect())}
 					leftIcon={<Icon as={BiWalletAlt} />}
 					w={'100%'}
@@ -74,7 +97,7 @@ function Home() {
 					color="#fff"
 				>
 					{status === 'disconnected' ? 'Connect Wallet' : 'Disconnect'}
-				</Button>
+				</Button> */}
 			</Stack>
 		</Stack>
 	);
