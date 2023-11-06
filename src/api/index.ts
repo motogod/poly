@@ -8,6 +8,7 @@ export const GetMarkets = <T>(params: any) =>
 export const GetNonceFromServer = <T>(params: any) =>
 	request.get<T>('/auth/nonce', params, { timeout: 15000 });
 
-export const Login = <T>(params: any) => request.post<T>('/auth/login', params, { timeout: 15000 });
+export const Login = <T>(params: any) =>
+	request.post<T>('/auth/login/siwe', params, { timeout: 15000 });
 
 export * from './type';

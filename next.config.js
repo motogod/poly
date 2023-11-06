@@ -17,6 +17,9 @@ const nextConfig = {
 	env: {
 		WALLET_CONNECT_PROJECT_ID: process.env.WALLET_CONNECT_PROJECT_ID,
 		DEV_API: process.env.DEV_API,
+		GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+		GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+		SECRET: process.env.SECRET,
 	},
 };
 

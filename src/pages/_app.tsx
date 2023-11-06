@@ -1,13 +1,14 @@
 import { ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
+// import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi';
 import { arbitrum, mainnet, polygon } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
-import { InjectedConnector } from 'wagmi/connectors/injected';
+// import { InjectedConnector } from 'wagmi/connectors/injected';
+import { SessionProvider } from 'next-auth/react';
 
 import { store } from '@/store';
 import { Provider } from 'react-redux';
@@ -65,7 +66,7 @@ const config = createConfig({
 
 const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 	Component,
-	pageProps,
+	pageProps: { session, ...pageProps },
 }: AppLayoutProps) => {
 	const getLayout = Component.getLayout ?? ((page: ReactNode) => <Layout>{page}</Layout>);
 
@@ -90,18 +91,20 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 	return (
 		<>
 			<Provider store={store}>
-				<WagmiConfig config={config}>
-					<ChakraProvider theme={theme}>
-						<Head>
-							<title>{`Poly`}</title>
-							<meta name="description" content={`poly`} />
-							<meta name="keywords" content="poly" />
-							<meta name="viewport" content="initial-scale=1, width=device-width" />
-						</Head>
-						{/* <Header /> */}
-						{getLayout(<Component {...pageProps} />)}
-					</ChakraProvider>
-				</WagmiConfig>
+				<SessionProvider session={session}>
+					<WagmiConfig config={config}>
+						<ChakraProvider theme={theme}>
+							<Head>
+								<title>{`Poly`}</title>
+								<meta name="description" content={`poly`} />
+								<meta name="keywords" content="poly" />
+								<meta name="viewport" content="initial-scale=1, width=device-width" />
+							</Head>
+							{/* <Header /> */}
+							{getLayout(<Component {...pageProps} />)}
+						</ChakraProvider>
+					</WagmiConfig>
+				</SessionProvider>
 			</Provider>
 		</>
 	);
