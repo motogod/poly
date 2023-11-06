@@ -25,7 +25,8 @@ function LoggedInfoSection() {
 
 		return '';
 	};
-
+	console.log('address', address);
+	console.log('data', data);
 	const checkBalance = () => {
 		if (isLoading) return <div>Fetching balance…</div>;
 		if (isError) return <div>Error fetching balance</div>;
@@ -82,7 +83,7 @@ function LoggedInfoSection() {
 					</Stack>
 					<Stack>
 						<Text size={'md'} color={'gray.800'} fontWeight={'800'}>
-							$24000.73
+							{checkBalance()}
 						</Text>
 					</Stack>
 				</Stack>

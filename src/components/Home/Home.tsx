@@ -3,11 +3,12 @@ import { Stack, Button, useToast } from '@chakra-ui/react';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount, useDisconnect, useConnect, useEnsName, useNetwork } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
 import { useDispatch } from 'react-redux';
 import { getMarkets, AppDispatch } from '@/store';
-import { useSiwe } from '@/hooks';
+import { useSiwe, useLoginModal, useLogout } from '@/hooks';
 import TopTopicSection from './TopTopicSection';
 import CategorySection from './CategorySection';
 import HowItWorkSection from './HowItWorkSection';
@@ -25,23 +26,24 @@ interface loginTypes {
 
 function Home() {
 	// const { open } = useWeb3Modal();
-	const { status, isConnected, address } = useAccount();
-	// const { isSuccess, isLoading } = useConnect();
+	const { address, status } = useAccount();
 	const { signInWithEthereum, connectWallet } = useSiwe();
+
 	const { chain } = useNetwork();
 
-	const { data: ensName } = useEnsName({ address });
-	// callback onSuccess 登入成功時，簽名
-	const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
-		onSuccess(data, variables, context) {
-			const { account, chain } = data;
-			signInWithEthereum(account, chain.id);
-		},
-	});
-	const [provider, setProvider] = useState<any>();
-	const { disconnect } = useDisconnect();
-	const dispatch = useDispatch<AppDispatch>();
+	const {
+		ModalDom,
+		isOpen: modalIsOpen,
+		onOpen: modalOnOpen,
+		onClose: modalOnClose,
+	} = useLoginModal();
 
+	const { disconnect } = useDisconnect();
+	const { logout } = useLogout();
+	const { data: session, status: sessionStatus } = useSession();
+	const dispatch = useDispatch<AppDispatch>();
+	console.log('session', session);
+	console.log('sessionStatus', sessionStatus);
 	useEffect(() => {
 		dispatch(getMarkets());
 	}, [dispatch]);
@@ -49,21 +51,8 @@ function Home() {
 	return (
 		<Stack backgroundColor="gray.50">
 			<Stack mt={headerHeight}>
-				{connectors.map(connector => (
-					<button
-						disabled={!connector.ready}
-						key={connector.id}
-						onClick={() => connect({ connector })}
-					>
-						{connector.name}
-						{!connector.ready && ' (unsupported)'}
-						{isLoading && connector.id === pendingConnector?.id && ' (connecting)'}
-					</button>
-				))}
-				<Button onClick={() => connectWallet()}>MetaMask</Button>
-				<Button onClick={() => connectWallet()}>WalletConnect</Button>
-
 				<Stack>
+					{/* <button onClick={() => signOut()}>Google Sign Out</button> */}
 					<TopTopicSection />
 				</Stack>
 				<Stack>
@@ -88,17 +77,18 @@ function Home() {
 				borderColor={'black'}
 				borderTop="1px solid #E2E8F0;"
 			>
-				{/* <Button
-					onClick={() => (status === 'disconnected' ? open() : disconnect())}
+				<Button
+					onClick={() => (status === 'disconnected' ? modalOnOpen() : logout())}
 					leftIcon={<Icon as={BiWalletAlt} />}
 					w={'100%'}
 					size="lg"
 					bg={status === 'disconnected' ? 'teal.500' : 'red.500'}
 					color="#fff"
 				>
-					{status === 'disconnected' ? 'Connect Wallet' : 'Disconnect'}
-				</Button> */}
+					{status === 'disconnected' ? 'Connect Wallet' : 'isconnect'}
+				</Button>
 			</Stack>
+			{modalIsOpen && ModalDom}
 		</Stack>
 	);
 }

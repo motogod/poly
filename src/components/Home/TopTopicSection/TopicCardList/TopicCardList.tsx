@@ -44,12 +44,14 @@ function TopicCardList() {
 	const [scrollIndex, setScrollIndex] = useState<number>(0);
 	const [disableScroll, setDisableScroll] = useState(false);
 
+	console.log('render disableScroll', disableScroll);
+
 	// 點擊水平滑動
 	const scrollHorizontal = (count: number) => {
 		setDisableScroll(true);
 		setTimeout(() => {
 			setDisableScroll(false);
-		}, 500);
+		}, 1000);
 
 		const elementIndex = scrollIndex + count;
 
@@ -114,6 +116,9 @@ function TopicCardList() {
 							<Element name={`com-${index}`} key={index}>
 								<TopicCard data={value} index={index} />
 							</Element>
+							{dummyDataArray.length === index + 1 ? (
+								<Stack w={{ md: '116px', sm: '16px' }}></Stack>
+							) : null}
 						</>
 					))}
 				</Stack>

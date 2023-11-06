@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import {
 	Heading,
 	Center,
@@ -18,6 +19,7 @@ import styles from './categorySection.module.scss';
 import { paddingMainHorizontal } from '@/utils/screen';
 
 function CategorySection() {
+	const router = useRouter();
 	const [value, setValue] = React.useState('1');
 
 	return (
@@ -53,7 +55,7 @@ function CategorySection() {
 				</TabPanels>
 				<Center mt="20">
 					<Button
-						onClick={() => alert('View More')}
+						onClick={() => router.push('./markets')}
 						px="7"
 						py="6"
 						borderRadius="3xl"

@@ -19,7 +19,7 @@ import {
 	Icon,
 } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
-import { useSiwe } from '@/hooks';
+import { useSiwe, useLoginModal } from '@/hooks';
 import { CommunityIcon } from '../../../../../../public/assets/svg';
 import SocialPng from './social.png';
 import HeaderPopover from '../HeaderPopover';
@@ -33,6 +33,12 @@ function HeaderRightSideSection() {
 	const { disconnect } = useDisconnect();
 	const { connectAsync } = useConnect();
 	const { signInWithEthereum, connectWallet } = useSiwe();
+	const {
+		ModalDom,
+		isOpen: modalIsOpen,
+		onOpen: modalOnOpen,
+		onClose: modalOnClose,
+	} = useLoginModal();
 
 	// full Modal
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -44,7 +50,7 @@ function HeaderRightSideSection() {
 			connector: new MetaMaskConnector({}),
 		});
 
-		signInWithEthereum(account);
+		// signInWithEthereum(account);
 	};
 
 	const renderModalContent = () => {
@@ -198,13 +204,14 @@ function HeaderRightSideSection() {
 				) : (
 					<>
 						<Heading
-							onClick={() => (status === 'disconnected' ? triggerMeta() : disconnect())}
+							onClick={() => modalOnOpen()}
+							// onClick={() => (status === 'disconnected' ? triggerMeta() : disconnect())}
 							display={{ lg: 'inline', md: 'none', sm: 'none' }}
 							cursor="pointer"
 							size="sm"
 							color="gray.800"
 						>
-							Connec
+							Connect
 						</Heading>
 						<Heading
 							display={{ lg: 'inline', md: 'none', sm: 'none' }}
@@ -228,6 +235,7 @@ function HeaderRightSideSection() {
 					{renderModalContent()}
 				</ModalContent>
 			</Modal>
+			{modalIsOpen && ModalDom}
 		</Stack>
 	);
 }
