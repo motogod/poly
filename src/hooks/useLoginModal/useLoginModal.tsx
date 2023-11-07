@@ -42,6 +42,14 @@ function useLoginModal() {
 		query: '(min-width: 768px)',
 	});
 
+	const isWebsiteAgent = () => {
+		if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('Android')) {
+			return false;
+		}
+
+		return true;
+	};
+
 	const ModalDom = useMemo(
 		() => (
 			<>
@@ -51,7 +59,7 @@ function useLoginModal() {
 						_focus={{ boxShadow: 'md' }}
 						maxHeight="100vh"
 						borderRadius={20}
-						borderBottomRadius={0}
+						borderBottomRadius={isDesktop ? 20 : 0}
 						p={'16px'}
 					>
 						<ModalHeader>
@@ -94,10 +102,12 @@ function useLoginModal() {
 											fontSize={{ base: 14, sm: 14, md: 14, lg: 17 }}
 											onClick={() => {
 												onClose();
-												connect({ connector });
-												return;
-												if (!connector.ready) {
-													window.open('https://metamask.io/', '_blank');
+												if (isWebsiteAgent()) {
+													if (!connector.ready) {
+														window.open('https://metamask.io/', '_blank');
+													} else {
+														connect({ connector });
+													}
 												} else {
 													connect({ connector });
 												}
