@@ -32,7 +32,7 @@ function useLoginModal() {
 	const { disconnect } = useDisconnect();
 	const { address, status } = useAccount();
 
-	const { sdk, connected, connecting, provider, chainId } = useSDK();
+	const { sdk, connected, connecting, provider, chainId, account: metaAccount } = useSDK();
 
 	const { signInWithEthereum } = useSiwe();
 
@@ -103,8 +103,6 @@ function useLoginModal() {
 									</AbsoluteCenter>
 								</Box>
 								<Stack direction={'row'}>
-									<button onClick={() => metaMaskConnect()}>connect meta</button>
-									<button onClick={() => metaMaskDisconnect()}>disconnect</button>
 									{connectors.map(connector => (
 										<Button
 											isLoading={isLoading}
@@ -130,6 +128,12 @@ function useLoginModal() {
 										</Button>
 									))}
 								</Stack>
+								<button onClick={() => metaMaskConnect()}>connect meta</button>
+								<button onClick={() => metaMaskDisconnect()}>disconnect</button>
+								<p>{`address ${address}`}</p>
+								<p>{`status ${status}`}</p>
+								<p>{`meta connected ${connected}`}</p>
+								<p>{`meta account ${metaAccount}`}</p>
 							</Stack>
 						</ModalBody>
 
