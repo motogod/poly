@@ -62,34 +62,37 @@ function Home() {
 			<Stack>
 				<HowItWorkSection />
 			</Stack>
-			<Stack
-				display={{ lg: 'none', md: 'inline', sm: 'inline' }}
-				w={'100%'}
-				flexDirection="row"
-				position="fixed"
-				bottom={0}
-				zIndex={5}
-				pl={6}
-				pr={6}
-				pt={4}
-				pb={4}
-				bg={'#FFFFFF'}
-				borderColor={'black'}
-				borderTop="1px solid #E2E8F0;"
-			>
-				<Button
-					isLoading={status === 'connecting'}
-					isDisabled={status === 'connecting'}
-					onClick={() => (status === 'disconnected' ? modalOnOpen() : logout())}
-					leftIcon={<Icon as={BiWalletAlt} />}
+			{status !== 'connected' ? (
+				<Stack
+					display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 					w={'100%'}
-					size="lg"
-					bg={status === 'disconnected' || 'connecting' ? 'teal.500' : 'red.500'}
-					color="#fff"
+					flexDirection="row"
+					position="fixed"
+					bottom={0}
+					zIndex={5}
+					pl={6}
+					pr={6}
+					pt={4}
+					pb={4}
+					bg={'#FFFFFF'}
+					borderColor={'black'}
+					borderTop="1px solid #E2E8F0;"
 				>
-					{status === 'disconnected' || 'connecting' ? 'Connect Wallet' : 'isconnect'}
-				</Button>
-			</Stack>
+					<Button
+						isLoading={status === 'connecting'}
+						isDisabled={status === 'connecting'}
+						onClick={() => (status === 'disconnected' ? modalOnOpen() : logout())}
+						leftIcon={<Icon as={BiWalletAlt} />}
+						w={'100%'}
+						size="lg"
+						bg={status === 'disconnected' || 'connecting' ? 'teal.500' : 'red.500'}
+						color="#fff"
+					>
+						{status === 'disconnected' || 'connecting' ? 'Connect Wallet' : 'isconnect'}
+					</Button>
+				</Stack>
+			) : null}
+
 			{modalIsOpen && ModalDom}
 		</Stack>
 	);
