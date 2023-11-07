@@ -80,8 +80,7 @@ function Home() {
 				>
 					<Button
 						isLoading={status === 'connecting'}
-						isDisabled={status === 'connecting'}
-						onClick={() => (status === 'disconnected' ? modalOnOpen() : logout())}
+						onClick={() => (status === 'disconnected' || 'connecting' ? modalOnOpen() : logout())}
 						leftIcon={<Icon as={BiWalletAlt} />}
 						w={'100%'}
 						size="lg"
