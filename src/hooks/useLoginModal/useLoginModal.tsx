@@ -111,14 +111,14 @@ function useLoginModal() {
 												const agent = isWebsiteAgent();
 												if (agent === 'web') {
 													// 網頁端可先判斷是否有 MetaMask
-													if (!connector.ready) {
+													if (!connector.ready && connector.id === 'metaMask') {
 														window.open('https://metamask.io/', '_blank');
 													} else {
 														connect({ connector });
 													}
 												} else if (agent === 'Android') {
 													// Android 若關閉錢包彈出視窗會有當下畫面錢包值卡住的問題，workaround 導出至其他頁面
-													window.open('https://metamask.app.link/dapp');
+													// window.open('https://metamask.app.link/dapp');
 													connect({ connector });
 												} else {
 													// iOS 則直接連結
