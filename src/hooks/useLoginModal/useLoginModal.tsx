@@ -76,6 +76,17 @@ function useLoginModal() {
 									</AbsoluteCenter>
 								</Box>
 								<Stack direction={'row'}>
+									<button
+										onClick={async () => {
+											if (window.ethereum) {
+												const accountRes = await window.ethereum.request({
+													method: 'eth_requestAccounts',
+												});
+											}
+										}}
+									>
+										Test Meata on Mobile
+									</button>
 									{connectors.map(connector => (
 										<Button
 											isLoading={isLoading}
