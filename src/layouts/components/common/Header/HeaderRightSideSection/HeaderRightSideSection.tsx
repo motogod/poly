@@ -57,7 +57,7 @@ function HeaderRightSideSection() {
 		if (isLogin) {
 			return (
 				<>
-					<ModalBody>
+					<ModalBody overflowY={'scroll'}>
 						<Stack mt={'24px'}>
 							<LoggedInfoSectioin />
 							<Stack w={'100%'} h={'1px'} bg={'gray.100'} mt={'8px'} />
