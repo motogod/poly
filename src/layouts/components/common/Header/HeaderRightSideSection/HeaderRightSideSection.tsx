@@ -64,7 +64,7 @@ function HeaderRightSideSection() {
 						</Stack>
 						<Stack align={'center'}>
 							<LoggedMenuSection close={onClose} type="modal" />
-							<Heading mt={'60px'} mb={'16px'} size={'xs'} color={'gray.800'}>
+							<Heading mt={'0px'} mb={'16px'} size={'xs'} color={'gray.800'}>
 								Community
 							</Heading>
 							<Image src={SocialPng} width={36} height={36} alt="socialPng" />
