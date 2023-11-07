@@ -84,6 +84,7 @@ function useLoginModal() {
 												<Icon as={connector.id === 'metaMask' ? MetaMaskIcon : WalletConnectIcon} />
 											}
 											key={connector.id}
+											fontSize={{ base: 14, sm: 14, md: 14, lg: 17 }}
 											onClick={() => {
 												onClose();
 												connect({ connector });
@@ -92,7 +93,7 @@ function useLoginModal() {
 											size="lg"
 											bg={'teal.500'}
 											color="#fff"
-											justifyContent={'start'}
+											// justifyContent={'start'}
 										>
 											{connector.name}
 											{!connector.ready && ' (unsupported)'}
