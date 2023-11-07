@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import Link from 'next/link';
 import { useMediaQuery } from 'react-responsive';
 import {
 	Stack,
@@ -42,6 +41,7 @@ function useLoginModal() {
 		query: '(min-width: 768px)',
 	});
 
+	// 若是網頁開啟，使用者未安裝 MetaMask 引導至 MetaMask 官網
 	const isWebsiteAgent = () => {
 		if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('Android')) {
 			return false;
