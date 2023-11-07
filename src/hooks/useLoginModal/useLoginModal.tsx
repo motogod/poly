@@ -94,6 +94,8 @@ function useLoginModal() {
 											fontSize={{ base: 14, sm: 14, md: 14, lg: 17 }}
 											onClick={() => {
 												onClose();
+												connect({ connector });
+												return;
 												if (!connector.ready) {
 													window.open('https://metamask.io/', '_blank');
 												} else {
