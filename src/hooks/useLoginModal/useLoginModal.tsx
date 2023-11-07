@@ -130,10 +130,6 @@ function useLoginModal() {
 								</Stack>
 								<button onClick={() => metaMaskConnect()}>connect meta</button>
 								<button onClick={() => metaMaskDisconnect()}>disconnect</button>
-								<p>{`address ${address}`}</p>
-								<p>{`status ${status}`}</p>
-								<p>{`meta connected ${connected}`}</p>
-								<p>{`meta account ${metaAccount}`}</p>
 							</Stack>
 						</ModalBody>
 
