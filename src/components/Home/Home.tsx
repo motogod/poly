@@ -78,14 +78,16 @@ function Home() {
 				borderTop="1px solid #E2E8F0;"
 			>
 				<Button
+					isLoading={status === 'connecting'}
+					isDisabled={status === 'connecting'}
 					onClick={() => (status === 'disconnected' ? modalOnOpen() : logout())}
 					leftIcon={<Icon as={BiWalletAlt} />}
 					w={'100%'}
 					size="lg"
-					bg={status === 'disconnected' ? 'teal.500' : 'red.500'}
+					bg={status === 'disconnected' || 'connecting' ? 'teal.500' : 'red.500'}
 					color="#fff"
 				>
-					{status === 'disconnected' ? 'Connect Wallet' : 'isconnect'}
+					{status === 'disconnected' || 'connecting' ? 'Connect Wallet' : 'isconnect'}
 				</Button>
 			</Stack>
 			{modalIsOpen && ModalDom}
