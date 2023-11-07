@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { useSDK } from '@metamask/sdk-react';
 import { useMediaQuery } from 'react-responsive';
 import {
 	Stack,
@@ -27,12 +26,7 @@ import { useSiwe } from '@/hooks';
 import { MetaMaskIcon, WalletConnectIcon } from '../../../public/assets/svg';
 
 function useLoginModal() {
-	const [account, setAccount] = useState<string>();
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const { disconnect } = useDisconnect();
-	const { address, status } = useAccount();
-
-	const { sdk, connected, connecting, provider, chainId, account: metaAccount } = useSDK();
 
 	const { signInWithEthereum } = useSiwe();
 
@@ -44,36 +38,22 @@ function useLoginModal() {
 		},
 	});
 
-	console.log('address', address);
-	console.log('chainId', chainId);
-
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
 	});
-
-	const metaMaskConnect = async () => {
-		try {
-			const accounts = (await sdk?.connect()) as string[];
-			setAccount(accounts[0]);
-		} catch (err) {
-			console.warn(`failed to connect..`, err);
-		}
-	};
-
-	const metaMaskDisconnect = async () => {
-		try {
-			const accounts = await sdk?.disconnect();
-		} catch (err) {
-			console.warn(`failed to connect..`, err);
-		}
-	};
 
 	const ModalDom = useMemo(
 		() => (
 			<>
 				<Modal size={isDesktop ? 'lg' : 'full'} isOpen={isOpen} onClose={onClose}>
 					<ModalOverlay />
-					<ModalContent _focus={{ boxShadow: 'md' }} maxHeight="100vh" borderRadius={20} p={'16px'}>
+					<ModalContent
+						_focus={{ boxShadow: 'md' }}
+						maxHeight="100vh"
+						borderRadius={20}
+						borderBottomRadius={0}
+						p={'16px'}
+					>
 						<ModalHeader>
 							<Heading size="md" color="gray.700" mr={5}>
 								Connect
@@ -106,7 +86,7 @@ function useLoginModal() {
 									{connectors.map(connector => (
 										<Button
 											isLoading={isLoading}
-											disabled={!connector.ready}
+											// disabled={!connector.ready}
 											leftIcon={
 												<Icon as={connector.id === 'metaMask' ? MetaMaskIcon : WalletConnectIcon} />
 											}
@@ -114,7 +94,11 @@ function useLoginModal() {
 											fontSize={{ base: 14, sm: 14, md: 14, lg: 17 }}
 											onClick={() => {
 												onClose();
-												connect({ connector });
+												if (!connector.ready) {
+													window.open('https://metamask.io/', '_blank');
+												} else {
+													connect({ connector });
+												}
 											}}
 											w={'100%'}
 											size="lg"
@@ -123,13 +107,10 @@ function useLoginModal() {
 											// justifyContent={'start'}
 										>
 											{connector.name}
-											{!connector.ready && ' (unsupported)'}
 											{isLoading && connector.id === pendingConnector?.id && ' (connecting)'}
 										</Button>
 									))}
 								</Stack>
-								<button onClick={() => metaMaskConnect()}>connect meta</button>
-								<button onClick={() => metaMaskDisconnect()}>disconnect</button>
 							</Stack>
 						</ModalBody>
 
