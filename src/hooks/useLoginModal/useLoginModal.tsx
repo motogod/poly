@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useMediaQuery } from 'react-responsive';
 import {
 	Stack,
@@ -76,17 +77,11 @@ function useLoginModal() {
 									</AbsoluteCenter>
 								</Box>
 								<Stack direction={'row'}>
-									<button
-										onClick={async () => {
-											if (window.ethereum) {
-												const accountRes = await window.ethereum.request({
-													method: 'eth_requestAccounts',
-												});
-											}
-										}}
+									<Link
+										href={'https://apps.apple.com/us/app/metamask-blockchain-wallet/id1438144202'}
 									>
-										Test Meata on Mobile
-									</button>
+										Meta on iOS
+									</Link>
 									{connectors.map(connector => (
 										<Button
 											isLoading={isLoading}
