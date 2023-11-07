@@ -24,6 +24,8 @@ import { useConnect, useDisconnect, useAccount } from 'wagmi';
 import { useSiwe } from '@/hooks';
 import { MetaMaskIcon, WalletConnectIcon } from '../../../public/assets/svg';
 
+type AgentType = 'iPhone' | 'Android' | 'web';
+
 function useLoginModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -42,12 +44,16 @@ function useLoginModal() {
 	});
 
 	// 若是網頁開啟，使用者未安裝 MetaMask 引導至 MetaMask 官網
-	const isWebsiteAgent = () => {
-		if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('Android')) {
-			return false;
+	const isWebsiteAgent = (): AgentType => {
+		if (navigator.userAgent.includes('iPhone')) {
+			return 'iPhone';
 		}
 
-		return true;
+		if (navigator.userAgent.includes('Android')) {
+			return 'Android';
+		}
+
+		return 'web';
 	};
 
 	const ModalDom = useMemo(
@@ -102,13 +108,20 @@ function useLoginModal() {
 											fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
 											onClick={() => {
 												onClose();
-												if (isWebsiteAgent()) {
+												const agent = isWebsiteAgent();
+												if (agent === 'web') {
+													// 網頁端可先判斷是否有 MetaMask
 													if (!connector.ready) {
 														window.open('https://metamask.io/', '_blank');
 													} else {
 														connect({ connector });
 													}
+												} else if (agent === 'Android') {
+													// Android 若關閉錢包彈出視窗會有當下畫面錢包值卡住的問題，workaround 導出至其他頁面
+													window.open('https://metamask.app.link/dapp');
+													connect({ connector });
 												} else {
+													// iOS 則直接連結
 													connect({ connector });
 												}
 											}}
