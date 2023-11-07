@@ -67,7 +67,7 @@ function useLoginModal() {
 								Connect
 							</Heading>
 						</ModalHeader>
-						<ModalCloseButton size={'lg'} m={'16px'} />
+						<ModalCloseButton _focus={{ boxShadow: 'none' }} size={'lg'} m={'16px'} />
 						<ModalBody>
 							<Stack>
 								<Button
@@ -99,7 +99,7 @@ function useLoginModal() {
 												<Icon as={connector.id === 'metaMask' ? MetaMaskIcon : WalletConnectIcon} />
 											}
 											key={connector.id}
-											fontSize={{ base: 14, sm: 14, md: 14, lg: 17 }}
+											fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
 											onClick={() => {
 												onClose();
 												if (isWebsiteAgent()) {
