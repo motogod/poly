@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useSDK } from '@metamask/sdk-react';
 import { useMediaQuery } from 'react-responsive';
 import {
 	Stack,
@@ -21,12 +22,17 @@ import {
 } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { useConnect } from 'wagmi';
+import { useConnect, useDisconnect, useAccount } from 'wagmi';
 import { useSiwe } from '@/hooks';
 import { MetaMaskIcon, WalletConnectIcon } from '../../../public/assets/svg';
 
 function useLoginModal() {
+	const [account, setAccount] = useState<string>();
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const { disconnect } = useDisconnect();
+	const { address, status } = useAccount();
+
+	const { sdk, connected, connecting, provider, chainId } = useSDK();
 
 	const { signInWithEthereum } = useSiwe();
 
@@ -38,9 +44,29 @@ function useLoginModal() {
 		},
 	});
 
+	console.log('address', address);
+	console.log('chainId', chainId);
+
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
 	});
+
+	const metaMaskConnect = async () => {
+		try {
+			const accounts = (await sdk?.connect()) as string[];
+			setAccount(accounts[0]);
+		} catch (err) {
+			console.warn(`failed to connect..`, err);
+		}
+	};
+
+	const metaMaskDisconnect = async () => {
+		try {
+			const accounts = await sdk?.disconnect();
+		} catch (err) {
+			console.warn(`failed to connect..`, err);
+		}
+	};
 
 	const ModalDom = useMemo(
 		() => (
@@ -77,11 +103,8 @@ function useLoginModal() {
 									</AbsoluteCenter>
 								</Box>
 								<Stack direction={'row'}>
-									<Link
-										href={'https://apps.apple.com/us/app/metamask-blockchain-wallet/id1438144202'}
-									>
-										Meta on iOS
-									</Link>
+									<button onClick={() => metaMaskConnect()}>connect meta</button>
+									<button onClick={() => metaMaskDisconnect()}>disconnect</button>
 									{connectors.map(connector => (
 										<Button
 											isLoading={isLoading}

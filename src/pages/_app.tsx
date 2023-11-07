@@ -7,6 +7,7 @@ import { arbitrum, mainnet, polygon } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
+import { MetaMaskProvider } from '@metamask/sdk-react';
 // import { InjectedConnector } from 'wagmi/connectors/injected';
 import { SessionProvider } from 'next-auth/react';
 
@@ -92,18 +93,30 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 		<>
 			<Provider store={store}>
 				<SessionProvider session={session}>
-					<WagmiConfig config={config}>
-						<ChakraProvider theme={theme}>
-							<Head>
-								<title>{`Poly`}</title>
-								<meta name="description" content={`poly`} />
-								<meta name="keywords" content="poly" />
-								<meta name="viewport" content="initial-scale=1, width=device-width" />
-							</Head>
-							{/* <Header /> */}
-							{getLayout(<Component {...pageProps} />)}
-						</ChakraProvider>
-					</WagmiConfig>
+					<MetaMaskProvider
+						debug={false}
+						sdkOptions={{
+							checkInstallationImmediately: false,
+							dappMetadata: {
+								name: 'Demo React App',
+								// url: window.location.host,
+								url: 'localhost:3000',
+							},
+						}}
+					>
+						<WagmiConfig config={config}>
+							<ChakraProvider theme={theme}>
+								<Head>
+									<title>{`Poly`}</title>
+									<meta name="description" content={`poly`} />
+									<meta name="keywords" content="poly" />
+									<meta name="viewport" content="initial-scale=1, width=device-width" />
+								</Head>
+								{/* <Header /> */}
+								{getLayout(<Component {...pageProps} />)}
+							</ChakraProvider>
+						</WagmiConfig>
+					</MetaMaskProvider>
 				</SessionProvider>
 			</Provider>
 		</>
