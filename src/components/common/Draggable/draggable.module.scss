@@ -5,6 +5,7 @@
 	width: 100%;
 	overflow: scroll;
 	margin: 30px 0px;
+	scrollbar-width: none;
 	&::-webkit-scrollbar {
 		display: none;
 	}

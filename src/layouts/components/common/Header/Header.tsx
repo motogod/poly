@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Heading, Stack } from '@chakra-ui/react';
+import { Heading, Stack, useToast } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, loginWithGoogle, RootState } from '@/store';
 import HeaderRightSideSection from './HeaderRightSideSection';
 
 import { PrimaryPink } from '@/utils/color';
@@ -15,6 +17,24 @@ const CircleIcon = (props: any) => (
 
 function Header() {
 	const router = useRouter();
+
+	const toast = useToast();
+
+	const { isAuthenticated, checkAuthSuccess, checkAuthTitle } = useSelector(
+		(state: RootState) => state.authReducer
+	);
+	// 統一放在 Header 這邊來顯示登入時的提醒視窗
+	useEffect(() => {
+		if (isAuthenticated && checkAuthSuccess) {
+			toast({
+				title: checkAuthTitle,
+				position: 'top',
+				status: 'success',
+				duration: 2000,
+				isClosable: true,
+			});
+		}
+	}, [isAuthenticated, checkAuthSuccess, toast, checkAuthTitle]);
 
 	return (
 		<Stack

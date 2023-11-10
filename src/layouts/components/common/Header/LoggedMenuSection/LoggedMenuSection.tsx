@@ -1,7 +1,10 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useDisconnect } from 'wagmi';
+import { useSession, signOut } from 'next-auth/react';
 import { Stack, Text } from '@chakra-ui/react';
+import { useDispatch } from 'react-redux';
+import { logout, AppDispatch } from '@/store';
 
 type LoggedMenuSectionType = {
 	close: () => void;
@@ -12,6 +15,9 @@ function LoggedMenuSection({ close, type }: LoggedMenuSectionType) {
 	const router = useRouter();
 
 	const { disconnect } = useDisconnect();
+	const { data: session } = useSession();
+
+	const disaptch = useDispatch<AppDispatch>();
 
 	const textAlign = type === 'pop' ? 'left' : 'center';
 	const spacing = type === 'pop' ? '4px' : '12px';
@@ -30,7 +36,7 @@ function LoggedMenuSection({ close, type }: LoggedMenuSectionType) {
 		>
 			<Text
 				onClick={() => {
-					router.push('./portfolio');
+					router.push('./profile');
 					close();
 				}}
 				cursor={'pointer'}
@@ -62,7 +68,16 @@ function LoggedMenuSection({ close, type }: LoggedMenuSectionType) {
 			<Text
 				cursor={'pointer'}
 				onClick={() => {
+					// server 登出
+					disaptch(logout({}));
+					// 若有 google 的登入資料在瀏覽器，登出刪除
+					if (session) {
+						signOut({ redirect: false });
+					}
+					// 關閉錢包連結
 					disconnect();
+					console.log('logout end');
+					// 關閉彈跳視窗
 					close();
 				}}
 				size={'md'}
