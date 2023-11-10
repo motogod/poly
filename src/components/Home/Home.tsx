@@ -56,6 +56,7 @@ function Home() {
 					{/* <TopTopicSection /> */}
 					<p>{status}</p>
 					<p>{`isConnecting => ${isConnecting}`}</p>
+					<p>{`Google ${session}`}</p>
 				</Stack>
 				<Stack>
 					<CategorySection />
