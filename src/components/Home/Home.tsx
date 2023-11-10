@@ -30,7 +30,7 @@ function Home() {
 	const { signInWithEthereum, connectWallet } = useSiwe();
 	console.log('status', status);
 	const { isAuthenticated, user } = useSelector((state: RootState) => state.authReducer);
-
+	const { markets } = useSelector((state: RootState) => state.homeReducer);
 	const { chain } = useNetwork();
 
 	const {
@@ -58,6 +58,7 @@ function Home() {
 					<p>{`isConnecting => ${isConnecting}`}</p>
 					<p>{`Google ${session}`}</p>
 					<p>{`User ${isAuthenticated}`}</p>
+					<p>{`Markets ${JSON.stringify(markets)}`}</p>
 				</Stack>
 				<Stack>
 					<CategorySection />
