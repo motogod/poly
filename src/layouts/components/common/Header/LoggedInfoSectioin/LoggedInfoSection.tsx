@@ -65,8 +65,8 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 					border={'0px'}
 					borderRadius={'4px'}
 					onClick={() => {
-						if (userAddress) {
-							navigator.clipboard.writeText(userAddress);
+						if (address) {
+							navigator.clipboard.writeText(address);
 							toast({
 								title: 'Copied',
 								position: 'top',
@@ -77,7 +77,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 						}
 					}}
 				>
-					{sliceWalletAddress(userAddress)}
+					{sliceWalletAddress(address)}
 				</Button>
 			</Stack>
 			<Stack mt={'12px'} gap={'12px'} align={'center'} direction={'row'} justify={'space-between'}>
