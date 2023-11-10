@@ -13,6 +13,10 @@ function AuthProvider({ children }: Props) {
 		dispatch(checkUserAuth({}));
 	}, [dispatch]);
 
+	useEffect(() => {
+		alert('Auth');
+	}, []);
+
 	return <>{children}</>;
 }
 
