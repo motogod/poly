@@ -1,14 +1,23 @@
-import { request } from './request';
+import { request, requestWithSession } from './request';
 
-// like Test
 export const GetMarkets = <T>(params: any) =>
-	request.get<T>('/markets', params, { timeout: 15000 });
+	requestWithSession.get<T>('/markets', params, { timeout: 15000 });
 
 // nonce
 export const GetNonceFromServer = <T>(params: any) =>
-	request.get<T>('/auth/nonce', params, { timeout: 15000 });
+	requestWithSession.get<T>('/auth/nonce', params, { timeout: 15000 });
 
-export const Login = <T>(params: any) =>
-	request.post<T>('/auth/login/siwe', params, { timeout: 15000 });
+export const LoginWithSiwe = <T>(params: any) =>
+	requestWithSession.post<T>('/auth/login/siwe', params, { timeout: 15000 });
+
+export const LoginWithGoogle = <T>(params: any) =>
+	requestWithSession.post<T>('/auth/login/google', params, { timeout: 15000 });
+
+export const Logout = <T>(params: any) =>
+	requestWithSession.get<T>('/auth/logout', params, { timeout: 15000 });
+
+// Confirm login or logout status
+export const CheckAuth = <T>(params: any) =>
+	requestWithSession.get<T>('/auth/session', params, { timeout: 15000 });
 
 export * from './type';

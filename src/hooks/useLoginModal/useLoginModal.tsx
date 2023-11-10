@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import NewWindow from 'react-new-window';
 import {
 	Stack,
 	Button,
@@ -17,19 +18,36 @@ import {
 	Box,
 	Divider,
 	AbsoluteCenter,
+	Input,
 } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useConnect, useDisconnect, useAccount } from 'wagmi';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, loginWithGoogle, RootState } from '@/store';
 import { useSiwe } from '@/hooks';
 import { MetaMaskIcon, WalletConnectIcon } from '../../../public/assets/svg';
 
 type AgentType = 'iPhone' | 'Android' | 'web';
 
+let hasDispatch = false;
+
 function useLoginModal() {
+	const [popupGoogle, setPopupGoogle] = useState(false);
+
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const { signInWithEthereum } = useSiwe();
+
+	const toast = useToast();
+
+	const { data: session, status: sessionStatus } = useSession();
+
+	const dispatch = useDispatch<AppDispatch>();
+
+	const { isAuthenticated, checkAuthSuccess } = useSelector(
+		(state: RootState) => state.authReducer
+	);
 
 	// callback onSuccess 登入成功時，簽名
 	const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
@@ -38,6 +56,19 @@ function useLoginModal() {
 			signInWithEthereum(account, chain.id);
 		},
 	});
+
+	useEffect(() => {
+		// Google 新視窗登入成功時，關閉原本的登入 Modal
+		if (sessionStatus === 'authenticated' && session) {
+			if (setPopupGoogle && isOpen) {
+				const { idToken } = session as any;
+				dispatch(loginWithGoogle({ idToken }));
+				hasDispatch = true;
+				setPopupGoogle(false);
+				onClose();
+			}
+		}
+	}, [sessionStatus, onClose, session, dispatch, isOpen]);
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
@@ -77,10 +108,7 @@ function useLoginModal() {
 						<ModalBody>
 							<Stack>
 								<Button
-									onClick={async () => {
-										await signIn('google');
-										onClose();
-									}}
+									onClick={() => setPopupGoogle(true)}
 									leftIcon={<Icon as={FcGoogle} />}
 									w={'100%'}
 									size="lg"
@@ -100,7 +128,6 @@ function useLoginModal() {
 									{connectors.map(connector => (
 										<Button
 											isLoading={isLoading}
-											// disabled={!connector.ready}
 											leftIcon={
 												<Icon as={connector.id === 'metaMask' ? MetaMaskIcon : WalletConnectIcon} />
 											}
@@ -114,6 +141,7 @@ function useLoginModal() {
 													if (!connector.ready && connector.id === 'metaMask') {
 														window.open('https://metamask.io/', '_blank');
 													} else {
+														console.log('Check');
 														connect({ connector });
 													}
 												} else if (agent === 'Android') {
@@ -141,10 +169,24 @@ function useLoginModal() {
 
 						{/* <ModalFooter></ModalFooter> */}
 					</ModalContent>
+
+					{popupGoogle && !session ? (
+						<NewWindow url="/googleSignInPage" onUnload={() => console.log('null')} />
+					) : null}
 				</Modal>
 			</>
 		),
-		[isOpen, onClose, connect, connectors, isLoading, pendingConnector, isDesktop]
+		[
+			isOpen,
+			onClose,
+			connect,
+			connectors,
+			isLoading,
+			pendingConnector,
+			isDesktop,
+			popupGoogle,
+			session,
+		]
 	);
 
 	return { ModalDom, isOpen, onOpen, onClose };

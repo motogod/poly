@@ -61,7 +61,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 			return (
 				<>
 					<PopoverHeader>
-						<LoggedInfoSectioin />
+						<LoggedInfoSectioin close={onPopClose} />
 					</PopoverHeader>
 					<LoggedMenuSection close={onPopClose} type="pop" />
 					<PopoverFooter>

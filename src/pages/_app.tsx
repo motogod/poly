@@ -11,6 +11,7 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { MetaMaskProvider } from '@metamask/sdk-react';
 // import { InjectedConnector } from 'wagmi/connectors/injected';
 import { SessionProvider } from 'next-auth/react';
+import AuthProvider from '@/contex/AuthContext';
 
 import { store } from '@/store';
 import { Provider } from 'react-redux';
@@ -113,7 +114,7 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 									<meta name="viewport" content="initial-scale=1, width=device-width" />
 								</Head>
 								{/* <Header /> */}
-								{getLayout(<Component {...pageProps} />)}
+								<AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
 							</ChakraProvider>
 						</WagmiConfig>
 					</MetaMaskProvider>

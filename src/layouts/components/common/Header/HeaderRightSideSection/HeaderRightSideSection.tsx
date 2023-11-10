@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import { useAccount, useDisconnect, useConnect } from 'wagmi';
+import { useAccount, useDisconnect, useConnect, useBalance } from 'wagmi';
 import {
 	Heading,
 	Stack,
@@ -18,6 +18,8 @@ import {
 	useDisclosure,
 	Icon,
 } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 import { BiWalletAlt } from 'react-icons/bi';
 import { useSiwe, useLoginModal } from '@/hooks';
 import { CommunityIcon } from '../../../../../../public/assets/svg';
@@ -40,6 +42,10 @@ function HeaderRightSideSection() {
 		onClose: modalOnClose,
 	} = useLoginModal();
 
+	const { isAuthenticated, user } = useSelector((state: RootState) => state.authReducer);
+
+	const { data, isError, isLoading } = useBalance({ address: user.address as `0x${string}` });
+
 	// full Modal
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -53,13 +59,23 @@ function HeaderRightSideSection() {
 		// signInWithEthereum(account);
 	};
 
+	const checkBalance = () => {
+		if (isLoading) return <div>Fetching balance…</div>;
+		if (isError) return <div>Error fetching balance</div>;
+		return (
+			<p>
+				Balance: {data?.formatted} {data?.symbol}
+			</p>
+		);
+	};
+
 	const renderModalContent = () => {
-		if (isLogin) {
+		if (isAuthenticated) {
 			return (
 				<>
 					<ModalBody overflowY={'scroll'}>
 						<Stack mt={'24px'}>
-							<LoggedInfoSectioin />
+							<LoggedInfoSectioin close={onClose} />
 							<Stack w={'100%'} h={'1px'} bg={'gray.100'} mt={'8px'} />
 						</Stack>
 						<Stack align={'center'}>
@@ -174,7 +190,7 @@ function HeaderRightSideSection() {
 	return (
 		<Stack direction="row" alignItems="center" spacing={6}>
 			<Stack direction={'row'} align={'center'} spacing={'32px'}>
-				{isLogin ? (
+				{isAuthenticated ? (
 					<Stack
 						display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline-flex' }}
 						direction={'row'}
@@ -183,7 +199,7 @@ function HeaderRightSideSection() {
 					>
 						<Stack onClick={() => router.push('./portfolio')} cursor={'pointer'}>
 							<Text fontSize={'16px'} color={'gray.800'} lineHeight={'12px'}>
-								$24000.73
+								{checkBalance()}
 							</Text>
 							<Heading size={'xs'} color={'gray.800'}>
 								Portfolio
@@ -191,7 +207,7 @@ function HeaderRightSideSection() {
 						</Stack>
 						<Stack>
 							<Text fontSize={'16px'} color={'gray.800'} lineHeight={'12px'}>
-								$32000.16
+								$0.00
 							</Text>
 							<Heading size={'xs'} color={'gray.800'}>
 								Funds
@@ -224,7 +240,7 @@ function HeaderRightSideSection() {
 					</>
 				)}
 
-				<HeaderPopover isLogin={isLogin} onModalOpen={onOpen} onModalClose={onClose} />
+				<HeaderPopover isLogin={isAuthenticated} onModalOpen={onOpen} onModalClose={onClose} />
 			</Stack>
 
 			<Modal size="full" isOpen={isOpen} onClose={onClose}>

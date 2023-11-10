@@ -22,3 +22,27 @@ export type GetMarketsType = {
 	total: number;
 	data: MarketsItemType[];
 };
+
+export type CheckAuthType = {
+	data: { isAuthenticated: boolean; user: { address: string; email: string; id: string } };
+	message: string;
+	statusCode: number;
+};
+
+export type LoginType = {
+	data: { user: { address: string; email: string; id: string } };
+	message: string;
+	statusCode: number;
+};
+
+export type LogoutType = {
+	data: null;
+	message: string;
+	statusCode: number;
+};
+
+export type GetNonceFromServerType = {
+	data: { nonce: string };
+	message: string;
+	statusCode: number;
+};

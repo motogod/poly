@@ -1,18 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAccount, useBalance, useContractRead } from 'wagmi';
-import { Stack, Text, Button, Icon, useToast } from '@chakra-ui/react';
+import { Stack, Text, Button, Icon, useToast, Spinner } from '@chakra-ui/react';
 import {
 	HiOutlineDocumentDuplicate,
 	HiCollection,
 	HiCreditCard,
 	HiChevronRight,
 } from 'react-icons/hi';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
 
-function LoggedInfoSection() {
+type LoggedInfoSectionType = {
+	close: () => void;
+};
+
+function LoggedInfoSection({ close }: LoggedInfoSectionType) {
+	const router = useRouter();
+
+	const { address: userAddress } = useSelector((state: RootState) => state.authReducer.user);
+
 	const { address } = useAccount();
-	const { data, isError, isLoading } = useBalance({ address });
+	const { data, isError, isLoading, isFetching } = useBalance({
+		address: userAddress as `0x${string}`,
+	});
 	const toast = useToast();
 
 	const sliceWalletAddress = (walletAddress: string | undefined) => {
@@ -27,9 +39,11 @@ function LoggedInfoSection() {
 	};
 	console.log('address', address);
 	console.log('data', data);
+	console.log('isLoading', isLoading);
 	const checkBalance = () => {
-		if (isLoading) return <div>Fetching balance…</div>;
-		if (isError) return <div>Error fetching balance</div>;
+		if (isFetching) return <Spinner />;
+		// if (isLoading) return <div>Fetching balance…</div>;
+		// if (isError) return <div>Error fetching balance</div>;
 		return (
 			<p>
 				Balance: {data?.formatted} {data?.symbol}
@@ -51,8 +65,8 @@ function LoggedInfoSection() {
 					border={'0px'}
 					borderRadius={'4px'}
 					onClick={() => {
-						if (address) {
-							navigator.clipboard.writeText(address);
+						if (userAddress) {
+							navigator.clipboard.writeText(userAddress);
 							toast({
 								title: 'Copied',
 								position: 'top',
@@ -63,11 +77,20 @@ function LoggedInfoSection() {
 						}
 					}}
 				>
-					{sliceWalletAddress(address)}
+					{sliceWalletAddress(userAddress)}
 				</Button>
 			</Stack>
 			<Stack mt={'12px'} gap={'12px'} align={'center'} direction={'row'} justify={'space-between'}>
-				<Stack w={'100%'} p={'8px'} bg={'gray.50'}>
+				<Stack
+					cursor={'pointer'}
+					onClick={() => {
+						close();
+						router.push('./portfolio');
+					}}
+					w={'100%'}
+					p={'8px'}
+					bg={'gray.50'}
+				>
 					<Stack align={'center'} direction={'row'}>
 						<Stack w={'100%'} align={'center'} direction={'row'} justify={'space-between'}>
 							<Stack align={'center'} direction={'row'}>
@@ -103,7 +126,7 @@ function LoggedInfoSection() {
 					</Stack>
 					<Stack>
 						<Text size={'md'} color={'gray.800'} fontWeight={'800'}>
-							$32000.16
+							$0.00
 						</Text>
 					</Stack>
 				</Stack>

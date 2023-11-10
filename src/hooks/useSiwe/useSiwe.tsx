@@ -2,14 +2,15 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserProvider } from 'ethers';
 import { SiweMessage } from 'siwe';
-import { useSignMessage } from 'wagmi';
+import { useSignMessage, useDisconnect } from 'wagmi';
 import { useDispatch } from 'react-redux';
-import { login, AppDispatch } from '@/store';
+import { loginWithSiwe, AppDispatch } from '@/store';
 
 function useCategoryTabsList() {
 	const [provider, setProvider] = useState<any>();
 
 	const { signMessageAsync } = useSignMessage();
+	const { disconnect } = useDisconnect();
 
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -56,14 +57,15 @@ function useCategoryTabsList() {
 				const signature = await signMessageAsync({ message });
 				// get nonce from backend
 				const nonceData = await axios.get(`${process.env.DEV_API}/auth/nonce`);
-				const { nonce } = nonceData?.data;
+				console.log('nonceData', nonceData);
+				const { nonce } = nonceData?.data.data;
 
 				console.log('nonce', nonce);
 				console.log('signature', signature);
 				console.log('message', message);
 
 				dispatch(
-					login({
+					loginWithSiwe({
 						nonce,
 						message,
 						signature,
@@ -71,6 +73,7 @@ function useCategoryTabsList() {
 				);
 			} catch (error) {
 				console.log('signInWithEthereum error', error);
+				disconnect();
 			}
 		}
 	};

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Stack, Button, useToast } from '@chakra-ui/react';
+import { Stack, Button, useToast, Input } from '@chakra-ui/react';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount, useDisconnect, useConnect, useEnsName, useNetwork } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
-import { useDispatch } from 'react-redux';
-import { getMarkets, AppDispatch } from '@/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMarkets, AppDispatch, RootState } from '@/store';
 import { useSiwe, useLoginModal, useLogout } from '@/hooks';
 import TopTopicSection from './TopTopicSection';
 import CategorySection from './CategorySection';
@@ -29,6 +29,8 @@ function Home() {
 	const { address, status } = useAccount();
 	const { signInWithEthereum, connectWallet } = useSiwe();
 
+	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
+
 	const { chain } = useNetwork();
 
 	const {
@@ -42,8 +44,7 @@ function Home() {
 	const { logout } = useLogout();
 	const { data: session, status: sessionStatus } = useSession();
 	const dispatch = useDispatch<AppDispatch>();
-	console.log('session', session);
-	console.log('sessionStatus', sessionStatus);
+
 	useEffect(() => {
 		dispatch(getMarkets());
 	}, [dispatch]);
@@ -52,7 +53,6 @@ function Home() {
 		<Stack backgroundColor="gray.50">
 			<Stack mt={headerHeight}>
 				<Stack>
-					{/* <button onClick={() => signOut()}>Google Sign Out</button> */}
 					<TopTopicSection />
 				</Stack>
 				<Stack>
@@ -62,7 +62,7 @@ function Home() {
 			<Stack>
 				<HowItWorkSection />
 			</Stack>
-			{status !== 'connected' ? (
+			{!isAuthenticated ? (
 				<Stack
 					display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 					w={'100%'}
