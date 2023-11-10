@@ -91,9 +91,9 @@ const authSlice = createSlice({
 				const { address, id, email } = data.user;
 
 				state.isAuthenticated = data.isAuthenticated;
-				state.address = address;
-				state.id = id;
-				state.email = email;
+				state.user.address = address;
+				state.user.id = id;
+				state.user.email = email;
 			}
 		});
 		builder.addCase(checkUserAuth.rejected, state => {
