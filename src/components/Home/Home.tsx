@@ -26,7 +26,7 @@ interface loginTypes {
 
 function Home() {
 	// const { open } = useWeb3Modal();
-	const { address, status } = useAccount();
+	const { address, status, isConnected, isConnecting } = useAccount();
 	const { signInWithEthereum, connectWallet } = useSiwe();
 	console.log('status', status);
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
@@ -53,7 +53,9 @@ function Home() {
 		<Stack backgroundColor="gray.50">
 			<Stack mt={headerHeight}>
 				<Stack>
-					<TopTopicSection />
+					{/* <TopTopicSection /> */}
+					<p>{status}</p>
+					<p>{`isConnecting => ${isConnecting}`}</p>
 				</Stack>
 				<Stack>
 					<CategorySection />
@@ -62,7 +64,7 @@ function Home() {
 			<Stack>
 				<HowItWorkSection />
 			</Stack>
-			{!isAuthenticated || status !== 'connected' ? (
+			{status !== 'connected' ? (
 				<Stack
 					display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 					w={'100%'}

@@ -23,7 +23,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 
 	const { address } = useAccount();
 	const { data, isError, isLoading, isFetching } = useBalance({
-		address: userAddress as `0x${string}`,
+		address: address as `0x${string}`,
 	});
 	const toast = useToast();
 
