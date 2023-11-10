@@ -28,7 +28,7 @@ function Home() {
 	// const { open } = useWeb3Modal();
 	const { address, status } = useAccount();
 	const { signInWithEthereum, connectWallet } = useSiwe();
-
+	console.log('status', status);
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
 
 	const { chain } = useNetwork();
@@ -62,7 +62,7 @@ function Home() {
 			<Stack>
 				<HowItWorkSection />
 			</Stack>
-			{!isAuthenticated ? (
+			{!isAuthenticated || status !== 'connected' ? (
 				<Stack
 					display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 					w={'100%'}
