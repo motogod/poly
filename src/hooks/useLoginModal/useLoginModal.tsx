@@ -53,6 +53,7 @@ function useLoginModal() {
 	const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
 		onSuccess(data, variables, context) {
 			const { account, chain } = data;
+			alert('Test');
 			signInWithEthereum(account, chain.id);
 		},
 	});
