@@ -76,7 +76,8 @@ serviceWithSessing.interceptors.response.use(
 	},
 	error => {
 		console.log('interceptors error', error);
-		Promise.reject(error);
+		// 會出現紅色 error 在視窗上
+		// Promise.reject(error);
 	}
 );
 

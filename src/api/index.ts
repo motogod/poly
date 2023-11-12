@@ -20,4 +20,8 @@ export const Logout = <T>(params: any) =>
 export const CheckAuth = <T>(params: any) =>
 	requestWithSession.get<T>('/auth/session', params, { timeout: 15000 });
 
+// Get user data
+export const GetUserProfile = <T>(params: any) =>
+	requestWithSession.get<T>('/accounts/profile', params, { timeout: 15000 });
+
 export * from './type';

@@ -70,7 +70,7 @@ function HeaderRightSideSection() {
 	};
 
 	const renderModalContent = () => {
-		if (isAuthenticated || isLogin) {
+		if (isAuthenticated) {
 			return (
 				<>
 					<ModalBody overflowY={'scroll'}>
@@ -190,7 +190,7 @@ function HeaderRightSideSection() {
 	return (
 		<Stack direction="row" alignItems="center" spacing={6}>
 			<Stack direction={'row'} align={'center'} spacing={'32px'}>
-				{isAuthenticated || isLogin ? (
+				{isAuthenticated ? (
 					<Stack
 						display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline-flex' }}
 						direction={'row'}
@@ -240,11 +240,7 @@ function HeaderRightSideSection() {
 					</>
 				)}
 
-				<HeaderPopover
-					isLogin={isAuthenticated || isLogin}
-					onModalOpen={onOpen}
-					onModalClose={onClose}
-				/>
+				<HeaderPopover isLogin={isAuthenticated} onModalOpen={onOpen} onModalClose={onClose} />
 			</Stack>
 
 			<Modal size="full" isOpen={isOpen} onClose={onClose}>

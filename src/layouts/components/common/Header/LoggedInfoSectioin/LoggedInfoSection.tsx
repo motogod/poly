@@ -23,7 +23,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 
 	const { address } = useAccount();
 	const { data, isError, isLoading, isFetching } = useBalance({
-		address: address as `0x${string}`,
+		address: userAddress as `0x${string}`,
 	});
 	const toast = useToast();
 
@@ -65,8 +65,8 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 					border={'0px'}
 					borderRadius={'4px'}
 					onClick={() => {
-						if (address) {
-							navigator.clipboard.writeText(address);
+						if (userAddress) {
+							navigator.clipboard.writeText(userAddress);
 							toast({
 								title: 'Copied',
 								position: 'top',
@@ -77,7 +77,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 						}
 					}}
 				>
-					{sliceWalletAddress(address)}
+					{sliceWalletAddress(userAddress)}
 				</Button>
 			</Stack>
 			<Stack mt={'12px'} gap={'12px'} align={'center'} direction={'row'} justify={'space-between'}>

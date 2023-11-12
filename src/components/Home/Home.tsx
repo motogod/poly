@@ -53,12 +53,13 @@ function Home() {
 		<Stack backgroundColor="gray.50">
 			<Stack mt={headerHeight}>
 				<Stack>
-					{/* <TopTopicSection /> */}
+					{/* <Stack mt={20} />
 					<p>{status}</p>
 					<p>{`isConnecting => ${isConnecting}`}</p>
 					<p>{`Google ${session}`}</p>
 					<p>{`User ${isAuthenticated}`}</p>
-					<p>{`Markets ${JSON.stringify(markets)}`}</p>
+					<p>{`Markets ${JSON.stringify(markets)}`}</p> */}
+					<TopTopicSection />
 				</Stack>
 				<Stack>
 					<CategorySection />
@@ -67,7 +68,7 @@ function Home() {
 			<Stack>
 				<HowItWorkSection />
 			</Stack>
-			{status !== 'connected' ? (
+			{!isAuthenticated ? (
 				<Stack
 					display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 					w={'100%'}
