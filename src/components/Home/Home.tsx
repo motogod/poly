@@ -53,12 +53,6 @@ function Home() {
 		<Stack backgroundColor="gray.50">
 			<Stack mt={headerHeight}>
 				<Stack>
-					{/* <Stack mt={20} />
-					<p>{status}</p>
-					<p>{`isConnecting => ${isConnecting}`}</p>
-					<p>{`Google ${session}`}</p>
-					<p>{`User ${isAuthenticated}`}</p>
-					<p>{`Markets ${JSON.stringify(markets)}`}</p> */}
 					<TopTopicSection />
 				</Stack>
 				<Stack>

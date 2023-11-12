@@ -6,8 +6,7 @@ import Cookies from 'js-cookie';
 // 	process.env.NODE_ENV === 'development'
 // 		? 'https://jsonplaceholder.typicode.com'
 // 		: 'https://your.domain.com/api';
-let baseURL =
-	process.env.NODE_ENV === 'development' ? process.env.DEV_API : 'https://your.domain.com/api';
+let baseURL = process.env.NODE_ENV === 'development' ? process.env.DEV_API : process.env.DEV_API;
 
 const timeout = 30000;
 
