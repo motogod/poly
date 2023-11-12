@@ -9,6 +9,8 @@ import {
 	LogoutType,
 	GetNonceFromServerType,
 	LoginWithGoogle,
+	GetUserProfile,
+	CheckUserProfileType,
 } from '@/api';
 
 // Get Nonce from server
@@ -46,4 +48,11 @@ const checkUserAuth = createAsyncThunk('api/checkUserAuth', async (params: any) 
 	return resp;
 });
 
-export { getNonce, loginWithSiwe, logout, checkUserAuth, loginWithGoogle };
+// Get user profile
+const getUserProfile = createAsyncThunk('api/getUserProfile', async (params: any) => {
+	const resp = await GetUserProfile<CheckUserProfileType>({});
+	console.log('getUserProfile resp is', resp);
+	return resp;
+});
+
+export { getNonce, loginWithSiwe, logout, checkUserAuth, loginWithGoogle, getUserProfile };

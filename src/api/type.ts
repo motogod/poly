@@ -29,6 +29,22 @@ export type CheckAuthType = {
 	statusCode: number;
 };
 
+export interface UserProfile {
+	createdAt: string;
+	displayName: string | null;
+	funds: number;
+	id: string;
+	portfolio: number;
+	updatedAt: string;
+	userId: string;
+}
+
+export type CheckUserProfileType = {
+	data: UserProfile;
+	message: string;
+	statusCode: number;
+};
+
 export type LoginType = {
 	data: { user: { address: string; email: string; id: string } };
 	message: string;
