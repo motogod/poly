@@ -21,7 +21,9 @@ function AuthProvider({ children }: Props) {
 		onClose: modalOnClose,
 	} = useDisplayNameModal();
 
-	const { displayName } = useSelector((state: RootState) => state.authReducer.userProfile);
+	const { userProfile, isAuthenticated } = useSelector((state: RootState) => state.authReducer);
+
+	const { displayName } = userProfile;
 
 	useEffect(() => {
 		if (isFirst) {
@@ -37,12 +39,13 @@ function AuthProvider({ children }: Props) {
 	}, [dispatch]);
 
 	useEffect(() => {
-		if (!displayName) {
+		// 已登入過，但尚未創建名稱
+		if (!displayName && isAuthenticated) {
 			modalOnOpen();
 		} else {
 			modalOnClose();
 		}
-	}, [displayName, modalOnOpen, modalOnClose]);
+	}, [displayName, modalOnOpen, modalOnClose, isAuthenticated]);
 
 	return (
 		<>
