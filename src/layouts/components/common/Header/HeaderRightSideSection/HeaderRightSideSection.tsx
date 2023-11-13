@@ -240,7 +240,11 @@ function HeaderRightSideSection() {
 					</>
 				)}
 
-				<HeaderPopover isLogin={isAuthenticated} onModalOpen={onOpen} onModalClose={onClose} />
+				<HeaderPopover
+					isLogin={isAuthenticated !== null && isAuthenticated}
+					onModalOpen={onOpen}
+					onModalClose={onClose}
+				/>
 			</Stack>
 
 			<Modal size="full" isOpen={isOpen} onClose={onClose}>

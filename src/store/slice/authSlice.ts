@@ -5,32 +5,33 @@ import {
 	logout,
 	checkUserAuth,
 	getUserProfile,
+	putUserProfile,
 } from '../thunks/fetchAuth';
 import { UserProfile } from '@/api';
 import { resetCheckAuthToast } from '../actions';
 
 type AuthState = {
-	isAuthenticated: boolean;
-	user: { address: string; email: string; id: string };
+	isAuthenticated: boolean | null;
+	user: { address: string; email: string; id: string; username: string | null };
 	userProfile: UserProfile;
 	checkAuthSuccess: boolean | null; // 登入登出時的 提醒 Toast 出現與否
 	checkAuthTitle: string; // 提醒 Toast 的顯示標題
+	putUsrProfileIsLoading: boolean | null; // 新增創建使用者名稱時的讀取狀態
 };
 
 const initialState: AuthState = {
-	isAuthenticated: false,
-	user: { address: '', email: '', id: '' },
+	isAuthenticated: null,
+	user: { address: '', email: '', id: '', username: '' },
 	userProfile: {
-		createdAt: '',
-		displayName: '',
-		funds: 0,
+		address: '',
+		email: '',
 		id: '',
-		portfolio: 0,
-		updatedAt: '',
-		userId: '',
+		username: '',
+		profile: { displayName: null, funds: 0, portfolio: 0 },
 	},
 	checkAuthSuccess: false,
 	checkAuthTitle: '',
+	putUsrProfileIsLoading: null,
 };
 
 const authSlice = createSlice({
@@ -132,11 +133,33 @@ const authSlice = createSlice({
 			console.log('getUserProfile fulfilled', action);
 			const { statusCode, data } = action.payload;
 			if (statusCode === 200) {
-				state.userProfile = data;
+				state.user.address = data.address;
+				state.user.email = data.email;
+				state.user.username = data.username;
+				state.user.id = data.id;
 			}
 		});
 		builder.addCase(getUserProfile.rejected, state => {
 			console.log('getUserProfile rejected');
+		});
+
+		// Put user profile
+		builder.addCase(putUserProfile.pending, state => {
+			console.log('putUserProfile pending');
+			state.putUsrProfileIsLoading = true;
+		});
+		builder.addCase(putUserProfile.fulfilled, (state, action) => {
+			console.log('putUserProfile fulfilled', action);
+			const { statusCode, data } = action.payload;
+			if (statusCode === 200) {
+				state.userProfile = data;
+				state.user.username = data.username;
+				state.putUsrProfileIsLoading = false;
+			}
+		});
+		builder.addCase(putUserProfile.rejected, state => {
+			console.log('putUserProfile rejected');
+			state.putUsrProfileIsLoading = false;
 		});
 	},
 });

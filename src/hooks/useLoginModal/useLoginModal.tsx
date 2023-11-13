@@ -33,7 +33,7 @@ type AgentType = 'iPhone' | 'Android' | 'web';
 let hasDispatch = false;
 
 function useLoginModal() {
-	const [popupGoogle, setPopupGoogle] = useState(false);
+	const [popupGoogle, setPopupGoogle] = useState<boolean | null>(null);
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -53,15 +53,14 @@ function useLoginModal() {
 	const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
 		onSuccess(data, variables, context) {
 			const { account, chain } = data;
-			// console.log('Check');
-			// alert(account);
-			// alert(chain.id);
 			signInWithEthereum(account, chain.id);
 		},
 	});
 
 	useEffect(() => {
 		// Google 新視窗登入成功時，關閉原本的登入 Modal
+		console.log('sessionStatus', sessionStatus);
+		console.log('session', session);
 		if (sessionStatus === 'authenticated' && session) {
 			if (setPopupGoogle && isOpen) {
 				const { idToken } = session as any;
@@ -93,7 +92,14 @@ function useLoginModal() {
 	const ModalDom = useMemo(
 		() => (
 			<>
-				<Modal size={isDesktop ? 'lg' : 'full'} isOpen={isOpen} onClose={onClose}>
+				<Modal
+					size={isDesktop ? 'lg' : 'full'}
+					isOpen={isOpen}
+					onClose={() => {
+						setPopupGoogle(false);
+						onClose();
+					}}
+				>
 					<ModalOverlay />
 					<ModalContent
 						_focus={{ boxShadow: 'md' }}
@@ -174,7 +180,19 @@ function useLoginModal() {
 					</ModalContent>
 
 					{popupGoogle && !session ? (
-						<NewWindow url="/googleSignInPage" onUnload={() => console.log('null')} />
+						<NewWindow
+							url="/googleSignInPage"
+							onUnload={() => console.log('null')}
+							onOpen={e => {
+								const popupTick = setInterval(() => {
+									if (e.closed) {
+										// 監聽使用者若關閉新視窗，恢復能彈出視窗的狀態
+										clearInterval(popupTick);
+										setPopupGoogle(false);
+									}
+								}, 500);
+							}}
+						/>
 					) : null}
 				</Modal>
 			</>

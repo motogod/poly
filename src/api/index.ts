@@ -24,4 +24,8 @@ export const CheckAuth = <T>(params: any) =>
 export const GetUserProfile = <T>(params: any) =>
 	requestWithSession.get<T>('/accounts/profile', params, { timeout: 15000 });
 
+// Update User Profile (username)
+export const PutUserProfile = <T>(params: any) =>
+	requestWithSession.put<T>('/accounts/profile/username', params, { timeout: 15000 });
+
 export * from './type';
