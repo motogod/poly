@@ -147,6 +147,8 @@ const authSlice = createSlice({
 		builder.addCase(putUserProfile.pending, state => {
 			console.log('putUserProfile pending');
 			state.putUsrProfileIsLoading = true;
+			state.checkAuthSuccess = false;
+			state.checkAuthTitle = '';
 		});
 		builder.addCase(putUserProfile.fulfilled, (state, action) => {
 			console.log('putUserProfile fulfilled', action);
@@ -155,11 +157,15 @@ const authSlice = createSlice({
 				state.userProfile = data;
 				state.user.username = data.username;
 				state.putUsrProfileIsLoading = false;
+				state.checkAuthSuccess = true;
+				state.checkAuthTitle = 'Create account suceesfully';
 			}
 		});
 		builder.addCase(putUserProfile.rejected, state => {
 			console.log('putUserProfile rejected');
-			state.putUsrProfileIsLoading = false;
+			state.putUsrProfileIsLoading = null;
+			state.checkAuthSuccess = false;
+			state.checkAuthTitle = '';
 		});
 	},
 });
