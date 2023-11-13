@@ -13,6 +13,7 @@ function Profile() {
 	const { user } = useSelector((state: RootState) => state.authReducer);
 
 	console.log('user', user);
+	const { username } = user;
 
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
@@ -50,15 +51,16 @@ function Profile() {
 							</Stack>
 							<Stack mt={'12px'} display={'flex'} direction={'row'} alignItems={'center'}>
 								<Input
-									defaultValue={name}
+									defaultValue={username !== null ? username : ''}
+									isDisabled={true}
 									onChange={e => setName(e.target.value)}
 									w={'600px'}
 									placeholder={'Please enter your preferred username'}
 									border="2px solid #E2E8F0;"
 								/>
-								<Button isDisabled={!name} bg="#0034EB" color="#fff">
+								{/* <Button isDisabled={!name} bg="#0034EB" color="#fff">
 									Save
-								</Button>
+								</Button> */}
 							</Stack>
 							<Text fontWeight={'500'} fontSize={'sm'} mt={'10px'} color={'#7C7C7C'}>
 								This is publicly visible

@@ -6,13 +6,12 @@ import { useDisplayNameModal } from '@/hooks';
 type Props = {
 	children: ReactNode;
 };
-
+// useEffect 跑兩次問題，規避掉
 let isFirst = true;
+let isModalFirst = true;
 
 function AuthProvider({ children }: Props) {
 	const dispatch = useDispatch<AppDispatch>();
-
-	const initialized = useRef(false);
 
 	const {
 		ModalDom,
@@ -21,9 +20,9 @@ function AuthProvider({ children }: Props) {
 		onClose: modalOnClose,
 	} = useDisplayNameModal();
 
-	const { userProfile, isAuthenticated } = useSelector((state: RootState) => state.authReducer);
+	const { user, isAuthenticated } = useSelector((state: RootState) => state.authReducer);
 
-	const { displayName } = userProfile;
+	const { username } = user;
 
 	useEffect(() => {
 		if (isFirst) {
@@ -34,18 +33,21 @@ function AuthProvider({ children }: Props) {
 				dispatch(checkUserAuth({}));
 				// 確認是否有創建名稱
 				dispatch(getUserProfile({}));
-			}, 1000);
+			}, 500);
 		}
-	}, [dispatch]);
+	}, [dispatch, modalOnClose, isAuthenticated, username, modalOnOpen]);
 
 	useEffect(() => {
 		// 已登入過，但尚未創建名稱
-		if (!displayName && isAuthenticated) {
-			modalOnOpen();
-		} else {
-			modalOnClose();
+		if (isModalFirst && isAuthenticated !== null) {
+			if (isAuthenticated && username === null) {
+				modalOnOpen();
+			} else {
+				modalOnClose();
+			}
+			isModalFirst = false;
 		}
-	}, [displayName, modalOnOpen, modalOnClose, isAuthenticated]);
+	}, [username, modalOnOpen, modalOnClose, isAuthenticated]);
 
 	return (
 		<>

@@ -3,5 +3,6 @@ import useSiwe from './useSiwe';
 import useLoginModal from './useLoginModal';
 import useLogout from './useLogout';
 import useDisplayNameModal from './useDisplayNameModal';
+import useUtility from './useUtility';
 
-export { useCategoryTabsList, useSiwe, useLoginModal, useLogout, useDisplayNameModal };
+export { useCategoryTabsList, useSiwe, useLoginModal, useLogout, useDisplayNameModal, useUtility };

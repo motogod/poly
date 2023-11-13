@@ -91,6 +91,10 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 	// 3. Extend the theme
 	const theme = extendTheme({ breakpoints, fonts });
 
+	if (process.env.NODE_ENV !== 'development') {
+		console.log = function () {};
+	}
+
 	return (
 		<>
 			<Provider store={store}>

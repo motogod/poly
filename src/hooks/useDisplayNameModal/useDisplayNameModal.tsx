@@ -15,9 +15,12 @@ import {
 	FormControl,
 	FormLabel,
 	Checkbox,
+	FormHelperText,
+	FormErrorMessage,
 } from '@chakra-ui/react';
-import { useDispatch } from 'react-redux';
-import { getUserProfile, AppDispatch } from '@/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { putUserProfile, AppDispatch, RootState } from '@/store';
+import { useUtility } from '@/hooks';
 
 function useDisplayNameModal() {
 	const [name, setName] = useState('');
@@ -26,6 +29,10 @@ function useDisplayNameModal() {
 	const disaptch = useDispatch<AppDispatch>();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
+
+	const { checkEngAndNumberName, inputNameErrMsg } = useUtility();
+
+	const { putUsrProfileIsLoading } = useSelector((state: RootState) => state.authReducer);
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
@@ -42,17 +49,24 @@ function useDisplayNameModal() {
 				>
 					<ModalHeader alignSelf={'center'}>Create Account</ModalHeader>
 					<ModalBody>
-						<FormControl isRequired>
+						<FormControl isRequired isInvalid={inputNameErrMsg !== ''}>
 							<FormLabel fontWeight={'800'}>Username</FormLabel>
 							<Input
+								minLength={6}
+								maxLength={16}
 								defaultValue={name}
-								onChange={e => setName(e.target.value)}
+								autoCapitalize={'none'}
+								onChange={e => {
+									checkEngAndNumberName(e.target.value);
+									setName(e.target.value.toLowerCase());
+								}}
 								placeholder={'Please enter your preferred username'}
 								border="2px solid #E2E8F0;"
 							/>
+							{inputNameErrMsg !== '' && <FormErrorMessage>{inputNameErrMsg}</FormErrorMessage>}
 						</FormControl>
-
-						<Text fontWeight={'500'} fontSize={'sm'} mt={'4px'} color={'#7C7C7C'}>
+						<FormErrorMessage>Email is required.</FormErrorMessage>
+						<Text fontWeight={'500'} fontSize={'sm'} mt={'14px'} color={'#7C7C7C'}>
 							This is publicly visible
 						</Text>
 						<Checkbox
@@ -84,11 +98,17 @@ function useDisplayNameModal() {
 
 					<ModalFooter>
 						<Button
-							isDisabled={!checked || !name ? true : false}
+							isLoading={putUsrProfileIsLoading !== null && putUsrProfileIsLoading}
+							isDisabled={!checked || inputNameErrMsg || !name ? true : false}
 							w={'100%'}
 							bg={'teal.500'}
 							color="#fff"
-							onClick={onClose}
+							onClick={() => {
+								disaptch(putUserProfile({ username: name }));
+								if (!putUsrProfileIsLoading) {
+									onClose();
+								}
+							}}
 						>
 							Continue
 						</Button>
@@ -96,7 +116,18 @@ function useDisplayNameModal() {
 				</ModalContent>
 			</Modal>
 		),
-		[checked, name, isOpen, onOpen, isDesktop, onClose]
+		[
+			disaptch,
+			checked,
+			name,
+			isOpen,
+			onOpen,
+			isDesktop,
+			onClose,
+			checkEngAndNumberName,
+			inputNameErrMsg,
+			putUsrProfileIsLoading,
+		]
 	);
 
 	return { ModalDom, isOpen, onOpen, onClose };

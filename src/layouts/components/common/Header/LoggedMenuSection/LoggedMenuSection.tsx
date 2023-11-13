@@ -76,7 +76,6 @@ function LoggedMenuSection({ close, type }: LoggedMenuSectionType) {
 					}
 					// 關閉錢包連結
 					disconnect();
-					console.log('logout end');
 					// 關閉彈跳視窗
 					close();
 				}}

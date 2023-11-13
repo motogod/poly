@@ -30,13 +30,11 @@ export type CheckAuthType = {
 };
 
 export interface UserProfile {
-	createdAt: string;
-	displayName: string | null;
-	funds: number;
+	address: string;
+	email: string;
 	id: string;
-	portfolio: number;
-	updatedAt: string;
-	userId: string;
+	username: string;
+	profile: { displayName: string | null; funds: number; portfolio: number };
 }
 
 export type CheckUserProfileType = {
@@ -45,8 +43,24 @@ export type CheckUserProfileType = {
 	statusCode: number;
 };
 
+export type PutUserProfileType = {
+	data: {
+		id: string;
+		username: string;
+		address: string;
+		email: string;
+		profile: {
+			displayName: string;
+			portfolio: number;
+			funds: number;
+		};
+	};
+	message: string;
+	statusCode: number;
+};
+
 export type LoginType = {
-	data: { user: { address: string; email: string; id: string } };
+	data: { user: { address: string; email: string; id: string; username: string } };
 	message: string;
 	statusCode: number;
 };
