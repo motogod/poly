@@ -27,7 +27,7 @@ function useCategoryTabsList() {
 		console.log('domain', domain);
 		console.log('origin', origin);
 		const message = new SiweMessage({
-			domain: 'localhost',
+			domain,
 			address,
 			statement,
 			uri: origin,
