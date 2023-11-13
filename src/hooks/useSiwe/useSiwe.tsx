@@ -53,6 +53,7 @@ function useCategoryTabsList() {
 					'Sign in with Ethereum to the app.',
 					chainId
 				);
+				console.log('message is', message);
 				// const signature = await signer.signMessage(message);
 				const signature = await signMessageAsync({ message });
 				// get nonce from backend
