@@ -6,10 +6,21 @@ import { useSignMessage, useDisconnect } from 'wagmi';
 import { useDispatch } from 'react-redux';
 import { loginWithSiwe, AppDispatch } from '@/store';
 
-function useCategoryTabsList() {
+function useSiwe() {
 	const [provider, setProvider] = useState<any>();
+	const [isSignMsgSuccess, setIsSignMsgSuccess] = useState<boolean | null>(null);
+	console.log('Check sign from useSiwe =>', isSignMsgSuccess);
+	const { signMessageAsync } = useSignMessage({
+		onSuccess(...args) {
+			console.log('sign SYNC success:', ...args);
+			setIsSignMsgSuccess(true);
+		},
+		onError(...args) {
+			console.log('sign SYNC error:', ...args);
+			setIsSignMsgSuccess(false);
+		},
+	});
 
-	const { signMessageAsync } = useSignMessage();
 	const { disconnect } = useDisconnect();
 
 	const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +31,8 @@ function useCategoryTabsList() {
 			setProvider(provider);
 		}
 	}, []);
+
+	const resetIsSignMsgSuccess = () => setIsSignMsgSuccess(null);
 
 	const createSiweMessage = async (address: string, statement: string, chainId: number) => {
 		const domain = window.location.host;
@@ -83,7 +96,7 @@ function useCategoryTabsList() {
 		provider.send('eth_requestAccounts', []).catch(() => console.log('User rejected request'));
 	};
 
-	return { signInWithEthereum, connectWallet };
+	return { signInWithEthereum, isSignMsgSuccess, resetIsSignMsgSuccess };
 }
 
-export default useCategoryTabsList;
+export default useSiwe;

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+type AgentType = 'iPhone' | 'Android' | 'web';
+
 function useUtility() {
 	const [inputNameErrMsg, setInputNameErrMsg] = useState<string>('');
 
@@ -25,7 +27,20 @@ function useUtility() {
 		}
 	};
 
-	return { checkEngAndNumberName, inputNameErrMsg };
+	// 若是網頁開啟，使用者未安裝 MetaMask 引導至 MetaMask 官網
+	const isWebsiteAgent = (): AgentType => {
+		if (navigator.userAgent.includes('iPhone')) {
+			return 'iPhone';
+		}
+
+		if (navigator.userAgent.includes('Android')) {
+			return 'Android';
+		}
+
+		return 'web';
+	};
+
+	return { checkEngAndNumberName, inputNameErrMsg, isWebsiteAgent };
 }
 
 export default useUtility;

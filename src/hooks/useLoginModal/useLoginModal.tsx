@@ -25,7 +25,7 @@ import { useSession } from 'next-auth/react';
 import { useConnect, useDisconnect, useAccount } from 'wagmi';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, loginWithGoogle, RootState } from '@/store';
-import { useSiwe } from '@/hooks';
+import { useSiwe, useUtility } from '@/hooks';
 import { MetaMaskIcon, WalletConnectIcon } from '../../../public/assets/svg';
 
 type AgentType = 'iPhone' | 'Android' | 'web';
@@ -34,10 +34,11 @@ let hasDispatch = false;
 
 function useLoginModal() {
 	const [popupGoogle, setPopupGoogle] = useState<boolean | null>(null);
+	const [connectorId, setConnector] = useState('');
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
-
-	const { signInWithEthereum } = useSiwe();
+	const { isWebsiteAgent } = useUtility();
+	const { signInWithEthereum, isSignMsgSuccess, resetIsSignMsgSuccess } = useSiwe();
 
 	const toast = useToast();
 
@@ -75,19 +76,6 @@ function useLoginModal() {
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
 	});
-
-	// 若是網頁開啟，使用者未安裝 MetaMask 引導至 MetaMask 官網
-	const isWebsiteAgent = (): AgentType => {
-		if (navigator.userAgent.includes('iPhone')) {
-			return 'iPhone';
-		}
-
-		if (navigator.userAgent.includes('Android')) {
-			return 'Android';
-		}
-
-		return 'web';
-	};
 
 	const ModalDom = useMemo(
 		() => (
@@ -144,13 +132,14 @@ function useLoginModal() {
 											fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
 											onClick={() => {
 												onClose();
+												// 儲存使用者點擊的 provider
+												setConnector(connector.id);
 												const agent = isWebsiteAgent();
+												// 網頁端可先判斷是否有 MetaMask
 												if (agent === 'web') {
-													// 網頁端可先判斷是否有 MetaMask
 													if (!connector.ready && connector.id === 'metaMask') {
 														window.open('https://metamask.io/', '_blank');
 													} else {
-														console.log('Check');
 														connect({ connector });
 													}
 												} else if (agent === 'Android') {
@@ -207,10 +196,19 @@ function useLoginModal() {
 			isDesktop,
 			popupGoogle,
 			session,
+			isWebsiteAgent,
 		]
 	);
 
-	return { ModalDom, isOpen, onOpen, onClose };
+	return {
+		ModalDom,
+		isOpen,
+		onOpen,
+		onClose,
+		isSignMsgSuccess,
+		resetIsSignMsgSuccess,
+		connectorId,
+	};
 }
 
 export default useLoginModal;
