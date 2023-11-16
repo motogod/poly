@@ -34,7 +34,7 @@ function HeaderRightSideSection() {
 	const { status } = useAccount();
 	const { disconnect } = useDisconnect();
 	const { connectAsync } = useConnect();
-	const { signInWithEthereum, connectWallet } = useSiwe();
+	const { signInWithEthereum } = useSiwe();
 	const {
 		ModalDom,
 		isOpen: modalIsOpen,
