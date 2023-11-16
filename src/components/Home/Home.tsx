@@ -83,7 +83,7 @@ function Home() {
 						onClick={() => {
 							if (status === 'disconnected' || 'connecting') {
 								// 避免連錢包的後續取消動作，影響重新彈出時無法順利彈出
-								disconnect();
+								// disconnect();
 								modalOnOpen();
 							} else {
 								logout();
