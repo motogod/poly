@@ -40,7 +40,11 @@ function Home() {
 		onClose: modalOnClose,
 	} = useLoginModal();
 
-	const { disconnect } = useDisconnect();
+	const { disconnect } = useDisconnect({
+		onSuccess() {
+			modalOnOpen();
+		},
+	});
 	const { logout } = useLogout();
 	const { data: session, status: sessionStatus } = useSession();
 	const dispatch = useDispatch<AppDispatch>();
@@ -80,11 +84,11 @@ function Home() {
 				>
 					<Button
 						isLoading={status === 'connecting'}
-						onClick={() => {
+						onClick={async () => {
 							if (status === 'disconnected' || 'connecting') {
-								// 避免連錢包的後續取消動作，影響重新彈出時無法順利彈出
-								// disconnect();
-								modalOnOpen();
+								// 避免連錢包的後續取消動作，影響重新彈出時無法順利彈出，先取消，再彈出 modalOnOpen
+								disconnect();
+								// modalOnOpen();
 							} else {
 								logout();
 							}
