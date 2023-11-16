@@ -80,7 +80,15 @@ function Home() {
 				>
 					<Button
 						isLoading={status === 'connecting'}
-						onClick={() => (status === 'disconnected' || 'connecting' ? modalOnOpen() : logout())}
+						onClick={() => {
+							if (status === 'disconnected' || 'connecting') {
+								// 避免連錢包的後續取消動作，影響重新彈出時無法順利彈出
+								disconnect();
+								modalOnOpen();
+							} else {
+								logout();
+							}
+						}}
 						leftIcon={<Icon as={BiWalletAlt} />}
 						w={'100%'}
 						size="lg"
