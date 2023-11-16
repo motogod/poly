@@ -68,7 +68,7 @@ function Home() {
 	}, [dispatch]);
 
 	useEffect(() => {
-		console.log('Check sign =>', { status, isSignMsgSuccess, address, chain });
+		console.log('Check sign status =>', { status, isSignMsgSuccess, address, chain });
 		const agent = isWebsiteAgent();
 		// 手機端 且點擊 Wallet Connect 的狀態下才要擋讀取畫面，提醒使用者再去簽名
 		if (agent === 'web' && connectorId === 'walletConnect') {
