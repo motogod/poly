@@ -24,6 +24,7 @@ import {
 } from '@chakra-ui/react';
 import { BiWalletAlt, BiSolidUserCircle, BiMenuAltLeft } from 'react-icons/bi';
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
+import { zIndexHeader } from '@/utils/zIndex';
 
 type HeaderModalType = {
 	isLogin: boolean;
@@ -90,7 +91,7 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 					flexDirection="row"
 					position="fixed"
 					bottom={0}
-					zIndex={5}
+					zIndex={zIndexHeader}
 					pl={6}
 					pr={6}
 					pt={4}

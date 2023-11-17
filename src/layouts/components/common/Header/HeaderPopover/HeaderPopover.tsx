@@ -19,6 +19,7 @@ import { BiSolidUserCircle, BiMenuAltLeft } from 'react-icons/bi';
 import LoggedInfoSectioin from '../LoggedInfoSectioin';
 import LoggedMenuSection from '../LoggedMenuSection';
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
+import { zIndexPop } from '@/utils/zIndex';
 
 type HeaderPopType = {
 	isLogin: boolean;
@@ -150,7 +151,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 				</PopoverTrigger>
 				<PopoverContent
 					_focus={{ boxShadow: 'md' }}
-					zIndex={6}
+					zIndex={zIndexPop}
 					px={'6px'}
 					py={'22px'}
 					mt={'34px'}

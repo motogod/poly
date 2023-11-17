@@ -22,6 +22,7 @@ import BuyOrSellCard from './BuyOrSellCard';
 import BuyOrSellButton from './Buttons/BuyOrSellButton';
 import BuyOrSellModal from './BuyOrSellModal';
 import { TransactionEnum } from './type';
+import { zIndexMarket } from '@/utils/zIndex';
 
 const empty_array = [...Array(13)];
 
@@ -58,7 +59,7 @@ function MarketsDetail() {
 				direction="row"
 				position="fixed"
 				bottom={0}
-				zIndex={5}
+				zIndex={zIndexMarket}
 				pl={6}
 				pr={6}
 				pt={4}
