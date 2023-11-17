@@ -36,7 +36,9 @@ function useLoginModal() {
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const { signInWithEthereum, isLoading: isSignInLoading } = useSiwe();
+	const { disconnect } = useDisconnect();
+
+	const { signInWithEthereum, isLoading: isSignInLoading, reset: resetSignIn } = useSiwe();
 
 	const { data: session, status: sessionStatus } = useSession();
 
@@ -100,8 +102,11 @@ function useLoginModal() {
 					size={isDesktop ? 'lg' : 'full'}
 					isOpen={isOpen}
 					onClose={() => {
-						setPopupGoogle(false);
-						onClose();
+						// 若使用者關閉視窗，重置相關設置
+						setPopupGoogle(false); // 恢復 google 彈窗出現與否的值
+						disconnect(); // 斷開錢包連接
+						resetSignIn(); // 斷開當下簽名請求
+						onClose(); // 關閉視窗
 					}}
 				>
 					<ModalOverlay zIndex={zIndexLoginModal} />
@@ -222,6 +227,8 @@ function useLoginModal() {
 			popupGoogle,
 			session,
 			isSignInLoading,
+			disconnect,
+			resetSignIn,
 		]
 	);
 

@@ -9,7 +9,7 @@ import { loginWithSiwe, AppDispatch } from '@/store';
 function useCategoryTabsList() {
 	const [provider, setProvider] = useState<any>();
 
-	const { signMessageAsync, isLoading } = useSignMessage();
+	const { signMessageAsync, isLoading, reset } = useSignMessage();
 	const { disconnect } = useDisconnect();
 
 	const dispatch = useDispatch<AppDispatch>();
@@ -83,7 +83,7 @@ function useCategoryTabsList() {
 		provider.send('eth_requestAccounts', []).catch(() => console.log('User rejected request'));
 	};
 
-	return { signInWithEthereum, connectWallet, isLoading };
+	return { signInWithEthereum, connectWallet, isLoading, reset };
 }
 
 export default useCategoryTabsList;
