@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Tabs, Center, TabList, Tab, Tag } from '@chakra-ui/react';
 import styles from './useCategoryTabsList.module.scss';
+import { zIndexMinimum } from '@/utils/zIndex';
 
 function useCategoryTabsList() {
 	const [selectedTab, setSelectedTab] = useState<string>('');
@@ -17,7 +18,7 @@ function useCategoryTabsList() {
 				overflowY={'auto'}
 				overflowX={'hidden'}
 				bg={'gray.50'}
-				zIndex={1}
+				zIndex={zIndexMinimum}
 				shadow={'md'}
 				variant="soft-rounded"
 			>

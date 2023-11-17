@@ -27,6 +27,7 @@ import SocialPng from './social.png';
 import HeaderPopover from '../HeaderPopover';
 import LoggedInfoSectioin from '../LoggedInfoSectioin';
 import LoggedMenuSection from '../LoggedMenuSection';
+import { zIndexHeader } from '@/utils/zIndex';
 
 function HeaderRightSideSection() {
 	const router = useRouter();
@@ -91,7 +92,7 @@ function HeaderRightSideSection() {
 						flexDirection="row"
 						position="fixed"
 						bottom={0}
-						zIndex={5}
+						zIndex={zIndexHeader}
 						pl={6}
 						pr={6}
 						pt={4}
@@ -160,7 +161,7 @@ function HeaderRightSideSection() {
 					flexDirection="row"
 					position="fixed"
 					bottom={0}
-					zIndex={5}
+					zIndex={zIndexHeader}
 					pl={6}
 					pr={6}
 					pt={4}

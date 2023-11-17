@@ -14,6 +14,7 @@ import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
 import BuyOrSellButton from '../Buttons/BuyOrSellButton';
 import YesOrNoButton from '../Buttons/YesOrNoButton';
+import { zIndexMinimum } from '@/utils/zIndex';
 
 type SelectedType = 'market' | 'limit';
 
@@ -62,7 +63,7 @@ function BuyOrSellContent() {
 				// align={{ base: 'center', md: 'center', sm: 'center', lg: 'end' }}
 				mt="8px"
 				as={Stack}
-				zIndex={1}
+				zIndex={zIndexMinimum}
 				borderRadius={'0px'}
 				borderBottom={'1px solid #E2E8F0;'}
 				bg={'#fff'}

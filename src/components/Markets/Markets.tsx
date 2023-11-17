@@ -20,6 +20,7 @@ import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/util
 import useFilter from './useFilter';
 import LeftMenu from './LeftMenu';
 import { CategoryCard } from '@/components/common';
+import { zIndexMarket } from '@/utils/zIndex';
 import styles from './markets.module.scss';
 
 const empty_array = [...Array(13)];
@@ -106,7 +107,7 @@ function Markets() {
 						flexDirection="row"
 						position="fixed"
 						bottom={0}
-						zIndex={5}
+						zIndex={zIndexMarket}
 						pl={6}
 						pr={6}
 						pt={4}

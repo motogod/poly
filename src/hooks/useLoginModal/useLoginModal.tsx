@@ -5,7 +5,6 @@ import {
 	Stack,
 	Button,
 	Heading,
-	useToast,
 	useDisclosure,
 	Modal,
 	ModalOverlay,
@@ -18,7 +17,6 @@ import {
 	Box,
 	Divider,
 	AbsoluteCenter,
-	Input,
 } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc';
 import { useSession } from 'next-auth/react';
@@ -27,6 +25,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, loginWithGoogle, RootState } from '@/store';
 import { useSiwe } from '@/hooks';
 import { MetaMaskIcon, WalletConnectIcon } from '../../../public/assets/svg';
+import { zIndexLoginModal } from '@/utils/zIndex';
 
 type AgentType = 'iPhone' | 'Android' | 'web';
 
@@ -37,17 +36,13 @@ function useLoginModal() {
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const { signInWithEthereum } = useSiwe();
-
-	const toast = useToast();
+	const { signInWithEthereum, isLoading: isSignInLoading } = useSiwe();
 
 	const { data: session, status: sessionStatus } = useSession();
 
 	const dispatch = useDispatch<AppDispatch>();
 
-	const { isAuthenticated, checkAuthSuccess } = useSelector(
-		(state: RootState) => state.authReducer
-	);
+	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
 
 	// callback onSuccess 登入成功時，簽名
 	const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
@@ -72,6 +67,13 @@ function useLoginModal() {
 		}
 	}, [sessionStatus, onClose, session, dispatch, isOpen]);
 
+	// 登入成功 關閉 LoginModal 視窗
+	useEffect(() => {
+		if (isAuthenticated) {
+			onClose();
+		}
+	}, [isAuthenticated, onClose]);
+
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
 	});
@@ -89,6 +91,8 @@ function useLoginModal() {
 		return 'web';
 	};
 
+	// 第一階段 isLoading: connect 錢包中 ; 第二階段 isSignInLoading: 簽名中：
+	// 兩階段皆完成才會通過 Login 關閉視窗
 	const ModalDom = useMemo(
 		() => (
 			<>
@@ -100,8 +104,11 @@ function useLoginModal() {
 						onClose();
 					}}
 				>
-					<ModalOverlay />
+					<ModalOverlay zIndex={zIndexLoginModal} />
 					<ModalContent
+						containerProps={{
+							zIndex: zIndexLoginModal,
+						}}
 						_focus={{ boxShadow: 'md' }}
 						maxHeight="100vh"
 						borderRadius={20}
@@ -116,17 +123,24 @@ function useLoginModal() {
 						<ModalCloseButton _focus={{ boxShadow: 'none' }} size={'lg'} m={'16px'} />
 						<ModalBody>
 							<Stack>
-								<Button
-									onClick={() => setPopupGoogle(true)}
-									leftIcon={<Icon as={FcGoogle} />}
-									w={'100%'}
-									size="lg"
-									bg={'#fff'}
-									border="2px solid #E2E8F0;"
-									color="black"
-								>
-									Sign in with Google
-								</Button>
+								{isLoading || isSignInLoading ? (
+									<Heading size={'md'} color={'gray.500'}>
+										Please sign the message in your compatible wallet to connect to market.
+									</Heading>
+								) : (
+									<Button
+										isLoading={isLoading || isSignInLoading}
+										onClick={() => setPopupGoogle(true)}
+										leftIcon={<Icon as={FcGoogle} />}
+										w={'100%'}
+										size="lg"
+										bg={'#fff'}
+										border="2px solid #E2E8F0;"
+										color="black"
+									>
+										Sign in with Google
+									</Button>
+								)}
 								<Box position="relative" pt={5} pb={5} pl={20} pr={20}>
 									<Divider color={'gray.500'} />
 									<AbsoluteCenter color={'gray.500'} bg="white" px="4">
@@ -136,14 +150,14 @@ function useLoginModal() {
 								<Stack direction={'row'}>
 									{connectors.map(connector => (
 										<Button
-											isLoading={isLoading}
+											isLoading={isLoading || isSignInLoading}
 											leftIcon={
 												<Icon as={connector.id === 'metaMask' ? MetaMaskIcon : WalletConnectIcon} />
 											}
 											key={connector.id}
 											fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
 											onClick={() => {
-												onClose();
+												// onClose();
 												const agent = isWebsiteAgent();
 												if (agent === 'web') {
 													// 網頁端可先判斷是否有 MetaMask
@@ -207,6 +221,7 @@ function useLoginModal() {
 			isDesktop,
 			popupGoogle,
 			session,
+			isSignInLoading,
 		]
 	);
 

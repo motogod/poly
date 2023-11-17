@@ -11,7 +11,7 @@ import { UserProfile } from '@/api';
 import { resetCheckAuthToast } from '../actions';
 
 type AuthState = {
-	isAuthenticated: boolean | null;
+	isAuthenticated: boolean | null; // 是否已登入的判斷
 	user: { address: string; email: string; id: string; username: string | null };
 	userProfile: UserProfile;
 	checkAuthSuccess: boolean | null; // 登入登出時的 提醒 Toast 出現與否

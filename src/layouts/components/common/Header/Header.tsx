@@ -8,6 +8,7 @@ import HeaderRightSideSection from './HeaderRightSideSection';
 
 import { PrimaryPink } from '@/utils/color';
 import { headerHeight, paddingMainHorizontal } from '@/utils/screen';
+import { zIndexHeader } from '@/utils/zIndex';
 
 const CircleIcon = (props: any) => (
 	<Icon viewBox="0 0 200 200" {...props}>
@@ -47,7 +48,7 @@ function Header() {
 			w="100%"
 			h={headerHeight}
 			position="fixed"
-			zIndex={5}
+			zIndex={zIndexHeader}
 			flexDirection="row"
 			justifyContent="space-between"
 			bg={'gray.50'}

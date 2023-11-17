@@ -20,6 +20,7 @@ import styles from './topicCardList.module.scss';
 import TopicCard from './TopicCard/TopicCard';
 import Draggable from '@/components/common/Draggable';
 import { paddingMainHorizontal } from '@/utils/screen';
+import { zIndexMinimum } from '@/utils/zIndex';
 
 const dummyDataArray = [
 	{ title: 'One' },
@@ -71,7 +72,7 @@ function TopicCardList() {
 	};
 
 	return (
-		<Stack zIndex={1}>
+		<Stack zIndex={zIndexMinimum}>
 			{TabDom}
 			<Stack mt={{ lg: '120px', md: '112px', sm: '112px' }} justify="center" direction="row">
 				<Stack>

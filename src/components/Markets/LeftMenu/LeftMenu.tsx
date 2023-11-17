@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Text, Stack, Checkbox } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { leftMenuItem } from '../data';
+import { zIndexMinimum } from '@/utils/zIndex';
 
 const LeftMenu = () => {
 	const [menuData, setMenuData] = useState(leftMenuItem);
@@ -90,7 +91,7 @@ const LeftMenu = () => {
 								return (
 									<>
 										<Stack
-											zIndex={1}
+											zIndex={zIndexMinimum}
 											onClick={e => {
 												e.preventDefault();
 												handleClickSubMenu(subValue.subMenuId);
