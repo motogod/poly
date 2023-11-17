@@ -36,7 +36,9 @@ function useLoginModal() {
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const { signInWithEthereum, isLoading: isSignInLoading } = useSiwe();
+	const { disconnect } = useDisconnect();
+
+	const { signInWithEthereum, isLoading: isSignInLoading, reset: resetSignIn } = useSiwe();
 
 	const { data: session, status: sessionStatus } = useSession();
 
@@ -101,6 +103,8 @@ function useLoginModal() {
 					isOpen={isOpen}
 					onClose={() => {
 						setPopupGoogle(false);
+						disconnect();
+						resetSignIn();
 						onClose();
 					}}
 				>
@@ -222,6 +226,8 @@ function useLoginModal() {
 			popupGoogle,
 			session,
 			isSignInLoading,
+			disconnect,
+			resetSignIn,
 		]
 	);
 
