@@ -21,6 +21,7 @@ import {
 import { FcGoogle } from 'react-icons/fc';
 import { useSession } from 'next-auth/react';
 import { useConnect, useDisconnect, useAccount } from 'wagmi';
+import { useSDK } from '@metamask/sdk-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, loginWithGoogle, RootState } from '@/store';
 import { useSiwe } from '@/hooks';
@@ -33,6 +34,7 @@ let hasDispatch = false;
 
 function useLoginModal() {
 	const [popupGoogle, setPopupGoogle] = useState<boolean | null>(null);
+	const [account, setAccount] = useState<string>();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -53,6 +55,17 @@ function useLoginModal() {
 			signInWithEthereum(account, chain.id);
 		},
 	});
+
+	const { sdk, connected, connecting, provider, chainId, account: metaAccount } = useSDK();
+
+	const connectMeta = async () => {
+		try {
+			const accounts = await sdk?.connect();
+			setAccount(accounts?.[0]);
+		} catch (err) {
+			console.warn(`failed to connect..`, err);
+		}
+	};
 
 	useEffect(() => {
 		// Google 新視窗登入成功時，關閉原本的登入 Modal
@@ -170,7 +183,8 @@ function useLoginModal() {
 														window.open('https://metamask.io/', '_blank');
 													} else {
 														console.log('Check');
-														connect({ connector });
+														connectMeta();
+														// connect({ connector });
 													}
 												} else if (agent === 'Android') {
 													// Android 若關閉錢包彈出視窗會有當下畫面錢包值卡住的問題，workaround 導出至其他頁面
@@ -178,7 +192,8 @@ function useLoginModal() {
 													connect({ connector });
 												} else {
 													// iOS 則直接連結
-													connect({ connector });
+													connectMeta();
+													// connect({ connector });
 												}
 											}}
 											w={'100%'}
