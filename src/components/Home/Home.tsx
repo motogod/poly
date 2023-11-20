@@ -3,7 +3,6 @@ import { Stack, Button, useToast, Input } from '@chakra-ui/react';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount, useDisconnect, useConnect, useEnsName, useNetwork } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
-import { useSDK } from '@metamask/sdk-react';
 import { useSession } from 'next-auth/react';
 import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
@@ -33,7 +32,6 @@ function Home() {
 	const { isAuthenticated, user } = useSelector((state: RootState) => state.authReducer);
 	const { markets } = useSelector((state: RootState) => state.homeReducer);
 	const { chain } = useNetwork();
-	const { sdk, connected, connecting, provider, chainId, account } = useSDK();
 
 	const {
 		ModalDom,
@@ -55,11 +53,7 @@ function Home() {
 		<Stack backgroundColor="gray.50">
 			<Stack mt={headerHeight}>
 				<Stack>
-					{/* <TopTopicSection /> */}
-					<p>{`Address from wagmi ${address}`}</p>
-					<p>{`Chain from wagmi ${chain}`}</p>
-					<p>{`Meata account ${account}`}</p>
-					<p>{`Meata chainId ${chainId}`}</p>
+					<TopTopicSection />
 				</Stack>
 				<Stack>
 					<CategorySection />
