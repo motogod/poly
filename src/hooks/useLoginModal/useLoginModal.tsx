@@ -177,7 +177,6 @@ function useLoginModal() {
 													// window.open(`https://metamask.app.link/dapp/${window.location.origin}`);
 													connect({ connector });
 												} else {
-													alert(connector.id);
 													// iOS 則直接連結
 													connect({ connector });
 												}
