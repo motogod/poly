@@ -34,7 +34,7 @@ let hasDispatch = false;
 
 function useLoginModal() {
 	const [popupGoogle, setPopupGoogle] = useState<boolean | null>(null);
-	const [account, setAccount] = useState<string>();
+	const [account, setAccount] = useState<any>();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -61,7 +61,7 @@ function useLoginModal() {
 	const connectMeta = async () => {
 		try {
 			const accounts = await sdk?.connect();
-			setAccount(accounts?.[0]);
+			console.log('accounts');
 		} catch (err) {
 			console.warn(`failed to connect..`, err);
 		}
