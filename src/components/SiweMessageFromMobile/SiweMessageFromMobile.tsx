@@ -9,17 +9,33 @@ function SiweMessageFromMobile() {
 
 	// listener to receive msgs from react native
 	useEffect(() => {
+		const createSiweMessage = async (address: string, statement: string, chainId: number) => {
+			const domain = window.location.host;
+			const origin = window.location.origin;
+			console.log('domain', domain);
+			console.log('origin', origin);
+			const message = new SiweMessage({
+				domain,
+				address,
+				statement,
+				uri: origin,
+				version: '1',
+				chainId,
+			});
+
+			return message.prepareMessage();
+		};
+
 		let messageListener;
 		if (navigator.userAgent.includes('Android')) {
 			messageListener = document.addEventListener('message', function (nativeEvent) {
-				console.log(nativeEvent);
-				alert(nativeEvent);
-				setAndroidData(nativeEvent);
+				const event = nativeEvent as MessageEvent;
+				const { address, statement, chainId } = event.data;
+				setAndroidData(event.data);
 			});
 		} else {
 			messageListener = window.addEventListener('message', function (nativeEvent) {
-				console.log(nativeEvent?.data);
-				this.alert(nativeEvent?.data);
+				const { address, statement, chainId } = nativeEvent?.data;
 				setIosData(nativeEvent?.data);
 			});
 		}
@@ -41,22 +57,6 @@ function SiweMessageFromMobile() {
 		}
 	};
 
-	const createSiweMessage = useCallback((address: string, statement: string, chainId: number) => {
-		const domain = window.location.host;
-		const origin = window.location.origin;
-
-		const message = new SiweMessage({
-			domain,
-			address,
-			statement,
-			uri: origin,
-			version: '1',
-			chainId,
-		});
-
-		return message.prepareMessage();
-	}, []);
-
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
 			<p>SiweMessageFromMobile</p>
@@ -65,7 +65,13 @@ function SiweMessageFromMobile() {
 			</Button>
 
 			<p>{`Show data from React Native Android ${androidData}`}</p>
+			<p>{`address ${androidData?.address}`}</p>
+			<p>{`statement ${androidData?.statement}`}</p>
+			<p>{`chainId ${androidData?.chainId}`}</p>
 			<p>{`Show data from React Native IOS ${iosData}`}</p>
+			<p>{`address ${iosData?.address}`}</p>
+			<p>{`statement ${iosData?.statement}`}</p>
+			<p>{`chainId ${iosData?.chainId}`}</p>
 		</Stack>
 	);
 }
