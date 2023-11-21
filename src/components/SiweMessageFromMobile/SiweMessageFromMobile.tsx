@@ -33,16 +33,22 @@ function SiweMessageFromMobile() {
 				const data = JSON.parse(event.data);
 				const { address, statement, chainId } = data;
 				setAndroidData(data);
-				const message = createSiweMessage(address, statement, chainId);
-				setMessage(message);
+				createSiweMessage(address, statement, chainId)
+					.then(value => {
+						setMessage(value);
+					})
+					.catch(err => alert(err));
 			});
 		} else {
 			messageListener = window.addEventListener('message', function (nativeEvent) {
 				const data = JSON.parse(nativeEvent?.data);
 				const { address, statement, chainId } = data;
 				setIosData(data);
-				const message = createSiweMessage(address, statement, chainId);
-				setMessage(message);
+				createSiweMessage(address, statement, chainId)
+					.then(value => {
+						setMessage(value);
+					})
+					.catch(err => alert(err));
 			});
 		}
 
