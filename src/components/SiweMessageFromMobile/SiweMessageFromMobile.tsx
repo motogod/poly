@@ -7,11 +7,18 @@ function SiweMessageFromMobile() {
 	const [data, setData] = useState();
 	// listener to receive msgs from react native
 	useEffect(() => {
-		const messageListener = window.addEventListener('message', nativeEvent => {
+		// Test on Android
+		const messageListener = document.addEventListener('message', nativeEvent => {
 			console.log(nativeEvent?.data);
 			alert(nativeEvent?.data);
 			setData(nativeEvent?.data);
 		});
+		// not woriking Android
+		// const messageListener = window.addEventListener('message', nativeEvent => {
+		// 	console.log(nativeEvent?.data);
+		// 	alert(nativeEvent?.data);
+		// 	setData(nativeEvent?.data);
+		// });
 		return messageListener;
 	}, []);
 
