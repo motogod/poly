@@ -1,5 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Stack, Button, Input, Card, CardBody, Grid, Heading, Text } from '@chakra-ui/react';
+import {
+	Stack,
+	Button,
+	Input,
+	Card,
+	CardBody,
+	Grid,
+	Heading,
+	Text,
+	Spinner,
+} from '@chakra-ui/react';
 import { SiweMessage } from 'siwe';
 import { headerHeight } from '../../utils/screen';
 
@@ -7,9 +17,12 @@ function SiweMessageFromMobile() {
 	const [iosData, setIosData] = useState<any>();
 	const [androidData, setAndroidData] = useState<any>();
 	const [message, setMessage] = useState<any>();
+	const [isLoading, setIsLoading] = useState(false);
 
 	// listener to receive msgs from react native
 	useEffect(() => {
+		setIsLoading(true);
+
 		const createSiweMessage = async (address: string, statement: string, chainId: number) => {
 			const domain = window.location.host;
 			const origin = window.location.origin;
@@ -35,9 +48,13 @@ function SiweMessageFromMobile() {
 				setAndroidData(data);
 				createSiweMessage(address, statement, chainId)
 					.then(value => {
+						setIsLoading(false);
 						setMessage(value);
 					})
-					.catch(err => alert(err));
+					.catch(err => {
+						setIsLoading(false);
+						alert(err);
+					});
 			});
 		} else {
 			messageListener = window.addEventListener('message', function (nativeEvent) {
@@ -46,9 +63,13 @@ function SiweMessageFromMobile() {
 				setIosData(data);
 				createSiweMessage(address, statement, chainId)
 					.then(value => {
+						setIsLoading(false);
 						setMessage(value);
 					})
-					.catch(err => alert(err));
+					.catch(err => {
+						setIsLoading(false);
+						alert(err);
+					});
 			});
 		}
 
@@ -83,7 +104,7 @@ function SiweMessageFromMobile() {
 			<Button onClick={() => sendMessage()}>
 				<Text>Send To React Native</Text>
 			</Button>
-
+			{isLoading && <Spinner />}
 			<p>{`Show data from React Native Android ${androidData}`}</p>
 			<p>{`address ${androidData?.address}`}</p>
 			<p>{`statement ${androidData?.statement}`}</p>
