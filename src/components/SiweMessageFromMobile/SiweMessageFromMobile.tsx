@@ -60,6 +60,7 @@ function SiweMessageFromMobile() {
 			messageListener = window.addEventListener('message', function (nativeEvent) {
 				setTimeout(() => {
 					const data = JSON.parse(nativeEvent?.data);
+					alert(data);
 					const { address, statement, chainId } = data;
 					setIosData(data);
 					createSiweMessage(address, statement, chainId)
@@ -71,7 +72,7 @@ function SiweMessageFromMobile() {
 							setIsLoading(false);
 							alert(err);
 						});
-				}, 1000);
+				}, 0);
 			});
 		}
 
