@@ -61,6 +61,7 @@ function SiweMessageFromMobile() {
 				const data = JSON.parse(nativeEvent?.data);
 				const { address, statement, chainId } = data;
 				setIosData(data);
+				alert(data);
 				createSiweMessage(address, statement, chainId)
 					.then(value => {
 						setIsLoading(false);
