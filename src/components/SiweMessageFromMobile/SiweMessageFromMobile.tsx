@@ -30,13 +30,15 @@ function SiweMessageFromMobile() {
 		if (navigator.userAgent.includes('Android')) {
 			messageListener = document.addEventListener('message', function (nativeEvent) {
 				const event = nativeEvent as MessageEvent;
-				const { address, statement, chainId } = event.data;
-				setAndroidData(event.data);
+				const data = JSON.parse(event.data);
+				const { address, statement, chainId } = data;
+				setAndroidData(data);
 			});
 		} else {
 			messageListener = window.addEventListener('message', function (nativeEvent) {
-				const { address, statement, chainId } = nativeEvent?.data;
-				setIosData(nativeEvent?.data);
+				const data = JSON.parse(nativeEvent?.data);
+				const { address, statement, chainId } = data;
+				setIosData(data);
 			});
 		}
 
