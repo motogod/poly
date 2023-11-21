@@ -58,19 +58,20 @@ function SiweMessageFromMobile() {
 			});
 		} else {
 			messageListener = window.addEventListener('message', function (nativeEvent) {
-				const data = JSON.parse(nativeEvent?.data);
-				const { address, statement, chainId } = data;
-				setIosData(data);
-				alert(data);
-				createSiweMessage(address, statement, chainId)
-					.then(value => {
-						setIsLoading(false);
-						setMessage(value);
-					})
-					.catch(err => {
-						setIsLoading(false);
-						alert(err);
-					});
+				setTimeout(() => {
+					const data = JSON.parse(nativeEvent?.data);
+					const { address, statement, chainId } = data;
+					setIosData(data);
+					createSiweMessage(address, statement, chainId)
+						.then(value => {
+							setIsLoading(false);
+							setMessage(value);
+						})
+						.catch(err => {
+							setIsLoading(false);
+							alert(err);
+						});
+				}, 1000);
 			});
 		}
 
