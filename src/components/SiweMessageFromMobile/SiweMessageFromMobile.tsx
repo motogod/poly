@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Stack, Button, Input, Card, CardBody, Grid, Heading, Text } from '@chakra-ui/react';
-
+import { SiweMessage } from 'siwe';
 import { headerHeight } from '../../utils/screen';
 
 function SiweMessageFromMobile() {
@@ -10,15 +10,17 @@ function SiweMessageFromMobile() {
 	// listener to receive msgs from react native
 	useEffect(() => {
 		let messageListener;
-		if (navigator.userAgent.includes('iPhone')) {
+		if (navigator.userAgent.includes('Android')) {
 			messageListener = document.addEventListener('message', function (nativeEvent) {
 				console.log(nativeEvent);
-				setIosData(nativeEvent);
+				alert(nativeEvent);
+				setAndroidData(nativeEvent);
 			});
 		} else {
 			messageListener = window.addEventListener('message', function (nativeEvent) {
 				console.log(nativeEvent?.data);
-				setAndroidData(nativeEvent?.data);
+				this.alert(nativeEvent?.data);
+				setIosData(nativeEvent?.data);
 			});
 		}
 
@@ -38,6 +40,22 @@ function SiweMessageFromMobile() {
 			window.ReactNativeWebView.postMessage('Hi from React website');
 		}
 	};
+
+	const createSiweMessage = useCallback((address: string, statement: string, chainId: number) => {
+		const domain = window.location.host;
+		const origin = window.location.origin;
+
+		const message = new SiweMessage({
+			domain,
+			address,
+			statement,
+			uri: origin,
+			version: '1',
+			chainId,
+		});
+
+		return message.prepareMessage();
+	}, []);
 
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
