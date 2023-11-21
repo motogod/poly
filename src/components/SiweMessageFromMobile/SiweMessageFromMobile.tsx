@@ -8,6 +8,7 @@ function SiweMessageFromMobile() {
 	useEffect(() => {
 		const messageListener = window.addEventListener('message', nativeEvent => {
 			console.log(nativeEvent?.data);
+			alert(nativeEvent?.data);
 		});
 		return messageListener;
 	}, []);
