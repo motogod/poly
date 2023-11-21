@@ -4,11 +4,13 @@ import { Stack, Button, Input, Card, CardBody, Grid, Heading, Text } from '@chak
 import { headerHeight } from '../../utils/screen';
 
 function SiweMessageFromMobile() {
+	const [data, setData] = useState();
 	// listener to receive msgs from react native
 	useEffect(() => {
 		const messageListener = window.addEventListener('message', nativeEvent => {
 			console.log(nativeEvent?.data);
 			alert(nativeEvent?.data);
+			setData(nativeEvent?.data);
 		});
 		return messageListener;
 	}, []);
@@ -26,6 +28,8 @@ function SiweMessageFromMobile() {
 			<Button onClick={() => sendMessage()}>
 				<Text>Send To React Native</Text>
 			</Button>
+
+			<p>{`Show data from React Native ${data}`}</p>
 		</Stack>
 	);
 }
