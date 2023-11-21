@@ -6,14 +6,14 @@ import { headerHeight } from '../../utils/screen';
 function SiweMessageFromMobile() {
 	const [iosData, setIosData] = useState<any>();
 	const [androidData, setAndroidData] = useState<any>();
+	const [message, setMessage] = useState<any>();
 
 	// listener to receive msgs from react native
 	useEffect(() => {
 		const createSiweMessage = async (address: string, statement: string, chainId: number) => {
 			const domain = window.location.host;
 			const origin = window.location.origin;
-			console.log('domain', domain);
-			console.log('origin', origin);
+
 			const message = new SiweMessage({
 				domain,
 				address,
@@ -33,12 +33,16 @@ function SiweMessageFromMobile() {
 				const data = JSON.parse(event.data);
 				const { address, statement, chainId } = data;
 				setAndroidData(data);
+				const message = createSiweMessage(address, statement, chainId);
+				setMessage(message);
 			});
 		} else {
 			messageListener = window.addEventListener('message', function (nativeEvent) {
 				const data = JSON.parse(nativeEvent?.data);
 				const { address, statement, chainId } = data;
 				setIosData(data);
+				const message = createSiweMessage(address, statement, chainId);
+				setMessage(message);
 			});
 		}
 
@@ -51,6 +55,14 @@ function SiweMessageFromMobile() {
 		// });
 		// return messageListener;
 	}, []);
+
+	useEffect(() => {
+		if (message) {
+			if (typeof window !== undefined && window.ReactNativeWebView) {
+				window.ReactNativeWebView.postMessage(message);
+			}
+		}
+	}, [message]);
 
 	// method to send msg to react native
 	const sendMessage = () => {
