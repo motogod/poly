@@ -40,6 +40,7 @@ function SiweMessageFromMobile() {
 		};
 
 		let messageListener;
+		alert('1');
 		if (navigator.userAgent.includes('Android')) {
 			messageListener = document.addEventListener('message', function (nativeEvent) {
 				const event = nativeEvent as MessageEvent;
@@ -57,22 +58,22 @@ function SiweMessageFromMobile() {
 					});
 			});
 		} else {
+			alert('2');
 			messageListener = window.addEventListener('message', function (nativeEvent) {
-				setTimeout(() => {
-					const data = JSON.parse(nativeEvent?.data);
-					alert(data);
-					const { address, statement, chainId } = data;
-					setIosData(data);
-					createSiweMessage(address, statement, chainId)
-						.then(value => {
-							setIsLoading(false);
-							setMessage(value);
-						})
-						.catch(err => {
-							setIsLoading(false);
-							alert(err);
-						});
-				}, 0);
+				alert('3');
+				const data = JSON.parse(nativeEvent?.data);
+				alert('4');
+				const { address, statement, chainId } = data;
+				setIosData(data);
+				createSiweMessage(address, statement, chainId)
+					.then(value => {
+						setIsLoading(false);
+						setMessage(value);
+					})
+					.catch(err => {
+						setIsLoading(false);
+						alert(err);
+					});
 			});
 		}
 
