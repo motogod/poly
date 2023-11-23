@@ -40,12 +40,13 @@ function AuthProvider({ children }: Props) {
 	useEffect(() => {
 		// 已登入過，但尚未創建名稱
 		if (isModalFirst && isAuthenticated !== null) {
-			if (isAuthenticated && username === null) {
+			if (isAuthenticated && (username === null || username === '')) {
 				modalOnOpen();
 			} else {
 				modalOnClose();
+				// 確定有名字，變數設為 false，整段 useEffect 避免重複觸發出現彈窗
+				// isModalFirst = false;
 			}
-			isModalFirst = false;
 		}
 	}, [username, modalOnOpen, modalOnClose, isAuthenticated]);
 

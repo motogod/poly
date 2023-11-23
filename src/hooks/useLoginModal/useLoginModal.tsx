@@ -205,7 +205,7 @@ function useLoginModal() {
 													if (agent === 'web') {
 														// 網頁端可先判斷是否有 MetaMask
 														if (!connector.ready && connector.id === 'metaMask') {
-															window.open('https://metamask.io/', '_blank');
+															window.open('https://metamask.io/download/', '_blank');
 														} else {
 															connect({ connector });
 														}

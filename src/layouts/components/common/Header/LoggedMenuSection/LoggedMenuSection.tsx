@@ -78,6 +78,7 @@ function LoggedMenuSection({ close, type }: LoggedMenuSectionType) {
 					disconnect();
 					// 關閉彈跳視窗
 					close();
+					router.replace('./');
 				}}
 				size={'md'}
 				color={'gray.800'}
