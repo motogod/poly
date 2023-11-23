@@ -17,7 +17,10 @@ import {
 	Box,
 	Divider,
 	AbsoluteCenter,
+	Text,
+	ScaleFade,
 } from '@chakra-ui/react';
+import { WarningIcon } from '@chakra-ui/icons';
 import { FcGoogle } from 'react-icons/fc';
 import { useSession } from 'next-auth/react';
 import { useConnect, useDisconnect, useAccount } from 'wagmi';
@@ -34,6 +37,7 @@ let hasDispatch = false;
 
 function useLoginModal() {
 	const [popupGoogle, setPopupGoogle] = useState<boolean | null>(null);
+	const [errorMsg, setErrorMsg] = useState('');
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -52,6 +56,13 @@ function useLoginModal() {
 		onSuccess(data, variables, context) {
 			const { account, chain } = data;
 			signInWithEthereum(account, chain.id);
+		},
+		onError(error, variables, context) {
+			// console.log('error', { error, variables, context });
+			// 觸發 MetaMask 時，登入視窗出現 未填密碼直接關閉，再次觸發 MetaMask 時的 error 處理
+			if (variables.connector.id === 'metaMask') {
+				setErrorMsg('An unexpected error occurred.');
+			}
 		},
 	});
 
@@ -96,7 +107,7 @@ function useLoginModal() {
 		return 'web';
 	};
 
-	// 第一階段 isLoading: connect 錢包中 ; 第二階段 isSignInLoading: 簽名中：
+	// 第一階段 isLoading: connect 錢包中 不做偵測處理; 第二階段 isSignInLoading: 簽名中： 顯示 loading 狀態
 	// 兩階段皆完成才會通過 Login 關閉視窗
 	const ModalDom = useMemo(
 		() => (
@@ -109,6 +120,7 @@ function useLoginModal() {
 						setPopupGoogle(false); // 恢復 google 彈窗出現與否的值
 						disconnect(); // 斷開錢包連接
 						resetSignIn(); // 斷開當下簽名請求
+						setErrorMsg('');
 						onClose(); // 關閉視窗
 					}}
 				>
@@ -131,14 +143,19 @@ function useLoginModal() {
 						<ModalCloseButton _focus={{ boxShadow: 'none' }} size={'lg'} m={'16px'} />
 						<ModalBody>
 							<Stack>
-								{isLoading || isSignInLoading ? (
-									<Heading size={'md'} color={'gray.500'}>
-										Please sign the message in your compatible wallet to connect to market.
-									</Heading>
+								{isSignInLoading ? (
+									<ScaleFade initialScale={0.9} in={true}>
+										<Heading size={'md'} color={'gray.500'}>
+											Please sign the message in your compatible wallet to connect to market.
+										</Heading>
+									</ScaleFade>
 								) : (
 									<Button
-										isLoading={isLoading || isSignInLoading}
-										onClick={() => setPopupGoogle(true)}
+										isLoading={isSignInLoading}
+										onClick={() => {
+											setErrorMsg('');
+											setPopupGoogle(true);
+										}}
 										leftIcon={<Icon as={FcGoogle} />}
 										w={'100%'}
 										size="lg"
@@ -149,50 +166,68 @@ function useLoginModal() {
 										Sign in with Google
 									</Button>
 								)}
+
 								<Box position="relative" pt={5} pb={5} pl={20} pr={20}>
-									<Divider color={'gray.500'} />
-									<AbsoluteCenter color={'gray.500'} bg="white" px="4">
-										OR
-									</AbsoluteCenter>
+									{errorMsg ? (
+										<ScaleFade initialScale={0.9} in={true}>
+											<Stack align={'center'} justify={'center'} direction={'row'}>
+												<Icon as={WarningIcon} color={'red.500'} />
+												<Text fontSize="xs" lineHeight="18px" color={'red.500'}>
+													{errorMsg}
+												</Text>
+											</Stack>
+										</ScaleFade>
+									) : (
+										<>
+											<Divider color={'gray.500'} />
+											<AbsoluteCenter color={'gray.500'} bg="white" px="4">
+												OR
+											</AbsoluteCenter>
+										</>
+									)}
 								</Box>
 								<Stack direction={'row'}>
 									{connectors.map(connector => (
-										<Button
-											isLoading={isLoading || isSignInLoading}
-											leftIcon={
-												<Icon as={connector.id === 'metaMask' ? MetaMaskIcon : WalletConnectIcon} />
-											}
-											key={connector.id}
-											fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
-											onClick={() => {
-												// onClose();
-												const agent = isWebsiteAgent();
-												if (agent === 'web') {
-													// 網頁端可先判斷是否有 MetaMask
-													if (!connector.ready && connector.id === 'metaMask') {
-														window.open('https://metamask.io/', '_blank');
+										<>
+											<Button
+												isLoading={isSignInLoading}
+												leftIcon={
+													<Icon
+														as={connector.id === 'metaMask' ? MetaMaskIcon : WalletConnectIcon}
+													/>
+												}
+												key={connector.id}
+												fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
+												onClick={() => {
+													// onClose();
+													const agent = isWebsiteAgent();
+													setErrorMsg('');
+													if (agent === 'web') {
+														// 網頁端可先判斷是否有 MetaMask
+														if (!connector.ready && connector.id === 'metaMask') {
+															window.open('https://metamask.io/', '_blank');
+														} else {
+															connect({ connector });
+														}
+													} else if (agent === 'Android') {
+														// Android 若關閉錢包彈出視窗會有當下畫面錢包值卡住的問題，workaround 導出至其他頁面
+														// window.open(`https://metamask.app.link/dapp/${window.location.origin}`);
+														connect({ connector });
 													} else {
-														console.log('Check');
+														// iOS 則直接連結
 														connect({ connector });
 													}
-												} else if (agent === 'Android') {
-													// Android 若關閉錢包彈出視窗會有當下畫面錢包值卡住的問題，workaround 導出至其他頁面
-													// window.open(`https://metamask.app.link/dapp/${window.location.origin}`);
-													connect({ connector });
-												} else {
-													// iOS 則直接連結
-													connect({ connector });
-												}
-											}}
-											w={'100%'}
-											size="lg"
-											bg={'teal.500'}
-											color="#fff"
-											// justifyContent={'start'}
-										>
-											{connector.name}
-											{isLoading && connector.id === pendingConnector?.id && ' (connecting)'}
-										</Button>
+												}}
+												w={'100%'}
+												size="lg"
+												bg={'teal.500'}
+												color="#fff"
+												// justifyContent={'start'}
+											>
+												{connector.name}
+												{/* {isLoading && connector.id === pendingConnector?.id && ' (connecting)'} */}
+											</Button>
+										</>
 									))}
 								</Stack>
 							</Stack>
@@ -224,14 +259,13 @@ function useLoginModal() {
 			onClose,
 			connect,
 			connectors,
-			isLoading,
-			pendingConnector,
 			isDesktop,
 			popupGoogle,
 			session,
 			isSignInLoading,
 			disconnect,
 			resetSignIn,
+			errorMsg,
 		]
 	);
 
