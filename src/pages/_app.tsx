@@ -30,7 +30,7 @@ import Header from '@/layouts/components/common/Header';
 const Layout = dynamic(() => import('@/layouts/Layout'), { ssr: false });
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-	[mainnet, arbitrum],
+	[arbitrum, mainnet], // 第一個位置為主要的 cahin，WaleetConnect 會要求切換至這一個
 	[publicProvider()]
 );
 
@@ -99,7 +99,7 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 		<>
 			<Provider store={store}>
 				<SessionProvider session={session}>
-					<MetaMaskProvider
+					{/* <MetaMaskProvider
 						debug={false}
 						sdkOptions={{
 							checkInstallationImmediately: false,
@@ -108,20 +108,20 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 								url: typeof window !== 'undefined' ? window.location.host : '',
 							},
 						}}
-					>
-						<WagmiConfig config={config}>
-							<ChakraProvider theme={theme}>
-								<Head>
-									<title>{`Poly`}</title>
-									<meta name="description" content={`poly`} />
-									<meta name="keywords" content="poly" />
-									<meta name="viewport" content="initial-scale=1, width=device-width" />
-								</Head>
-								{/* <Header /> */}
-								<AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
-							</ChakraProvider>
-						</WagmiConfig>
-					</MetaMaskProvider>
+					> */}
+					<WagmiConfig config={config}>
+						<ChakraProvider theme={theme}>
+							<Head>
+								<title>{`Poly`}</title>
+								<meta name="description" content={`poly`} />
+								<meta name="keywords" content="poly" />
+								<meta name="viewport" content="initial-scale=1, width=device-width" />
+							</Head>
+							{/* <Header /> */}
+							<AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+						</ChakraProvider>
+					</WagmiConfig>
+					{/* </MetaMaskProvider> */}
 				</SessionProvider>
 			</Provider>
 		</>
