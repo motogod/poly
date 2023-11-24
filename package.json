@@ -13,7 +13,7 @@
     "@chakra-ui/react": "^2.8.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@metamask/sdk-react": "^0.12.4",
+    "@metamask/sdk-react": "^0.13.0",
     "@reduxjs/toolkit": "^1.9.7",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "20.5.0",
@@ -42,8 +42,8 @@
     "sass": "^1.65.1",
     "siwe": "^2.1.4",
     "typescript": "5.1.6",
-    "viem": "^1.16.6",
-    "wagmi": "^1.4.4"
+    "viem": "^1.19.8",
+    "wagmi": "^1.4.7"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

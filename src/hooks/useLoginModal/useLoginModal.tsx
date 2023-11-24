@@ -23,7 +23,7 @@ import {
 import { WarningIcon } from '@chakra-ui/icons';
 import { FcGoogle } from 'react-icons/fc';
 import { useSession } from 'next-auth/react';
-import { useConnect, useDisconnect, useAccount } from 'wagmi';
+import { useConnect, useDisconnect, useAccount, useSwitchNetwork, useNetwork } from 'wagmi';
 import { useSDK } from '@metamask/sdk-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, loginWithGoogle, RootState } from '@/store';
@@ -42,6 +42,8 @@ function useLoginModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const { disconnect } = useDisconnect();
+	const { chain } = useNetwork();
+	const { switchNetwork } = useSwitchNetwork();
 
 	const { signInWithEthereum, isLoading: isSignInLoading, reset: resetSignIn } = useSiwe();
 
@@ -53,9 +55,15 @@ function useLoginModal() {
 
 	// callback onSuccess 登入成功時，簽名
 	const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
-		onSuccess(data, variables, context) {
+		async onSuccess(data, variables, context) {
 			const { account, chain } = data;
-			signInWithEthereum(account, chain.id);
+			await signInWithEthereum(account, chain.id);
+			// 切換 chainId 到 Arbitrum, 若尚未 connect 成功 switchNetwork 會是 undefined
+			// WalletConnect 會自動切換到設置的第一個 chainId，多插入一個切換會有 pending 的 bug
+			// 只有連接 MetaMask 才執行手動切換
+			if (variables.connector.id === 'metaMask') {
+				switchNetwork?.(42161);
+			}
 		},
 		onError(error, variables, context) {
 			// console.log('error', { error, variables, context });
@@ -66,7 +74,7 @@ function useLoginModal() {
 		},
 	});
 
-	const { sdk, connected, connecting, provider, chainId, account: metaAccount } = useSDK();
+	// const { sdk, connected, connecting, provider, chainId, account: metaAccount } = useSDK();
 
 	useEffect(() => {
 		// Google 新視窗登入成功時，關閉原本的登入 Modal

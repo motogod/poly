@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Stack, Button, useToast, Input } from '@chakra-ui/react';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import { useAccount, useDisconnect, useConnect, useEnsName, useNetwork } from 'wagmi';
+import {
+	useAccount,
+	useDisconnect,
+	useConnect,
+	useEnsName,
+	useNetwork,
+	useSwitchNetwork,
+} from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { useSession } from 'next-auth/react';
 import { Icon } from '@chakra-ui/react';
@@ -31,7 +38,7 @@ function Home() {
 	console.log('status', status);
 	const { isAuthenticated, user } = useSelector((state: RootState) => state.authReducer);
 	const { markets } = useSelector((state: RootState) => state.homeReducer);
-	const { chain } = useNetwork();
+	const { chain, chains } = useNetwork();
 
 	const {
 		ModalDom,
