@@ -69,7 +69,8 @@ function useLoginModal() {
 			// console.log('error', { error, variables, context });
 			// 觸發 MetaMask 時，登入視窗出現 未填密碼直接關閉，再次觸發 MetaMask 時的 error 處理
 			if (variables.connector.id === 'metaMask') {
-				setErrorMsg('An unexpected error occurred.');
+				// setErrorMsg('An unexpected error occurred.');
+				setErrorMsg(error.message);
 			}
 		},
 	});
