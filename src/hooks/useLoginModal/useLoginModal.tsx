@@ -104,6 +104,7 @@ function useLoginModal() {
 
 	// 若是網頁開啟，使用者未安裝 MetaMask 引導至 MetaMask 官網
 	const isWebsiteAgent = (): AgentType => {
+		console.log('isWebsiteAgent', navigator.userAgent);
 		if (navigator.userAgent.includes('iPhone')) {
 			return 'iPhone';
 		}
@@ -224,10 +225,12 @@ function useLoginModal() {
 														}
 													} else if (agent === 'Android') {
 														// triggerIntoMetaMaskAppWebView();
-														connect({ connector });
+														alert(navigator.userAgent);
+														// connect({ connector });
 													} else {
 														// triggerIntoMetaMaskAppWebView();
-														connect({ connector });
+														alert(navigator.userAgent);
+														// connect({ connector });
 													}
 												}}
 												w={'100%'}
