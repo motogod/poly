@@ -162,11 +162,12 @@ const authSlice = createSlice({
 				state.checkAuthTitle = 'Create account suceesfully';
 			}
 		});
-		builder.addCase(putUserProfile.rejected, state => {
+		builder.addCase(putUserProfile.rejected, (state, action) => {
 			console.log('putUserProfile rejected');
 			state.putUsrProfileIsLoading = null;
-			state.checkAuthSuccess = false;
-			state.checkAuthTitle = '';
+			// below for Test default is false and ''
+			state.checkAuthSuccess = true;
+			state.checkAuthTitle = action.error.message as string;
 		});
 	},
 });
