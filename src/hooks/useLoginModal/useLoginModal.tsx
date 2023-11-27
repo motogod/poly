@@ -227,9 +227,17 @@ function useLoginModal() {
 															connect({ connector });
 														}
 													} else if (agent === 'Android') {
-														triggerIntoMetaMaskAppWebView();
+														if (connector.id === 'metaMask') {
+															triggerIntoMetaMaskAppWebView();
+														} else {
+															connect({ connector });
+														}
 													} else if (agent === 'iPhone') {
-														triggerIntoMetaMaskAppWebView();
+														if (connector.id === 'metaMask') {
+															triggerIntoMetaMaskAppWebView();
+														} else {
+															connect({ connector });
+														}
 													} else {
 														// 手機端的 MetaMask APP 裡面的 WebView 狀況下
 														connect({ connector });
