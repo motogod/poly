@@ -164,10 +164,11 @@ const authSlice = createSlice({
 		});
 		builder.addCase(putUserProfile.rejected, (state, action) => {
 			console.log('putUserProfile rejected');
+			const { name, message, stack } = action.error;
 			state.putUsrProfileIsLoading = null;
 			// below for Test default is false and ''
 			state.checkAuthSuccess = true;
-			state.checkAuthTitle = action.error.message as string;
+			state.checkAuthTitle = `${name}\n${message}\n${stack}` as string;
 		});
 	},
 });

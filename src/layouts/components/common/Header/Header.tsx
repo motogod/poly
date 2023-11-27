@@ -33,7 +33,8 @@ function Header() {
 				title: checkAuthTitle,
 				position: 'top',
 				status: 'success',
-				duration: 2000,
+				// duration: 2000,
+				duration: 90000,
 				isClosable: true,
 			});
 

@@ -62,7 +62,6 @@ const putUserProfile = createAsyncThunk(
 	'api/putUserProfile',
 	async (params: { username: string }) => {
 		const resp = await PutUserProfile<PutUserProfileType>(params);
-		alert(resp.message);
 		console.log('putUserProfile resp is', resp);
 		return resp;
 	}
