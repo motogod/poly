@@ -80,7 +80,7 @@ function HeaderRightSideSection() {
 							<LoggedInfoSectioin close={onClose} />
 							<Stack w={'100%'} h={'1px'} bg={'gray.100'} mt={'8px'} />
 						</Stack>
-						<Stack align={'center'} bg={'pink'}>
+						<Stack align={'center'}>
 							<LoggedMenuSection close={onClose} type="modal" />
 							<Heading mt={'0px'} mb={'16px'} size={'xs'} color={'gray.800'}>
 								Community
