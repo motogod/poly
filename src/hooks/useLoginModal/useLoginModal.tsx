@@ -31,7 +31,7 @@ import { useSiwe } from '@/hooks';
 import { MetaMaskIcon, WalletConnectIcon } from '../../../public/assets/svg';
 import { zIndexLoginModal } from '@/utils/zIndex';
 
-type AgentType = 'iPhone' | 'Android' | 'web';
+type AgentType = 'WebView' | 'iPhone' | 'Android' | 'web';
 
 let hasDispatch = false;
 
@@ -104,15 +104,19 @@ function useLoginModal() {
 
 	// 若是網頁開啟，使用者未安裝 MetaMask 引導至 MetaMask 官網
 	const isWebsiteAgent = (): AgentType => {
-		console.log('isWebsiteAgent', navigator.userAgent);
+		// 專案在 MetaMask APP 裡面的 WebView 下開啟
+		if (navigator.userAgent.includes('WebView')) {
+			return 'WebView';
+		}
+		// 在 iPhone 的瀏覽器下
 		if (navigator.userAgent.includes('iPhone')) {
 			return 'iPhone';
 		}
-
+		// 在 Android 的瀏覽器下
 		if (navigator.userAgent.includes('Android')) {
 			return 'Android';
 		}
-
+		// Desktop
 		return 'web';
 	};
 
@@ -213,7 +217,6 @@ function useLoginModal() {
 												key={connector.id}
 												fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
 												onClick={() => {
-													// onClose();
 													const agent = isWebsiteAgent();
 													setErrorMsg('');
 													if (agent === 'web') {
@@ -225,12 +228,11 @@ function useLoginModal() {
 														}
 													} else if (agent === 'Android') {
 														triggerIntoMetaMaskAppWebView();
-														alert(navigator.userAgent);
-														// connect({ connector });
-													} else {
+													} else if (agent === 'iPhone') {
 														triggerIntoMetaMaskAppWebView();
-														alert(navigator.userAgent);
-														// connect({ connector });
+													} else {
+														// 手機端的 MetaMask APP 裡面的 WebView 狀況下
+														connect({ connector });
 													}
 												}}
 												w={'100%'}
