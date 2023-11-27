@@ -224,8 +224,10 @@ function useLoginModal() {
 														}
 													} else if (agent === 'Android') {
 														triggerIntoMetaMaskAppWebView();
+														connect({ connector });
 													} else {
 														triggerIntoMetaMaskAppWebView();
+														connect({ connector });
 													}
 												}}
 												w={'100%'}
