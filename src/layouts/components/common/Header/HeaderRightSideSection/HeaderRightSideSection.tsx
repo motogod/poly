@@ -17,6 +17,7 @@ import {
 	ModalCloseButton,
 	useDisclosure,
 	Icon,
+	ModalFooter,
 } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -86,6 +87,7 @@ function HeaderRightSideSection() {
 							</Heading>
 							<Image src={SocialPng} width={36} height={36} alt="socialPng" />
 						</Stack>
+						<ModalFooter h={'100px'} />
 					</ModalBody>
 					<Stack
 						w={'100%'}
