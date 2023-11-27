@@ -168,7 +168,7 @@ const authSlice = createSlice({
 			state.putUsrProfileIsLoading = null;
 			// below for Test default is false and ''
 			state.checkAuthSuccess = true;
-			state.checkAuthTitle = `${name}\n${message}\n${stack}` as string;
+			state.checkAuthTitle = `${name}     ${message}      ${stack}` as string;
 		});
 	},
 });
