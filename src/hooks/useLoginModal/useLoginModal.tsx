@@ -115,6 +115,11 @@ function useLoginModal() {
 		return 'web';
 	};
 
+	const triggerIntoMetaMaskAppWebView = () => {
+		// 手機端導入到 Metamask APP 裡面的 webView 頁面
+		window.open(`https://metamask.app.link/dapp/${window.location.host}`);
+	};
+
 	// 第一階段 isLoading: connect 錢包中 不做偵測處理; 第二階段 isSignInLoading: 簽名中： 顯示 loading 狀態
 	// 兩階段皆完成才會通過 Login 關閉視窗
 	const ModalDom = useMemo(
@@ -218,12 +223,9 @@ function useLoginModal() {
 															connect({ connector });
 														}
 													} else if (agent === 'Android') {
-														// Android 若關閉錢包彈出視窗會有當下畫面錢包值卡住的問題，workaround 導出至其他頁面
-														// window.open(`https://metamask.app.link/dapp/${window.location.origin}`);
-														connect({ connector });
+														triggerIntoMetaMaskAppWebView();
 													} else {
-														// iOS 則直接連結
-														connect({ connector });
+														triggerIntoMetaMaskAppWebView();
 													}
 												}}
 												w={'100%'}

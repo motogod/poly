@@ -99,7 +99,7 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 		<>
 			<Provider store={store}>
 				<SessionProvider session={session}>
-					<MetaMaskProvider
+					{/* <MetaMaskProvider
 						debug={false}
 						sdkOptions={{
 							checkInstallationImmediately: false,
@@ -108,20 +108,20 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 								url: typeof window !== 'undefined' ? window.location.host : '',
 							},
 						}}
-					>
-						<WagmiConfig config={config}>
-							<ChakraProvider theme={theme}>
-								<Head>
-									<title>{`Poly`}</title>
-									<meta name="description" content={`poly`} />
-									<meta name="keywords" content="poly" />
-									<meta name="viewport" content="initial-scale=1, width=device-width" />
-								</Head>
-								{/* <Header /> */}
-								<AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
-							</ChakraProvider>
-						</WagmiConfig>
-					</MetaMaskProvider>
+					> */}
+					<WagmiConfig config={config}>
+						<ChakraProvider theme={theme}>
+							<Head>
+								<title>{`Poly`}</title>
+								<meta name="description" content={`poly`} />
+								<meta name="keywords" content="poly" />
+								<meta name="viewport" content="initial-scale=1, width=device-width" />
+							</Head>
+							{/* <Header /> */}
+							<AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+						</ChakraProvider>
+					</WagmiConfig>
+					{/* </MetaMaskProvider> */}
 				</SessionProvider>
 			</Provider>
 		</>
