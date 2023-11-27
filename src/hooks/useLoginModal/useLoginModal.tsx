@@ -224,11 +224,11 @@ function useLoginModal() {
 															connect({ connector });
 														}
 													} else if (agent === 'Android') {
-														// triggerIntoMetaMaskAppWebView();
+														triggerIntoMetaMaskAppWebView();
 														alert(navigator.userAgent);
 														// connect({ connector });
 													} else {
-														// triggerIntoMetaMaskAppWebView();
+														triggerIntoMetaMaskAppWebView();
 														alert(navigator.userAgent);
 														// connect({ connector });
 													}
