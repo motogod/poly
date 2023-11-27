@@ -223,10 +223,10 @@ function useLoginModal() {
 															connect({ connector });
 														}
 													} else if (agent === 'Android') {
-														triggerIntoMetaMaskAppWebView();
+														// triggerIntoMetaMaskAppWebView();
 														connect({ connector });
 													} else {
-														triggerIntoMetaMaskAppWebView();
+														// triggerIntoMetaMaskAppWebView();
 														connect({ connector });
 													}
 												}}
