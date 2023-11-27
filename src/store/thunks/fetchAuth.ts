@@ -61,7 +61,7 @@ const getUserProfile = createAsyncThunk('api/getUserProfile', async (params: any
 const putUserProfile = createAsyncThunk(
 	'api/putUserProfile',
 	async (params: { username: string }) => {
-		alert(`username is ${params.username}`);
+		// alert(`username is ${params.username}`);
 		const resp = await PutUserProfile<PutUserProfileType>(params);
 		console.log('putUserProfile resp is', resp);
 		return resp;

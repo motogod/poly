@@ -166,9 +166,12 @@ const authSlice = createSlice({
 			console.log('putUserProfile rejected');
 			const { name, message, stack } = action.error;
 			state.putUsrProfileIsLoading = null;
+			state.checkAuthSuccess = false;
+			state.checkAuthTitle = '';
 			// below for Test default is false and ''
-			state.checkAuthSuccess = true;
-			state.checkAuthTitle = `${name}     ${message}      ${stack}` as string;
+			// 	state.checkAuthSuccess = true;
+			// 	state.checkAuthTitle = `${name}     ${message}      ${stack}` as string;
+			// });
 		});
 	},
 });
