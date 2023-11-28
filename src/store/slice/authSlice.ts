@@ -88,7 +88,6 @@ const authSlice = createSlice({
 		});
 		builder.addCase(loginWithSiwe.rejected, (state, action) => {
 			console.log('loginWithSiwe rejected', action);
-			alert(action.error.message);
 			state.isAuthenticated = false;
 			state.checkAuthSuccess = false;
 			state.checkAuthTitle = '';
