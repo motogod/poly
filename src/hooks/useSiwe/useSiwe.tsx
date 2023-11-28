@@ -83,7 +83,6 @@ function useCategoryTabsList() {
 				);
 			} catch (error) {
 				console.log('signInWithEthereum error', error);
-				alert(error);
 				disconnect();
 			}
 		}
