@@ -21,7 +21,12 @@ function useCategoryTabsList() {
 		}
 	}, []);
 
-	const createSiweMessage = async (address: string, statement: string, chainId: number) => {
+	const createSiweMessage = async (
+		address: string,
+		statement: string,
+		chainId: number,
+		nonce: string
+	) => {
 		const domain = window.location.host;
 		const origin = window.location.origin;
 		console.log('domain', domain);
@@ -33,12 +38,13 @@ function useCategoryTabsList() {
 			uri: origin,
 			version: '1',
 			chainId,
+			nonce,
 		});
 
 		return message.prepareMessage();
 	};
 
-	const signInWithEthereum = async (address: string, chainId: number) => {
+	const signInWithEthereum = async (address: string, chainId: number, origin: string) => {
 		if (typeof window !== undefined) {
 			// const provider = new BrowserProvider(window.ethereum as any);
 
@@ -48,28 +54,33 @@ function useCategoryTabsList() {
 				// 	signer.address,
 				// 	'Sign in with Ethereum to the app.'
 				// );
-				const message = await createSiweMessage(
-					address,
-					'Sign in with Ethereum to the app.',
-					chainId
-				);
-				console.log('message is', message);
-				// const signature = await signer.signMessage(message);
-				const signature = await signMessageAsync({ message });
 				// get nonce from backend
 				const nonceData = await axios.get(`${process.env.DEV_API}/auth/nonce`);
 				console.log('nonceData', nonceData);
 				const { nonce } = nonceData?.data.data;
 
-				console.log('nonce', nonce);
-				console.log('signature', signature);
-				console.log('message', message);
+				const message = await createSiweMessage(
+					address,
+					'Sign in with Ethereum to the app.',
+					chainId,
+					nonce
+				);
+				console.log('message is', message);
+				// const signature = await signer.signMessage(message);
+				const signature = await signMessageAsync({ message });
+
+				// console.log('nonce', nonce);
+				// console.log('signature', signature);
+				// console.log('message', message);
+				// console.log('origin', origin);
+				console.log('login params', JSON.stringify({ nonce, signature, message, origin }));
 
 				dispatch(
 					loginWithSiwe({
 						nonce,
 						message,
 						signature,
+						origin,
 					})
 				);
 			} catch (error) {

@@ -12,7 +12,13 @@ import { resetCheckAuthToast } from '../actions';
 
 type AuthState = {
 	isAuthenticated: boolean | null; // 是否已登入的判斷
-	user: { address: string; email: string; id: string; username: string | null };
+	user: {
+		address: string;
+		email: string;
+		id: string;
+		username: string | null;
+		origin: string;
+	};
 	userProfile: UserProfile;
 	checkAuthSuccess: boolean | null; // 登入登出時的 提醒 Toast 出現與否
 	checkAuthTitle: string; // 提醒 Toast 的顯示標題
@@ -21,7 +27,7 @@ type AuthState = {
 
 const initialState: AuthState = {
 	isAuthenticated: null,
-	user: { address: '', email: '', id: '', username: '' },
+	user: { address: '', email: '', id: '', username: '', origin: '' },
 	userProfile: {
 		address: '',
 		email: '',
@@ -80,8 +86,8 @@ const authSlice = createSlice({
 				state.checkAuthTitle = 'Login suceesfully';
 			}
 		});
-		builder.addCase(loginWithSiwe.rejected, state => {
-			console.log('loginWithSiwe rejected');
+		builder.addCase(loginWithSiwe.rejected, (state, action) => {
+			console.log('loginWithSiwe rejected', action);
 			state.isAuthenticated = false;
 			state.checkAuthSuccess = false;
 			state.checkAuthTitle = '';
@@ -98,7 +104,7 @@ const authSlice = createSlice({
 				state.isAuthenticated = false;
 				state.checkAuthSuccess = true;
 				state.checkAuthTitle = 'Logout suceesfully';
-				state.user = { address: '', email: '', id: '', username: '' };
+				state.user = { address: '', email: '', id: '', username: '', origin: '' };
 			}
 		});
 		builder.addCase(logout.rejected, state => {

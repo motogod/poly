@@ -23,6 +23,7 @@ const getNonce = createAsyncThunk('api/getNonce', async (params: any) => {
 });
 
 const loginWithSiwe = createAsyncThunk('api/loginWithSiwe', async (params: any, { dispatch }) => {
+	console.log('loginWithSiwe params', { params });
 	const resp = await LoginWithSiwe<LoginType>(params);
 	console.log('LoginWithSiwe resp is', resp);
 	return resp;
