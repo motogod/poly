@@ -120,12 +120,14 @@ const authSlice = createSlice({
 			console.log('checkUserAuth fulfilled', action);
 			const { statusCode, data } = action.payload;
 			if (statusCode === 200) {
-				const { address, id, email } = data.user;
+				const { address, id, email, origin, username } = data.user;
 
 				state.isAuthenticated = data.isAuthenticated;
 				state.user.address = address;
 				state.user.id = id;
 				state.user.email = email;
+				state.user.origin = origin;
+				state.user.username = username;
 			}
 		});
 		builder.addCase(checkUserAuth.rejected, state => {

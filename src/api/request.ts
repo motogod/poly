@@ -47,7 +47,8 @@ serviceWithSessing.interceptors.request.use(
 	(config: any) => {
 		let customHeaders: any = {
 			// language: 'zh-cn',
-			'Content-Type': 'application/json',
+			// 'Content-Type': 'application/json',
+			'Content-Type': 'application/x-www-form-urlencoded',
 			// 'ngrok-skip-browser-warning': true,
 			'Access-Control-Allow-Origin': true,
 		};

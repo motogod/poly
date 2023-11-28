@@ -1,5 +1,5 @@
 import React, { EffectCallback, ReactNode, useEffect } from 'react';
-import { useAccount, useConnect, useSwitchNetwork, useNetwork } from 'wagmi';
+import { useAccount, useConnect, useSwitchNetwork, useNetwork, useDisconnect } from 'wagmi';
 import { watchAccount } from '@wagmi/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkUserAuth, AppDispatch, getUserProfile, RootState, logout } from '@/store';
@@ -18,6 +18,7 @@ function AuthProvider({ children }: Props) {
 	const { connector: activeConnector } = useAccount();
 	const { switchNetwork } = useSwitchNetwork();
 	const { chain: currentChain } = useNetwork();
+	const { disconnect } = useDisconnect();
 
 	const { signInWithEthereum, isLoading: isSignInLoading, reset: resetSignIn } = useSiwe();
 	// const unwatch = watchAccount(account => console.log('AuthContext account', account));
@@ -87,14 +88,9 @@ function AuthProvider({ children }: Props) {
 		const handleConnectorUpdate = async ({ account, chain }: any) => {
 			if (account) {
 				console.log('new account', { account, chain });
-				// 使用者切換 account，登出再重新登入，重新跟後端溝通確保溝通過程是切換後的 account
+				// 使用者切換 account，登出，確保讓使用者重新登入 跟後端溝通是切換後的 account
 				dispatch(logout({}));
-				// 若為新的 account 重新登入後 username 會是 null，會再出現視窗給使用者填寫名稱創帳號
-				await signInWithEthereum(
-					account,
-					currentChain?.id as number,
-					pendingConnector?.id as string
-				);
+				disconnect();
 			} else if (chain) {
 				console.log('new chain', { account, chain });
 			}
@@ -107,7 +103,7 @@ function AuthProvider({ children }: Props) {
 		return (): void => {
 			activeConnector?.off('change', handleConnectorUpdate);
 		};
-	}, [activeConnector, dispatch, signInWithEthereum, currentChain, pendingConnector]);
+	}, [activeConnector, dispatch, disconnect]);
 
 	return (
 		<>

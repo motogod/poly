@@ -55,7 +55,9 @@ function useCategoryTabsList() {
 				// 	'Sign in with Ethereum to the app.'
 				// );
 				// get nonce from backend
-				const nonceData = await axios.get(`${process.env.DEV_API}/auth/nonce`);
+				const nonceData = await axios.get(`${process.env.DEV_API}/auth/nonce`, {
+					withCredentials: true,
+				});
 				console.log('nonceData', nonceData);
 				const { nonce } = nonceData?.data.data;
 
@@ -69,11 +71,7 @@ function useCategoryTabsList() {
 				// const signature = await signer.signMessage(message);
 				const signature = await signMessageAsync({ message });
 
-				// console.log('nonce', nonce);
-				// console.log('signature', signature);
-				// console.log('message', message);
-				// console.log('origin', origin);
-				console.log('login params', JSON.stringify({ nonce, signature, message, origin }));
+				// console.log('login params', JSON.stringify({ nonce, signature, message, origin }));
 
 				dispatch(
 					loginWithSiwe({
