@@ -23,7 +23,12 @@ function SiweMessageFromMobile() {
 	useEffect(() => {
 		setIsLoading(true);
 
-		const createSiweMessage = async (address: string, statement: string, chainId: number) => {
+		const createSiweMessage = async (
+			address: string,
+			statement: string,
+			chainId: number,
+			nonce: string
+		) => {
 			const domain = window.location.host;
 			const origin = window.location.origin;
 
@@ -34,20 +39,21 @@ function SiweMessageFromMobile() {
 				uri: origin,
 				version: '1',
 				chainId,
+				nonce,
 			});
 
 			return message.prepareMessage();
 		};
 
 		let messageListener;
-		alert('1');
+
 		if (navigator.userAgent.includes('Android')) {
 			messageListener = document.addEventListener('message', function (nativeEvent) {
 				const event = nativeEvent as MessageEvent;
 				const data = JSON.parse(event.data);
-				const { address, statement, chainId } = data;
+				const { address, statement, chainId, nonce } = data;
 				setAndroidData(data);
-				createSiweMessage(address, statement, chainId)
+				createSiweMessage(address, statement, chainId, nonce)
 					.then(value => {
 						setIsLoading(false);
 						setMessage(value);
@@ -58,14 +64,12 @@ function SiweMessageFromMobile() {
 					});
 			});
 		} else {
-			alert('2');
 			messageListener = window.addEventListener('message', function (nativeEvent) {
-				alert('3');
 				const data = JSON.parse(nativeEvent?.data);
-				alert('4');
-				const { address, statement, chainId } = data;
+
+				const { address, statement, chainId, nonce } = data;
 				setIosData(data);
-				createSiweMessage(address, statement, chainId)
+				createSiweMessage(address, statement, chainId, nonce)
 					.then(value => {
 						setIsLoading(false);
 						setMessage(value);
