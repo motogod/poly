@@ -1,10 +1,9 @@
-import React, { EffectCallback, ReactNode, useEffect, useRef } from 'react';
-import { useAccount, useConnect } from 'wagmi';
+import React, { EffectCallback, ReactNode, useEffect } from 'react';
+import { useAccount, useConnect, useSwitchNetwork, useNetwork } from 'wagmi';
 import { watchAccount } from '@wagmi/core';
-import { useSDK } from '@metamask/sdk-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkUserAuth, AppDispatch, getUserProfile, RootState } from '@/store';
-import { useDisplayNameModal } from '@/hooks';
+import { checkUserAuth, AppDispatch, getUserProfile, RootState, logout } from '@/store';
+import { useDisplayNameModal, useSiwe } from '@/hooks';
 
 type Props = {
 	children: ReactNode;
@@ -17,9 +16,11 @@ function AuthProvider({ children }: Props) {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const { connector: activeConnector } = useAccount();
+	const { switchNetwork } = useSwitchNetwork();
+	const { chain: currentChain } = useNetwork();
 
+	const { signInWithEthereum, isLoading: isSignInLoading, reset: resetSignIn } = useSiwe();
 	// const unwatch = watchAccount(account => console.log('AuthContext account', account));
-	const { sdk, connected, connecting, provider, chainId, account: metaAccount } = useSDK();
 
 	const {
 		ModalDom,
@@ -30,20 +31,19 @@ function AuthProvider({ children }: Props) {
 
 	const { user, isAuthenticated } = useSelector((state: RootState) => state.authReducer);
 
-	const { username } = user;
+	const { username, origin } = user;
 
 	const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
 		async onSuccess(data, variables, context) {
 			const { account, chain } = data;
 			// 切換 chainId 到 Arbitrum, 若尚未 connect 成功 switchNetwork 會是 undefined
 			// WalletConnect 會自動切換到設置的第一個 chainId，多插入一個切換會有 pending 的 bug
-			// 只有連接 MetaMask 才執行手動切換
-			console.log('AuthContext success');
+			// 所以只有連接 MetaMask 才執行手動切換
+			if (variables.connector.id === 'metaMask') {
+				switchNetwork?.(42161);
+			}
 		},
-		onError(error, variables, context) {
-			// console.log('error', { error, variables, context });
-			// 觸發 MetaMask 時，登入視窗出現 未填密碼直接關閉，再次觸發 MetaMask 時的 error 處理
-		},
+		onError(error, variables, context) {},
 	});
 
 	useEffect(() => {
@@ -74,23 +74,29 @@ function AuthProvider({ children }: Props) {
 				// 一些偵測的 function，像 切換 network，切換 account，瀏覽器與錢包必須執行 connect 之後才有用
 				// 所以若確定該瀏覽器的使用者有登入成功過，再重新打開網頁時，自動幫忙 connect 起來
 				connectors.forEach(connector => {
-					// if (connector.ready && connector.id === 'metaMask') {
-					// 	connect({ connector });
-					// }
-					// if (connector.ready && connector.id === 'walletConnect') {
-					// 	connect({ connector });
-					// }
+					if (connector.ready && connector.id === origin) {
+						connect({ connector });
+					}
 				});
 			}
 		}
-	}, [username, modalOnOpen, modalOnClose, isAuthenticated, connect, connectors]);
+	}, [username, modalOnOpen, modalOnClose, isAuthenticated, connect, connectors, origin]);
 
+	// 連接 MetaMask 或 WalletConnect 狀況下，偵測使用者切換錢包 account
 	useEffect(() => {
-		const handleConnectorUpdate = ({ account, chain }: any) => {
+		const handleConnectorUpdate = async ({ account, chain }: any) => {
 			if (account) {
-				console.log('new account', account);
+				console.log('new account', { account, chain });
+				// 使用者切換 account，登出再重新登入，重新跟後端溝通確保溝通過程是切換後的 account
+				dispatch(logout({}));
+				// 若為新的 account 重新登入後 username 會是 null，會再出現視窗給使用者填寫名稱創帳號
+				await signInWithEthereum(
+					account,
+					currentChain?.id as number,
+					pendingConnector?.id as string
+				);
 			} else if (chain) {
-				console.log('new chain', chain);
+				console.log('new chain', { account, chain });
 			}
 		};
 
@@ -101,7 +107,7 @@ function AuthProvider({ children }: Props) {
 		return (): void => {
 			activeConnector?.off('change', handleConnectorUpdate);
 		};
-	}, [activeConnector]);
+	}, [activeConnector, dispatch, signInWithEthereum, currentChain, pendingConnector]);
 
 	return (
 		<>

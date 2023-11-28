@@ -57,10 +57,12 @@ function useLoginModal() {
 	const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
 		async onSuccess(data, variables, context) {
 			const { account, chain } = data;
-			await signInWithEthereum(account, chain.id);
+			// pendingConnector 用何種方式登入錢包也告訴後端
+			await signInWithEthereum(account, chain.id, pendingConnector?.id as string);
+
 			// 切換 chainId 到 Arbitrum, 若尚未 connect 成功 switchNetwork 會是 undefined
 			// WalletConnect 會自動切換到設置的第一個 chainId，多插入一個切換會有 pending 的 bug
-			// 只有連接 MetaMask 才執行手動切換
+			// 所以只有連接 MetaMask 才執行手動切換
 			if (variables.connector.id === 'metaMask') {
 				switchNetwork?.(42161);
 			}

@@ -24,7 +24,10 @@ export type GetMarketsType = {
 };
 
 export type CheckAuthType = {
-	data: { isAuthenticated: boolean; user: { address: string; email: string; id: string } };
+	data: {
+		isAuthenticated: boolean;
+		user: { address: string; email: string; id: string; origin: string; username: string };
+	};
 	message: string;
 	statusCode: number;
 };
@@ -60,7 +63,7 @@ export type PutUserProfileType = {
 };
 
 export type LoginType = {
-	data: { user: { address: string; email: string; id: string; username: string } };
+	data: { user: { address: string; email: string; id: string; username: string; origin: string } };
 	message: string;
 	statusCode: number;
 };
