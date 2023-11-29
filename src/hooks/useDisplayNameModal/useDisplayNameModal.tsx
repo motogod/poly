@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import {
 	useDisclosure,
@@ -19,7 +19,7 @@ import {
 	FormErrorMessage,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { putUserProfile, AppDispatch, RootState } from '@/store';
+import { putUserProfile, AppDispatch, RootState, resetPutUserProfileErrMsg } from '@/store';
 import { useUtility } from '@/hooks';
 
 function useDisplayNameModal() {
@@ -32,12 +32,22 @@ function useDisplayNameModal() {
 
 	const { checkEngAndNumberName, inputNameErrMsg } = useUtility();
 
-	const { putUsrProfileIsLoading } = useSelector((state: RootState) => state.authReducer);
+	const { putUsrProfileIsLoading, putUsrProfileErrMsg } = useSelector(
+		(state: RootState) => state.authReducer
+	);
+	console.log('inputNameErrMsg', inputNameErrMsg);
+	console.log('putUsrProfileErrMsg', putUsrProfileErrMsg);
+	useEffect(() => {
+		// 創建名字成功 關閉創建名字視窗
+		if (putUsrProfileIsLoading === false) {
+			onClose();
+		}
+	}, [putUsrProfileIsLoading, onClose]);
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
 	});
-
+	console.log('putUsrProfileIsLoading =>', putUsrProfileIsLoading);
 	const ModalDom = useMemo(
 		() => (
 			<Modal size={isDesktop ? 'lg' : 'full'} isOpen={isOpen} onClose={onOpen}>
@@ -59,6 +69,8 @@ function useDisplayNameModal() {
 								onChange={e => {
 									checkEngAndNumberName(e.target.value);
 									setName(e.target.value.toLowerCase());
+									// 輸入資料時清空 API 返回時顯示的 error msg
+									disaptch(resetPutUserProfileErrMsg());
 								}}
 								placeholder={'Please enter your preferred username'}
 								border="2px solid #E2E8F0;"
@@ -66,9 +78,15 @@ function useDisplayNameModal() {
 							{inputNameErrMsg !== '' && <FormErrorMessage>{inputNameErrMsg}</FormErrorMessage>}
 						</FormControl>
 						<FormErrorMessage>Email is required.</FormErrorMessage>
-						<Text fontWeight={'500'} fontSize={'sm'} mt={'14px'} color={'#7C7C7C'}>
-							This is publicly visible
-						</Text>
+						{putUsrProfileErrMsg === '' ? (
+							<Text fontWeight={'500'} fontSize={'sm'} mt={'14px'} color={'#7C7C7C'}>
+								This is publicly visible
+							</Text>
+						) : (
+							<Text fontWeight={'500'} fontSize={'sm'} mt={'14px'} color={'red.500'}>
+								{putUsrProfileErrMsg}
+							</Text>
+						)}
 						<Checkbox
 							isChecked={checked}
 							onChange={e => setChecked(e.target.checked)}
@@ -105,9 +123,6 @@ function useDisplayNameModal() {
 							color="#fff"
 							onClick={() => {
 								disaptch(putUserProfile({ username: name }));
-								if (!putUsrProfileIsLoading) {
-									onClose();
-								}
 							}}
 						>
 							Continue
@@ -123,10 +138,10 @@ function useDisplayNameModal() {
 			isOpen,
 			onOpen,
 			isDesktop,
-			onClose,
 			checkEngAndNumberName,
 			inputNameErrMsg,
 			putUsrProfileIsLoading,
+			putUsrProfileErrMsg,
 		]
 	);
 

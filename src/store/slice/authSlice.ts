@@ -8,7 +8,7 @@ import {
 	putUserProfile,
 } from '../thunks/fetchAuth';
 import { UserProfile } from '@/api';
-import { resetCheckAuthToast } from '../actions';
+import { resetCheckAuthToast, resetPutUserProfileErrMsg } from '../actions';
 
 type AuthState = {
 	isAuthenticated: boolean | null; // 是否已登入的判斷
@@ -23,6 +23,7 @@ type AuthState = {
 	checkAuthSuccess: boolean | null; // 登入登出時的 提醒 Toast 出現與否
 	checkAuthTitle: string; // 提醒 Toast 的顯示標題
 	putUsrProfileIsLoading: boolean | null; // 新增創建使用者名稱時的讀取狀態
+	putUsrProfileErrMsg: string; // 呈現創建名字 API 失敗時的顯示錯誤訊息
 };
 
 const initialState: AuthState = {
@@ -38,6 +39,7 @@ const initialState: AuthState = {
 	checkAuthSuccess: false,
 	checkAuthTitle: '',
 	putUsrProfileIsLoading: null,
+	putUsrProfileErrMsg: '',
 };
 
 const authSlice = createSlice({
@@ -49,6 +51,11 @@ const authSlice = createSlice({
 		builder.addCase(resetCheckAuthToast, state => {
 			state.checkAuthSuccess = null;
 			state.checkAuthTitle = '';
+		});
+
+		// Rest putUsrProfileErrMsg when user typing input
+		builder.addCase(resetPutUserProfileErrMsg, state => {
+			state.putUsrProfileErrMsg = '';
 		});
 
 		// Google login
@@ -158,6 +165,7 @@ const authSlice = createSlice({
 			state.putUsrProfileIsLoading = true;
 			state.checkAuthSuccess = false;
 			state.checkAuthTitle = '';
+			state.putUsrProfileErrMsg = '';
 		});
 		builder.addCase(putUserProfile.fulfilled, (state, action) => {
 			console.log('putUserProfile fulfilled', action);
@@ -168,14 +176,28 @@ const authSlice = createSlice({
 				state.putUsrProfileIsLoading = false;
 				state.checkAuthSuccess = true;
 				state.checkAuthTitle = 'Create account suceesfully';
+				state.putUsrProfileErrMsg = '';
 			}
 		});
 		builder.addCase(putUserProfile.rejected, (state, action) => {
-			console.log('putUserProfile rejected');
+			console.log('putUserProfile rejected', action);
 			const { name, message, stack } = action.error;
+
 			state.putUsrProfileIsLoading = null;
 			state.checkAuthSuccess = false;
 			state.checkAuthTitle = '';
+
+			if (message) {
+				state.putUsrProfileErrMsg = 'The username is already taken';
+			} else {
+				state.putUsrProfileErrMsg = '';
+			}
+			// if (message) {
+			// } else {
+			// 	state.putUsrProfileIsLoading = null;
+			// 	state.checkAuthSuccess = false;
+			// 	state.checkAuthTitle = '';
+			// }
 			// below for Test default is false and ''
 			// 	state.checkAuthSuccess = true;
 			// 	state.checkAuthTitle = `${name}     ${message}      ${stack}` as string;

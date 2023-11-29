@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { homeReducer } from './slice/homeSlice';
 import { authReducer } from './slice/authSlice';
-import { resetCheckAuthToast } from './actions';
+import { resetCheckAuthToast, resetPutUserProfileErrMsg } from './actions';
 
 export const store = configureStore({
 	reducer: {
@@ -21,6 +21,6 @@ setupListeners(store.dispatch);
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
-export { resetCheckAuthToast };
+export { resetCheckAuthToast, resetPutUserProfileErrMsg };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';
