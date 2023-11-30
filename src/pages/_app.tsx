@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 // import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi';
-import { arbitrum, mainnet, polygon } from 'wagmi/chains';
+import { arbitrum, mainnet } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
