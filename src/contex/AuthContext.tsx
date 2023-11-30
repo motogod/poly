@@ -107,7 +107,7 @@ function AuthProvider({ children }: Props) {
 		return (): void => {
 			activeConnector?.off('change', handleConnectorUpdate);
 		};
-	}, [activeConnector, dispatch, disconnect]);
+	}, [activeConnector, dispatch, disconnect, router]);
 
 	return (
 		<>
