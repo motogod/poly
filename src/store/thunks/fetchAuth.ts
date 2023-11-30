@@ -13,6 +13,7 @@ import {
 	CheckUserProfileType,
 	PutUserProfile,
 	PutUserProfileType,
+	PutUserEmail,
 } from '@/api';
 
 // Get Nonce from server
@@ -69,6 +70,14 @@ const putUserProfile = createAsyncThunk(
 	}
 );
 
+// Put user email
+const putUserEmail = createAsyncThunk('api/putUserEmail', async (params: { idToken: string }) => {
+	// alert(`username is ${params.username}`);
+	const resp = await PutUserEmail<PutUserProfileType>(params);
+	console.log('putUserEmail resp is', resp);
+	return resp;
+});
+
 export {
 	getNonce,
 	loginWithSiwe,
@@ -77,4 +86,5 @@ export {
 	loginWithGoogle,
 	getUserProfile,
 	putUserProfile,
+	putUserEmail,
 };
