@@ -1,6 +1,7 @@
 import React, { EffectCallback, ReactNode, useEffect } from 'react';
 import { useAccount, useConnect, useSwitchNetwork, useNetwork, useDisconnect } from 'wagmi';
 import { watchAccount } from '@wagmi/core';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkUserAuth, AppDispatch, getUserProfile, RootState, logout } from '@/store';
 import { useDisplayNameModal, useSiwe } from '@/hooks';
@@ -14,6 +15,8 @@ let isModalFirst = true;
 
 function AuthProvider({ children }: Props) {
 	const dispatch = useDispatch<AppDispatch>();
+
+	const router = useRouter();
 
 	const { connector: activeConnector } = useAccount();
 	const { switchNetwork } = useSwitchNetwork();
@@ -91,6 +94,7 @@ function AuthProvider({ children }: Props) {
 				// 使用者切換 account，登出，確保讓使用者重新登入 跟後端溝通是切換後的 account
 				dispatch(logout({}));
 				disconnect();
+				router.replace('./');
 			} else if (chain) {
 				console.log('new chain', { account, chain });
 			}

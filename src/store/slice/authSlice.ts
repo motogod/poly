@@ -6,6 +6,7 @@ import {
 	checkUserAuth,
 	getUserProfile,
 	putUserProfile,
+	putUserEmail,
 } from '../thunks/fetchAuth';
 import { UserProfile } from '@/api';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg } from '../actions';
@@ -127,14 +128,10 @@ const authSlice = createSlice({
 			console.log('checkUserAuth fulfilled', action);
 			const { statusCode, data } = action.payload;
 			if (statusCode === 200) {
-				const { address, id, email, origin, username } = data.user;
+				const { isAuthenticated, user } = data;
 
-				state.isAuthenticated = data.isAuthenticated;
-				state.user.address = address;
-				state.user.id = id;
-				state.user.email = email;
-				state.user.origin = origin;
-				state.user.username = username;
+				state.isAuthenticated = isAuthenticated;
+				state.user = user;
 			}
 		});
 		builder.addCase(checkUserAuth.rejected, state => {
@@ -202,6 +199,34 @@ const authSlice = createSlice({
 			// 	state.checkAuthSuccess = true;
 			// 	state.checkAuthTitle = `${name}     ${message}      ${stack}` as string;
 			// });
+		});
+
+		// Put user email
+		builder.addCase(putUserEmail.pending, state => {
+			console.log('putUserEmail pending');
+			state.putUsrProfileIsLoading = true;
+			state.checkAuthSuccess = false;
+			state.checkAuthTitle = '';
+			state.putUsrProfileErrMsg = '';
+		});
+		builder.addCase(putUserEmail.fulfilled, (state, action) => {
+			console.log('putUserEmail fulfilled', action);
+			const { statusCode, data } = action.payload;
+			if (statusCode === 200) {
+				state.user.email = data.email;
+				state.putUsrProfileIsLoading = false;
+				state.checkAuthSuccess = true;
+				state.checkAuthTitle = 'Update email suceesfully';
+				state.putUsrProfileErrMsg = '';
+			}
+		});
+		builder.addCase(putUserEmail.rejected, (state, action) => {
+			console.log('putUserEmail rejected', action);
+			const { name, message, stack } = action.error;
+
+			state.putUsrProfileIsLoading = null;
+			state.checkAuthSuccess = false;
+			state.checkAuthTitle = '';
 		});
 	},
 });

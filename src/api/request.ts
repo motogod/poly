@@ -173,7 +173,7 @@ const requestHandlerWithSession = <T>(
 		response
 			.then(res => {
 				// console.log('response res', res);
-				alert(JSON.stringify(res));
+				// alert(JSON.stringify(res));
 				const data = res.data;
 				const status = res.status;
 				if (status !== 200 && status !== 201) {

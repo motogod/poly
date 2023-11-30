@@ -28,4 +28,8 @@ export const GetUserProfile = <T>(params: any) =>
 export const PutUserProfile = <T>(params: any) =>
 	requestWithSession.put<T>('/accounts/profile/username', params, { timeout: 15000 });
 
+// Update User email (google mail only)
+export const PutUserEmail = <T>(params: any) =>
+	requestWithSession.put<T>('/accounts/profile/email', params, { timeout: 15000 });
+
 export * from './type';
