@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { homeReducer } from './slice/homeSlice';
 import { authReducer } from './slice/authSlice';
+import { ipReducer, setIpState } from './slice/ipSlice';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg } from './actions';
 
 export const store = configureStore({
 	reducer: {
 		homeReducer,
 		authReducer,
+		ipReducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -21,6 +23,6 @@ setupListeners(store.dispatch);
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
-export { resetCheckAuthToast, resetPutUserProfileErrMsg };
+export { resetCheckAuthToast, resetPutUserProfileErrMsg, setIpState };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';
