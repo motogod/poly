@@ -76,6 +76,7 @@ serviceWithSessing.interceptors.response.use(
 	},
 	error => {
 		console.log('interceptors error', error);
+		return error;
 		// 會出現紅色 error 在視窗上
 		// Promise.reject(error);
 	}
@@ -171,8 +172,8 @@ const requestHandlerWithSession = <T>(
 
 	return new Promise<T>((resolve, reject) => {
 		response
-			.then(res => {
-				// console.log('response res', res);
+			.then((res: any) => {
+				console.log('response res', res);
 				// alert(JSON.stringify(res));
 				const data = res.data;
 				const status = res.status;
@@ -183,8 +184,13 @@ const requestHandlerWithSession = <T>(
 
 					let e = JSON.stringify(data);
 					console.log(`Request error：${e}`);
-					// return error
-					reject(data);
+
+					if (res.response.data) {
+						// get status is 4XX
+						resolve(res.response.data);
+					} else {
+						reject(data);
+					}
 				} else {
 					// return correct data
 					console.log('data', data);
