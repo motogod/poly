@@ -80,7 +80,6 @@ function SiweMessageFromMobile() {
 	useEffect(() => {
 		if (message && nonceValue) {
 			if (typeof window !== undefined && window.ReactNativeWebView) {
-				alert({ message, nonce: nonceValue });
 				window.ReactNativeWebView.postMessage(JSON.stringify({ message, nonce: nonceValue }));
 			}
 		}
