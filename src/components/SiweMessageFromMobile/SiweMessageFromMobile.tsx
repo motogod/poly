@@ -60,7 +60,7 @@ function SiweMessageFromMobile() {
 					})
 					.catch(err => {
 						setIsLoading(false);
-						alert(err);
+						// alert(err);
 					});
 			});
 		} else {
@@ -76,7 +76,7 @@ function SiweMessageFromMobile() {
 					})
 					.catch(err => {
 						setIsLoading(false);
-						alert(err);
+						// alert(err);
 					});
 			});
 		}
@@ -117,10 +117,12 @@ function SiweMessageFromMobile() {
 			<p>{`address ${androidData?.address}`}</p>
 			<p>{`statement ${androidData?.statement}`}</p>
 			<p>{`chainId ${androidData?.chainId}`}</p>
+			<p>{`nonce ${androidData?.nonce}`}</p>
 			<p>{`Show data from React Native IOS ${iosData}`}</p>
 			<p>{`address ${iosData?.address}`}</p>
 			<p>{`statement ${iosData?.statement}`}</p>
 			<p>{`chainId ${iosData?.chainId}`}</p>
+			<p>{`nonce ${iosData?.nonce}`}</p>
 		</Stack>
 	);
 }
