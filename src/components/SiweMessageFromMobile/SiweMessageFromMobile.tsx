@@ -1,21 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import {
-	Stack,
-	Button,
-	Input,
-	Card,
-	CardBody,
-	Grid,
-	Heading,
-	Text,
-	Spinner,
-} from '@chakra-ui/react';
+import { Stack, Button, Text, Spinner } from '@chakra-ui/react';
+import axios from 'axios';
 import { SiweMessage } from 'siwe';
 import { headerHeight } from '../../utils/screen';
 
 function SiweMessageFromMobile() {
 	const [iosData, setIosData] = useState<any>();
 	const [androidData, setAndroidData] = useState<any>();
+	const [nonceValue, setNonceValue] = useState('');
 	const [message, setMessage] = useState<any>();
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -23,14 +15,15 @@ function SiweMessageFromMobile() {
 	useEffect(() => {
 		setIsLoading(true);
 
-		const createSiweMessage = async (
-			address: string,
-			statement: string,
-			chainId: number,
-			nonce: string
-		) => {
+		const createSiweMessage = async (address: string, statement: string, chainId: number) => {
 			const domain = window.location.host;
 			const origin = window.location.origin;
+
+			const nonceData = await axios.get(`${process.env.DEV_API}/auth/nonce`, {
+				withCredentials: true,
+			});
+
+			const { nonce } = nonceData?.data.data;
 
 			const message = new SiweMessage({
 				domain,
@@ -42,6 +35,8 @@ function SiweMessageFromMobile() {
 				nonce,
 			});
 
+			setNonceValue(nonce);
+
 			return message.prepareMessage();
 		};
 
@@ -51,53 +46,45 @@ function SiweMessageFromMobile() {
 			messageListener = document.addEventListener('message', function (nativeEvent) {
 				const event = nativeEvent as MessageEvent;
 				const data = JSON.parse(event.data);
-				const { address, statement, chainId, nonce } = data;
+				const { address, statement, chainId } = data;
 				setAndroidData(data);
-				createSiweMessage(address, statement, chainId, nonce)
+				createSiweMessage(address, statement, chainId)
 					.then(value => {
 						setIsLoading(false);
 						setMessage(value);
 					})
 					.catch(err => {
 						setIsLoading(false);
-						// alert(err);
 					});
 			});
 		} else {
 			messageListener = window.addEventListener('message', function (nativeEvent) {
 				const data = JSON.parse(nativeEvent?.data);
 
-				const { address, statement, chainId, nonce } = data;
+				const { address, statement, chainId } = data;
 				setIosData(data);
-				createSiweMessage(address, statement, chainId, nonce)
+				createSiweMessage(address, statement, chainId)
 					.then(value => {
 						setIsLoading(false);
 						setMessage(value);
 					})
 					.catch(err => {
 						setIsLoading(false);
-						// alert(err);
 					});
 			});
 		}
 
 		return messageListener;
-		// not woriking Android
-		// const messageListener = window.addEventListener('message', nativeEvent => {
-		// 	console.log(nativeEvent?.data);
-		// 	alert(nativeEvent?.data);
-		// 	setData(nativeEvent?.data);
-		// });
-		// return messageListener;
 	}, []);
 
 	useEffect(() => {
-		if (message) {
+		if (message && nonceValue) {
 			if (typeof window !== undefined && window.ReactNativeWebView) {
-				window.ReactNativeWebView.postMessage(message);
+				alert({ message, nonce: nonceValue });
+				window.ReactNativeWebView.postMessage(JSON.stringify({ message, nonce: nonceValue }));
 			}
 		}
-	}, [message]);
+	}, [message, nonceValue]);
 
 	// method to send msg to react native
 	const sendMessage = () => {
@@ -109,9 +96,9 @@ function SiweMessageFromMobile() {
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
 			<p>SiweMessageFromMobile</p>
-			<Button onClick={() => sendMessage()}>
+			{/* <Button onClick={() => sendMessage()}>
 				<Text>Send To React Native</Text>
-			</Button>
+			</Button> */}
 			{isLoading && <Spinner />}
 			<p>{`Show data from React Native Android ${androidData}`}</p>
 			<p>{`address ${androidData?.address}`}</p>
