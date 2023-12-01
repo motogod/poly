@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const { i18n } = require('./next-i18next.config');
+
 const nextConfig = {
 	reactStrictMode: false,
 	webpack: config => {
@@ -21,6 +23,7 @@ const nextConfig = {
 		GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 		SECRET: process.env.SECRET,
 	},
+	i18n,
 };
 
 module.exports = nextConfig;

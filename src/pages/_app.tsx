@@ -22,6 +22,9 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { WarningIcon } from '@chakra-ui/icons';
 import { extendTheme } from '@chakra-ui/react';
 
+import { appWithTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 import '@/styles/globals.scss';
 import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';
 import type { NextComponentType } from 'next';
@@ -131,4 +134,4 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 	);
 };
 
-export default App;
+export default appWithTranslation(App);

@@ -175,30 +175,20 @@ const authSlice = createSlice({
 				state.checkAuthTitle = 'Create account suceesfully';
 				state.putUsrProfileErrMsg = '';
 			}
+			if (statusCode === 409) {
+				state.putUsrProfileIsLoading = null;
+				state.checkAuthSuccess = false;
+				state.checkAuthTitle = '';
+				state.putUsrProfileErrMsg = 'The username is already taken';
+			}
 		});
 		builder.addCase(putUserProfile.rejected, (state, action) => {
 			console.log('putUserProfile rejected', action);
-			const { name, message, stack } = action.error;
 
 			state.putUsrProfileIsLoading = null;
 			state.checkAuthSuccess = false;
 			state.checkAuthTitle = '';
-
-			if (message) {
-				state.putUsrProfileErrMsg = 'The username is already taken';
-			} else {
-				state.putUsrProfileErrMsg = '';
-			}
-			// if (message) {
-			// } else {
-			// 	state.putUsrProfileIsLoading = null;
-			// 	state.checkAuthSuccess = false;
-			// 	state.checkAuthTitle = '';
-			// }
-			// below for Test default is false and ''
-			// 	state.checkAuthSuccess = true;
-			// 	state.checkAuthTitle = `${name}     ${message}      ${stack}` as string;
-			// });
+			state.putUsrProfileErrMsg = '';
 		});
 
 		// Put user email

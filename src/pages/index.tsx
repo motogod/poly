@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export default function Index() {
+function Index() {
 	const router = useRouter();
 
 	useEffect(() => {
@@ -13,3 +13,5 @@ export default function Index() {
 
 	return <></>;
 }
+
+export default Index;

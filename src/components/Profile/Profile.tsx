@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { FcGoogle } from 'react-icons/fc';
+import { useTranslation } from 'next-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, putUserEmail } from '@/store';
 import AppContainer from '@/components/common/Container';
@@ -25,6 +26,8 @@ function Profile() {
 	const [userEmail, setUserEmail] = useState('');
 	const [isTriggerGoogle, setIsTriggerGoogle] = useState(false);
 	const [idToken, setIdToken] = useState('');
+
+	const { t } = useTranslation();
 
 	const { data: session } = useSession();
 	const { user, putUsrProfileIsLoading } = useSelector((state: RootState) => state.authReducer);
@@ -77,7 +80,7 @@ function Profile() {
 							</Heading>
 
 							<Text fontWeight={'800'} fontSize={'lg'}>
-								Account
+								{t('account')}
 							</Text>
 							<Stack direction={'row'} mt={'32px'}>
 								<Text fontWeight={'500'} fontSize={'md'}>
@@ -103,28 +106,28 @@ function Profile() {
 									placeholder={''}
 									border="2px solid #E2E8F0;"
 								/>
-								{origin !== 'google' && (
+								{origin !== 'google' && origin ? (
 									<Stack direction={'row'}>
 										<IconButton
 											onClick={() => signIn('google')}
 											bg={'#fff'}
 											border="1px solid #E2E8F0;"
 											aria-label="google"
-											size="md"
+											size={{ lg: 'md', md: 'sm', sm: 'sm' }}
 											icon={<Icon as={FcGoogle} />}
 										/>
-
 										<Button
 											isLoading={putUsrProfileIsLoading === true ? true : false}
 											isDisabled={!isTriggerGoogle || userEmail === '' || userEmail === null}
 											onClick={() => dispatch(putUserEmail({ idToken }))}
 											bg="#0034EB"
+											size={{ lg: 'md', md: 'sm', sm: 'sm' }}
 											color="#fff"
 										>
 											Save
 										</Button>
 									</Stack>
-								)}
+								) : null}
 							</Grid>
 							<Stack direction={'row'} mt={'32px'}>
 								<Text fontWeight={'500'} fontSize={'md'}>
