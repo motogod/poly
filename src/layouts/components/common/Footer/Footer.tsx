@@ -2,19 +2,19 @@
 
 import { ReactNode } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import {
 	Box,
 	Container,
 	Stack,
 	SimpleGrid,
 	Text,
-	VisuallyHidden,
-	chakra,
 	useColorModeValue,
 	Heading,
 	Select,
 	Icon,
 } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { PrimaryPink } from '@/utils/color';
 import { CommunityIcon } from '../../../../../public/assets/svg';
@@ -35,18 +35,22 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 	);
 };
 
-const options = [
-	{ label: 'Green', value: 'green' },
-	{ label: 'Green-Yellow', value: 'greenyellow' },
-	{ label: 'Red', value: 'red' },
-	{ label: 'Violet', value: 'violet' },
-	{ label: 'Forest', value: 'forest' },
-	{ label: 'Tangerine', value: 'tangerine' },
-	{ label: 'Blush', value: 'blush' },
-	{ label: 'Purple', value: 'purple' },
-];
-
 export default function LargeWithAppLinksAndSocial() {
+	const { t, i18n } = useTranslation();
+
+	const router = useRouter();
+
+	const changeLocale = (locale: any) => {
+		router.push(
+			{
+				pathname: router.pathname,
+				query: router.query,
+			},
+			router.asPath,
+			{ locale }
+		);
+	};
+
 	return (
 		<Box
 			px={paddingMainHorizontal}
@@ -71,11 +75,12 @@ export default function LargeWithAppLinksAndSocial() {
 								w="320px"
 								placeholder=""
 								size="md"
-								defaultValue={'english'}
+								defaultValue={i18n.language}
+								onChange={e => changeLocale(e.target.value)}
 							>
-								<option value="english">English</option>
-								<option value="chinese">Chinese</option>
-								<option value="japanese">Japanese</option>
+								<option value="en">English</option>
+								<option value="zh">Chinese</option>
+								<option value="jp">Japanese</option>
 							</Select>
 						</Box>
 					</Stack>
@@ -91,7 +96,7 @@ export default function LargeWithAppLinksAndSocial() {
 							FAQ
 						</Box>
 						<Box as="a" href={'#'}>
-							Privacy Policy
+							{t('privacy_policy')}
 						</Box>
 					</Stack>
 
@@ -120,7 +125,7 @@ export default function LargeWithAppLinksAndSocial() {
 					justify={{ md: 'space-between' }}
 					align={{ md: 'center' }}
 				>
-					<Text>© 2023 gomarket.com</Text>
+					<Text>© 2024 gomarket.com</Text>
 				</Container>
 			</Box>
 		</Box>

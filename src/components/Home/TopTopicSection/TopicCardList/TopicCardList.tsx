@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 // import ScrollContainer from 'react-indiana-drag-scroll';
 import { Element, scroller } from 'react-scroll';
+import { useTranslation } from 'next-i18next';
 import {
 	Stack,
 	IconButton,
@@ -38,6 +39,8 @@ const dummyDataArray = [
 
 function TopicCardList() {
 	const listRef = useRef<any>(null);
+
+	const { t } = useTranslation();
 
 	const [TabDom, selectedTab] = useCategoryTabsList();
 
@@ -77,7 +80,7 @@ function TopicCardList() {
 			<Stack mt={{ lg: '120px', md: '112px', sm: '112px' }} justify="center" direction="row">
 				<Stack>
 					<Heading size="lg" color="gray.700">
-						{'Bet on markets spotlight'}
+						{t('bet_on_markets_spotlight')}
 					</Heading>
 				</Stack>
 				<Stack
