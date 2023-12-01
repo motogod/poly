@@ -186,7 +186,7 @@ const requestHandlerWithSession = <T>(
 					console.log(`Request error：${e}`);
 
 					if (res.response.data) {
-						// get status is 4XX
+						// get status is 4XX 在 redux fulfilled 一併處理
 						resolve(res.response.data);
 					} else {
 						reject(data);
