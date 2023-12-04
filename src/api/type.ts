@@ -37,6 +37,8 @@ export interface UserProfile {
 	email: string;
 	id: string;
 	username: string;
+	proxyWallet: string;
+	walletActivated: boolean;
 	profile: { displayName: string | null; funds: number; portfolio: number };
 }
 

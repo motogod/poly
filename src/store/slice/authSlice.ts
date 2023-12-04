@@ -35,6 +35,8 @@ const initialState: AuthState = {
 		email: '',
 		id: '',
 		username: '',
+		proxyWallet: '',
+		walletActivated: false,
 		profile: { displayName: null, funds: 0, portfolio: 0 },
 	},
 	checkAuthSuccess: false,
@@ -150,6 +152,12 @@ const authSlice = createSlice({
 				state.user.email = data.email;
 				state.user.username = data.username;
 				state.user.id = data.id;
+				state.userProfile.address = data.address;
+				state.userProfile.email = data.email;
+				state.userProfile.username = data.username;
+				state.userProfile.id = data.id;
+				state.userProfile.proxyWallet = data.proxyWallet;
+				state.userProfile.walletActivated = data.walletActivated;
 			}
 		});
 		builder.addCase(getUserProfile.rejected, state => {
