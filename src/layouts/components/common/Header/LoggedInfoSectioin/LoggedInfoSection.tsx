@@ -110,7 +110,16 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 						</Text>
 					</Stack>
 				</Stack>
-				<Stack w={'100%'} p={'8px'} bg={'gray.50'}>
+				<Stack
+					cursor={'pointer'}
+					onClick={() => {
+						close();
+						router.push('./funds');
+					}}
+					w={'100%'}
+					p={'8px'}
+					bg={'gray.50'}
+				>
 					<Stack align={'center'} direction={'row'}>
 						<Stack w={'100%'} align={'center'} direction={'row'} justify={'space-between'}>
 							<Stack align={'center'} direction={'row'}>

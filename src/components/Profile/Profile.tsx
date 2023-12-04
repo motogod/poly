@@ -11,6 +11,7 @@ import {
 	Icon,
 	IconButton,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { FcGoogle } from 'react-icons/fc';
 import { useTranslation } from 'next-i18next';
@@ -27,15 +28,26 @@ function Profile() {
 	const [isTriggerGoogle, setIsTriggerGoogle] = useState(false);
 	const [idToken, setIdToken] = useState('');
 
+	const router = useRouter();
+
 	const { t } = useTranslation();
 
 	const { data: session } = useSession();
-	const { user, putUsrProfileIsLoading } = useSelector((state: RootState) => state.authReducer);
+	const { user, putUsrProfileIsLoading, isAuthenticated } = useSelector(
+		(state: RootState) => state.authReducer
+	);
 
 	const dispatch = useDispatch<AppDispatch>();
 
 	console.log('user', user);
 	const { username, email, origin } = user;
+
+	useEffect(() => {
+		if (!isAuthenticated) {
+			router.replace('./');
+		}
+	}, [router, isAuthenticated]);
+
 	// 從後端取得資料顯示 email
 	useEffect(() => {
 		// 沒有點擊過 Google 才用後端的 user email
