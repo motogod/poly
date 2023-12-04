@@ -15,7 +15,7 @@ function Layout({ children, homePage }: Props) {
 			<Stack>
 				<Header />
 				<main className={styles.main}>{children}</main>
-				{homePage && <Footer />}
+				{window.location.pathname.includes('home') && <Footer />}
 			</Stack>
 		</>
 	);

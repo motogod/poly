@@ -30,6 +30,15 @@ function Markets() {
 	const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
 	const [TabDom, selectedTab] = useCategoryTabsList();
 	// display={{ lg: 'none', md: 'inline', sm: 'inline' }}
+	const handelScroll = (event: Event) => {
+		const target = event.target as HTMLDivElement;
+
+		if (target.scrollHeight - target.scrollTop === target.clientHeight) {
+			// call API
+			console.log('Call API');
+		}
+	};
+
 	return (
 		// <Stack px={paddingMainHorizontal} py={paddingMainVertical}>
 		<Stack
@@ -76,6 +85,7 @@ function Markets() {
 				<Grid
 					w="100%"
 					h="100%"
+					onScroll={(event: any) => handelScroll(event)}
 					overflowY={'scroll'}
 					templateColumns={'repeat(auto-fill, minmax(290px, 1fr))'}
 					gap={'16px'}
