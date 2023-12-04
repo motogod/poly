@@ -176,7 +176,6 @@ const authSlice = createSlice({
 			console.log('putUserProfile fulfilled', action);
 			const { statusCode, data } = action.payload;
 			if (statusCode === 200) {
-				state.userProfile = data;
 				state.user.username = data.username;
 				state.putUsrProfileIsLoading = false;
 				state.checkAuthSuccess = true;
