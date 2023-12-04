@@ -4,7 +4,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 function home() {
 	return (
 		<>
-			<Home homePage={true} />
+			<Home />
 		</>
 	);
 }

@@ -6,16 +6,15 @@ import styles from './layout.module.scss';
 
 type Props = {
 	children: ReactNode;
-	homePage: boolean;
 };
 
-function Layout({ children, homePage }: Props) {
+function Layout({ children }: Props) {
 	return (
 		<>
 			<Stack>
 				<Header />
 				<main className={styles.main}>{children}</main>
-				{homePage && <Footer />}
+				{window.location.pathname.includes('home') && <Footer />}
 			</Stack>
 		</>
 	);
