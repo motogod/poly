@@ -103,7 +103,7 @@ function HeaderRightSideSection() {
 						borderColor={'black'}
 						borderTop="1px solid #E2E8F0;"
 					>
-						<Button w={'100%'} size="lg" bg="teal.500" color="#fff">
+						<Button w={'100%'} size="lg" colorScheme="teal">
 							Deposit
 						</Button>
 					</Stack>
@@ -208,7 +208,7 @@ function HeaderRightSideSection() {
 								Portfolio
 							</Heading>
 						</Stack>
-						<Stack>
+						<Stack onClick={() => router.push('./funds')} cursor={'pointer'}>
 							<Text fontSize={'16px'} color={'gray.800'} lineHeight={'12px'}>
 								$0.00
 							</Text>
@@ -216,7 +216,7 @@ function HeaderRightSideSection() {
 								Funds
 							</Heading>
 						</Stack>
-						<Button w={'108px'} h={'40px'} size="md" bg="teal.500" color="#fff">
+						<Button w={'108px'} h={'40px'} size="md" colorScheme="teal">
 							Deposit
 						</Button>
 					</Stack>
