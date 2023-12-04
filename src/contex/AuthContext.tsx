@@ -44,7 +44,10 @@ function AuthProvider({ children }: Props) {
 			// WalletConnect 會自動切換到設置的第一個 chainId，多插入一個切換會有 pending 的 bug
 			// 所以只有連接 MetaMask 才執行手動切換
 			if (variables.connector.id === 'metaMask') {
+				// Arbitrum
 				switchNetwork?.(42161);
+				// Goerli
+				// switchNetwork?.(5);
 			}
 		},
 		onError(error, variables, context) {},

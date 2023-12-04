@@ -19,11 +19,11 @@ type LoggedInfoSectionType = {
 function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 	const router = useRouter();
 
-	const { address: userAddress } = useSelector((state: RootState) => state.authReducer.user);
+	const { proxyWallet } = useSelector((state: RootState) => state.authReducer.userProfile);
 
 	const { address } = useAccount();
 	const { data, isError, isLoading, isFetching } = useBalance({
-		address: userAddress as `0x${string}`,
+		address: proxyWallet as `0x${string}`,
 	});
 	const toast = useToast();
 
@@ -65,8 +65,8 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 					border={'0px'}
 					borderRadius={'4px'}
 					onClick={() => {
-						if (userAddress) {
-							navigator.clipboard.writeText(userAddress);
+						if (proxyWallet) {
+							navigator.clipboard.writeText(proxyWallet);
 							toast({
 								title: 'Copied',
 								position: 'top',
@@ -77,7 +77,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 						}
 					}}
 				>
-					{sliceWalletAddress(userAddress)}
+					{sliceWalletAddress(proxyWallet)}
 				</Button>
 			</Stack>
 			<Stack mt={'12px'} gap={'12px'} align={'center'} direction={'row'} justify={'space-between'}>
