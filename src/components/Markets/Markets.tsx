@@ -59,7 +59,7 @@ function Markets() {
 					Filter
 				</Button>
 			</Stack>
-			<Stack mt="0" direction="row" flex="auto">
+			<Stack mt="0" direction="row" flex="auto" h={'100vh'}>
 				<Stack
 					display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline' }}
 					w={isOpen ? '290px' : '0px'}
@@ -68,18 +68,19 @@ function Markets() {
 					transition="all 0.5s ease-in-out;"
 					transform={isOpen ? 'translate(0, 0);' : 'translate(-290px, 0);'}
 				>
-					<Stack h="100vh" overflow="auto">
+					<Stack h={'100vh'} overflow="auto">
 						<LeftMenu />
-						<Center>
-							<Divider m={6} borderColor="gray" />
-						</Center>
+						<Divider mt={6} borderColor="gray.300" />
 					</Stack>
 				</Stack>
 				<Grid
 					w="100%"
 					h="100%"
+					overflowY={'scroll'}
 					templateColumns={'repeat(auto-fill, minmax(290px, 1fr))'}
 					gap={'16px'}
+					pt={'1px'}
+					pb={'10px'}
 				>
 					{empty_array.map((value, index) => {
 						return <CategoryCard key={index} />;
