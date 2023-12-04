@@ -31,7 +31,7 @@ interface loginTypes {
 	token: string;
 }
 
-function Home() {
+function Home({ homePage = true }) {
 	// const { open } = useWeb3Modal();
 	const { address, status, isConnected, isConnecting } = useAccount();
 	const { signInWithEthereum, connectWallet } = useSiwe();

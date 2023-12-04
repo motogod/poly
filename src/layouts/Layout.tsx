@@ -6,15 +6,16 @@ import styles from './layout.module.scss';
 
 type Props = {
 	children: ReactNode;
+	homePage: boolean;
 };
 
-function Layout({ children }: Props) {
+function Layout({ children, homePage }: Props) {
 	return (
 		<>
 			<Stack>
 				<Header />
 				<main className={styles.main}>{children}</main>
-				<Footer />
+				{homePage && <Footer />}
 			</Stack>
 		</>
 	);
