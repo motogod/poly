@@ -6,10 +6,9 @@ import styles from './layout.module.scss';
 
 type Props = {
 	children: ReactNode;
-	homePage: boolean;
 };
 
-function Layout({ children, homePage }: Props) {
+function Layout({ children }: Props) {
 	return (
 		<>
 			<Stack>
