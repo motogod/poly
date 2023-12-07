@@ -35,11 +35,11 @@ const initialState: AuthState = {
 		email: '',
 		id: '',
 		username: '',
-		proxyWallet: '',
+		proxyWallet: '' as `0x${string}`,
 		walletActivated: false,
 		profile: { displayName: null, funds: 0, portfolio: 0 },
 	},
-	checkAuthSuccess: false,
+	checkAuthSuccess: null,
 	checkAuthTitle: '',
 	putUsrProfileIsLoading: null,
 	putUsrProfileErrMsg: '',
@@ -48,7 +48,14 @@ const initialState: AuthState = {
 const authSlice = createSlice({
 	name: 'auth',
 	initialState,
-	reducers: {},
+	reducers: {
+		showToast: (state, action) => {
+			console.log('showToast action', action);
+			const { isShow, title } = action.payload;
+			state.checkAuthSuccess = isShow;
+			state.checkAuthTitle = title;
+		},
+	},
 	extraReducers: builder => {
 		// Reset Check auth toast
 		builder.addCase(resetCheckAuthToast, state => {
@@ -78,7 +85,7 @@ const authSlice = createSlice({
 		builder.addCase(loginWithGoogle.rejected, state => {
 			console.log('loginWithGoogle rejected');
 			state.isAuthenticated = false;
-			state.checkAuthSuccess = false;
+			state.checkAuthSuccess = null;
 			state.checkAuthTitle = '';
 		});
 
@@ -99,14 +106,14 @@ const authSlice = createSlice({
 		builder.addCase(loginWithSiwe.rejected, (state, action) => {
 			console.log('loginWithSiwe rejected', action);
 			state.isAuthenticated = false;
-			state.checkAuthSuccess = false;
+			state.checkAuthSuccess = null;
 			state.checkAuthTitle = '';
 		});
 
 		// Logout
 		builder.addCase(logout.pending, state => {
 			console.log('logout pending');
-			state.checkAuthSuccess = false;
+			state.checkAuthSuccess = null;
 		});
 		builder.addCase(logout.fulfilled, (state, action) => {
 			const { statusCode } = action.payload;
@@ -118,7 +125,7 @@ const authSlice = createSlice({
 			}
 		});
 		builder.addCase(logout.rejected, state => {
-			state.checkAuthSuccess = false;
+			state.checkAuthSuccess = null;
 			state.checkAuthTitle = '';
 		});
 
@@ -168,7 +175,7 @@ const authSlice = createSlice({
 		builder.addCase(putUserProfile.pending, state => {
 			console.log('putUserProfile pending');
 			state.putUsrProfileIsLoading = true;
-			state.checkAuthSuccess = false;
+			state.checkAuthSuccess = null;
 			state.checkAuthTitle = '';
 			state.putUsrProfileErrMsg = '';
 		});
@@ -193,7 +200,7 @@ const authSlice = createSlice({
 			console.log('putUserProfile rejected', action);
 
 			state.putUsrProfileIsLoading = null;
-			state.checkAuthSuccess = false;
+			state.checkAuthSuccess = null;
 			state.checkAuthTitle = '';
 			state.putUsrProfileErrMsg = '';
 		});
@@ -202,7 +209,7 @@ const authSlice = createSlice({
 		builder.addCase(putUserEmail.pending, state => {
 			console.log('putUserEmail pending');
 			state.putUsrProfileIsLoading = true;
-			state.checkAuthSuccess = false;
+			state.checkAuthSuccess = null;
 			state.checkAuthTitle = '';
 			state.putUsrProfileErrMsg = '';
 		});
@@ -222,10 +229,11 @@ const authSlice = createSlice({
 			const { name, message, stack } = action.error;
 
 			state.putUsrProfileIsLoading = null;
-			state.checkAuthSuccess = false;
+			state.checkAuthSuccess = null;
 			state.checkAuthTitle = '';
 		});
 	},
 });
 
+export const { showToast } = authSlice.actions;
 export const authReducer = authSlice.reducer;

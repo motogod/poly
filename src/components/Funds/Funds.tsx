@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import {
-	Stack,
-	Button,
-	Input,
-	Card,
-	CardBody,
-	Grid,
-	Container,
-	Heading,
-	Text,
-	Icon,
-	IconButton,
-} from '@chakra-ui/react';
-import AppContainer from '@/components/common/Container';
+import { Stack, Button, Card, CardBody, Heading, Text, Icon } from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
-import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '../../utils/screen';
 import { HiCreditCard } from 'react-icons/hi';
+import { useContractForRead, useDepositUsdtModal } from '@/hooks';
+import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 
 function Funds() {
 	const { t } = useTranslation();
+
+	const { ethValue } = useContractForRead();
+	const {
+		ModalDom: DepositModalDom,
+		isOpen: depositModalIsOpen,
+		onOpen: depositModalOnOpen,
+		onClose: depositModalOnClose,
+	} = useDepositUsdtModal();
 
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
@@ -56,10 +52,11 @@ function Funds() {
 							color={'gray.800'}
 							lineHeight={{ lg: 10, md: 1, sm: 1 }}
 						>
-							{`$ 12000.16 USDT`}
+							{`$ ${ethValue} USDT`}
 						</Text>
 						<Stack direction={'row'} mt={{ lg: '36px', md: '16px', sm: '16px' }}>
 							<Button
+								onClick={() => depositModalOnOpen()}
 								w={{ lg: '172px', md: '100px', sm: '100px' }}
 								h={{ lg: '48px', md: '40px', sm: '40px' }}
 								colorScheme="teal"
@@ -77,6 +74,7 @@ function Funds() {
 					</Stack>
 				</CardBody>
 			</Card>
+			{depositModalIsOpen && DepositModalDom}
 		</Stack>
 	);
 }

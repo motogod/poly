@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 // import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi';
-import { arbitrum, mainnet, goerli } from 'wagmi/chains';
+import { arbitrum, mainnet, arbitrumGoerli } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
@@ -34,7 +34,7 @@ import Header from '@/layouts/components/common/Header';
 const Layout = dynamic(() => import('@/layouts/Layout'), { ssr: false });
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-	[goerli, arbitrum, mainnet], // 第一個位置為主要的 cahin，WaleetConnect 會要求切換至這一個
+	[arbitrumGoerli, arbitrum, mainnet], // 第一個位置為主要的 cahin，WaleetConnect 會要求切換至這一個
 	[publicProvider()]
 );
 

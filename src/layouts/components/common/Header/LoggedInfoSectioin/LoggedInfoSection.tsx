@@ -10,6 +10,7 @@ import {
 } from 'react-icons/hi';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
+import { useContractForRead } from '@/hooks';
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
 
 type LoggedInfoSectionType = {
@@ -21,9 +22,11 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 
 	const { proxyWallet } = useSelector((state: RootState) => state.authReducer.userProfile);
 
+	const { ethValue } = useContractForRead();
 	const { address } = useAccount();
 	const { data, isError, isLoading, isFetching } = useBalance({
-		address: proxyWallet as `0x${string}`,
+		// address: proxyWallet as `0x${string}`,
+		address: '0x05111E862280c8b135bCB5Ee173c557f3e1BBcD8',
 	});
 	const toast = useToast();
 
@@ -38,17 +41,18 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 		return '';
 	};
 	console.log('address', address);
-	console.log('data', data);
+	console.log('useBalance data', data);
 	console.log('isLoading', isLoading);
 	const checkBalance = () => {
 		if (isFetching) return <Spinner />;
 		// if (isLoading) return <div>Fetching balance…</div>;
 		// if (isError) return <div>Error fetching balance</div>;
-		return (
-			<p>
-				Balance: {data?.formatted} {data?.symbol}
-			</p>
-		);
+		return `Balance: ${ethValue} USDT`;
+		// return (
+		// 	<p>
+		// 		Balance: {data?.formatted} {data?.symbol}
+		// 	</p>
+		// );
 	};
 
 	return (
