@@ -22,7 +22,13 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { BiWalletAlt } from 'react-icons/bi';
-import { useSiwe, useLoginModal } from '@/hooks';
+import {
+	useSiwe,
+	useLoginModal,
+	useContract,
+	useContractForRead,
+	useDepositUsdtModal,
+} from '@/hooks';
 import { CommunityIcon } from '../../../../../../public/assets/svg';
 import SocialPng from './social.png';
 import HeaderPopover from '../HeaderPopover';
@@ -37,12 +43,22 @@ function HeaderRightSideSection() {
 	const { disconnect } = useDisconnect();
 	const { connectAsync } = useConnect();
 	const { signInWithEthereum, connectWallet } = useSiwe();
+	const { write, isLoading: contractIsLoading } = useContract();
+	const { ethValue } = useContractForRead();
+
 	const {
 		ModalDom,
 		isOpen: modalIsOpen,
 		onOpen: modalOnOpen,
 		onClose: modalOnClose,
 	} = useLoginModal();
+
+	const {
+		ModalDom: DepositModalDom,
+		isOpen: depositModalIsOpen,
+		onOpen: depositModalOnOpen,
+		onClose: depositModalOnClose,
+	} = useDepositUsdtModal();
 
 	const { isAuthenticated, user } = useSelector((state: RootState) => state.authReducer);
 
@@ -64,11 +80,13 @@ function HeaderRightSideSection() {
 	const checkBalance = () => {
 		if (isLoading) return <div>Fetching balance…</div>;
 		if (isError) return <div>Error fetching balance</div>;
-		return (
-			<p>
-				Balance: {data?.formatted} {data?.symbol}
-			</p>
-		);
+
+		return `Balance: ${ethValue} USDT`;
+		// return (
+		// 	<p>
+		// 		Balance: {data?.formatted} {data?.symbol}
+		// 	</p>
+		// );
 	};
 
 	const renderModalContent = () => {
@@ -90,6 +108,10 @@ function HeaderRightSideSection() {
 						<ModalFooter h={'100px'} />
 					</ModalBody>
 					<Stack
+						onClick={() => {
+							onClose();
+							depositModalOnOpen();
+						}}
 						w={'100%'}
 						flexDirection="row"
 						position="fixed"
@@ -216,7 +238,14 @@ function HeaderRightSideSection() {
 								Funds
 							</Heading>
 						</Stack>
-						<Button w={'108px'} h={'40px'} size="md" colorScheme="teal">
+						<Button
+							isLoading={contractIsLoading}
+							onClick={() => depositModalOnOpen()}
+							w={'108px'}
+							h={'40px'}
+							size="md"
+							colorScheme="teal"
+						>
 							Deposit
 						</Button>
 					</Stack>
@@ -259,6 +288,7 @@ function HeaderRightSideSection() {
 				</ModalContent>
 			</Modal>
 			{modalIsOpen && ModalDom}
+			{depositModalIsOpen && DepositModalDom}
 		</Stack>
 	);
 }

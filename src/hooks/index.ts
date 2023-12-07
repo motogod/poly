@@ -4,5 +4,24 @@ import useLoginModal from './useLoginModal';
 import useLogout from './useLogout';
 import useDisplayNameModal from './useDisplayNameModal';
 import useUtility from './useUtility';
+import useContract from './useContract';
+import useSendTokens from './useSendTokens';
+import useDepositUsdtModal from './useDepositUsdtModal';
+import useContractForRead from './useContractForRead';
+import useBaseUrl from './useBaseUrl/useBaseUrl';
+import useQRCodeModal from './useQRCodeModal';
 
-export { useCategoryTabsList, useSiwe, useLoginModal, useLogout, useDisplayNameModal, useUtility };
+export {
+	useCategoryTabsList,
+	useSiwe,
+	useLoginModal,
+	useLogout,
+	useDisplayNameModal,
+	useUtility,
+	useContract,
+	useSendTokens,
+	useDepositUsdtModal,
+	useContractForRead,
+	useBaseUrl,
+	useQRCodeModal,
+};

@@ -6,6 +6,7 @@ import CommunityIcon from './communityIcon.svg';
 import ArbIcon from './arbIcon.svg';
 import MetaMaskIcon from './metamask.svg';
 import WalletConnectIcon from './walletconnect.svg';
+import UsdtIcon from './usdt.svg';
 
 export {
 	HiCreditCard,
@@ -16,4 +17,5 @@ export {
 	ArbIcon,
 	MetaMaskIcon,
 	WalletConnectIcon,
+	UsdtIcon,
 };

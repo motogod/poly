@@ -1,10 +1,18 @@
 import React, { EffectCallback, ReactNode, useEffect } from 'react';
-import { useAccount, useConnect, useSwitchNetwork, useNetwork, useDisconnect } from 'wagmi';
+import {
+	useAccount,
+	useConnect,
+	useSwitchNetwork,
+	useNetwork,
+	useDisconnect,
+	erc20ABI,
+} from 'wagmi';
 import { watchAccount } from '@wagmi/core';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkUserAuth, AppDispatch, getUserProfile, RootState, logout } from '@/store';
 import { useDisplayNameModal, useSiwe } from '@/hooks';
+import { ethers } from 'ethers';
 
 type Props = {
 	children: ReactNode;
@@ -44,16 +52,19 @@ function AuthProvider({ children }: Props) {
 			// WalletConnect 會自動切換到設置的第一個 chainId，多插入一個切換會有 pending 的 bug
 			// 所以只有連接 MetaMask 才執行手動切換
 			if (variables.connector.id === 'metaMask') {
-				// Arbitrum
-				switchNetwork?.(42161);
-				// Goerli
-				// switchNetwork?.(5);
+				// Arbitrum Goerli or Arbitrum
+				// process.env.NODE_ENV === 'development' ? switchNetwork?.(421613) : switchNetwork?.(42161);
 			}
 		},
 		onError(error, variables, context) {},
 	});
 
 	useEffect(() => {
+		// 1000000000000000000n
+		// 100000000000000
+		const result = ethers.parseEther('0.0001');
+		console.log('Result', result);
+		console.log('erc20ABI', erc20ABI);
 		if (isFirst) {
 			isFirst = false;
 

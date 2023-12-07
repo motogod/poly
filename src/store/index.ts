@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { homeReducer } from './slice/homeSlice';
-import { authReducer } from './slice/authSlice';
+import { authReducer, showToast } from './slice/authSlice';
 import { ipReducer, setIpState } from './slice/ipSlice';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg } from './actions';
 
@@ -23,6 +23,6 @@ setupListeners(store.dispatch);
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
-export { resetCheckAuthToast, resetPutUserProfileErrMsg, setIpState };
+export { resetCheckAuthToast, resetPutUserProfileErrMsg, setIpState, showToast };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';

@@ -25,19 +25,30 @@ function Header() {
 	const { isAuthenticated, checkAuthSuccess, checkAuthTitle } = useSelector(
 		(state: RootState) => state.authReducer
 	);
-	// 統一放在 Header 這邊來顯示登入時的提醒視窗
+	// 統一放在 Header 這邊來顯示提醒視窗
 	useEffect(() => {
-		console.log('Header useEffect isAuthenticated', isAuthenticated);
-		if (checkAuthSuccess) {
-			toast({
-				title: checkAuthTitle,
-				position: 'top',
-				status: 'success',
-				duration: 2000,
-				// duration: 90000,
-				isClosable: true,
-			});
+		console.log('checkAuthSuccess', checkAuthSuccess);
+		if (checkAuthSuccess !== null) {
+			if (checkAuthSuccess) {
+				toast({
+					title: checkAuthTitle,
+					position: 'top',
+					status: 'success',
+					duration: 2000,
+					// duration: 90000,
+					isClosable: true,
+				});
+			} else {
+				toast({
+					title: checkAuthTitle,
+					position: 'top',
+					status: 'error',
+					duration: 2000,
+					isClosable: true,
+				});
+			}
 
+			// 提醒視窗出現之後就重置狀態 checkAuthSuccess === null
 			dispatch(resetCheckAuthToast());
 		}
 	}, [isAuthenticated, checkAuthSuccess, toast, checkAuthTitle, dispatch]);
