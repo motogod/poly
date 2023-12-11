@@ -11,7 +11,7 @@ function useContractForRead() {
 	const { chain } = useNetwork();
 	const { getContractAddress, roundDown } = useUtility();
 	console.log('useContractForRead chain?.id', chain?.id);
-	const { data: balanceData } = useContractRead({
+	const { data: balanceData, error: contractReadError } = useContractRead({
 		address: getContractAddress(chain?.id as number), // token contract address
 		abi: arbitrumContractAbi,
 		functionName: 'balanceOf',
@@ -35,7 +35,7 @@ function useContractForRead() {
 		}
 	}, [data]);
 
-	return { ethValue, tokenDecimals };
+	return { ethValue, tokenDecimals, contractReadError };
 }
 
 export default useContractForRead;

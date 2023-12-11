@@ -43,7 +43,7 @@ function Header() {
 					title: checkAuthTitle,
 					position: 'top',
 					status: 'error',
-					duration: 2000,
+					duration: 200000,
 					isClosable: true,
 				});
 			}

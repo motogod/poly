@@ -10,6 +10,7 @@ import {
 	ModalFooter,
 	ModalBody,
 	Select,
+	Box,
 	Text,
 	Button,
 	Stack,
@@ -24,8 +25,9 @@ import {
 	InputRightElement,
 } from '@chakra-ui/react';
 import { HiQrcode } from 'react-icons/hi';
+import { TbAlertTriangle } from 'react-icons/tb';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState, showToast } from '@/store';
+import { AppDispatch, RootState } from '@/store';
 import {
 	useContractForRead,
 	useUtility,
@@ -40,7 +42,7 @@ import { UsdtIcon } from '@/../public/assets/svg';
 type assetType = 'ethereumAsset' | '';
 type etherType = 'ethereum' | 'arbitrum' | '';
 
-function useDepositUsdtModal() {
+function useWithdrawUsdtModal() {
 	const disaptch = useDispatch<AppDispatch>();
 
 	const [seleectedAsset, setSelectedAsset] = useState<assetType>('');
@@ -54,8 +56,8 @@ function useDepositUsdtModal() {
 	const { chain: currentChain } = useNetwork();
 	const { pendingChainId, switchNetwork, isSuccess } = useSwitchNetwork();
 
-	const { write, isLoading, prepareContractWriteError } = useSendTokens({ usdtValue: inputValue });
-	const { ethValue, tokenDecimals, contractReadError } = useContractForRead();
+	const { write, isLoading } = useSendTokens({ usdtValue: inputValue });
+	const { ethValue, tokenDecimals } = useContractForRead();
 
 	const { getContractAddress } = useUtility();
 	const baseUrl = useBaseUrl();
@@ -111,22 +113,6 @@ function useDepositUsdtModal() {
 		}
 	}, [currentChain]);
 
-	// 測試 Error
-	useEffect(() => {
-		if (contractReadError) {
-			disaptch(showToast({ isShow: false, title: `contractRead ${contractReadError.message}` }));
-		}
-	}, [contractReadError, disaptch]);
-
-	// 測試 Error
-	useEffect(() => {
-		if (prepareContractWriteError) {
-			disaptch(
-				showToast({ isShow: false, title: `contractWrite ${prepareContractWriteError.message}` })
-			);
-		}
-	}, [prepareContractWriteError, disaptch]);
-
 	useEffect(() => {
 		if (isSuccess) {
 			// 切換鏈成功 改變 Select 上的值
@@ -139,14 +125,6 @@ function useDepositUsdtModal() {
 			}
 		}
 	}, [isSuccess, pendingChainId]);
-
-	const renderTitleMsg = useCallback(() => {
-		if (selectedEther === 'ethereum') {
-			return 'Send USDT (on Ethereum) and receive the equivalent value in your wallet in ~7 minutes.';
-		}
-
-		return 'Send USDT (on Arbitrum) and receive the equivalent value in your wallet in <1 minute.';
-	}, [selectedEther]);
 
 	// 顯示 Select 第二個選項要顯示 Arbitrum Goerli or Arbitrum One
 	const renderArbitrumName = useCallback(() => {
@@ -207,92 +185,6 @@ function useDepositUsdtModal() {
 		write?.();
 	}, [baseUrl, isChainOnEtherOrArbitrum, switchNetwork, write]);
 
-	const renderConfirmText = useCallback(() => {
-		if (!isChainOnEtherOrArbitrum()) {
-			return 'Switch to Arbitrum';
-		}
-
-		return 'Confirm';
-	}, [isChainOnEtherOrArbitrum]);
-
-	const renderInputLayoutSection = useCallback(() => {
-		if (isShowInputLayout) {
-			return (
-				<>
-					<Stack direction={'row'} justify={'space-between'} alignItems={'center'}>
-						<FormLabel fontWeight={'800'}>Amount</FormLabel>
-						<Text
-							cursor={'pointer'}
-							onClick={() => setInputValue(String(ethValue))}
-							fontSize={'small'}
-							color={'gray.500'}
-						>
-							{`$${ethValue} available Max`}
-						</Text>
-					</Stack>
-					<Input
-						type="number"
-						minLength={0}
-						maxLength={16}
-						value={inputValue}
-						autoCapitalize={'none'}
-						onChange={e => setInputValue(e.target.value)}
-						placeholder={''}
-						border="2px solid #E2E8F0;"
-					/>
-				</>
-			);
-		}
-
-		return (
-			<Grid
-				flexDirection={'row'}
-				templateColumns={{
-					lg: '80% 20%',
-					md: 'repeat(1, 1fr)',
-					sm: 'repeat(1, 1fr)',
-				}}
-				gap={2}
-			>
-				<InputGroup>
-					<Input
-						cursor={'pointer'}
-						isDisabled={true}
-						type="number"
-						bg={'gray.200'}
-						defaultValue={proxyWallet}
-						autoCapitalize={'none'}
-						placeholder={proxyWallet}
-						border="1px solid #E2E8F0;"
-					/>
-					<InputRightElement
-						onClick={() => {
-							modalOnOpen();
-						}}
-						cursor={'pointer'}
-					>
-						<Icon as={HiQrcode} w={'20px'} h={'20px'} />
-					</InputRightElement>
-				</InputGroup>
-				<Button
-					w={'100%'}
-					bg={'teal.500'}
-					color="#fff"
-					onClick={() => {
-						setIsCopied(true);
-						setTimeout(() => {
-							setIsCopied(value => !value);
-							msgModalOnOpen();
-						}, 1000);
-						navigator.clipboard.writeText(proxyWallet);
-					}}
-				>
-					{isCopied ? 'Copied' : 'Copy'}
-				</Button>
-			</Grid>
-		);
-	}, [isCopied, ethValue, inputValue, isShowInputLayout, proxyWallet, modalOnOpen, msgModalOnOpen]);
-
 	const ModalDom = useMemo(
 		() => (
 			<Modal size={isDesktop ? 'lg' : 'full'} isOpen={isOpen} onClose={onClose}>
@@ -311,120 +203,83 @@ function useDepositUsdtModal() {
 						<Stack direction={'row'} align={'center'}>
 							<Icon as={UsdtIcon} boxSize={8} />
 							<Heading size="md" color="gray.700" mr={5}>
-								Deposit USDT
+								Withdraw USDT
 							</Heading>
 						</Stack>
 					</ModalHeader>
 					<ModalCloseButton _focus={{ boxShadow: 'none' }} size={'lg'} m={'16px'} />
 					<ModalBody>
-						<Text fontSize={'sm'} mb={'20px'}>
-							{renderTitleMsg()}
-						</Text>
-						<Grid
-							flexDirection={'row'}
-							templateColumns={{
-								lg: '60% 38%',
-								md: 'repeat(1, 1fr)',
-								sm: 'repeat(1, 1fr)',
-							}}
-							gap={2}
+						<Box
+							alignItems={'center'}
+							justifyContent={'center'}
+							bg="gray.200"
+							w="100%"
+							p={4}
+							color="black"
+							borderRadius={10}
 						>
-							<Stack>
-								<FormControl>
-									<FormLabel fontWeight={'800'}>Asset</FormLabel>
-									<Select
-										disabled={true}
-										border={'1px'}
-										borderColor={'gray.200'}
-										bg={'gray.300'}
-										placeholder=""
-										size="md"
-										value={seleectedAsset}
-										onChange={e => console.log(e.target.value)}
-									>
-										<option value="ethereumAsset">USDT</option>
-										<option value=""></option>
-									</Select>
-								</FormControl>
+							Only send to a USDT address on the Arbitrum network.
+						</Box>
+						<FormControl mt={'10px'}>
+							<FormLabel fontWeight={'800'}>Address</FormLabel>
+							<InputGroup>
+								<Input
+									cursor={'pointer'}
+									isDisabled={true}
+									type="number"
+									bg={'gray.200'}
+									defaultValue={proxyWallet}
+									autoCapitalize={'none'}
+									placeholder={proxyWallet}
+									border="1px solid #E2E8F0;"
+								/>
+							</InputGroup>
+						</FormControl>
+						<FormControl mt={'10px'}>
+							<Stack direction={'row'} justify={'space-between'} alignItems={'center'}>
+								<FormLabel fontWeight={'800'}>Amount</FormLabel>
+								<Text
+									cursor={'pointer'}
+									onClick={() => setInputValue(String(ethValue))}
+									fontSize={'small'}
+									color={'gray.500'}
+								>
+									{`$${ethValue} available Max`}
+								</Text>
 							</Stack>
-							<Stack>
-								<FormControl>
-									<FormLabel fontWeight={'800'}>Network</FormLabel>
-									<Select
-										cursor={'pointer'}
-										border={'1px'}
-										borderColor={'gray.200'}
-										bg={'#fff'}
-										placeholder=""
-										size="md"
-										value={selectedEther}
-										onChange={(e: any) => {
-											changeNetwork(e.target.value);
-										}}
-									>
-										<option value="ethereum">Ethereum</option>
-										<option value="arbitrum">{renderArbitrumName()}</option>
-									</Select>
-								</FormControl>
-							</Stack>
-						</Grid>
-						<FormControl mt={'10px'}>{renderInputLayoutSection()}</FormControl>
+							<Input
+								type="number"
+								minLength={0}
+								maxLength={16}
+								value={inputValue}
+								autoCapitalize={'none'}
+								onChange={e => setInputValue(e.target.value)}
+								placeholder={''}
+								border="2px solid #E2E8F0;"
+							/>
+						</FormControl>
 					</ModalBody>
-
 					<ModalFooter>
 						<Stack w={'100%'} align={'center'}>
-							{isShowInputLayout && (
-								<Button
-									isLoading={isLoading}
-									isDisabled={isChainOnEtherOrArbitrum() && !inputValue}
-									w={'100%'}
-									bg={'teal.500'}
-									color="#fff"
-									onClick={() => confirm()}
-								>
-									{renderConfirmText()}
-								</Button>
-							)}
-							<Text
-								mt={'12px'}
-								onClick={() => setIsShowInputLayout(value => !value)}
-								cursor={'pointer'}
-								fontWeight={'bold'}
-								color={'teal.500'}
+							<Button
+								isLoading={isLoading}
+								isDisabled={false}
+								w={'100%'}
+								bg={'teal.500'}
+								color="#fff"
+								onClick={() => alert('Test')}
 							>
-								{isShowInputLayout ? 'Send from exchange instead' : 'Deposit from wallet instead'}
-							</Text>
+								Withdraw
+							</Button>
 						</Stack>
 					</ModalFooter>
 				</ModalContent>
-				{modalIsOpen && qrcodeModalDom}
-				{msgModalIsOpen && msgModalDom}
 			</Modal>
 		),
-		[
-			isOpen,
-			onClose,
-			isDesktop,
-			changeNetwork,
-			renderArbitrumName,
-			selectedEther,
-			inputValue,
-			confirm,
-			renderConfirmText,
-			isChainOnEtherOrArbitrum,
-			renderTitleMsg,
-			isLoading,
-			renderInputLayoutSection,
-			seleectedAsset,
-			isShowInputLayout,
-			modalIsOpen,
-			qrcodeModalDom,
-			msgModalIsOpen,
-			msgModalDom,
-		]
+		[isOpen, onClose, isDesktop, inputValue, isLoading, ethValue, proxyWallet]
 	);
 
 	return { ModalDom, isOpen, onOpen, onClose };
 }
 
-export default useDepositUsdtModal;
+export default useWithdrawUsdtModal;

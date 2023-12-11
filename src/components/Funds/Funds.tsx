@@ -2,19 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { Stack, Button, Card, CardBody, Heading, Text, Icon } from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
 import { HiCreditCard } from 'react-icons/hi';
-import { useContractForRead, useDepositUsdtModal } from '@/hooks';
+import { useContractForRead, useDepositUsdtModal, useWithdrawUsdtModal } from '@/hooks';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 
 function Funds() {
 	const { t } = useTranslation();
 
 	const { ethValue } = useContractForRead();
+
 	const {
 		ModalDom: DepositModalDom,
 		isOpen: depositModalIsOpen,
 		onOpen: depositModalOnOpen,
 		onClose: depositModalOnClose,
 	} = useDepositUsdtModal();
+
+	const {
+		ModalDom: WithdrawModalDom,
+		isOpen: withdrawModalIsOpen,
+		onOpen: withdrawModalOnOpen,
+		onClose: withdrawModalOnClose,
+	} = useWithdrawUsdtModal();
 
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
@@ -64,6 +72,7 @@ function Funds() {
 								Deposit
 							</Button>
 							<Button
+								onClick={() => withdrawModalOnOpen()}
 								w={{ lg: '172px', md: '100px', sm: '100px' }}
 								h={{ lg: '48px', md: '40px', sm: '40px' }}
 								colorScheme="gray"
@@ -75,6 +84,7 @@ function Funds() {
 				</CardBody>
 			</Card>
 			{depositModalIsOpen && DepositModalDom}
+			{withdrawModalIsOpen && WithdrawModalDom}
 		</Stack>
 	);
 }

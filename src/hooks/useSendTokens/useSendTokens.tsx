@@ -28,8 +28,9 @@ function useSendTokens(props?: Props) {
 	const { getContractAddress } = useUtility();
 
 	const units = Number(props?.usdtValue) * 1000000000000;
+
 	console.log('useSendTokens address =>', getContractAddress(chain?.id as number));
-	const { config } = usePrepareContractWrite({
+	const { config, error: prepareContractWriteError } = usePrepareContractWrite({
 		// from my MetaMask USDT token contract address
 		address: getContractAddress(chain?.id as number),
 		abi: arbitrumContractAbi,
@@ -52,9 +53,10 @@ function useSendTokens(props?: Props) {
 		isError,
 		isSuccess,
 		isLoading,
+		prepareContractWriteError,
 	});
 
-	return { write, data, isSuccess, isLoading };
+	return { write, data, isSuccess, isLoading, prepareContractWriteError };
 }
 
 export default useSendTokens;
