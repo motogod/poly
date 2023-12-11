@@ -26,6 +26,7 @@ const getNonce = createAsyncThunk('api/getNonce', async (params: any) => {
 const loginWithSiwe = createAsyncThunk('api/loginWithSiwe', async (params: any, { dispatch }) => {
 	console.log('loginWithSiwe params', { params });
 	const resp = await LoginWithSiwe<LoginType>(params);
+	dispatch(getUserProfile({})); // 登入成功 更新使用者資料
 	console.log('LoginWithSiwe resp is', resp);
 	return resp;
 });
@@ -34,6 +35,7 @@ const loginWithGoogle = createAsyncThunk(
 	'api/loginWithGoogle',
 	async (params: { idToken: string }, { dispatch }) => {
 		const resp = await LoginWithGoogle<LoginType>(params);
+		dispatch(getUserProfile({})); // 登入成功 更新使用者資料
 		console.log('loginWithGoogle resp is', resp);
 		return resp;
 	}

@@ -10,6 +10,8 @@ import useDepositUsdtModal from './useDepositUsdtModal';
 import useContractForRead from './useContractForRead';
 import useBaseUrl from './useBaseUrl/useBaseUrl';
 import useQRCodeModal from './useQRCodeModal';
+import useMsgModal from './useMsgModal';
+import useWithdrawUsdtModal from './useWithdrawUsdtModal';
 
 export {
 	useCategoryTabsList,
@@ -24,4 +26,6 @@ export {
 	useContractForRead,
 	useBaseUrl,
 	useQRCodeModal,
+	useMsgModal,
+	useWithdrawUsdtModal,
 };

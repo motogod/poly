@@ -47,12 +47,17 @@ function useUtility() {
 				// Arbitrum One USDT contract address
 				return '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9';
 			} else {
-				return '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9';
+				// Ethereum USDT
+				return '0xdAC17F958D2ee523a2206206994597C13D831ec7';
 			}
 		}
 
 		// Arbitrum One USDT contract address
-		return '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9';
+		if (chainId === 42161) {
+			return '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9';
+		}
+		// Arbitrum One USDT contract address
+		return '0xdAC17F958D2ee523a2206206994597C13D831ec7';
 	};
 
 	return { checkEngAndNumberName, inputNameErrMsg, roundDown, getContractAddress };
