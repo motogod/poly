@@ -209,17 +209,16 @@ function useWithdrawUsdtModal() {
 					</ModalHeader>
 					<ModalCloseButton _focus={{ boxShadow: 'none' }} size={'lg'} m={'16px'} />
 					<ModalBody>
-						<Box
-							alignItems={'center'}
-							justifyContent={'center'}
-							bg="gray.200"
-							w="100%"
-							p={4}
-							color="black"
-							borderRadius={10}
-						>
-							Only send to a USDT address on the Arbitrum network.
-						</Box>
+						<Stack p={4} bg="gray.200" borderRadius={10} display={'flex'} flexDirection={'row'}>
+							<Stack>
+								<Icon mt={'2px'} as={TbAlertTriangle} boxSize={4} color={'yellow.500'} />
+							</Stack>
+							<Stack>
+								<Text fontSize="sm" color="gray.800">
+									Only send to a USDT address on the Arbitrum network.
+								</Text>
+							</Stack>
+						</Stack>
 						<FormControl mt={'10px'}>
 							<FormLabel fontWeight={'800'}>Address</FormLabel>
 							<InputGroup>

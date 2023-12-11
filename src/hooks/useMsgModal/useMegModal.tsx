@@ -52,7 +52,7 @@ function useMsgModal({ selectedEther }: Props) {
 					>
 						<ModalHeader>
 							<Stack direction={'row'} align={'center'}>
-								<Icon as={TbAlertTriangle} boxSize={4} color={'yellow.800'} />
+								<Icon as={TbAlertTriangle} boxSize={4} color={'yellow.500'} />
 								<Heading size="md" color="gray.700">
 									Important
 								</Heading>
@@ -63,8 +63,11 @@ function useMsgModal({ selectedEther }: Props) {
 							<Stack justify={'center'} align={'center'}>
 								<Stack mb={'20px'} direction={'row'}>
 									<Text>
-										{`Remember: When sending USDT to this address from an exchange, like Coninbase or
-									Binance, make sure to select ${selectedEther} as the network or you may lose your funds.`}
+										<b style={{ fontWeight: 'bold' }}>Remember: </b>
+										{`When sending USDT to this address from an exchange, like Coninbase or
+									Binance, make sure to select `}
+										<u style={{ fontWeight: 'bold' }}>{selectedEther}</u> as the network or you may
+										lose your funds.
 									</Text>
 								</Stack>
 								<Button w={'100%'} bg={'teal.500'} color="#fff" onClick={() => onClose()}>
