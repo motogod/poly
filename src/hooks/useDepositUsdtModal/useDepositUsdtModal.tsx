@@ -248,7 +248,7 @@ function useDepositUsdtModal() {
 			<Grid
 				flexDirection={'row'}
 				templateColumns={{
-					lg: '80% 20%',
+					lg: '80% 18%',
 					md: 'repeat(1, 1fr)',
 					sm: 'repeat(1, 1fr)',
 				}}
