@@ -41,7 +41,7 @@ function useSendTokens(props?: Props) {
 	// ethers.parseUnits 塞入的的值不得為空
 	const unitsValue = props?.usdtValue ? props?.usdtValue : '0';
 	const decimals = chain?.id === 421613 ? 18 : 6;
-
+	console.log('parseUnits value', ethers.parseUnits(unitsValue, decimals));
 	const { config, error: prepareContractWriteError } = usePrepareContractWrite({
 		// from my MetaMask USDT token contract address
 		address: getContractAddress(chain?.id as number),
