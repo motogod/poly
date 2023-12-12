@@ -22,6 +22,7 @@ import {
 	Icon,
 	InputGroup,
 	InputRightElement,
+	Collapse,
 } from '@chakra-ui/react';
 import { HiQrcode } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,7 +58,7 @@ function useDepositUsdtModal() {
 	const { write, isLoading, prepareContractWriteError } = useSendTokens({ usdtValue: inputValue });
 	const { ethValue, tokenDecimals, contractReadError } = useContractForRead();
 
-	const { getContractAddress } = useUtility();
+	const { getContractAddress, inputValueAndEthValueMsg, initInputAmountValue } = useUtility();
 	const baseUrl = useBaseUrl();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -112,20 +113,20 @@ function useDepositUsdtModal() {
 	}, [currentChain]);
 
 	// 測試 Error
-	useEffect(() => {
-		if (contractReadError) {
-			disaptch(showToast({ isShow: false, title: `contractRead ${contractReadError.message}` }));
-		}
-	}, [contractReadError, disaptch]);
+	// useEffect(() => {
+	// 	if (contractReadError) {
+	// 		disaptch(showToast({ isShow: false, title: `contractRead ${contractReadError.message}` }));
+	// 	}
+	// }, [contractReadError, disaptch]);
 
 	// 測試 Error
-	useEffect(() => {
-		if (prepareContractWriteError) {
-			disaptch(
-				showToast({ isShow: false, title: `contractWrite ${prepareContractWriteError.message}` })
-			);
-		}
-	}, [prepareContractWriteError, disaptch]);
+	// useEffect(() => {
+	// 	if (prepareContractWriteError) {
+	// 		disaptch(
+	// 			showToast({ isShow: false, title: `contractWrite ${prepareContractWriteError.message}` })
+	// 		);
+	// 	}
+	// }, [prepareContractWriteError, disaptch]);
 
 	useEffect(() => {
 		if (isSuccess) {
@@ -188,25 +189,6 @@ function useDepositUsdtModal() {
 		return true;
 	}, [currentChain]);
 
-	const confirm = useCallback(() => {
-		console.log('1');
-		// 若在其他鏈上 不做交易 先讓使用者切換到 Arbitrum
-		if (!isChainOnEtherOrArbitrum()) {
-			console.log('2');
-			if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
-				console.log('3');
-				switchNetwork?.(421613);
-			} else {
-				console.log('4');
-				switchNetwork?.(42161);
-			}
-			console.log('5');
-			return;
-		}
-		console.log('6');
-		write?.();
-	}, [baseUrl, isChainOnEtherOrArbitrum, switchNetwork, write]);
-
 	const renderConfirmText = useCallback(() => {
 		if (!isChainOnEtherOrArbitrum()) {
 			return 'Switch to Arbitrum';
@@ -231,15 +213,29 @@ function useDepositUsdtModal() {
 						</Text>
 					</Stack>
 					<Input
-						type="number"
-						minLength={0}
-						maxLength={16}
-						value={inputValue}
+						position={'relative'}
+						value={initInputAmountValue(inputValue)}
 						autoCapitalize={'none'}
-						onChange={e => setInputValue(e.target.value)}
+						pl={5}
+						onChange={e => {
+							const changeValue = e.target.value.replaceAll(',', '');
+
+							// 非數字系列或逗點，不儲存進輸入欄位
+							if (!isNaN(Number(changeValue))) {
+								setInputValue(changeValue);
+							}
+						}}
 						placeholder={''}
 						border="2px solid #E2E8F0;"
 					/>
+					<Text position={'absolute'} top={'40px'} left={2}>
+						{inputValue && '$'}
+					</Text>
+					<Collapse in={inputValueAndEthValueMsg(inputValue, ethValue) !== ''} animateOpacity>
+						<Text fontSize={'sm'} mt={1} color={'red.500'}>
+							{inputValueAndEthValueMsg(inputValue, ethValue)}
+						</Text>
+					</Collapse>
 				</>
 			);
 		}
@@ -291,7 +287,45 @@ function useDepositUsdtModal() {
 				</Button>
 			</Grid>
 		);
-	}, [isCopied, ethValue, inputValue, isShowInputLayout, proxyWallet, modalOnOpen, msgModalOnOpen]);
+	}, [
+		isCopied,
+		ethValue,
+		inputValue,
+		isShowInputLayout,
+		proxyWallet,
+		modalOnOpen,
+		msgModalOnOpen,
+		inputValueAndEthValueMsg,
+		initInputAmountValue,
+	]);
+
+	const confirm = useCallback(() => {
+		// 若在其他鏈上 不做交易 先讓使用者切換到 Arbitrum
+		if (!isChainOnEtherOrArbitrum()) {
+			if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
+				switchNetwork?.(421613);
+			} else {
+				switchNetwork?.(42161);
+			}
+
+			return;
+		}
+
+		// 如果使用者輸入的數值不符合餘額範圍內，返回不執行交易
+		if (inputValueAndEthValueMsg(inputValue, ethValue) !== '') {
+			return;
+		}
+
+		write?.();
+	}, [
+		baseUrl,
+		isChainOnEtherOrArbitrum,
+		switchNetwork,
+		inputValueAndEthValueMsg,
+		ethValue,
+		inputValue,
+		write,
+	]);
 
 	const ModalDom = useMemo(
 		() => (

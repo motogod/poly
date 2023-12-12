@@ -23,6 +23,7 @@ import {
 	Icon,
 	InputGroup,
 	InputRightElement,
+	Collapse,
 } from '@chakra-ui/react';
 import { HiQrcode } from 'react-icons/hi';
 import { TbAlertTriangle } from 'react-icons/tb';
@@ -56,10 +57,10 @@ function useWithdrawUsdtModal() {
 	const { chain: currentChain } = useNetwork();
 	const { pendingChainId, switchNetwork, isSuccess } = useSwitchNetwork();
 
-	// const { write, isLoading } = useSendTokens({ usdtValue: inputValue });
+	const { write, isLoading } = useSendTokens({ usdtValue: inputValue });
 	const { ethValue, tokenDecimals } = useContractForRead();
 
-	const { getContractAddress } = useUtility();
+	const { inputValueAndEthValueMsg, initInputAmountValue } = useUtility();
 	const baseUrl = useBaseUrl();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -68,46 +69,9 @@ function useWithdrawUsdtModal() {
 		query: '(min-width: 768px)',
 	});
 
-	useEffect(() => {
-		if (currentChain) {
-			// 依據使用者一開始在哪條鏈上，來決定初始 Select 的值 不是在主鏈上就是 arbitrum
-			let defaultEther: etherType = 'arbitrum';
-			if (currentChain?.id === 1) {
-				defaultEther = 'ethereum';
-			}
-
-			defaultEther === 'ethereum' ? setSelectedAsset('ethereumAsset') : setSelectedAsset('');
-			setSelectedEther(defaultEther);
-		}
-	}, [currentChain]);
-
-	const isChainOnEtherOrArbitrum = useCallback(() => {
-		const currentChainId = currentChain?.id;
-		if (currentChainId !== 1 && currentChainId !== 421613 && currentChainId !== 42161) {
-			return false;
-		}
-
-		return true;
-	}, [currentChain]);
-
-	// const confirm = useCallback(() => {
-	// 	console.log('1');
-	// 	// 若在其他鏈上 不做交易 先讓使用者切換到 Arbitrum
-	// 	if (!isChainOnEtherOrArbitrum()) {
-	// 		console.log('2');
-	// 		if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
-	// 			console.log('3');
-	// 			switchNetwork?.(421613);
-	// 		} else {
-	// 			console.log('4');
-	// 			switchNetwork?.(42161);
-	// 		}
-	// 		console.log('5');
-	// 		return;
-	// 	}
-	// 	console.log('6');
-	// 	write?.();
-	// }, [baseUrl, isChainOnEtherOrArbitrum, switchNetwork, write]);
+	const confirm = useCallback(() => {
+		alert('Test');
+	}, []);
 
 	const ModalDom = useMemo(
 		() => (
@@ -181,35 +145,61 @@ function useWithdrawUsdtModal() {
 								</Text>
 							</Stack>
 							<Input
-								type="number"
-								minLength={0}
-								maxLength={16}
-								value={inputValue}
+								position={'relative'}
+								value={initInputAmountValue(inputValue)}
 								autoCapitalize={'none'}
-								onChange={e => setInputValue(e.target.value)}
+								pl={5}
+								onChange={e => {
+									const changeValue = e.target.value.replaceAll(',', '');
+
+									// 非數字系列或逗點，不儲存進輸入欄位
+									if (!isNaN(Number(changeValue))) {
+										setInputValue(changeValue);
+									}
+								}}
 								placeholder={''}
 								border="2px solid #E2E8F0;"
 							/>
+							<Text position={'absolute'} top={'41px'} left={2}>
+								{inputValue && '$'}
+							</Text>
+							<Collapse in={inputValueAndEthValueMsg(inputValue, ethValue) !== ''} animateOpacity>
+								<Text fontSize={'sm'} mt={1} color={'red.500'}>
+									{inputValueAndEthValueMsg(inputValue, ethValue)}
+								</Text>
+							</Collapse>
 						</FormControl>
 					</ModalBody>
 					<ModalFooter>
 						<Stack w={'100%'} align={'center'}>
-							{/* <Button
+							<Button
 								isLoading={isLoading}
 								isDisabled={false}
 								w={'100%'}
 								bg={'teal.500'}
 								color="#fff"
-								onClick={() => alert('Test')}
+								onClick={() => confirm()}
 							>
 								Withdraw
-							</Button> */}
+							</Button>
 						</Stack>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
 		),
-		[isOpen, onClose, isDesktop, inputValue, ethValue, inputAddressValue, address]
+		[
+			isOpen,
+			onClose,
+			isDesktop,
+			inputValue,
+			ethValue,
+			inputAddressValue,
+			address,
+			isLoading,
+			inputValueAndEthValueMsg,
+			initInputAmountValue,
+			confirm,
+		]
 	);
 
 	return { ModalDom, isOpen, onOpen, onClose };
