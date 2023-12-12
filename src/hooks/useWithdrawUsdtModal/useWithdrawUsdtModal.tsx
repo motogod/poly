@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNetwork, useSwitchNetwork } from 'wagmi';
+import { useNetwork, useSwitchNetwork, useAccount } from 'wagmi';
 import { useMediaQuery } from 'react-responsive';
 import {
 	useDisclosure,
@@ -47,16 +47,16 @@ function useWithdrawUsdtModal() {
 
 	const [seleectedAsset, setSelectedAsset] = useState<assetType>('');
 	const [selectedEther, setSelectedEther] = useState<etherType>('');
+	const [inputAddressValue, setInputAddressValue] = useState('');
 	const [inputValue, setInputValue] = useState<string>('');
-	const [isShowInputLayout, setIsShowInputLayout] = useState(true);
-	const [isCopied, setIsCopied] = useState(false);
 
 	const { proxyWallet } = useSelector((state: RootState) => state.authReducer.userProfile);
 
+	const { address } = useAccount();
 	const { chain: currentChain } = useNetwork();
 	const { pendingChainId, switchNetwork, isSuccess } = useSwitchNetwork();
 
-	const { write, isLoading } = useSendTokens({ usdtValue: inputValue });
+	// const { write, isLoading } = useSendTokens({ usdtValue: inputValue });
 	const { ethValue, tokenDecimals } = useContractForRead();
 
 	const { getContractAddress } = useUtility();
@@ -64,41 +64,9 @@ function useWithdrawUsdtModal() {
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const {
-		ModalDom: qrcodeModalDom,
-		isOpen: modalIsOpen,
-		onOpen: modalOnOpen,
-		onClose: modalOnClose,
-	} = useQRCodeModal({
-		contractAddress: getContractAddress(currentChain?.id as number),
-		receiverAddress: proxyWallet,
-		decimals: tokenDecimals,
-		chainId: currentChain?.id as number,
-	});
-
-	const {
-		ModalDom: msgModalDom,
-		isOpen: msgModalIsOpen,
-		onOpen: msgModalOnOpen,
-		onClose: msgModalOnClose,
-	} = useMsgModal({ selectedEther });
-
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
 	});
-
-	const changeNetwork = useCallback(
-		(ether: etherType) => {
-			if (ether === 'ethereum') {
-				switchNetwork?.(1);
-			} else {
-				process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')
-					? switchNetwork?.(421613)
-					: switchNetwork?.(42161);
-			}
-		},
-		[switchNetwork, baseUrl]
-	);
 
 	useEffect(() => {
 		if (currentChain) {
@@ -113,50 +81,6 @@ function useWithdrawUsdtModal() {
 		}
 	}, [currentChain]);
 
-	useEffect(() => {
-		if (isSuccess) {
-			// 切換鏈成功 改變 Select 上的值
-			if (pendingChainId === 1) {
-				setSelectedAsset('ethereumAsset');
-				setSelectedEther('ethereum');
-			} else {
-				setSelectedAsset('');
-				setSelectedEther('arbitrum');
-			}
-		}
-	}, [isSuccess, pendingChainId]);
-
-	// 顯示 Select 第二個選項要顯示 Arbitrum Goerli or Arbitrum One
-	const renderArbitrumName = useCallback(() => {
-		// 如果使用者目前在主鏈上，看是否為開發環境
-		if (currentChain?.id === 1) {
-			if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
-				return 'Arbitrum Goerli';
-			} else {
-				return 'Arbitrum One';
-			}
-		}
-
-		// 若不在主鏈上，則看當下是哪個來顯示
-		if (currentChain?.id !== 1) {
-			if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
-				if (currentChain?.id === 421613) {
-					return 'Arbitrum Goerli';
-				}
-				if (currentChain?.id === 42161) {
-					return 'Arbitrum One';
-				}
-			}
-		}
-
-		// 不在主鏈 也不在 Arbitrum，一率顯示 Arbitrum
-		if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
-			return 'Arbitrum Goerli';
-		}
-
-		return 'Arbitrum One';
-	}, [currentChain, baseUrl]);
-
 	const isChainOnEtherOrArbitrum = useCallback(() => {
 		const currentChainId = currentChain?.id;
 		if (currentChainId !== 1 && currentChainId !== 421613 && currentChainId !== 42161) {
@@ -166,24 +90,24 @@ function useWithdrawUsdtModal() {
 		return true;
 	}, [currentChain]);
 
-	const confirm = useCallback(() => {
-		console.log('1');
-		// 若在其他鏈上 不做交易 先讓使用者切換到 Arbitrum
-		if (!isChainOnEtherOrArbitrum()) {
-			console.log('2');
-			if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
-				console.log('3');
-				switchNetwork?.(421613);
-			} else {
-				console.log('4');
-				switchNetwork?.(42161);
-			}
-			console.log('5');
-			return;
-		}
-		console.log('6');
-		write?.();
-	}, [baseUrl, isChainOnEtherOrArbitrum, switchNetwork, write]);
+	// const confirm = useCallback(() => {
+	// 	console.log('1');
+	// 	// 若在其他鏈上 不做交易 先讓使用者切換到 Arbitrum
+	// 	if (!isChainOnEtherOrArbitrum()) {
+	// 		console.log('2');
+	// 		if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
+	// 			console.log('3');
+	// 			switchNetwork?.(421613);
+	// 		} else {
+	// 			console.log('4');
+	// 			switchNetwork?.(42161);
+	// 		}
+	// 		console.log('5');
+	// 		return;
+	// 	}
+	// 	console.log('6');
+	// 	write?.();
+	// }, [baseUrl, isChainOnEtherOrArbitrum, switchNetwork, write]);
 
 	const ModalDom = useMemo(
 		() => (
@@ -215,22 +139,32 @@ function useWithdrawUsdtModal() {
 							</Stack>
 							<Stack>
 								<Text fontSize="sm" color="gray.800">
-									Only send to a USDT address on the Arbitrum network.
+									Only send to a USDT address on the Mainnet and Arbitrum network.
 								</Text>
 							</Stack>
 						</Stack>
 						<FormControl mt={'10px'}>
-							<FormLabel fontWeight={'800'}>Address</FormLabel>
+							<Stack direction={'row'} justify={'space-between'} alignItems={'center'}>
+								<FormLabel fontWeight={'800'}>Address</FormLabel>
+								<Text
+									// textUnderlineOffset={'1px'}
+									textDecoration={'underline'}
+									cursor={'pointer'}
+									onClick={() => setInputAddressValue(address as `0x${string}`)}
+									fontSize={'small'}
+									color={'gray.500'}
+								>
+									{`Use connected`}
+								</Text>
+							</Stack>
 							<InputGroup>
 								<Input
-									cursor={'pointer'}
-									isDisabled={true}
-									type="number"
-									bg={'gray.200'}
-									defaultValue={proxyWallet}
+									minLength={0}
+									value={inputAddressValue}
 									autoCapitalize={'none'}
-									placeholder={proxyWallet}
-									border="1px solid #E2E8F0;"
+									onChange={e => setInputAddressValue(e.target.value)}
+									placeholder={'0x...'}
+									border="2px solid #E2E8F0;"
 								/>
 							</InputGroup>
 						</FormControl>
@@ -260,7 +194,7 @@ function useWithdrawUsdtModal() {
 					</ModalBody>
 					<ModalFooter>
 						<Stack w={'100%'} align={'center'}>
-							<Button
+							{/* <Button
 								isLoading={isLoading}
 								isDisabled={false}
 								w={'100%'}
@@ -269,13 +203,13 @@ function useWithdrawUsdtModal() {
 								onClick={() => alert('Test')}
 							>
 								Withdraw
-							</Button>
+							</Button> */}
 						</Stack>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
 		),
-		[isOpen, onClose, isDesktop, inputValue, isLoading, ethValue, proxyWallet]
+		[isOpen, onClose, isDesktop, inputValue, ethValue, inputAddressValue, address]
 	);
 
 	return { ModalDom, isOpen, onOpen, onClose };
