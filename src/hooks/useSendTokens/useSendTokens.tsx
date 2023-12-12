@@ -7,6 +7,7 @@ import {
 	useNetwork,
 } from 'wagmi';
 import { ethers } from 'ethers';
+import { parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '@/store';
@@ -21,7 +22,7 @@ function useSendTokens(props?: Props) {
 	const dispatch = useDispatch<AppDispatch>();
 	const { proxyWallet } = useSelector((state: RootState) => state.authReducer.userProfile);
 
-	// 使用者所連接自己錢包的 address
+	// 使用者所連接自己錢包的 addressu
 	const { address } = useAccount();
 	const { chain } = useNetwork();
 
@@ -29,7 +30,18 @@ function useSendTokens(props?: Props) {
 
 	const units = Number(props?.usdtValue) * 1000000000000;
 
-	console.log('useSendTokens address =>', getContractAddress(chain?.id as number));
+	const unitsData = () => {
+		if (chain?.id === 421613) {
+			return { value: props?.usdtValue, decimals: 18 };
+		}
+
+		return { value: props?.usdtValue, decimals: 6 };
+	};
+
+	// ethers.parseUnits 塞入的的值不得為空
+	const unitsValue = props?.usdtValue ? props?.usdtValue : '0';
+	const decimals = chain?.id === 421613 ? 18 : 6;
+
 	const { config, error: prepareContractWriteError } = usePrepareContractWrite({
 		// from my MetaMask USDT token contract address
 		address: getContractAddress(chain?.id as number),
@@ -39,7 +51,8 @@ function useSendTokens(props?: Props) {
 			proxyWallet, // proxyWallet address
 			// ethers.parseEther('0.0001'), // convert to wei
 			// 1000000000000 => 12 個 0 = 1 USDT convert to USDT
-			ethers.parseUnits(String(units), 6),
+			ethers.parseUnits(unitsValue, decimals),
+			// parseUnits(props?.usdtValue as string, 9),
 		],
 	});
 
