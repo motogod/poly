@@ -60,7 +60,52 @@ function useUtility() {
 		return '0xdAC17F958D2ee523a2206206994597C13D831ec7';
 	};
 
-	return { checkEngAndNumberName, inputNameErrMsg, roundDown, getContractAddress };
+	// 使用者輸入的金額數值 跟 錢包餘額做比對之後 要顯示的資訊
+	const inputValueAndEthValueMsg = (inputValue: string, ethValue: number) => {
+		if (inputValue) {
+			if (Number(inputValue) === 0 && !inputValue.includes('.')) {
+				return "Amount must can't be 0";
+			}
+
+			if (inputValue.includes('.')) {
+				// 不得大於小數點後第 6 位
+				if (inputValue.substring(inputValue.indexOf('.') + 1).length >= 7) {
+					return 'There was an error with your amount. Please try again.';
+				}
+			}
+
+			if (Number(inputValue) > ethValue) {
+				return 'Insufficient funds. You cannot deposit more than your available balance.';
+			}
+
+			return '';
+		}
+
+		return '';
+	};
+
+	// 顯示輸入欄位的金額：百位數逗號；小數點不加逗號
+	const initInputAmountValue = (inputValue: string) => {
+		if (inputValue) {
+			// 若輸入數值有小數點，不加入百位數逗點
+			if (inputValue.includes('.')) {
+				return `${inputValue}`;
+			} else {
+				return `${String(Number(inputValue).toLocaleString())}`;
+			}
+		}
+
+		return '';
+	};
+
+	return {
+		checkEngAndNumberName,
+		inputNameErrMsg,
+		roundDown,
+		getContractAddress,
+		inputValueAndEthValueMsg,
+		initInputAmountValue,
+	};
 }
 
 export default useUtility;

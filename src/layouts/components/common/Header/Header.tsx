@@ -35,7 +35,6 @@ function Header() {
 					position: 'top',
 					status: 'success',
 					duration: 2000,
-					// duration: 90000,
 					isClosable: true,
 				});
 			} else {
@@ -43,7 +42,7 @@ function Header() {
 					title: checkAuthTitle,
 					position: 'top',
 					status: 'error',
-					duration: 200000,
+					duration: 2000,
 					isClosable: true,
 				});
 			}
