@@ -32,4 +32,11 @@ export const PutUserProfile = <T>(params: any) =>
 export const PutUserEmail = <T>(params: any) =>
 	requestWithSession.put<T>('/accounts/profile/email', params, { timeout: 15000 });
 
+// Get user funds
+export const GetUserFunds = <T>(params: any) =>
+	requestWithSession.get<T>('/accounts/funds', params, { timeout: 15000 });
+
+export const PostWithdraw = <T>(params: any) =>
+	requestWithSession.post<T>('/accounts/withdrawals', params, { timeout: 15000 });
+
 export * from './type';

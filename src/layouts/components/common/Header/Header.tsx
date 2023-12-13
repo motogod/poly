@@ -3,7 +3,13 @@ import { useRouter } from 'next/router';
 import { Heading, Stack, useToast } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, loginWithGoogle, RootState, resetCheckAuthToast } from '@/store';
+import {
+	AppDispatch,
+	loginWithGoogle,
+	RootState,
+	resetCheckAuthToast,
+	getUserFunds,
+} from '@/store';
 import HeaderRightSideSection from './HeaderRightSideSection';
 
 import { PrimaryPink } from '@/utils/color';
@@ -27,7 +33,7 @@ function Header() {
 	);
 	// 統一放在 Header 這邊來顯示提醒視窗
 	useEffect(() => {
-		console.log('checkAuthSuccess', checkAuthSuccess);
+		dispatch(getUserFunds({}));
 		if (checkAuthSuccess !== null) {
 			if (checkAuthSuccess) {
 				toast({

@@ -81,3 +81,24 @@ export type GetNonceFromServerType = {
 	message: string;
 	statusCode: number;
 };
+
+export type FundsType = {
+	hold: number; // 系統存的錢
+	load: number; // 系統還在處理中的錢
+	symbol: string;
+	total: number;
+};
+
+export type GetUserFundsType = {
+	data: FundsType[];
+	message: string;
+	statusCode: number;
+};
+
+export type PostWithdrawType = {
+	id: string;
+	address: string;
+	amount: number;
+	status: string;
+	txId: string;
+};

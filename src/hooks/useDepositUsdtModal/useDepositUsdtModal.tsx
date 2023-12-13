@@ -55,7 +55,12 @@ function useDepositUsdtModal() {
 	const { chain: currentChain } = useNetwork();
 	const { pendingChainId, switchNetwork, isSuccess } = useSwitchNetwork();
 
-	const { write, isLoading, prepareContractWriteError } = useSendTokens({ usdtValue: inputValue });
+	const {
+		write,
+		isLoading,
+		isSuccess: isDepositSuccess,
+		prepareContractWriteError,
+	} = useSendTokens({ usdtValue: inputValue });
 	const { ethValue, tokenDecimals, contractReadError } = useContractForRead();
 
 	const { getContractAddress, inputValueAndEthValueMsg, initInputAmountValue } = useUtility();
@@ -111,6 +116,13 @@ function useDepositUsdtModal() {
 			setSelectedEther(defaultEther);
 		}
 	}, [currentChain]);
+	console.log('isDepositSuccess =>', isDepositSuccess);
+	useEffect(() => {
+		if (isDepositSuccess) {
+			disaptch(showToast({ isShow: true, title: 'Deposit suceesfully' }));
+			onClose();
+		}
+	}, [isDepositSuccess, onClose, disaptch]);
 
 	// 測試 Error
 	// useEffect(() => {

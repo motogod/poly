@@ -21,6 +21,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 	const router = useRouter();
 
 	const { proxyWallet } = useSelector((state: RootState) => state.authReducer.userProfile);
+	const { userFunds } = useSelector((state: RootState) => state.authReducer);
 
 	const { ethValue } = useContractForRead();
 	const { address } = useAccount();
@@ -139,7 +140,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 					</Stack>
 					<Stack>
 						<Text size={'md'} color={'gray.800'} fontWeight={'800'}>
-							$0.00
+							{`$${userFunds.hold}`}
 						</Text>
 					</Stack>
 				</Stack>
