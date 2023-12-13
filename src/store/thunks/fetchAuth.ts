@@ -14,6 +14,10 @@ import {
 	PutUserProfile,
 	PutUserProfileType,
 	PutUserEmail,
+	GetUserFunds,
+	GetUserFundsType,
+	PostWithdraw,
+	PostWithdrawType,
 } from '@/api';
 
 // Get Nonce from server
@@ -80,6 +84,19 @@ const putUserEmail = createAsyncThunk('api/putUserEmail', async (params: { idTok
 	return resp;
 });
 
+// Get user funds
+const getUserFunds = createAsyncThunk('api/getUserFunds', async (params: any) => {
+	const resp = await GetUserFunds<GetUserFundsType>({});
+	console.log('getUserFunds resp is', resp);
+	return resp;
+});
+
+const postWithdraw = createAsyncThunk('api/postWithdraw', async (params: any) => {
+	const resp = await PostWithdraw<PostWithdrawType>(params);
+	console.log('postWithdraw resp is', resp);
+	return resp;
+});
+
 export {
 	getNonce,
 	loginWithSiwe,
@@ -89,4 +106,6 @@ export {
 	getUserProfile,
 	putUserProfile,
 	putUserEmail,
+	getUserFunds,
+	postWithdraw,
 };

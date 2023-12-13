@@ -28,7 +28,7 @@ import {
 import { HiQrcode } from 'react-icons/hi';
 import { TbAlertTriangle } from 'react-icons/tb';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/store';
+import { AppDispatch, RootState, postWithdraw } from '@/store';
 import {
 	useContractForRead,
 	useUtility,
@@ -51,7 +51,7 @@ function useWithdrawUsdtModal() {
 	const [inputAddressValue, setInputAddressValue] = useState('');
 	const [inputValue, setInputValue] = useState<string>('');
 
-	const { proxyWallet } = useSelector((state: RootState) => state.authReducer.userProfile);
+	const { userFunds } = useSelector((state: RootState) => state.authReducer);
 
 	const { address } = useAccount();
 	const { chain: currentChain } = useNetwork();
@@ -70,8 +70,8 @@ function useWithdrawUsdtModal() {
 	});
 
 	const confirm = useCallback(() => {
-		alert('Test');
-	}, []);
+		disaptch(postWithdraw({ address: inputAddressValue, amount: Number(inputValue) }));
+	}, [disaptch, inputAddressValue, inputValue]);
 
 	const ModalDom = useMemo(
 		() => (
@@ -137,11 +137,11 @@ function useWithdrawUsdtModal() {
 								<FormLabel fontWeight={'800'}>Amount</FormLabel>
 								<Text
 									cursor={'pointer'}
-									onClick={() => setInputValue(String(ethValue))}
+									onClick={() => setInputValue(String(userFunds.hold))}
 									fontSize={'small'}
 									color={'gray.500'}
 								>
-									{`$${ethValue} available Max`}
+									{`$${userFunds.hold} available Max`}
 								</Text>
 							</Stack>
 							<Input
@@ -174,7 +174,7 @@ function useWithdrawUsdtModal() {
 						<Stack w={'100%'} align={'center'}>
 							<Button
 								isLoading={isLoading}
-								isDisabled={false}
+								isDisabled={inputValue === '' || inputAddressValue === ''}
 								w={'100%'}
 								bg={'teal.500'}
 								color="#fff"

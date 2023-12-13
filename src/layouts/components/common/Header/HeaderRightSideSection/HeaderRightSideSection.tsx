@@ -60,7 +60,7 @@ function HeaderRightSideSection() {
 		onClose: depositModalOnClose,
 	} = useDepositUsdtModal();
 
-	const { isAuthenticated, user } = useSelector((state: RootState) => state.authReducer);
+	const { isAuthenticated, user, userFunds } = useSelector((state: RootState) => state.authReducer);
 
 	const { data, isError, isLoading } = useBalance({ address: user.address as `0x${string}` });
 
@@ -232,7 +232,7 @@ function HeaderRightSideSection() {
 						</Stack>
 						<Stack onClick={() => router.push('./funds')} cursor={'pointer'}>
 							<Text fontSize={'16px'} color={'gray.800'} lineHeight={'12px'}>
-								$0.00
+								{`$${userFunds.hold}`}
 							</Text>
 							<Heading size={'xs'} color={'gray.800'}>
 								Funds

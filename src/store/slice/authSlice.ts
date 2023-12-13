@@ -7,8 +7,9 @@ import {
 	getUserProfile,
 	putUserProfile,
 	putUserEmail,
+	getUserFunds,
 } from '../thunks/fetchAuth';
-import { UserProfile } from '@/api';
+import { UserProfile, FundsType } from '@/api';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg } from '../actions';
 
 type AuthState = {
@@ -20,6 +21,7 @@ type AuthState = {
 		username: string | null;
 		origin: string;
 	};
+	userFunds: FundsType;
 	userProfile: UserProfile;
 	checkAuthSuccess: boolean | null; // 登入登出時的 提醒 Toast 出現與否
 	checkAuthTitle: string; // 提醒 Toast 的顯示標題
@@ -30,6 +32,12 @@ type AuthState = {
 const initialState: AuthState = {
 	isAuthenticated: null,
 	user: { address: '', email: '', id: '', username: '', origin: '' },
+	userFunds: {
+		hold: 0.0,
+		load: 0.0,
+		symbol: '',
+		total: 0.0,
+	},
 	userProfile: {
 		address: '',
 		email: '',
@@ -231,6 +239,21 @@ const authSlice = createSlice({
 			state.putUsrProfileIsLoading = null;
 			state.checkAuthSuccess = null;
 			state.checkAuthTitle = '';
+		});
+
+		// Get user funds
+		builder.addCase(getUserFunds.pending, state => {
+			console.log('getUserFunds pending');
+		});
+		builder.addCase(getUserFunds.fulfilled, (state, action) => {
+			console.log('getUserFunds fulfilled', action);
+			const { statusCode, data } = action.payload;
+			if (statusCode === 200) {
+				state.userFunds = data[0];
+			}
+		});
+		builder.addCase(getUserFunds.rejected, (state, action) => {
+			console.log('getUserFunds rejected', action);
 		});
 	},
 });
