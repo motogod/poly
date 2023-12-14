@@ -1,9 +1,17 @@
 import React, { EffectCallback, ReactNode, useEffect } from 'react';
+import { useToast } from '@chakra-ui/react';
 import { useAccount, useConnect, useSwitchNetwork, useNetwork, useDisconnect } from 'wagmi';
 import { watchAccount } from '@wagmi/core';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkUserAuth, AppDispatch, getUserProfile, RootState, logout } from '@/store';
+import {
+	checkUserAuth,
+	AppDispatch,
+	getUserProfile,
+	RootState,
+	logout,
+	resetCheckAuthToast,
+} from '@/store';
 import { useDisplayNameModal, useSiwe } from '@/hooks';
 
 type Props = {
@@ -17,6 +25,8 @@ function AuthProvider({ children }: Props) {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const router = useRouter();
+
+	const toast = useToast();
 
 	const { connector: activeConnector } = useAccount();
 	const { switchNetwork } = useSwitchNetwork();
@@ -33,7 +43,9 @@ function AuthProvider({ children }: Props) {
 		onClose: modalOnClose,
 	} = useDisplayNameModal();
 
-	const { user, isAuthenticated } = useSelector((state: RootState) => state.authReducer);
+	const { user, isAuthenticated, checkAuthSuccess, checkAuthTitle } = useSelector(
+		(state: RootState) => state.authReducer
+	);
 
 	const { username, origin } = user;
 
@@ -109,6 +121,32 @@ function AuthProvider({ children }: Props) {
 			activeConnector?.off('change', handleConnectorUpdate);
 		};
 	}, [activeConnector, dispatch, disconnect, router]);
+
+	// 顯示 登入 登出 成功、失敗時的提醒視窗
+	useEffect(() => {
+		if (checkAuthSuccess !== null) {
+			if (checkAuthSuccess) {
+				toast({
+					title: checkAuthTitle,
+					position: 'top',
+					status: 'success',
+					duration: 2000,
+					isClosable: true,
+				});
+			} else {
+				toast({
+					title: checkAuthTitle,
+					position: 'top',
+					status: 'error',
+					duration: 2000,
+					isClosable: true,
+				});
+			}
+
+			// 提醒視窗出現之後就重置狀態 checkAuthSuccess === null
+			dispatch(resetCheckAuthToast());
+		}
+	}, [isAuthenticated, checkAuthSuccess, toast, checkAuthTitle, dispatch]);
 
 	return (
 		<>

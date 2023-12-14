@@ -37,7 +37,7 @@ function useContract() {
 		if (error) {
 			dispatch(
 				showToast({
-					isShow: false,
+					isSuccess: false,
 					title: error.message,
 				})
 			);
