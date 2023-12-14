@@ -61,7 +61,11 @@ function useUtility() {
 	};
 
 	// 使用者輸入的金額數值 跟 錢包餘額做比對之後 要顯示的資訊
-	const inputValueAndEthValueMsg = (inputValue: string, ethValue: number) => {
+	const inputValueAndEthValueMsg = (
+		inputValue: string,
+		ethValue: number,
+		type: 'deposit' | 'withdraw'
+	) => {
 		if (inputValue) {
 			if (Number(inputValue) === 0 && !inputValue.includes('.')) {
 				return "Amount must can't be 0";
@@ -76,6 +80,11 @@ function useUtility() {
 
 			if (Number(inputValue) > ethValue) {
 				return 'Insufficient funds. You cannot deposit more than your available balance.';
+			}
+
+			// 提款金額最少要大於 5
+			if (type === 'withdraw' && Number(inputValue) < 5) {
+				return 'Withdrawal amount is at least $5';
 			}
 
 			return '';

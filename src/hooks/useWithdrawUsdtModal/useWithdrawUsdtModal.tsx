@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNetwork, useSwitchNetwork, useAccount } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { useMediaQuery } from 'react-responsive';
 import {
 	useDisclosure,
@@ -9,8 +9,6 @@ import {
 	ModalHeader,
 	ModalFooter,
 	ModalBody,
-	Select,
-	Box,
 	Text,
 	Button,
 	Stack,
@@ -19,49 +17,33 @@ import {
 	FormLabel,
 	Heading,
 	ModalCloseButton,
-	Grid,
 	Icon,
 	InputGroup,
-	InputRightElement,
 	Collapse,
 } from '@chakra-ui/react';
-import { HiQrcode } from 'react-icons/hi';
 import { TbAlertTriangle } from 'react-icons/tb';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState, postWithdraw } from '@/store';
-import {
-	useContractForRead,
-	useUtility,
-	useBaseUrl,
-	useSendTokens,
-	useQRCodeModal,
-	useMsgModal,
-} from '@/hooks';
+import { AppDispatch, RootState, postWithdraw, showToast } from '@/store';
+import { useContractForRead, useUtility, useBaseUrl, useSendTokens } from '@/hooks';
 import { zIndexLoginModal } from '@/utils/zIndex';
 import { UsdtIcon } from '@/../public/assets/svg';
-
-type assetType = 'ethereumAsset' | '';
-type etherType = 'ethereum' | 'arbitrum' | '';
+import { resetWithdrawStatus } from '@/store/actions';
 
 function useWithdrawUsdtModal() {
 	const disaptch = useDispatch<AppDispatch>();
 
-	const [seleectedAsset, setSelectedAsset] = useState<assetType>('');
-	const [selectedEther, setSelectedEther] = useState<etherType>('');
 	const [inputAddressValue, setInputAddressValue] = useState('');
 	const [inputValue, setInputValue] = useState<string>('');
 
-	const { userFunds } = useSelector((state: RootState) => state.authReducer);
+	const { userFunds, isWithdrawSuccess, isWithdrawLoading } = useSelector(
+		(state: RootState) => state.authReducer
+	);
 
 	const { address } = useAccount();
-	const { chain: currentChain } = useNetwork();
-	const { pendingChainId, switchNetwork, isSuccess } = useSwitchNetwork();
 
-	const { write, isLoading } = useSendTokens({ usdtValue: inputValue });
-	const { ethValue, tokenDecimals } = useContractForRead();
+	const { ethValue } = useContractForRead();
 
 	const { inputValueAndEthValueMsg, initInputAmountValue } = useUtility();
-	const baseUrl = useBaseUrl();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -72,6 +54,19 @@ function useWithdrawUsdtModal() {
 	const confirm = useCallback(() => {
 		disaptch(postWithdraw({ address: inputAddressValue, amount: Number(inputValue) }));
 	}, [disaptch, inputAddressValue, inputValue]);
+
+	useEffect(() => {
+		if (isWithdrawSuccess !== null) {
+			if (isWithdrawSuccess) {
+				disaptch(showToast({ isSuccess: true, title: 'Withdrawal successful' }));
+				onClose();
+			} else {
+				disaptch(showToast({ isSuccess: false, title: 'Withdrawal failed' }));
+			}
+		}
+
+		disaptch(resetWithdrawStatus());
+	}, [onClose, isWithdrawSuccess, disaptch]);
 
 	const ModalDom = useMemo(
 		() => (
@@ -111,7 +106,6 @@ function useWithdrawUsdtModal() {
 							<Stack direction={'row'} justify={'space-between'} alignItems={'center'}>
 								<FormLabel fontWeight={'800'}>Address</FormLabel>
 								<Text
-									// textUnderlineOffset={'1px'}
 									textDecoration={'underline'}
 									cursor={'pointer'}
 									onClick={() => setInputAddressValue(address as `0x${string}`)}
@@ -163,9 +157,12 @@ function useWithdrawUsdtModal() {
 							<Text position={'absolute'} top={'41px'} left={2}>
 								{inputValue && '$'}
 							</Text>
-							<Collapse in={inputValueAndEthValueMsg(inputValue, ethValue) !== ''} animateOpacity>
+							<Collapse
+								in={inputValueAndEthValueMsg(inputValue, ethValue, 'withdraw') !== ''}
+								animateOpacity
+							>
 								<Text fontSize={'sm'} mt={1} color={'red.500'}>
-									{inputValueAndEthValueMsg(inputValue, ethValue)}
+									{inputValueAndEthValueMsg(inputValue, ethValue, 'withdraw')}
 								</Text>
 							</Collapse>
 						</FormControl>
@@ -173,7 +170,7 @@ function useWithdrawUsdtModal() {
 					<ModalFooter>
 						<Stack w={'100%'} align={'center'}>
 							<Button
-								isLoading={isLoading}
+								isLoading={isWithdrawLoading}
 								isDisabled={inputValue === '' || inputAddressValue === ''}
 								w={'100%'}
 								bg={'teal.500'}
@@ -195,10 +192,11 @@ function useWithdrawUsdtModal() {
 			ethValue,
 			inputAddressValue,
 			address,
-			isLoading,
+			isWithdrawLoading,
 			inputValueAndEthValueMsg,
 			initInputAmountValue,
 			confirm,
+			userFunds,
 		]
 	);
 

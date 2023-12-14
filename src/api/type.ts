@@ -95,10 +95,16 @@ export type GetUserFundsType = {
 	statusCode: number;
 };
 
-export type PostWithdrawType = {
+export type WithdrawType = {
 	id: string;
 	address: string;
 	amount: number;
 	status: string;
 	txId: string;
+};
+
+export type PostWithdrawType = {
+	data: WithdrawType;
+	message: string;
+	statusCode: number;
 };

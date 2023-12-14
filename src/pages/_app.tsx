@@ -12,6 +12,7 @@ import { MetaMaskProvider } from '@metamask/sdk-react';
 // import { InjectedConnector } from 'wagmi/connectors/injected';
 import { SessionProvider } from 'next-auth/react';
 import AuthProvider from '@/contex/AuthContext';
+import ToastProvider from '@/contex/ToastContext';
 import IpProvider from '@/contex/IpContext';
 
 import { store } from '@/store';
@@ -123,7 +124,9 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 							</Head>
 							{/* <Header /> */}
 							<AuthProvider>
-								<IpProvider>{getLayout(<Component {...pageProps} />)}</IpProvider>
+								<ToastProvider>
+									<IpProvider>{getLayout(<Component {...pageProps} />)}</IpProvider>
+								</ToastProvider>
 							</AuthProvider>
 						</ChakraProvider>
 					</WagmiConfig>

@@ -8,9 +8,10 @@ import {
 	putUserProfile,
 	putUserEmail,
 	getUserFunds,
+	postWithdraw,
 } from '../thunks/fetchAuth';
 import { UserProfile, FundsType } from '@/api';
-import { resetCheckAuthToast, resetPutUserProfileErrMsg } from '../actions';
+import { resetCheckAuthToast, resetPutUserProfileErrMsg, resetWithdrawStatus } from '../actions';
 
 type AuthState = {
 	isAuthenticated: boolean | null; // 是否已登入的判斷
@@ -27,6 +28,8 @@ type AuthState = {
 	checkAuthTitle: string; // 提醒 Toast 的顯示標題
 	putUsrProfileIsLoading: boolean | null; // 新增創建使用者名稱時的讀取狀態
 	putUsrProfileErrMsg: string; // 呈現創建名字 API 失敗時的顯示錯誤訊息
+	isWithdrawLoading: boolean; // Withdraw API 讀取狀態
+	isWithdrawSuccess: boolean | null; //
 };
 
 const initialState: AuthState = {
@@ -51,14 +54,15 @@ const initialState: AuthState = {
 	checkAuthTitle: '',
 	putUsrProfileIsLoading: null,
 	putUsrProfileErrMsg: '',
+	isWithdrawLoading: false,
+	isWithdrawSuccess: null,
 };
 
 const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
-		showToast: (state, action) => {
-			console.log('showToast action', action);
+		showAuthToast: (state, action: { payload: { isShow: boolean; title: string } }) => {
 			const { isShow, title } = action.payload;
 			state.checkAuthSuccess = isShow;
 			state.checkAuthTitle = title;
@@ -74,6 +78,12 @@ const authSlice = createSlice({
 		// Rest putUsrProfileErrMsg when user typing input
 		builder.addCase(resetPutUserProfileErrMsg, state => {
 			state.putUsrProfileErrMsg = '';
+		});
+
+		// Reset Withdraw API status when user pop up withdraw modal
+		builder.addCase(resetWithdrawStatus, state => {
+			state.isWithdrawLoading = false;
+			state.isWithdrawSuccess = null;
 		});
 
 		// Google login
@@ -125,6 +135,7 @@ const authSlice = createSlice({
 		});
 		builder.addCase(logout.fulfilled, (state, action) => {
 			const { statusCode } = action.payload;
+			console.log('logout fulfilled');
 			if (statusCode === 200) {
 				state.isAuthenticated = false;
 				state.checkAuthSuccess = true;
@@ -255,8 +266,34 @@ const authSlice = createSlice({
 		builder.addCase(getUserFunds.rejected, (state, action) => {
 			console.log('getUserFunds rejected', action);
 		});
+
+		// Get user funds
+		builder.addCase(postWithdraw.pending, state => {
+			console.log('postWithdraw pending');
+			state.isWithdrawLoading = true;
+			state.isWithdrawSuccess = null;
+		});
+		builder.addCase(postWithdraw.fulfilled, (state, action) => {
+			console.log('postWithdraw fulfilled', action);
+			const { statusCode, data } = action.payload;
+
+			state.isWithdrawLoading = false;
+
+			if (statusCode === 201) {
+				state.isWithdrawSuccess = true;
+			}
+
+			if (statusCode === 400) {
+				state.isWithdrawSuccess = false;
+			}
+		});
+		builder.addCase(postWithdraw.rejected, (state, action) => {
+			console.log('postWithdraw rejected', action);
+			state.isWithdrawLoading = false;
+			state.isWithdrawSuccess = false;
+		});
 	},
 });
 
-export const { showToast } = authSlice.actions;
+export const { showAuthToast } = authSlice.actions;
 export const authReducer = authSlice.reducer;

@@ -116,10 +116,10 @@ function useDepositUsdtModal() {
 			setSelectedEther(defaultEther);
 		}
 	}, [currentChain]);
-	console.log('isDepositSuccess =>', isDepositSuccess);
+
 	useEffect(() => {
 		if (isDepositSuccess) {
-			disaptch(showToast({ isShow: true, title: 'Deposit suceesfully' }));
+			disaptch(showToast({ isSuccess: true, title: 'Deposit suceesfully' }));
 			onClose();
 		}
 	}, [isDepositSuccess, onClose, disaptch]);
@@ -243,9 +243,12 @@ function useDepositUsdtModal() {
 					<Text position={'absolute'} top={'40px'} left={2}>
 						{inputValue && '$'}
 					</Text>
-					<Collapse in={inputValueAndEthValueMsg(inputValue, ethValue) !== ''} animateOpacity>
+					<Collapse
+						in={inputValueAndEthValueMsg(inputValue, ethValue, 'deposit') !== ''}
+						animateOpacity
+					>
 						<Text fontSize={'sm'} mt={1} color={'red.500'}>
-							{inputValueAndEthValueMsg(inputValue, ethValue)}
+							{inputValueAndEthValueMsg(inputValue, ethValue, 'deposit')}
 						</Text>
 					</Collapse>
 				</>
@@ -324,7 +327,7 @@ function useDepositUsdtModal() {
 		}
 
 		// 如果使用者輸入的數值不符合餘額範圍內，返回不執行交易
-		if (inputValueAndEthValueMsg(inputValue, ethValue) !== '') {
+		if (inputValueAndEthValueMsg(inputValue, ethValue, 'deposit') !== '') {
 			return;
 		}
 
