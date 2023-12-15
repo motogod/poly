@@ -9,9 +9,14 @@ import {
 	HStack,
 	Box,
 	Select,
+	Tag,
+	TagLabel,
 } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { useLoginModal } from '@/hooks';
 import BuyOrSellButton from '../Buttons/BuyOrSellButton';
 import YesOrNoButton from '../Buttons/YesOrNoButton';
 import { zIndexMinimum } from '@/utils/zIndex';
@@ -22,6 +27,16 @@ function BuyOrSellContent() {
 	const [isBuy, setIsBuy] = useState(true);
 	const [isYes, setIsYes] = useState(true);
 	const [selected, setSelected] = useState<SelectedType>('market');
+
+	const { hold } = useSelector((state: RootState) => state.authReducer.userFunds);
+	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
+
+	const {
+		ModalDom,
+		isOpen: modalIsOpen,
+		onOpen: modalOnOpen,
+		onClose: modalOnClose,
+	} = useLoginModal();
 
 	const {
 		getInputProps: getLimitInputProps,
@@ -43,11 +58,11 @@ function BuyOrSellContent() {
 	console.log('inputLimitPrice', inputLimitPrice.value);
 
 	const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
-		step: 0.01,
+		step: 1,
 		defaultValue: 0.0,
-		min: 0.0,
-		max: 1.0,
-		precision: 2,
+		min: 0,
+		max: 1000,
+		precision: 0,
 	});
 
 	// Shares
@@ -56,6 +71,18 @@ function BuyOrSellContent() {
 	const inputShares = getInputProps();
 
 	console.log('inputShares', inputShares.value);
+
+	const renderConfirmButtonText = () => {
+		if (isAuthenticated) {
+			if (isBuy) {
+				return 'Buy';
+			} else {
+				return 'Sell';
+			}
+		}
+
+		return 'Connect';
+	};
 
 	return (
 		<>
@@ -69,6 +96,7 @@ function BuyOrSellContent() {
 				bg={'#fff'}
 			>
 				<Select
+					fontWeight={'800'}
 					border={'0px'}
 					borderRadius={'0px'}
 					focusBorderColor="transparent"
@@ -87,7 +115,7 @@ function BuyOrSellContent() {
 				</Select>
 			</Box>
 			<Stack>
-				<Stack mt={'20px'} position="relative" spacing={1.5} direction="row">
+				<Stack mt={'16px'} position="relative" spacing={1.5} direction="row">
 					<BuyOrSellButton onClick={() => setIsBuy(true)} text="Buy" selected={isBuy} />
 					<BuyOrSellButton onClick={() => setIsBuy(false)} text="Sell" selected={!isBuy} />
 				</Stack>
@@ -143,9 +171,14 @@ function BuyOrSellContent() {
 						<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'} lineHeight={'17px'}>
 							Shares
 						</Heading>
-						<Button w={'57px'} h={'28px'} size="xs" bg="gray.600" color="#fff">
-							Max
-						</Button>
+						<Stack direction={'row'}>
+							<Tag bg={'gray.100'} color={'gray.800'} borderRadius={20} pl={'16px'} pr={'16px'}>
+								<TagLabel>{`Balance: ${hold} USDT`}</TagLabel>
+							</Tag>
+							<Button w={'57px'} h={'28px'} size="xs" bg="gray.600" color="#fff">
+								Max
+							</Button>
+						</Stack>
 					</Stack>
 					<HStack mt={'16px'} gap={0} maxW="100%">
 						<Button borderRadius={'6px 0px 0px 6px'} {...decShares}>
@@ -163,14 +196,20 @@ function BuyOrSellContent() {
 					</HStack>
 				</Stack>
 				<Button
+					onClick={() => {
+						if (isAuthenticated) {
+						} else {
+							modalOnOpen();
+						}
+					}}
 					mt={'24px'}
 					w={'100%'}
-					leftIcon={<Icon as={BiWalletAlt} />}
+					leftIcon={isAuthenticated ? <></> : <Icon as={BiWalletAlt} />}
 					size="lg"
-					bg="teal.500"
+					bg={isAuthenticated ? 'gray.600' : 'teal.500'}
 					color="#fff"
 				>
-					Connect
+					{renderConfirmButtonText()}
 				</Button>
 				<Stack mt={'14px'} mb={'4px'}>
 					<Stack direction={'row'} justify={'space-between'}>
@@ -206,6 +245,7 @@ function BuyOrSellContent() {
 						</Heading>
 					</Stack>
 				</Stack>
+				{modalIsOpen && ModalDom}
 			</Stack>
 		</>
 	);
