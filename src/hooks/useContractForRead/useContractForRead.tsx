@@ -24,7 +24,7 @@ function useContractForRead() {
 	useEffect(() => {
 		if (balanceData || Number(balanceData) === 0) {
 			// 判斷測試鏈 還是 主鏈 代入的 decimals 不一樣
-			const decimals = chain?.id === 421613 ? 18 : 6;
+			const decimals = chain?.id === 421614 ? 6 : 6;
 			const value = ethers.formatUnits(balanceData as number, decimals);
 			const roundDownValue = roundDown(Number(value), 5); // 去除小數點後五位
 

@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Heading, Stack } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch, getUserFunds } from '@/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, getUserFunds, RootState } from '@/store';
 import HeaderRightSideSection from './HeaderRightSideSection';
 
 import { PrimaryPink } from '@/utils/color';
@@ -20,10 +20,13 @@ function Header() {
 	const router = useRouter();
 
 	const dispatch = useDispatch<AppDispatch>();
+	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
 
 	useEffect(() => {
-		dispatch(getUserFunds({}));
-	}, [dispatch]);
+		if (isAuthenticated) {
+			dispatch(getUserFunds({}));
+		}
+	}, [dispatch, isAuthenticated]);
 
 	return (
 		<Stack

@@ -41,8 +41,8 @@ function useUtility() {
 		if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
 			// https://support.rubydex.com/en/how-to-use-the-arbitrum-goerli-testnet-with-rubydex
 			// Test for Arbitrum Goerli
-			if (chainId === 421613) {
-				return '0x05111E862280c8b135bCB5Ee173c557f3e1BBcD8';
+			if (chainId === 421614) {
+				return '0xa3b54346EB20F015bBa6Df41D998E2BF48549D21';
 			} else if (chainId === 42161) {
 				// Arbitrum One USDT contract address
 				return '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9';
@@ -56,7 +56,7 @@ function useUtility() {
 		if (chainId === 42161) {
 			return '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9';
 		}
-		// Arbitrum One USDT contract address
+		// Ethereum USDT contract address
 		return '0xdAC17F958D2ee523a2206206994597C13D831ec7';
 	};
 

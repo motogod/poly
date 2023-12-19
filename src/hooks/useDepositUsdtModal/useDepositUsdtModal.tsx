@@ -97,7 +97,7 @@ function useDepositUsdtModal() {
 				switchNetwork?.(1);
 			} else {
 				process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')
-					? switchNetwork?.(421613)
+					? switchNetwork?.(421614)
 					: switchNetwork?.(42161);
 			}
 		},
@@ -175,8 +175,8 @@ function useDepositUsdtModal() {
 		// 若不在主鏈上，則看當下是哪個來顯示
 		if (currentChain?.id !== 1) {
 			if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
-				if (currentChain?.id === 421613) {
-					return 'Arbitrum Goerli';
+				if (currentChain?.id === 421614) {
+					return 'Arbitrum Sepolia';
 				}
 				if (currentChain?.id === 42161) {
 					return 'Arbitrum One';
@@ -194,7 +194,7 @@ function useDepositUsdtModal() {
 
 	const isChainOnEtherOrArbitrum = useCallback(() => {
 		const currentChainId = currentChain?.id;
-		if (currentChainId !== 1 && currentChainId !== 421613 && currentChainId !== 42161) {
+		if (currentChainId !== 1 && currentChainId !== 421614 && currentChainId !== 42161) {
 			return false;
 		}
 
@@ -318,7 +318,7 @@ function useDepositUsdtModal() {
 		// 若在其他鏈上 不做交易 先讓使用者切換到 Arbitrum
 		if (!isChainOnEtherOrArbitrum()) {
 			if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
-				switchNetwork?.(421613);
+				switchNetwork?.(421614);
 			} else {
 				switchNetwork?.(42161);
 			}

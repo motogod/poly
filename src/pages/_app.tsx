@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 // import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi';
-import { arbitrum, mainnet, arbitrumGoerli } from 'wagmi/chains';
+import { arbitrum, mainnet, arbitrumGoerli, arbitrumSepolia } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
@@ -34,11 +34,16 @@ import Header from '@/layouts/components/common/Header';
 // avoid ssr rendering, fix wagmi config server side Hydration error
 const Layout = dynamic(() => import('@/layouts/Layout'), { ssr: false });
 
+const chainsArray =
+	process.env.NODE_ENV === 'development'
+		? [arbitrumSepolia, arbitrum, mainnet]
+		: [arbitrum, mainnet];
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-	[arbitrumGoerli, arbitrum, mainnet], // 第一個位置為主要的 cahin，WaleetConnect 會要求切換至這一個
+	chainsArray, // Array index 第一個為主要的 chain WalletConnect 會要求切換至這一個
 	[publicProvider()]
 );
-
+console.log('chains =>', chains);
 const config = createConfig({
 	autoConnect: false,
 	connectors: [
