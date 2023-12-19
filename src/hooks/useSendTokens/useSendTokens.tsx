@@ -30,7 +30,7 @@ function useSendTokens(props?: Props) {
 
 	// ethers.parseUnits 塞入的的值不得為空 ; 且小數點後不能超過 6 位數 否則報錯
 	const unitsValue = props?.usdtValue ? Number(props?.usdtValue).toFixed(6) : '0';
-	const decimals = chain?.id === 421613 ? 18 : 6;
+	const decimals = chain?.id === 421614 ? 6 : 6;
 	console.log('unitsValue =>', unitsValue);
 	const { config, error: prepareContractWriteError } = usePrepareContractWrite({
 		address: getContractAddress(chain?.id as number), // MetaMask USDT token contract address

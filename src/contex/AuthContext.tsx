@@ -57,7 +57,7 @@ function AuthProvider({ children }: Props) {
 			// 所以只有連接 MetaMask 才執行手動切換
 			if (variables.connector.id === 'metaMask') {
 				// Arbitrum Goerli or Arbitrum
-				process.env.NODE_ENV === 'development' ? switchNetwork?.(421613) : switchNetwork?.(42161);
+				process.env.NODE_ENV === 'development' ? switchNetwork?.(421614) : switchNetwork?.(42161);
 			}
 		},
 		onError(error, variables, context) {},
