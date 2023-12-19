@@ -37,7 +37,7 @@ const Layout = dynamic(() => import('@/layouts/Layout'), { ssr: false });
 const chainsArray =
 	process.env.NODE_ENV === 'development'
 		? [arbitrumSepolia, arbitrum, mainnet]
-		: [arbitrum, mainnet];
+		: [arbitrumSepolia, arbitrum, mainnet];
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
 	chainsArray, // Array index 第一個為主要的 chain WalletConnect 會要求切換至這一個
