@@ -11,6 +11,7 @@ import {
 	RootState,
 	logout,
 	resetCheckAuthToast,
+	getCategories,
 } from '@/store';
 import { useDisplayNameModal, useSiwe } from '@/hooks';
 
@@ -147,6 +148,11 @@ function AuthProvider({ children }: Props) {
 			dispatch(resetCheckAuthToast());
 		}
 	}, [isAuthenticated, checkAuthSuccess, toast, checkAuthTitle, dispatch]);
+
+	// 撈取 Markets 的 Categories 選單資料
+	useEffect(() => {
+		dispatch(getCategories());
+	}, [dispatch]);
 
 	return (
 		<>

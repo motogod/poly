@@ -1,78 +1,34 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, Stack, Checkbox } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+	AppDispatch,
+	RootState,
+	handleClickMenu,
+	handleClickSubMenu,
+	handleClickSubMenuItem,
+} from '@/store';
 import { leftMenuItem } from '../data';
 import { zIndexMinimum } from '@/utils/zIndex';
+import { CategoriesType, ChildrenCategoriesType } from '@/api/type';
 
 const LeftMenu = () => {
-	const [menuData, setMenuData] = useState(leftMenuItem);
+	const { categoriesData } = useSelector((state: RootState) => state.dataReducer);
 
-	const handleClickMenu = (clickMenuId: number) => {
-		const newMenuData = menuData.map(value => {
-			if (value.menuId === clickMenuId) {
-				value.menuSelected = !value.menuSelected;
-			}
+	console.log('Markets categoriesData', categoriesData);
 
-			return value;
-		});
-
-		setMenuData(newMenuData);
-	};
-
-	const handleClickSubMenu = (clickSubMenuId: number) => {
-		const newMenuData = menuData.map(value => {
-			value.subMenu.map(subMenuValue => {
-				if (subMenuValue.subMenuId === clickSubMenuId) {
-					subMenuValue.subMenuSelected = !subMenuValue.subMenuSelected;
-
-					subMenuValue.subMenuItem.map(itemValue => {
-						if (subMenuValue.subMenuSelected) {
-							itemValue.itemSelected = true;
-						} else {
-							itemValue.itemSelected = false;
-						}
-
-						return itemValue;
-					});
-				}
-
-				return subMenuValue;
-			});
-
-			return value;
-		});
-
-		setMenuData(newMenuData);
-	};
-
-	const handleClickSubMenuItem = (clickSubMenuItemId: number, clickSubMenuItem: string) => {
-		const newMenuData = menuData.map(value => {
-			value.subMenu.map(subMenuValue => {
-				subMenuValue.subMenuItem.map(subMenuItemValue => {
-					const { itemId, item } = subMenuItemValue;
-					if (itemId === clickSubMenuItemId && item === clickSubMenuItem) {
-						subMenuItemValue.itemSelected = !subMenuItemValue.itemSelected;
-					}
-
-					return subMenuItemValue;
-				});
-			});
-
-			return value;
-		});
-
-		setMenuData(newMenuData);
-	};
+	const dispatch = useDispatch<AppDispatch>();
 
 	return (
 		<>
-			{menuData.map((value, index): any => {
+			{categoriesData.map((value: CategoriesType, index: number) => {
 				return (
 					<>
 						<Stack
 							onClick={e => {
 								e.preventDefault();
-								handleClickMenu(value.menuId);
+								dispatch(handleClickMenu(value.menuId));
 							}}
 							cursor="pointer"
 							alignItems="center"
@@ -87,14 +43,14 @@ const LeftMenu = () => {
 							{value.menuSelected ? <ChevronDownIcon boxSize={6} /> : <ChevronUpIcon boxSize={6} />}
 						</Stack>
 						{value.menuSelected &&
-							value.subMenu.map((subValue, subIndex) => {
+							value.subMenuData.map((subValue, subIndex) => {
 								return (
 									<>
 										<Stack
 											zIndex={zIndexMinimum}
 											onClick={e => {
 												e.preventDefault();
-												handleClickSubMenu(subValue.subMenuId);
+												dispatch(handleClickSubMenu(subValue.id));
 											}}
 											cursor="pointer"
 											key={subIndex}
@@ -104,13 +60,13 @@ const LeftMenu = () => {
 											mr={{ base: '1', sm: '1', md: '5' }}
 										>
 											<Text color="gray.800" size="md" fontWeight="500" lineHeight="24px">
-												{subValue.subMenu}
+												{subValue.name}
 											</Text>
 											<Checkbox
 												isChecked={subValue.subMenuSelected}
 												onChange={e => {
 													e.preventDefault();
-													handleClickSubMenu(subValue.subMenuId);
+													handleClickSubMenu(subValue.id);
 												}}
 												size="lg"
 												borderColor="gray.200"
@@ -118,13 +74,18 @@ const LeftMenu = () => {
 												colorScheme="teal"
 											></Checkbox>
 										</Stack>
-										{subValue.subMenuItem.map((itemValue, itemIndex) => {
+										{subValue.childrenCategories.map((itemValue, itemIndex) => {
 											return (
 												<>
 													<Stack
 														onClick={e => {
 															e.preventDefault();
-															handleClickSubMenuItem(itemValue.itemId, itemValue.item);
+															dispatch(
+																handleClickSubMenuItem({
+																	clickSubMenuItemId: itemValue.id,
+																	clickSubMenuItemName: itemValue.name,
+																})
+															);
 														}}
 														cursor="pointer"
 														key={itemIndex}
@@ -139,13 +100,18 @@ const LeftMenu = () => {
 															fontWeight="400"
 															lineHeight="24px"
 														>
-															{itemValue.item}
+															{itemValue.name}
 														</Text>
 														<Checkbox
 															isChecked={itemValue.itemSelected}
 															onChange={e => {
 																e.preventDefault();
-																handleClickSubMenuItem(itemValue.itemId, itemValue.item);
+																dispatch(
+																	handleClickSubMenuItem({
+																		clickSubMenuItemId: itemValue.id,
+																		clickSubMenuItemName: itemValue.name,
+																	})
+																);
 															}}
 															size="lg"
 															borderColor="gray.200"

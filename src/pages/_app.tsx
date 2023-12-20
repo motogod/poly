@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 // import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
@@ -16,6 +16,8 @@ import ToastProvider from '@/contex/ToastContext';
 import IpProvider from '@/contex/IpContext';
 
 import { store } from '@/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState, showToast, getCategories } from '@/store';
 import { Provider } from 'react-redux';
 // import Layout from '@/layouts/Layout';
 
@@ -43,7 +45,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 	chainsArray, // Array index 第一個為主要的 chain WalletConnect 會要求切換至這一個
 	[publicProvider()]
 );
-console.log('chains =>', chains);
+
 const config = createConfig({
 	autoConnect: false,
 	connectors: [
@@ -76,7 +78,7 @@ const config = createConfig({
 
 // 3. Create modal
 // createWeb3Modal({ wagmiConfig, projectId: '88df17cf1fa66c336efceb21027d647f', chains });
-
+console.log('getServerSideProps index app.tsx');
 const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 	Component,
 	pageProps: { session, ...pageProps },

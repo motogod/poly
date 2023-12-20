@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
+import { useDebounce } from 'use-debounce';
 import { useMediaQuery } from 'react-responsive';
 import {
 	useDisclosure,
@@ -26,7 +27,7 @@ import {
 } from '@chakra-ui/react';
 import { HiQrcode } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState, showToast } from '@/store';
+import { AppDispatch, RootState, showToast, getCategories } from '@/store';
 import {
 	useContractForRead,
 	useUtility,
@@ -47,6 +48,8 @@ function useDepositUsdtModal() {
 	const [seleectedAsset, setSelectedAsset] = useState<assetType>('');
 	const [selectedEther, setSelectedEther] = useState<etherType>('');
 	const [inputValue, setInputValue] = useState<string>('');
+	const [debounceInputValue] = useDebounce(inputValue, 500);
+
 	const [isShowInputLayout, setIsShowInputLayout] = useState(true);
 	const [isCopied, setIsCopied] = useState(false);
 
@@ -60,7 +63,7 @@ function useDepositUsdtModal() {
 		isLoading,
 		isSuccess: isDepositSuccess,
 		prepareContractWriteError,
-	} = useSendTokens({ usdtValue: inputValue });
+	} = useSendTokens({ usdtValue: debounceInputValue });
 	const { ethValue, tokenDecimals, contractReadError } = useContractForRead();
 
 	const { getContractAddress, inputValueAndEthValueMsg, initInputAmountValue } = useUtility();
@@ -105,6 +108,7 @@ function useDepositUsdtModal() {
 	);
 
 	useEffect(() => {
+		// disaptch(getCategories());
 		if (currentChain) {
 			// 依據使用者一開始在哪條鏈上，來決定初始 Select 的值 不是在主鏈上就是 arbitrum
 			let defaultEther: etherType = 'arbitrum';
@@ -115,7 +119,7 @@ function useDepositUsdtModal() {
 			defaultEther === 'ethereum' ? setSelectedAsset('ethereumAsset') : setSelectedAsset('');
 			setSelectedEther(defaultEther);
 		}
-	}, [currentChain]);
+	}, [currentChain, disaptch]);
 
 	useEffect(() => {
 		if (isDepositSuccess) {

@@ -108,3 +108,56 @@ export type PostWithdrawType = {
 	message: string;
 	statusCode: number;
 };
+
+// export type CategoriesType = {
+// 	id: string;
+// 	slug: string;
+// 	name: string;
+// 	parentCategory: string | null;
+// };
+
+// export type ChildrenCategoriesType = {
+// 	id: string;
+// 	slug: string;
+// 	name: string;
+// 	parentCategory: string | null;
+// 	childrenCategories: CategoriesType[];
+// };
+export type ChildrenCategoriesType = {
+	id: string;
+	slug: string;
+	name: string;
+	parentCategory: string | null;
+	itemSelected: boolean;
+};
+
+export type CategoriesType = {
+	menuId: string;
+	menu: string;
+	menuSelected: boolean;
+	subMenuData: [
+		{
+			id: string;
+			slug: string;
+			name: string;
+			parentCategory: string | null;
+			subMenuSelected: boolean;
+			childrenCategories: ChildrenCategoriesType[];
+		}
+	];
+};
+
+export type GetCategoriesType = {
+	data: [
+		{
+			id: string;
+			slug: string;
+			name: string;
+			parentCategory: string | null;
+			subMenuSelected: boolean;
+			childrenCategories: ChildrenCategoriesType[];
+		}
+	];
+	message: string;
+	statusCode: number;
+};
