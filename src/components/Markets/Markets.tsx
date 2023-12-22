@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
 	Stack,
 	Divider,
@@ -12,9 +13,12 @@ import {
 	ModalBody,
 	ModalCloseButton,
 	useDisclosure,
+	Spinner,
 } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { BiFilter } from 'react-icons/bi';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMarkets, AppDispatch, RootState } from '@/store';
 import { useCategoryTabsList } from '@/hooks';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import useFilter from './useFilter';
@@ -30,6 +34,13 @@ function Markets() {
 	const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
 	const [TabDom, selectedTab] = useCategoryTabsList();
 
+	const dispatch = useDispatch<AppDispatch>();
+	const { markets, isMarketsLoading } = useSelector((state: RootState) => state.homeReducer);
+
+	useEffect(() => {
+		dispatch(getMarkets());
+	}, [dispatch]);
+
 	// display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 	const handelScroll = (event: Event) => {
 		const target = event.target as HTMLDivElement;
@@ -41,7 +52,6 @@ function Markets() {
 	};
 
 	return (
-		// <Stack px={paddingMainHorizontal} py={paddingMainVertical}>
 		<Stack
 			mt={headerHeight}
 			pl={{ md: '120px', sm: '16px' }}
@@ -80,23 +90,36 @@ function Markets() {
 				>
 					<Stack h={'100vh'} overflow="auto">
 						<LeftMenu />
-						<Divider mt={6} borderColor="gray.300" />
+						{/* <Divider mt={6} borderColor="gray.300" /> */}
 					</Stack>
 				</Stack>
-				<Grid
-					w="100%"
-					h="100%"
-					onScroll={(event: any) => handelScroll(event)}
-					overflowY={'scroll'}
-					templateColumns={'repeat(auto-fill, minmax(290px, 1fr))'}
-					gap={'16px'}
-					pt={'1px'}
-					pb={'10px'}
-				>
-					{empty_array.map((value, index) => {
-						return <CategoryCard key={index} />;
-					})}
-				</Grid>
+
+				{isMarketsLoading ? (
+					<Stack w={'100%'} align={'center'}>
+						<Spinner
+							thickness="4px"
+							speed="0.65s"
+							emptyColor="gray.200"
+							color="blue.500"
+							size="xl"
+						/>
+					</Stack>
+				) : (
+					<Grid
+						w="100%"
+						h="100%"
+						onScroll={(event: any) => handelScroll(event)}
+						overflowY={'scroll'}
+						templateColumns={'repeat(auto-fill, minmax(290px, 1fr))'}
+						gap={'16px'}
+						pt={'1px'}
+						pb={'10px'}
+					>
+						{markets?.data?.map((value, index) => {
+							return <CategoryCard key={index} data={value} />;
+						})}
+					</Grid>
+				)}
 			</Stack>
 
 			<Modal size="full" isOpen={isModalOpen} onClose={onClose}>
@@ -109,9 +132,9 @@ function Markets() {
 					<ModalBody overflowY={'scroll'}>
 						<Stack position={'relative'}>
 							<LeftMenu />
-							<Center>
+							{/* <Center>
 								<Divider m={8} borderColor="gray" />
-							</Center>
+							</Center> */}
 						</Stack>
 					</ModalBody>
 					<Stack

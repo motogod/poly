@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Text, Stack, Checkbox } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { Text, Stack, Checkbox, RadioGroup, Radio, Center, Divider } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import { useTranslation } from 'next-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import {
 	AppDispatch,
@@ -8,24 +10,414 @@ import {
 	handleClickMenu,
 	handleClickSubMenu,
 	handleClickSubMenuItem,
+	resetRouterPath,
+	queryUrlToChangeMenuStatus,
 } from '@/store';
 import { leftMenuItem } from '../data';
 import { zIndexMinimum } from '@/utils/zIndex';
-import { CategoriesType, ChildrenCategoriesType } from '@/api/type';
+import { CategoriesType, ChildrenCategoriesType, MenuType, SubMenuType } from '@/api/type';
 
 const LeftMenu = () => {
-	const { categoriesData } = useSelector((state: RootState) => state.dataReducer);
-
-	console.log('Markets categoriesData', categoriesData);
+	const { t } = useTranslation();
+	const router = useRouter();
+	const { categoriesData, routerPath } = useSelector((state: RootState) => state.dataReducer);
 
 	const dispatch = useDispatch<AppDispatch>();
+	console.log('Menu =>', categoriesData[0].menuData);
+	// useEffect(() => {
+	// 	if (router.isReady && routerPath === '') {
+	// 		setTimeout(() => {
+	// 			console.log('Router query =>', router.query);
+	// 			dispatch(queryUrlToChangeMenuStatus({ queryString: router.query.categories }));
+	// 		}, 2000);
+	// 	}
+	// }, [router, dispatch, routerPath]);
 
-	return (
-		<>
-			{categoriesData.map((value: CategoriesType, index: number) => {
+	useEffect(() => {
+		if (router.isReady && routerPath !== '') {
+			// 使用者點選選單 redux 改變 routerPath 的值，router.push 最後更新網頁上的正確 query 網址
+			router.push(routerPath, undefined, { shallow: true });
+			dispatch(resetRouterPath({}));
+		}
+	}, [router, dispatch, routerPath]);
+
+	const renderMenuSection = (menuId: string, data: MenuType) => {
+		// Volume section
+		if (menuId === '0') {
+			return (
+				<RadioGroup onChange={value => console.log('change radio value', value)} defaultValue="0">
+					<Stack>
+						<Stack
+							position={'relative'}
+							pt={2}
+							pb={2}
+							pl={3}
+							pr={3}
+							w={'100%'}
+							alignItems={'center'}
+							borderRadius={4}
+							_hover={{ bg: 'gray.100' }}
+						>
+							<Stack position={'absolute'} right={0} left={3} top={1}>
+								<Text>{t('default')}</Text>
+							</Stack>
+							<Radio
+								pr={{ lg: 6, md: 2, sm: 2 }}
+								alignItems={'center'}
+								justifyContent={'flex-end'}
+								w={'100%'}
+								value="0"
+								size="md"
+								borderColor="gray.200"
+								colorScheme="teal"
+							></Radio>
+						</Stack>
+						<Stack
+							position={'relative'}
+							pt={2}
+							pb={2}
+							pl={3}
+							pr={3}
+							w={'100%'}
+							alignItems={'center'}
+							borderRadius={4}
+							_hover={{ bg: 'gray.100' }}
+						>
+							<Stack position={'absolute'} right={0} left={3} top={1}>
+								<Text>{`1000 USDT ${t('below')}`}</Text>
+							</Stack>
+							<Radio
+								pr={{ lg: 6, md: 2, sm: 2 }}
+								alignItems={'center'}
+								justifyContent={'flex-end'}
+								w={'100%'}
+								value="1"
+								size="md"
+								borderColor="gray.200"
+								colorScheme="teal"
+							></Radio>
+						</Stack>
+						<Stack
+							position={'relative'}
+							pt={2}
+							pb={2}
+							pl={3}
+							pr={3}
+							w={'100%'}
+							alignItems={'center'}
+							borderRadius={4}
+							_hover={{ bg: 'gray.100' }}
+						>
+							<Stack position={'absolute'} right={0} left={3} top={1}>
+								<Text>{`1,000 - 100,000 USDT`}</Text>
+							</Stack>
+							<Radio
+								pr={{ lg: 6, md: 2, sm: 2 }}
+								alignItems={'center'}
+								justifyContent={'flex-end'}
+								w={'100%'}
+								value="2"
+								size="md"
+								borderColor="gray.200"
+								colorScheme="teal"
+							></Radio>
+						</Stack>
+						<Stack
+							position={'relative'}
+							pt={2}
+							pb={2}
+							pl={3}
+							pr={3}
+							w={'100%'}
+							alignItems={'center'}
+							borderRadius={4}
+							_hover={{ bg: 'gray.100' }}
+						>
+							<Stack position={'absolute'} right={0} left={3} top={1}>
+								<Text>{`1,000 ${t('above')}`}</Text>
+							</Stack>
+							<Radio
+								pr={{ lg: 6, md: 2, sm: 2 }}
+								alignItems={'center'}
+								justifyContent={'flex-end'}
+								w={'100%'}
+								value="3"
+								size="md"
+								borderColor="gray.200"
+								colorScheme="teal"
+							></Radio>
+						</Stack>
+					</Stack>
+				</RadioGroup>
+			);
+		}
+
+		// End date section
+		if (menuId === '1') {
+			return (
+				<RadioGroup onChange={value => console.log('change radio value', value)} defaultValue="0">
+					<Stack>
+						<Stack
+							position={'relative'}
+							pt={2}
+							pb={2}
+							pl={3}
+							pr={3}
+							w={'100%'}
+							alignItems={'center'}
+							borderRadius={4}
+							_hover={{ bg: 'gray.100' }}
+						>
+							<Stack position={'absolute'} right={0} left={3} top={1}>
+								<Text>{t('default')}</Text>
+							</Stack>
+							<Radio
+								pr={{ lg: 6, md: 2, sm: 2 }}
+								alignItems={'center'}
+								justifyContent={'flex-end'}
+								w={'100%'}
+								value="0"
+								size="md"
+								borderColor="gray.200"
+								colorScheme="teal"
+							></Radio>
+						</Stack>
+						<Stack
+							position={'relative'}
+							pt={2}
+							pb={2}
+							pl={3}
+							pr={3}
+							w={'100%'}
+							alignItems={'center'}
+							borderRadius={4}
+							_hover={{ bg: 'gray.100' }}
+						>
+							<Stack position={'absolute'} right={0} left={3} top={1}>
+								<Text>{t('ends_today')}</Text>
+							</Stack>
+							<Radio
+								pr={{ lg: 6, md: 2, sm: 2 }}
+								alignItems={'center'}
+								justifyContent={'flex-end'}
+								w={'100%'}
+								value="1"
+								size="md"
+								borderColor="gray.200"
+								colorScheme="teal"
+							></Radio>
+						</Stack>
+						<Stack
+							position={'relative'}
+							pt={2}
+							pb={2}
+							pl={3}
+							pr={3}
+							w={'100%'}
+							alignItems={'center'}
+							borderRadius={4}
+							_hover={{ bg: 'gray.100' }}
+						>
+							<Stack position={'absolute'} right={0} left={3} top={1}>
+								<Text>{t('ends_this_week')}</Text>
+							</Stack>
+							<Radio
+								pr={{ lg: 6, md: 2, sm: 2 }}
+								alignItems={'center'}
+								justifyContent={'flex-end'}
+								w={'100%'}
+								value="2"
+								size="md"
+								borderColor="gray.200"
+								colorScheme="teal"
+							></Radio>
+						</Stack>
+						<Stack
+							position={'relative'}
+							pt={2}
+							pb={2}
+							pl={3}
+							pr={3}
+							w={'100%'}
+							alignItems={'center'}
+							borderRadius={4}
+							_hover={{ bg: 'gray.100' }}
+						>
+							<Stack position={'absolute'} right={0} left={3} top={1}>
+								<Text>{t('ends_this_month')}</Text>
+							</Stack>
+							<Radio
+								pr={{ lg: 6, md: 2, sm: 2 }}
+								alignItems={'center'}
+								justifyContent={'flex-end'}
+								w={'100%'}
+								value="3"
+								size="md"
+								borderColor="gray.200"
+								colorScheme="teal"
+							></Radio>
+						</Stack>
+						<Stack
+							position={'relative'}
+							pt={2}
+							pb={2}
+							pl={3}
+							pr={3}
+							w={'100%'}
+							alignItems={'center'}
+							borderRadius={4}
+							_hover={{ bg: 'gray.100' }}
+						>
+							<Stack position={'absolute'} right={0} left={3} top={1}>
+								<Text>{t('custom_date')}</Text>
+							</Stack>
+							<Radio
+								pr={{ lg: 6, md: 2, sm: 2 }}
+								alignItems={'center'}
+								justifyContent={'flex-end'}
+								w={'100%'}
+								value="4"
+								size="md"
+								borderColor="gray.200"
+								colorScheme="teal"
+							></Radio>
+						</Stack>
+					</Stack>
+				</RadioGroup>
+			);
+		}
+
+		// Categories section
+		if (menuId === '2') {
+			return data.subMenuData.map((subValue, subIndex) => {
+				// 分類的子選單是否全部被勾選
+				const subValueItemChecked = subValue.childrenCategories.filter(value => value.itemSelected);
+				const subValueItemUnChecked = subValue.childrenCategories.filter(
+					value => !value.itemSelected
+				);
+
+				// 所有子選單皆被勾選
+				const isAllItemChecked = subValueItemUnChecked.length === 0;
+				console.log('subValueItemUnChecked', subValueItemUnChecked);
+				console.log('isAllItemChecked', isAllItemChecked);
+				// 包含有勾選與未勾選的狀態
+				const isAtLeastOneItemChecked = subValueItemChecked.length !== 0;
+
+				let isIndeterminate;
+
+				if (isAllItemChecked) {
+					isIndeterminate = false;
+				} else if (isAtLeastOneItemChecked) {
+					isIndeterminate = true;
+				}
+
 				return (
 					<>
 						<Stack
+							_hover={{ bg: 'gray.100' }}
+							pt={2}
+							pb={2}
+							pl={3}
+							pr={3}
+							borderRadius={4}
+							zIndex={zIndexMinimum}
+							onClick={e => {
+								e.preventDefault();
+								dispatch(
+									handleClickSubMenu({ userClickId: subValue.id, routerAsPath: router.asPath })
+								);
+							}}
+							cursor="pointer"
+							key={subIndex}
+							direction="row"
+							justify="space-between"
+							mt="2"
+							mr={{ base: '1', sm: '1', md: '5' }}
+						>
+							<Text color="gray.800" size="md" fontWeight="500" lineHeight="24px">
+								{subValue.name}
+							</Text>
+							<Checkbox
+								isChecked={isAllItemChecked}
+								isIndeterminate={isIndeterminate}
+								onChange={e => {
+									e.preventDefault();
+									dispatch(
+										handleClickSubMenu({ userClickId: subValue.id, routerAsPath: router.asPath })
+									);
+								}}
+								size="lg"
+								borderColor="gray.200"
+								defaultChecked
+								colorScheme="teal"
+							></Checkbox>
+						</Stack>
+						{subValue.childrenCategories.map((itemValue, itemIndex) => {
+							return (
+								<>
+									<Stack
+										_hover={{ bg: 'gray.100' }}
+										p={1}
+										borderRadius={4}
+										onClick={e => {
+											e.preventDefault();
+											dispatch(
+												handleClickSubMenuItem({
+													clickSubMenuItemId: itemValue.id,
+													clickSubMenuItemName: itemValue.slug,
+													routerAsPath: router.asPath,
+												})
+											);
+										}}
+										cursor="pointer"
+										key={itemIndex}
+										direction="row"
+										justify="space-between"
+										mr={{ base: '1', sm: '1', md: '5' }}
+									>
+										<Text ml="16px" color="gray.600" size="md" fontWeight="400" lineHeight="24px">
+											{itemValue.name}
+										</Text>
+										<Checkbox
+											pr={2}
+											isChecked={itemValue.itemSelected}
+											onChange={e => {
+												e.preventDefault();
+												dispatch(
+													handleClickSubMenuItem({
+														clickSubMenuItemId: itemValue.id,
+														clickSubMenuItemName: itemValue.name,
+														routerAsPath: router.asPath,
+													})
+												);
+											}}
+											size="lg"
+											borderColor="gray.200"
+											defaultChecked
+											colorScheme="teal"
+										></Checkbox>
+									</Stack>
+								</>
+							);
+						})}
+					</>
+				);
+			});
+		}
+	};
+
+	return (
+		<>
+			{categoriesData[0].menuData.map((value: MenuType, index: number) => {
+				return (
+					<>
+						<Stack
+							_hover={{ bg: 'gray.100' }}
+							pt={2}
+							pb={2}
+							pl={3}
+							pr={3}
+							borderRadius={4}
 							onClick={e => {
 								e.preventDefault();
 								dispatch(handleClickMenu(value.menuId));
@@ -42,89 +434,12 @@ const LeftMenu = () => {
 							</Text>
 							{value.menuSelected ? <ChevronDownIcon boxSize={6} /> : <ChevronUpIcon boxSize={6} />}
 						</Stack>
-						{value.menuSelected &&
-							value.subMenuData.map((subValue, subIndex) => {
-								return (
-									<>
-										<Stack
-											zIndex={zIndexMinimum}
-											onClick={e => {
-												e.preventDefault();
-												dispatch(handleClickSubMenu(subValue.id));
-											}}
-											cursor="pointer"
-											key={subIndex}
-											direction="row"
-											justify="space-between"
-											mt="2"
-											mr={{ base: '1', sm: '1', md: '5' }}
-										>
-											<Text color="gray.800" size="md" fontWeight="500" lineHeight="24px">
-												{subValue.name}
-											</Text>
-											<Checkbox
-												isChecked={subValue.subMenuSelected}
-												onChange={e => {
-													e.preventDefault();
-													handleClickSubMenu(subValue.id);
-												}}
-												size="lg"
-												borderColor="gray.200"
-												defaultChecked
-												colorScheme="teal"
-											></Checkbox>
-										</Stack>
-										{subValue.childrenCategories.map((itemValue, itemIndex) => {
-											return (
-												<>
-													<Stack
-														onClick={e => {
-															e.preventDefault();
-															dispatch(
-																handleClickSubMenuItem({
-																	clickSubMenuItemId: itemValue.id,
-																	clickSubMenuItemName: itemValue.name,
-																})
-															);
-														}}
-														cursor="pointer"
-														key={itemIndex}
-														direction="row"
-														justify="space-between"
-														mr={{ base: '1', sm: '1', md: '5' }}
-													>
-														<Text
-															ml="16px"
-															color="gray.600"
-															size="md"
-															fontWeight="400"
-															lineHeight="24px"
-														>
-															{itemValue.name}
-														</Text>
-														<Checkbox
-															isChecked={itemValue.itemSelected}
-															onChange={e => {
-																e.preventDefault();
-																dispatch(
-																	handleClickSubMenuItem({
-																		clickSubMenuItemId: itemValue.id,
-																		clickSubMenuItemName: itemValue.name,
-																	})
-																);
-															}}
-															size="lg"
-															borderColor="gray.200"
-															defaultChecked
-															colorScheme="teal"
-														></Checkbox>
-													</Stack>
-												</>
-											);
-										})}
-									</>
-								);
-							})}
+						{value.menuSelected && renderMenuSection(value.menuId, value)}
+						{value.menuId === '2' && (
+							<Center m={8} display={{ lg: 'none', md: 'inline', sm: 'inline' }}>
+								{/* <Divider m={8} borderColor="gray" /> */}
+							</Center>
+						)}
 					</>
 				);
 			})}

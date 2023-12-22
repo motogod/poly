@@ -3,9 +3,12 @@ import { useRouter } from 'next/router';
 import { Card, CardBody, Stack, Image, Text, Heading, GridItem, Icon } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { HiChartBar } from 'react-icons/hi';
+import { MarketsItemType } from '@/api/type';
 
-function CategoryCard() {
+function CategoryCard({ data }: { data: MarketsItemType }) {
 	const router = useRouter();
+
+	const { title, volume, category, image, outcome } = data;
 
 	return (
 		<GridItem w="100%">
@@ -13,6 +16,7 @@ function CategoryCard() {
 				onClick={() => router.push('./marketsDetail')}
 				cursor="pointer"
 				shadow="md"
+				border="1px solid #EDF2F7;"
 				borderRadius="3xl"
 			>
 				<CardBody>
@@ -26,16 +30,16 @@ function CategoryCard() {
 						/>
 						<Stack p={1} justifyContent="space-between">
 							<Heading size="xs" color="gray.500">
-								Crypto
+								{category.name}
 							</Heading>
 							<Heading size="md" color="gray.800">
-								Bitcoin Forecase: How BTC Reacts to SEC
+								{title}
 							</Heading>
 						</Stack>
 					</Stack>
 					<Stack mt={5}>
 						<Stack position="relative" spacing={1.5} direction="row">
-							<Stack width="10%">
+							<Stack width={`${outcome.yes * 100}%`}>
 								<Stack
 									borderBottom="2px solid #68D391;"
 									h="30px"
@@ -51,11 +55,11 @@ function CategoryCard() {
 									// transform="translate(-50%, -50%)"
 								>
 									<Text fontSize="xs" color="gray.800" lineHeight="18px">
-										Yes 0.1 USDT
+										{`Yes ${outcome.yes} USDT`}
 									</Text>
 								</Stack>
 							</Stack>
-							<Stack width="90%">
+							<Stack width={`${outcome.no * 100}%`}>
 								<Stack
 									borderBottom="2px solid #FEB2B2;"
 									h="30px"
@@ -71,7 +75,7 @@ function CategoryCard() {
 									// transform="translate(-50%, -50%)"
 								>
 									<Text fontSize="xs" color="gray.800">
-										No 0.9 USDT
+										{`No ${outcome.no} USDT`}
 									</Text>
 								</Stack>
 							</Stack>
@@ -80,7 +84,7 @@ function CategoryCard() {
 					<Stack alignItems="center" mt={3} spacing={2} direction="row">
 						<Icon as={HiChartBar} w={'16px'} h={'14px'} />
 						<Text fontSize="xs" color="gray.800">
-							$2,186,639 USDT
+							{`$${Number(volume).toLocaleString()} USDT`}
 						</Text>
 					</Stack>
 				</CardBody>
