@@ -132,6 +132,7 @@ export type MenuType = {
 	menuId: string;
 	menu: string;
 	menuSelected: boolean;
+	selectedValue: string;
 	subMenuData: [
 		{
 			id: string;

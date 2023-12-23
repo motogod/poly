@@ -2,6 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getCategories } from '../thunks/fetchData';
 import { CategoriesType, ChildrenCategoriesType } from '@/api';
 
+const volumeRadioArray = ['volume-default', 'volume-1000', 'volume-100000', 'volume-over'];
+const dateRadioArray = ['date-default', 'date-today', 'date-week', 'date-month', 'custom'];
+
+export type VolumeType = 'volume-default' | 'volume-1000' | 'volume-100000' | 'volume-over';
+
 type CategoriesState = {
 	routerPath: string;
 	categoriesData: CategoriesType[];
@@ -81,18 +86,21 @@ const initialState: CategoriesState = {
 					menuId: '0',
 					menu: 'Volume',
 					menuSelected: false,
+					selectedValue: 'volume-default',
 					subMenuData: [] as any,
 				},
 				{
 					menuId: '1',
 					menu: 'End Date',
 					menuSelected: false,
+					selectedValue: 'date-default',
 					subMenuData: [] as any,
 				},
 				{
 					menuId: '2',
 					menu: 'Markets',
 					menuSelected: true,
+					selectedValue: '',
 					subMenuData: [] as any,
 				},
 			],
@@ -170,7 +178,7 @@ const dataSlice = createSlice({
 					});
 				}
 			});
-
+			console.log('Check the newRouterAsPath', newRouterAsPath);
 			if (!routerAsPath.includes('=')) {
 				console.log('Enter 3');
 				state.routerPath = `${newRouterAsPath}?categories=${queryString}`;
@@ -271,22 +279,84 @@ const dataSlice = createSlice({
 			state.routerPath = '';
 		},
 
+		// Volume 更新 radio 選取狀態
+		handleVolumeRadio: (state, action) => {
+			const { volumeValue, routerAsPath } = action.payload;
+
+			state.categoriesData[0].menuData[0].selectedValue = volumeValue;
+
+			// 更新完勾選狀態之後接著更新 router query url
+			let newRouterAsPath = routerAsPath;
+			let queryString = '';
+
+			volumeRadioArray.forEach(value => {
+				newRouterAsPath = newRouterAsPath.replace(`${value},`, '');
+			});
+
+			if (newRouterAsPath.includes('=')) {
+				state.routerPath = newRouterAsPath += `${volumeValue},`;
+			} else {
+				state.routerPath = `/markets?categories=${volumeValue},`;
+			}
+		},
+
+		// Date 更新 radio 選取狀態
+		handleDateRadio: (state, action) => {
+			const { dateRadioValue, routerAsPath } = action.payload;
+
+			state.categoriesData[0].menuData[1].selectedValue = dateRadioValue;
+
+			// 更新完勾選狀態之後接著更新 router query url
+			let newRouterAsPath = routerAsPath;
+			let queryString = '';
+
+			dateRadioArray.forEach(value => {
+				newRouterAsPath = newRouterAsPath.replace(`${value},`, '');
+			});
+
+			if (newRouterAsPath.includes('=')) {
+				state.routerPath = newRouterAsPath += `${dateRadioValue},`;
+			} else {
+				state.routerPath = `/markets?categories=${dateRadioValue},`;
+			}
+		},
+
+		// 網頁第一次開啟，抓取網址 query 參數更新選單各項目是否勾選
 		queryUrlToChangeMenuStatus: (state, action) => {
 			const { queryString } = action.payload;
 
-			state.categoriesData[0].menuData[2].subMenuData.map(menuValue => {
-				console.log('queryString', queryString);
-				menuValue.subMenuSelected = true;
-				// if (queryString.indexOf(menuValue.slug) > -1) {
-				// 	console.log('queryUrlToChangeMenuStatus YES');
-				// 	console.log('menuValue slug', menuValue.slug);
-				// 	menuValue.subMenuSelected = true;
-				// } else {
-				// 	menuValue.subMenuSelected = false;
-				// 	console.log('queryUrlToChangeMenuStatus No');
-				// }
+			let queryStringArray: string[] = [];
 
-				return menuValue;
+			if (queryString && queryString.includes(',')) {
+				queryStringArray = queryString.split(',');
+			}
+
+			// 更新 Volume 勾選狀態
+			if (queryStringArray.length > 0) {
+				const firstVolumeQueryString = queryStringArray.find(v => v.indexOf('volume') > -1);
+				if (firstVolumeQueryString) {
+					state.categoriesData[0].menuData[0].selectedValue = firstVolumeQueryString;
+				}
+			}
+
+			// 更新選單勾選狀態
+			state.categoriesData[0].menuData[2].subMenuData.map(value => {
+				value.childrenCategories.map(childrenValue => {
+					const isSlugExistInQuery = queryStringArray.find(v => v === value.slug);
+					const isSlugExistInItemQuery = queryStringArray.find(v => v === childrenValue.slug);
+
+					if (isSlugExistInQuery) {
+						// 如果 query 有主分類，將所有子選單全勾選
+						childrenValue.itemSelected = true;
+					} else if (isSlugExistInItemQuery) {
+						// 否則逐一比對所有子選單是否需勾選
+						childrenValue.itemSelected = true;
+					}
+
+					return childrenValue;
+				});
+
+				return value;
 			});
 		},
 	},
@@ -312,5 +382,7 @@ export const {
 	handleClickSubMenuItem,
 	resetRouterPath,
 	queryUrlToChangeMenuStatus,
+	handleVolumeRadio,
+	handleDateRadio,
 } = dataSlice.actions;
 export const dataReducer = dataSlice.reducer;

@@ -12,6 +12,8 @@ import {
 	handleClickSubMenuItem,
 	resetRouterPath,
 	queryUrlToChangeMenuStatus,
+	handleVolumeRadio,
+	handleDateRadio,
 } from '@/store';
 import { leftMenuItem } from '../data';
 import { zIndexMinimum } from '@/utils/zIndex';
@@ -23,15 +25,13 @@ const LeftMenu = () => {
 	const { categoriesData, routerPath } = useSelector((state: RootState) => state.dataReducer);
 
 	const dispatch = useDispatch<AppDispatch>();
-	console.log('Menu =>', categoriesData[0].menuData);
-	// useEffect(() => {
-	// 	if (router.isReady && routerPath === '') {
-	// 		setTimeout(() => {
-	// 			console.log('Router query =>', router.query);
-	// 			dispatch(queryUrlToChangeMenuStatus({ queryString: router.query.categories }));
-	// 		}, 2000);
-	// 	}
-	// }, [router, dispatch, routerPath]);
+
+	useEffect(() => {
+		// 第一次開啟頁面先撈取網址對應的 query 更新選單 每個 query 後都有一個逗點
+		setTimeout(() => {
+			dispatch(queryUrlToChangeMenuStatus({ queryString: router.query.categories }));
+		}, 1000);
+	}, [dispatch]);
 
 	useEffect(() => {
 		if (router.isReady && routerPath !== '') {
@@ -45,7 +45,12 @@ const LeftMenu = () => {
 		// Volume section
 		if (menuId === '0') {
 			return (
-				<RadioGroup onChange={value => console.log('change radio value', value)} defaultValue="0">
+				<RadioGroup
+					onChange={volumeValue =>
+						dispatch(handleVolumeRadio({ volumeValue, routerAsPath: router.asPath }))
+					}
+					value={data.selectedValue}
+				>
 					<Stack>
 						<Stack
 							position={'relative'}
@@ -66,7 +71,7 @@ const LeftMenu = () => {
 								alignItems={'center'}
 								justifyContent={'flex-end'}
 								w={'100%'}
-								value="0"
+								value="volume-default"
 								size="md"
 								borderColor="gray.200"
 								colorScheme="teal"
@@ -91,7 +96,7 @@ const LeftMenu = () => {
 								alignItems={'center'}
 								justifyContent={'flex-end'}
 								w={'100%'}
-								value="1"
+								value="volume-1000"
 								size="md"
 								borderColor="gray.200"
 								colorScheme="teal"
@@ -116,7 +121,7 @@ const LeftMenu = () => {
 								alignItems={'center'}
 								justifyContent={'flex-end'}
 								w={'100%'}
-								value="2"
+								value="volume-100000"
 								size="md"
 								borderColor="gray.200"
 								colorScheme="teal"
@@ -141,7 +146,7 @@ const LeftMenu = () => {
 								alignItems={'center'}
 								justifyContent={'flex-end'}
 								w={'100%'}
-								value="3"
+								value="volume-over"
 								size="md"
 								borderColor="gray.200"
 								colorScheme="teal"
@@ -155,7 +160,12 @@ const LeftMenu = () => {
 		// End date section
 		if (menuId === '1') {
 			return (
-				<RadioGroup onChange={value => console.log('change radio value', value)} defaultValue="0">
+				<RadioGroup
+					onChange={dateRadioValue =>
+						dispatch(handleDateRadio({ dateRadioValue, routerAsPath: router.asPath }))
+					}
+					value={data.selectedValue}
+				>
 					<Stack>
 						<Stack
 							position={'relative'}
@@ -176,7 +186,7 @@ const LeftMenu = () => {
 								alignItems={'center'}
 								justifyContent={'flex-end'}
 								w={'100%'}
-								value="0"
+								value="date-default"
 								size="md"
 								borderColor="gray.200"
 								colorScheme="teal"
@@ -201,7 +211,7 @@ const LeftMenu = () => {
 								alignItems={'center'}
 								justifyContent={'flex-end'}
 								w={'100%'}
-								value="1"
+								value="date-today"
 								size="md"
 								borderColor="gray.200"
 								colorScheme="teal"
@@ -226,7 +236,7 @@ const LeftMenu = () => {
 								alignItems={'center'}
 								justifyContent={'flex-end'}
 								w={'100%'}
-								value="2"
+								value="date-week"
 								size="md"
 								borderColor="gray.200"
 								colorScheme="teal"
@@ -251,7 +261,7 @@ const LeftMenu = () => {
 								alignItems={'center'}
 								justifyContent={'flex-end'}
 								w={'100%'}
-								value="3"
+								value="date-month"
 								size="md"
 								borderColor="gray.200"
 								colorScheme="teal"
@@ -276,7 +286,7 @@ const LeftMenu = () => {
 								alignItems={'center'}
 								justifyContent={'flex-end'}
 								w={'100%'}
-								value="4"
+								value="custom"
 								size="md"
 								borderColor="gray.200"
 								colorScheme="teal"

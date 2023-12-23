@@ -11,6 +11,8 @@ import {
 	handleClickSubMenuItem,
 	resetRouterPath,
 	queryUrlToChangeMenuStatus,
+	handleVolumeRadio,
+	handleDateRadio,
 } from './slice/dataSlice';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg } from './actions';
 
@@ -46,6 +48,8 @@ export {
 	handleClickSubMenuItem,
 	resetRouterPath,
 	queryUrlToChangeMenuStatus,
+	handleVolumeRadio,
+	handleDateRadio,
 };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';
