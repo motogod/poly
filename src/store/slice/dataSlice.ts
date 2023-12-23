@@ -3,7 +3,7 @@ import { getCategories } from '../thunks/fetchData';
 import { CategoriesType, ChildrenCategoriesType } from '@/api';
 
 const volumeRadioArray = ['volume-default', 'volume-1000', 'volume-100000', 'volume-over'];
-const dateRadioArray = ['date-default', 'date-today', 'date-week', 'date-month', 'custom'];
+const dateRadioArray = ['date-default', 'date-today', 'date-week', 'date-month', 'date-custom'];
 
 export type VolumeType = 'volume-default' | 'volume-1000' | 'volume-100000' | 'volume-over';
 
@@ -155,7 +155,7 @@ const dataSlice = createSlice({
 				// 如果分類選單有被勾選，將分類選單主名稱加入
 				if (value.subMenuSelected) {
 					console.log('Enter 1');
-					newRouterAsPath = decodeURI(newRouterAsPath).replace(`${value.slug},`, '');
+					// newRouterAsPath = decodeURI(newRouterAsPath).replace(`${value.slug},`, '');
 					queryString += `${value.slug},`;
 					console.log('query string', queryString);
 					// 分類主選單勾選即全選，將子項目全移除 qeury url
@@ -165,7 +165,7 @@ const dataSlice = createSlice({
 				} else {
 					console.log('Enter 2');
 					// decodeURI 恢復網址的空白符號 %20，好做後續正確的字串比對
-					newRouterAsPath = decodeURI(newRouterAsPath).replace(`${value.slug},`, '');
+					// newRouterAsPath = decodeURI(newRouterAsPath).replace(`${value.slug},`, '');
 					queryString = queryString.replace(`${value.slug},`, '');
 
 					value.childrenCategories.forEach(childrenValue => {
@@ -178,7 +178,28 @@ const dataSlice = createSlice({
 					});
 				}
 			});
-			console.log('Check the newRouterAsPath', newRouterAsPath);
+
+			// 補上原本如果有 Volume 或 Date 的 query
+			let routerStringArray: string[] = [];
+
+			// 如果至少有一個選單分類資料 可能是 Volume 或 Date
+			if (newRouterAsPath.includes('=')) {
+				const routerStringWithCommas = newRouterAsPath.split('=')[1];
+				routerStringArray = routerStringWithCommas.split(',');
+			}
+
+			if (routerStringArray.length > 0) {
+				const firstVolumeQueryString = routerStringArray.find(v => v.indexOf('volume') > -1);
+
+				if (firstVolumeQueryString) {
+					queryString += `${firstVolumeQueryString},`;
+				}
+				const firstDateQueryString = routerStringArray.find(v => v.indexOf('date') > -1);
+				if (firstDateQueryString) {
+					queryString += `${firstDateQueryString},`;
+				}
+			}
+
 			if (!routerAsPath.includes('=')) {
 				console.log('Enter 3');
 				state.routerPath = `${newRouterAsPath}?categories=${queryString}`;
@@ -191,8 +212,6 @@ const dataSlice = createSlice({
 					state.routerPath = `/markets`;
 				}
 			}
-
-			console.log('state.routerPath', state.routerPath);
 		},
 
 		// Markets 底下分類選單的子選單 是否勾選
@@ -230,23 +249,16 @@ const dataSlice = createSlice({
 			let queryString = '';
 
 			state.categoriesData[0].menuData[2].subMenuData.forEach(value => {
-				// 如果分類選單有被勾選，將分類選單主名稱加入
-				console.log('Here see the value', {
-					slug: value.slug,
-					subMenuSelected: value.subMenuSelected,
-				});
 				// 分類選單有被勾選
 				if (value.subMenuSelected) {
 					newRouterAsPath = decodeURI(newRouterAsPath).replace(`${value.slug},`, '');
 					queryString += `${value.slug},`;
 					// 分類主選單勾選即全選，將子項目全移除 qeury url
-					console.log('Here 1');
 					value.childrenCategories.forEach(childrenValue => {
 						newRouterAsPath = decodeURI(newRouterAsPath).replace(`${childrenValue.slug},`, '');
 					});
 				} else {
-					console.log('value.slug', value.slug);
-					newRouterAsPath = decodeURI(newRouterAsPath).replace(`${value.slug},`, '');
+					// newRouterAsPath = decodeURI(newRouterAsPath).replace(`${value.slug},`, '');
 
 					queryString = queryString.replace(`${value.slug},`, '');
 					value.childrenCategories.forEach(childrenValue => {
@@ -260,12 +272,37 @@ const dataSlice = createSlice({
 					});
 				}
 			});
-			console.log('Here Check Result', { newRouterAsPath, queryString });
+			console.log('Check final newRouterAsPath', newRouterAsPath);
+			// 補上原本如果有 Volume 或 Date 的 query
+			let routerStringArray: string[] = [];
+
+			// 如果至少有一個選單分類資料 可能是 Volume 或 Date
+			console.log('Check newRouterAsPath', newRouterAsPath);
+			if (newRouterAsPath.includes('=')) {
+				const routerStringWithCommas = newRouterAsPath.split('=')[1];
+				routerStringArray = routerStringWithCommas.split(',');
+			}
+
+			if (routerStringArray.length > 0) {
+				const firstVolumeQueryString = routerStringArray.find(v => v.indexOf('volume') > -1);
+
+				if (firstVolumeQueryString) {
+					queryString += `${firstVolumeQueryString},`;
+				}
+
+				const firstDateQueryString = routerStringArray.find(v => v.indexOf('date') > -1);
+
+				if (firstDateQueryString) {
+					queryString += `${firstDateQueryString},`;
+				}
+			}
+
+			console.log('Check final queryString', queryString);
 			if (!routerAsPath.includes('=')) {
 				state.routerPath = `${newRouterAsPath}?categories=${queryString}`;
 			} else {
 				if (queryString) {
-					console.log('Here', `${newRouterAsPath}${queryString}`);
+					console.log('Here', { newRouterAsPath, queryString });
 					// state.routerPath = `${newRouterAsPath}${queryString}`;
 					state.routerPath = `/markets?categories=${queryString}`;
 				} else {

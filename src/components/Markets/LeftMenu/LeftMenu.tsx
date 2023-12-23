@@ -286,7 +286,7 @@ const LeftMenu = () => {
 								alignItems={'center'}
 								justifyContent={'flex-end'}
 								w={'100%'}
-								value="custom"
+								value="date-custom"
 								size="md"
 								borderColor="gray.200"
 								colorScheme="teal"
