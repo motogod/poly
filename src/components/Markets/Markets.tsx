@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import {
 	Stack,
 	Divider,
@@ -18,7 +19,14 @@ import {
 import { Icon } from '@chakra-ui/react';
 import { BiFilter } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMarkets, AppDispatch, RootState } from '@/store';
+import {
+	getMarkets,
+	AppDispatch,
+	RootState,
+	getCategories,
+	resetVolumeAndDateStatus,
+	resetRouterPath,
+} from '@/store';
 import { useCategoryTabsList } from '@/hooks';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import useFilter from './useFilter';
@@ -33,6 +41,8 @@ function Markets() {
 	const { Filter, isOpen } = useFilter();
 	const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
 	const [TabDom, selectedTab] = useCategoryTabsList();
+
+	const router = useRouter();
 
 	const dispatch = useDispatch<AppDispatch>();
 	const { markets, isMarketsLoading } = useSelector((state: RootState) => state.homeReducer);
@@ -93,7 +103,6 @@ function Markets() {
 						{/* <Divider mt={6} borderColor="gray.300" /> */}
 					</Stack>
 				</Stack>
-
 				{isMarketsLoading ? (
 					<Stack w={'100%'} align={'center'}>
 						<Spinner
@@ -153,7 +162,11 @@ function Markets() {
 					>
 						<Button
 							w={'100%'}
-							onClick={() => alert('clear')}
+							onClick={() => {
+								dispatch(getCategories());
+								dispatch(resetVolumeAndDateStatus({}));
+								router.push('/markets', undefined, { shallow: true });
+							}}
 							bg="#fff"
 							borderColor="#ccd0d5"
 							color="teal.500"

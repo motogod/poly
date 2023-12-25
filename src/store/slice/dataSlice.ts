@@ -316,6 +316,12 @@ const dataSlice = createSlice({
 			state.routerPath = '';
 		},
 
+		// 清除 Volume 和 Date 的選取狀態
+		resetVolumeAndDateStatus: (state, action) => {
+			state.categoriesData[0].menuData[0].selectedValue = 'volume-default';
+			state.categoriesData[0].menuData[1].selectedValue = 'date-default';
+		},
+
 		// Volume 更新 radio 選取狀態
 		handleVolumeRadio: (state, action) => {
 			const { volumeValue, routerAsPath } = action.payload;
@@ -376,6 +382,14 @@ const dataSlice = createSlice({
 				}
 			}
 
+			// 更新 Date 勾選狀態
+			if (queryStringArray.length > 0) {
+				const firstDateQueryString = queryStringArray.find(v => v.indexOf('date') > -1);
+				if (firstDateQueryString) {
+					state.categoriesData[0].menuData[1].selectedValue = firstDateQueryString;
+				}
+			}
+
 			// 更新選單勾選狀態
 			state.categoriesData[0].menuData[2].subMenuData.map(value => {
 				value.childrenCategories.map(childrenValue => {
@@ -421,5 +435,6 @@ export const {
 	queryUrlToChangeMenuStatus,
 	handleVolumeRadio,
 	handleDateRadio,
+	resetVolumeAndDateStatus,
 } = dataSlice.actions;
 export const dataReducer = dataSlice.reducer;

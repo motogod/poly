@@ -15,6 +15,9 @@ import AuthProvider from '@/contex/AuthContext';
 import ToastProvider from '@/contex/ToastContext';
 import IpProvider from '@/contex/IpContext';
 
+// for react-datepicker css
+import 'react-datepicker/dist/react-datepicker.css';
+
 import { store } from '@/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, showToast, getCategories } from '@/store';

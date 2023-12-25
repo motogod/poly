@@ -13,6 +13,7 @@ import {
 	queryUrlToChangeMenuStatus,
 	handleVolumeRadio,
 	handleDateRadio,
+	resetVolumeAndDateStatus,
 } from './slice/dataSlice';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg } from './actions';
 
@@ -50,6 +51,7 @@ export {
 	queryUrlToChangeMenuStatus,
 	handleVolumeRadio,
 	handleDateRadio,
+	resetVolumeAndDateStatus,
 };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';

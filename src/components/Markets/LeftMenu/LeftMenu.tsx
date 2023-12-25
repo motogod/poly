@@ -1,8 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Text, Stack, Checkbox, RadioGroup, Radio, Center, Divider } from '@chakra-ui/react';
+import {
+	Text,
+	Stack,
+	Checkbox,
+	RadioGroup,
+	Radio,
+	Center,
+	Button,
+	Input,
+	useToast,
+} from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'next-i18next';
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
 import { useSelector, useDispatch } from 'react-redux';
 import {
 	AppDispatch,
@@ -18,11 +30,17 @@ import {
 import { leftMenuItem } from '../data';
 import { zIndexMinimum } from '@/utils/zIndex';
 import { CategoriesType, ChildrenCategoriesType, MenuType, SubMenuType } from '@/api/type';
+import styles from './leftMenu.module.scss';
 
 const LeftMenu = () => {
 	const { t } = useTranslation();
 	const router = useRouter();
 	const { categoriesData, routerPath } = useSelector((state: RootState) => state.dataReducer);
+
+	const toast = useToast();
+
+	const [startDate, setStartDate] = useState(null);
+	const [endDate, setEndDate] = useState(null);
 
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -291,6 +309,83 @@ const LeftMenu = () => {
 								borderColor="gray.200"
 								colorScheme="teal"
 							></Radio>
+							<Stack w={'100%'} mt={2} direction={'row'} justify={'space-evenly'}>
+								<DatePicker
+									className={styles.datePicker}
+									selected={startDate}
+									onChange={(date: any) => {
+										if (moment(endDate).isBefore(date)) {
+											toast({
+												title: 'start date is after end date',
+												position: 'top',
+												status: 'error',
+												duration: 2000,
+												isClosable: true,
+											});
+											return;
+										}
+										setStartDate(date);
+
+										if (endDate && date) {
+											dispatch(
+												handleDateRadio({
+													dateRadioValue: 'date-custom',
+													routerAsPath: router.asPath,
+												})
+											);
+										}
+									}}
+									disabledKeyboardNavigation
+									placeholderText="Start date"
+								/>
+								<DatePicker
+									className={styles.datePicker}
+									selected={endDate}
+									onChange={(date: any) => {
+										if (moment(startDate).isAfter(date)) {
+											toast({
+												title: 'start date is after end date',
+												position: 'top',
+												status: 'error',
+												duration: 2000,
+												isClosable: true,
+											});
+											return;
+										}
+										setEndDate(date);
+										if (startDate && date) {
+											dispatch(
+												handleDateRadio({
+													dateRadioValue: 'date-custom',
+													routerAsPath: router.asPath,
+												})
+											);
+										}
+									}}
+									disabledKeyboardNavigation
+									placeholderText="End date"
+								/>
+							</Stack>
+							<Button
+								isDisabled={
+									startDate && endDate && moment(startDate).isBefore(endDate) ? false : true
+								}
+								onClick={() => {
+									console.log({ startDate, endDate });
+									if (startDate && endDate && moment(startDate).isBefore(endDate)) {
+										dispatch(
+											handleDateRadio({
+												dateRadioValue: 'date-custom',
+												routerAsPath: router.asPath,
+											})
+										);
+									}
+								}}
+								w={'100%'}
+								colorScheme="teal"
+							>
+								Apply
+							</Button>
 						</Stack>
 					</Stack>
 				</RadioGroup>
@@ -330,7 +425,7 @@ const LeftMenu = () => {
 							pl={3}
 							pr={3}
 							borderRadius={4}
-							zIndex={zIndexMinimum}
+							zIndex={0}
 							onClick={e => {
 								e.preventDefault();
 								dispatch(
