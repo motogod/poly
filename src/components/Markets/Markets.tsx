@@ -33,7 +33,8 @@ import useFilter from './useFilter';
 import LeftMenu from './LeftMenu';
 import { CategoryCard } from '@/components/common';
 import { zIndexMarket } from '@/utils/zIndex';
-import styles from './markets.module.scss';
+import { ChildrenCategoriesType, SubMenuType } from '@/api/type';
+import { DateRadioType, VolumeType } from '@/store/slice/dataSlice';
 
 const empty_array = [...Array(13)];
 
@@ -46,10 +47,71 @@ function Markets() {
 
 	const dispatch = useDispatch<AppDispatch>();
 	const { markets, isMarketsLoading } = useSelector((state: RootState) => state.homeReducer);
+	const { categoriesData } = useSelector((state: RootState) => state.dataReducer);
+	// useEffect(() => {
+	// 	dispatch(getMarkets({ categories: '' }));
+	// }, [dispatch]);
 
+	// 第一次進網頁撈取 url query call API，使用者每次點擊 Filter 選單也會更新 url 再次觸發該區段 call API
 	useEffect(() => {
-		dispatch(getMarkets());
-	}, [dispatch]);
+		if (router.isReady) {
+			setTimeout(() => {
+				let queryString = '';
+				const { categories } = router.query;
+				const routerString = categories as string;
+				let routerStringArray: string[] = [];
+
+				if (routerString?.includes(',')) {
+					routerStringArray = routerString?.split(',');
+				}
+
+				categoriesData[0].menuData[2].subMenuData.forEach((subMenuValue: SubMenuType) => {
+					const subMenuExistedString = routerStringArray.find(value => value === subMenuValue.slug);
+					if (subMenuExistedString) {
+						subMenuValue.childrenCategories.forEach((childrenMenuData: ChildrenCategoriesType) => {
+							if (queryString === '') {
+								queryString += childrenMenuData.slug;
+							} else {
+								queryString += `,${childrenMenuData.slug}`;
+							}
+						});
+					} else {
+						subMenuValue.childrenCategories.forEach((childrenMenuData: ChildrenCategoriesType) => {
+							const childrenMenuExistedString = routerStringArray.find(
+								value => value === childrenMenuData.slug
+							);
+							if (childrenMenuExistedString) {
+								if (queryString === '') {
+									queryString += childrenMenuData.slug;
+								} else {
+									queryString += `,${childrenMenuData.slug}`;
+								}
+							}
+						});
+					}
+				});
+
+				// 篩選符合所篩選的 Volume 範圍設定值
+				const volumeValue = routerStringArray.find(
+					value => value.indexOf('volume') > -1
+				) as VolumeType;
+
+				//
+				const dateValue = routerStringArray.find(
+					value => value.indexOf('date') > -1
+				) as DateRadioType;
+				console.log('dateValue is', dateValue);
+				dispatch(
+					getMarkets({
+						categories: queryString,
+						volumeValue,
+						dateValue: dateValue === 'date-custom' ? 'date-default' : dateValue,
+					})
+				);
+			}, 0);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [router, dispatch]);
 
 	// display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 	const handelScroll = (event: Event) => {
