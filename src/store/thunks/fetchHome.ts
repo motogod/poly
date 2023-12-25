@@ -68,6 +68,7 @@ const getMarkets = createAsyncThunk(
 				case 'date-custom':
 					break;
 				default:
+					filteredResultData.push(value);
 			}
 		});
 
