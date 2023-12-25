@@ -2,10 +2,27 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getCategories } from '../thunks/fetchData';
 import { CategoriesType, ChildrenCategoriesType } from '@/api';
 
-const volumeRadioArray = ['volume-default', 'volume-1000', 'volume-100000', 'volume-over'];
-const dateRadioArray = ['date-default', 'date-today', 'date-week', 'date-month', 'date-custom'];
+export type VolumeType = 'volume-default' | 'volume-1000' | 'volume-100000' | 'volume-over' | '';
+const volumeRadioArray: Array<VolumeType> = [
+	'volume-default',
+	'volume-1000',
+	'volume-100000',
+	'volume-over',
+];
 
-export type VolumeType = 'volume-default' | 'volume-1000' | 'volume-100000' | 'volume-over';
+export type DateRadioType =
+	| 'date-default'
+	| 'date-today'
+	| 'date-week'
+	| 'date-month'
+	| 'date-custom';
+const dateRadioArray: Array<DateRadioType> = [
+	'date-default',
+	'date-today',
+	'date-week',
+	'date-month',
+	'date-custom',
+];
 
 type CategoriesState = {
 	routerPath: string;
@@ -345,13 +362,16 @@ const dataSlice = createSlice({
 
 		// Date 更新 radio 選取狀態
 		handleDateRadio: (state, action) => {
-			const { dateRadioValue, routerAsPath } = action.payload;
+			const { dateRadioValue, routerAsPath, startDate, endDate } = action.payload;
 
+			// http://localhost:3000/zh/markets?categories=volume-default,date-custom-Sun%20Dec%2017%202023%2000:00:00%20GMT+0800%20(%E5%8F%B0%E5%8C%97%E6%A8%99%E6%BA%96%E6%99%82%E9%96%93)-Sun%20Dec%2031%202023%2000:00:00%20GMT+0800%20(%E5%8F%B0%E5%8C%97%E6%A8%99%E6%BA%96%E6%99%82%E9%96%93),
 			state.categoriesData[0].menuData[1].selectedValue = dateRadioValue;
 
 			// 更新完勾選狀態之後接著更新 router query url
 			let newRouterAsPath = routerAsPath;
 			let queryString = '';
+
+			// Test section
 
 			dateRadioArray.forEach(value => {
 				newRouterAsPath = newRouterAsPath.replace(`${value},`, '');
@@ -397,7 +417,8 @@ const dataSlice = createSlice({
 					const isSlugExistInItemQuery = queryStringArray.find(v => v === childrenValue.slug);
 
 					if (isSlugExistInQuery) {
-						// 如果 query 有主分類，將所有子選單全勾選
+						// 如果 query 有主分類，也將所有子選單全勾選
+						value.subMenuSelected = true;
 						childrenValue.itemSelected = true;
 					} else if (isSlugExistInItemQuery) {
 						// 否則逐一比對所有子選單是否需勾選

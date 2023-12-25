@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import moment from 'moment';
 import { getMarkets } from '../thunks/fetchHome';
-import { GetMarketsType } from '@/api';
+import { GetMarketsType, MarketsItemType } from '@/api';
+import { VolumeType } from './dataSlice';
 
 type HomeState = {
 	isMarketsLoading: boolean;
@@ -15,7 +17,24 @@ const initialState: HomeState = {
 const homeSlice = createSlice({
 	name: 'home',
 	initialState,
-	reducers: {},
+	reducers: {
+		//
+		filterStartDateAndEndDateMarket: (state, action) => {
+			const { startDate: userStartDate, endDate: userEndDate } = action.payload;
+
+			let filteredResultData: MarketsItemType[] = [];
+
+			state.markets.data.forEach(value => {
+				const { startDate, endDate } = value;
+
+				if (moment(startDate).isAfter(userStartDate) && moment(endDate).isBefore(userEndDate)) {
+					filteredResultData.push(value);
+				}
+			});
+
+			state.markets.data = filteredResultData;
+		},
+	},
 	extraReducers: builder => {
 		builder.addCase(getMarkets.pending, state => {
 			console.log('getMarkets pending');
@@ -33,4 +52,5 @@ const homeSlice = createSlice({
 	},
 });
 
+export const { filterStartDateAndEndDateMarket } = homeSlice.actions;
 export const homeReducer = homeSlice.reducer;

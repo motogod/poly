@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import {
 	Text,
@@ -26,11 +26,14 @@ import {
 	queryUrlToChangeMenuStatus,
 	handleVolumeRadio,
 	handleDateRadio,
+	filterStartDateAndEndDateMarket,
 } from '@/store';
 import { leftMenuItem } from '../data';
 import { zIndexMinimum } from '@/utils/zIndex';
 import { CategoriesType, ChildrenCategoriesType, MenuType, SubMenuType } from '@/api/type';
 import styles from './leftMenu.module.scss';
+
+let firstRender = true;
 
 const LeftMenu = () => {
 	const { t } = useTranslation();
@@ -46,10 +49,12 @@ const LeftMenu = () => {
 
 	useEffect(() => {
 		// 第一次開啟頁面先撈取網址對應的 query 更新選單 每個 query 後都有一個逗點
-		setTimeout(() => {
+		// 確保 Markets 底下選單有跟後端要到資列才更新選單 且只執行一次
+		if (firstRender && categoriesData[0].menuData[2].subMenuData.length > 0 && router.isReady) {
 			dispatch(queryUrlToChangeMenuStatus({ queryString: router.query.categories }));
-		}, 1000);
-	}, [dispatch]);
+			firstRender = false;
+		}
+	}, [dispatch, categoriesData, router]);
 
 	useEffect(() => {
 		if (router.isReady && routerPath !== '') {
@@ -64,9 +69,10 @@ const LeftMenu = () => {
 		if (menuId === '0') {
 			return (
 				<RadioGroup
-					onChange={volumeValue =>
-						dispatch(handleVolumeRadio({ volumeValue, routerAsPath: router.asPath }))
-					}
+					onChange={volumeValue => {
+						// 更新 url
+						dispatch(handleVolumeRadio({ volumeValue, routerAsPath: router.asPath }));
+					}}
 					value={data.selectedValue}
 				>
 					<Stack>
@@ -180,7 +186,9 @@ const LeftMenu = () => {
 			return (
 				<RadioGroup
 					onChange={dateRadioValue =>
-						dispatch(handleDateRadio({ dateRadioValue, routerAsPath: router.asPath }))
+						dispatch(
+							handleDateRadio({ dateRadioValue, routerAsPath: router.asPath, startDate, endDate })
+						)
 					}
 					value={data.selectedValue}
 				>
@@ -327,12 +335,14 @@ const LeftMenu = () => {
 										setStartDate(date);
 
 										if (endDate && date) {
-											dispatch(
-												handleDateRadio({
-													dateRadioValue: 'date-custom',
-													routerAsPath: router.asPath,
-												})
-											);
+											// dispatch(
+											// 	handleDateRadio({
+											// 		dateRadioValue: `date-custom`,
+											// 		routerAsPath: router.asPath,
+											// 		startDate,
+											// 		endDate,
+											// 	})
+											// );
 										}
 									}}
 									disabledKeyboardNavigation
@@ -354,12 +364,14 @@ const LeftMenu = () => {
 										}
 										setEndDate(date);
 										if (startDate && date) {
-											dispatch(
-												handleDateRadio({
-													dateRadioValue: 'date-custom',
-													routerAsPath: router.asPath,
-												})
-											);
+											// dispatch(
+											// 	handleDateRadio({
+											// 		dateRadioValue: `date-custom`,
+											// 		routerAsPath: router.asPath,
+											// 		startDate,
+											// 		endDate,
+											// 	})
+											// );
 										}
 									}}
 									disabledKeyboardNavigation
@@ -375,10 +387,15 @@ const LeftMenu = () => {
 									if (startDate && endDate && moment(startDate).isBefore(endDate)) {
 										dispatch(
 											handleDateRadio({
-												dateRadioValue: 'date-custom',
+												dateRadioValue: `date-custom`,
 												routerAsPath: router.asPath,
+												startDate,
+												endDate,
 											})
 										);
+										setTimeout(() => {
+											dispatch(filterStartDateAndEndDateMarket({ startDate, endDate }));
+										}, 1000);
 									}
 								}}
 								w={'100%'}
