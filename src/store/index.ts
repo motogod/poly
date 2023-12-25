@@ -4,6 +4,17 @@ import { homeReducer } from './slice/homeSlice';
 import { authReducer, showAuthToast } from './slice/authSlice';
 import { ipReducer, setIpState } from './slice/ipSlice';
 import { toastReducer, showToast, resetToast } from './slice/toastSlice';
+import {
+	dataReducer,
+	handleClickMenu,
+	handleClickSubMenu,
+	handleClickSubMenuItem,
+	resetRouterPath,
+	queryUrlToChangeMenuStatus,
+	handleVolumeRadio,
+	handleDateRadio,
+	resetVolumeAndDateStatus,
+} from './slice/dataSlice';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg } from './actions';
 
 export const store = configureStore({
@@ -12,6 +23,7 @@ export const store = configureStore({
 		authReducer,
 		ipReducer,
 		toastReducer,
+		dataReducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -32,6 +44,15 @@ export {
 	showAuthToast,
 	showToast,
 	resetToast,
+	handleClickMenu,
+	handleClickSubMenu,
+	handleClickSubMenuItem,
+	resetRouterPath,
+	queryUrlToChangeMenuStatus,
+	handleVolumeRadio,
+	handleDateRadio,
+	resetVolumeAndDateStatus,
 };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';
+export * from './thunks/fetchData';

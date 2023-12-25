@@ -42,8 +42,8 @@ function HeaderRightSideSection() {
 	const { status } = useAccount();
 	const { disconnect } = useDisconnect();
 	const { connectAsync } = useConnect();
-	const { signInWithEthereum, connectWallet } = useSiwe();
-	const { write, isLoading: contractIsLoading } = useContract();
+	// const { signInWithEthereum, connectWallet } = useSiwe();
+	// const { write, isLoading: contractIsLoading } = useContract();
 	const { ethValue } = useContractForRead();
 
 	const {
@@ -239,7 +239,7 @@ function HeaderRightSideSection() {
 							</Heading>
 						</Stack>
 						<Button
-							isLoading={contractIsLoading}
+							// isLoading={contractIsLoading}
 							onClick={() => depositModalOnOpen()}
 							w={'108px'}
 							h={'40px'}

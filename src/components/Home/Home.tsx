@@ -39,6 +39,8 @@ function Home({ homePage = true }) {
 	const { isAuthenticated, user } = useSelector((state: RootState) => state.authReducer);
 	const { markets } = useSelector((state: RootState) => state.homeReducer);
 	const { chain, chains } = useNetwork();
+	const { categoriesData } = useSelector((state: RootState) => state.dataReducer);
+	console.log('categoriesData home', categoriesData);
 
 	const {
 		ModalDom,

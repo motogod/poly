@@ -2,5 +2,12 @@
 	"bet_on_markets_spotlight": "注目の市場に賭ける",
 	"privacy_policy": "プライバシーポリシー",
 	"account": "アカウント",
-	"check": "アカウント"
+	"check": "アカウント",
+	"default": "any",
+	"above": "Above",
+	"below": "Below",
+	"ends_today": "Ends today",
+	"ends_this_week": "Ends this week",
+	"ends_this_month": "Ends this month",
+	"custom_date": "Custom"
 }

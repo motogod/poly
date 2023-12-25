@@ -3,19 +3,21 @@ export type TestApiType = {
 };
 
 export interface MarketsItemType {
-	categoryId: string;
-	createdAt: string;
-	description: string;
-	endDate: string;
 	id: string;
-	liquidity: number;
-	resolution: string;
 	slug: string;
-	startDate: string;
-	status: 'OPEN';
 	title: string;
-	updatedAt: string;
+	image: string;
 	volume: number;
+	liquidity: number;
+	outcome: {
+		no: number;
+		yes: number;
+	};
+	startDate: string;
+	endDate: string;
+	initialPrice: number;
+	settlePrice: number;
+	category: { slug: string; name: string };
 }
 
 export type GetMarketsType = {
@@ -105,6 +107,62 @@ export type WithdrawType = {
 
 export type PostWithdrawType = {
 	data: WithdrawType;
+	message: string;
+	statusCode: number;
+};
+
+export type ChildrenCategoriesType = {
+	id: string;
+	slug: string;
+	name: string;
+	parentCategory: string | null;
+	itemSelected: boolean;
+};
+
+export type SubMenuType = {
+	id: string;
+	slug: string;
+	name: string;
+	parentCategory: string | null;
+	subMenuSelected: boolean;
+	childrenCategories: ChildrenCategoriesType[];
+};
+
+export type MenuType = {
+	menuId: string;
+	menu: string;
+	menuSelected: boolean;
+	selectedValue: string;
+	subMenuData: [
+		{
+			id: string;
+			slug: string;
+			name: string;
+			parentCategory: string | null;
+			subMenuSelected: boolean;
+			childrenCategories: ChildrenCategoriesType[];
+		}
+	];
+};
+
+export type CategoriesType = {
+	menuId: string;
+	menu: string;
+	menuSelected: boolean;
+	menuData: MenuType[];
+};
+
+export type GetCategoriesType = {
+	data: [
+		{
+			id: string;
+			slug: string;
+			name: string;
+			parentCategory: string | null;
+			subMenuSelected: boolean;
+			childrenCategories: ChildrenCategoriesType[];
+		}
+	];
 	message: string;
 	statusCode: number;
 };
