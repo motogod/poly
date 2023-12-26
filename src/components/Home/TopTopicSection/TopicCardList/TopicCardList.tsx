@@ -81,7 +81,7 @@ function TopicCardList() {
 				<Stack>
 					<Heading size="lg" color="gray.700">
 						{/* {t('bet_on_markets_spotlight')} */}
-						{t('default')}
+						{t('bet_on_markets_spotlight')}
 					</Heading>
 				</Stack>
 				<Stack
