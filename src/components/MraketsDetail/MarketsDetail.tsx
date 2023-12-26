@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 import {
 	Stack,
 	Button,
@@ -15,9 +17,12 @@ import {
 } from '@chakra-ui/react';
 import { AtSignIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { useMediaQuery } from 'react-responsive';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMarketDetail, AppDispatch, RootState } from '@/store';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import LineChartCard from './LineChartCard';
 import OrderBookCard from './OrderBookCard';
+import About from './About';
 import BuyOrSellCard from './BuyOrSellCard';
 import BuyOrSellButton from './Buttons/BuyOrSellButton';
 import BuyOrSellModal from './BuyOrSellModal';
@@ -32,9 +37,26 @@ function MarketsDetail() {
 	const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
 	const [transactionType, setTransactionType] = useState<TransactionEnum>(TransactionEnum.buy);
 
+	const router = useRouter();
+
+	const { t } = useTranslation();
+
+	const dispatch = useDispatch<AppDispatch>();
+	const { isMarketDetailLoading } = useSelector((state: RootState) => state.homeReducer);
+
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
 	});
+
+	useEffect(() => {
+		if (router.isReady) {
+			const { marketSlug } = router.query;
+
+			if (marketSlug) {
+				dispatch(getMarketDetail({ slug: marketSlug as string }));
+			}
+		}
+	}, [router, dispatch]);
 
 	return (
 		<Stack mt={headerHeight}>
@@ -48,6 +70,7 @@ function MarketsDetail() {
 				<Stack spacing={'20px'} w={'100%'}>
 					<LineChartCard />
 					<OrderBookCard />
+					<About />
 				</Stack>
 				<Stack display={{ lg: 'inline', md: 'none', sm: 'none' }} w={'558px'}>
 					<BuyOrSellCard />

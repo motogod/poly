@@ -3,6 +3,15 @@ import { request, requestWithSession } from './request';
 export const GetMarkets = <T>(params: any) =>
 	requestWithSession.get<T>('/markets', params, { timeout: 15000 });
 
+export const GetMarketDetail = <T>(params: { slug: string }) =>
+	requestWithSession.get<T>(
+		`/markets/${params.slug}`,
+		{},
+		{
+			timeout: 15000,
+		}
+	);
+
 // nonce
 export const GetNonceFromServer = <T>(params: any) =>
 	requestWithSession.get<T>('/auth/nonce', params, { timeout: 15000 });

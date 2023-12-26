@@ -47,7 +47,7 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 						<Text
 							onClick={() => {
 								onClose();
-								router.push('./markets');
+								router.push('/markets');
 							}}
 							cursor="pointer"
 							fontSize="2xl"

@@ -47,7 +47,7 @@ function LoggedMenuSection({ close, type }: LoggedMenuSectionType) {
 			</Text>
 			<Text
 				onClick={() => {
-					router.push('./markets');
+					router.push('/markets');
 					close();
 				}}
 				cursor={'pointer'}
