@@ -15,6 +15,7 @@ import {
 	ModalCloseButton,
 	useDisclosure,
 	Spinner,
+	Select,
 } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { BiFilter } from 'react-icons/bi';
@@ -36,7 +37,319 @@ import { zIndexMarket } from '@/utils/zIndex';
 import { ChildrenCategoriesType, SubMenuType } from '@/api/type';
 import { DateRadioType, VolumeType } from '@/store/slice/dataSlice';
 
+const additionalHeight = '114px';
+
 const empty_array = [...Array(13)];
+const dummyArray = [
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+	{
+		outcome: { yes: 0.6, no: 0.4 },
+		id: 'e4aead1d-0b35-48df-ac15-5f4a85e93c89',
+		slug: 'test',
+		title: 'test1',
+		image: 'https://google.com',
+		startDate: '2023-12-07T18:46:53.807Z',
+		endDate: '2023-12-07T18:46:53.807Z',
+		initialPrice: 0.5,
+		settlePrice: 1,
+		volume: 0,
+		liquidity: 0,
+		category: { slug: 'exchanges', name: 'Exchanges' },
+	},
+];
 
 let firstRender = true;
 
@@ -44,6 +357,7 @@ function Markets() {
 	const { Filter, isOpen } = useFilter();
 	const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
 	const [TabDom, selectedTab] = useCategoryTabsList();
+	const [selectorValue, setSelectorValue] = useState('trending');
 
 	const router = useRouter();
 
@@ -159,24 +473,56 @@ function Markets() {
 			console.log('Call API');
 		}
 	};
+	console.log('markets data', JSON.stringify(markets.data));
+	const renderSelector = () => {
+		return (
+			<Stack>
+				<Select
+					border={'1px'}
+					borderColor={'gray.200'}
+					bg={'#fff'}
+					w="220px"
+					placeholder=""
+					size="md"
+					value={selectorValue}
+					onChange={e => setSelectorValue(e.target.value)}
+				>
+					<option value="trending">Trending</option>
+					<option value="volume">Volume</option>
+					<option value="newest">Newest</option>
+					<option value="endingSoonest">Ending Soonest</option>
+				</Select>
+			</Stack>
+		);
+	};
 
 	return (
 		<Stack
+			h={`calc(100vh - ${headerHeight} - ${additionalHeight})`}
 			mt={headerHeight}
 			pl={{ md: '120px', sm: '16px' }}
 			pr={{ md: '116px', sm: '16px' }}
 			py={{ lg: '40px' }}
 		>
 			{/* for Desktop filter */}
-			<Stack display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline' }} w="290px" mb="3">
-				<Filter />
+			<Stack
+				direction={'row'}
+				justify={'space-between'}
+				display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline-flex' }}
+				mb="3"
+			>
+				<Stack w="290px">
+					<Filter />
+				</Stack>
+				{renderSelector()}
 			</Stack>
 			{/* for Mobile filter TabDom height is 64px */}
 			{TabDom}
 			<Stack
+				direction={'row'}
 				mt={'80px'}
 				mb={'16px'}
-				display={{ base: 'inline', sm: 'inline', md: 'inline', lg: 'none' }}
+				display={{ base: 'inline-flex', sm: 'inline-flex', md: 'inline-flex', lg: 'none' }}
 			>
 				<Button
 					w={'100%'}
@@ -187,8 +533,14 @@ function Markets() {
 				>
 					Filter
 				</Button>
+				{renderSelector()}
 			</Stack>
-			<Stack mt="0" direction="row" flex="auto" h={'100vh'}>
+			<Stack
+				mt="0"
+				direction="row"
+				flex="auto"
+				h={`calc(100vh - ${headerHeight} - ${additionalHeight})`}
+			>
 				<Stack
 					display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline' }}
 					w={isOpen ? '290px' : '0px'}
@@ -197,7 +549,7 @@ function Markets() {
 					transition="all 0.5s ease-in-out;"
 					transform={isOpen ? 'translate(0, 0);' : 'translate(-290px, 0);'}
 				>
-					<Stack h={'100vh'} overflow="auto">
+					<Stack h="calc(100vh - 186px)" overflow="auto">
 						<LeftMenu />
 						{/* <Divider mt={6} borderColor="gray.300" /> */}
 					</Stack>
@@ -215,7 +567,6 @@ function Markets() {
 				) : (
 					<Grid
 						w="100%"
-						h="100%"
 						onScroll={(event: any) => handelScroll(event)}
 						overflowY={'scroll'}
 						templateColumns={'repeat(auto-fill, minmax(290px, 1fr))'}
