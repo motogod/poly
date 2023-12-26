@@ -38,6 +38,8 @@ import { DateRadioType, VolumeType } from '@/store/slice/dataSlice';
 
 const empty_array = [...Array(13)];
 
+let firstRender = true;
+
 function Markets() {
 	const { Filter, isOpen } = useFilter();
 	const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
@@ -46,7 +48,8 @@ function Markets() {
 	const router = useRouter();
 
 	const dispatch = useDispatch<AppDispatch>();
-	const { markets, isMarketsLoading } = useSelector((state: RootState) => state.homeReducer);
+	const { markets, isMarketsLoading, userSelectedMarketsStartDate, userSelectedMarketsEndDate } =
+		useSelector((state: RootState) => state.homeReducer);
 	const { categoriesData } = useSelector((state: RootState) => state.dataReducer);
 	// useEffect(() => {
 	// 	dispatch(getMarkets({ categories: '' }));
@@ -55,6 +58,7 @@ function Markets() {
 	// 第一次進網頁撈取 url query call API，使用者每次點擊 Filter 選單也會更新 url 再次觸發該區段 call API
 	useEffect(() => {
 		if (router.isReady) {
+			console.log('Markets useEffect =>');
 			setTimeout(() => {
 				let queryString = '';
 				const { categories } = router.query;
@@ -96,22 +100,55 @@ function Markets() {
 					value => value.indexOf('volume') > -1
 				) as VolumeType;
 
-				//
+				// 篩選符合所篩選的 Date radio 選取值
 				const dateValue = routerStringArray.find(
 					value => value.indexOf('date') > -1
 				) as DateRadioType;
-				console.log('dateValue is', dateValue);
-				dispatch(
-					getMarkets({
-						categories: queryString,
-						volumeValue,
-						dateValue: dateValue === 'date-custom' ? 'date-default' : dateValue,
-					})
-				);
+
+				console.log('Markets useEffect dateValue', dateValue);
+				console.log('Markets useEffect date', {
+					userSelectedMarketsStartDate,
+					userSelectedMarketsEndDate,
+				});
+
+				if (dateValue !== 'date-custom') {
+					console.log('Markets useEffect => 1');
+					dispatch(
+						getMarkets({
+							categories: queryString,
+							volumeValue,
+							dateValue,
+						})
+					);
+				} else {
+					// 使用者有輸入開始與結束時間區段 才去 call API
+					if (userSelectedMarketsStartDate && userSelectedMarketsEndDate) {
+						dispatch(
+							getMarkets({
+								categories: queryString,
+								volumeValue,
+								dateValue,
+								startDate: userSelectedMarketsStartDate ? userSelectedMarketsStartDate : '',
+								endDate: userSelectedMarketsEndDate ? userSelectedMarketsEndDate : '',
+							})
+						);
+					} else if (firstRender) {
+						// 第一次直接開啟網頁若為 date-custom 卻沒時間的值，預設 call API 全部資料
+						dispatch(
+							getMarkets({
+								categories: queryString,
+								volumeValue,
+								dateValue,
+							})
+						);
+
+						firstRender = false;
+					}
+				}
 			}, 0);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [router, dispatch]);
+	}, [router, dispatch, userSelectedMarketsStartDate]);
 
 	// display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 	const handelScroll = (event: Event) => {

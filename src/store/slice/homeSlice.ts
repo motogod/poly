@@ -7,11 +7,15 @@ import { VolumeType } from './dataSlice';
 type HomeState = {
 	isMarketsLoading: boolean;
 	markets: GetMarketsType;
+	userSelectedMarketsStartDate: string;
+	userSelectedMarketsEndDate: string;
 };
 
 const initialState: HomeState = {
 	isMarketsLoading: false,
 	markets: {} as GetMarketsType,
+	userSelectedMarketsStartDate: '',
+	userSelectedMarketsEndDate: '',
 };
 
 const homeSlice = createSlice({
@@ -22,17 +26,21 @@ const homeSlice = createSlice({
 		filterStartDateAndEndDateMarket: (state, action) => {
 			const { startDate: userStartDate, endDate: userEndDate } = action.payload;
 
-			let filteredResultData: MarketsItemType[] = [];
+			state.userSelectedMarketsStartDate = userStartDate;
+			state.userSelectedMarketsEndDate = userEndDate;
+			// const { startDate: userStartDate, endDate: userEndDate } = action.payload;
 
-			state.markets.data.forEach(value => {
-				const { startDate, endDate } = value;
+			// let filteredResultData: MarketsItemType[] = [];
 
-				if (moment(startDate).isAfter(userStartDate) && moment(endDate).isBefore(userEndDate)) {
-					filteredResultData.push(value);
-				}
-			});
+			// state.markets.data.forEach(value => {
+			// 	const { startDate, endDate } = value;
 
-			state.markets.data = filteredResultData;
+			// 	if (moment(startDate).isAfter(userStartDate) && moment(endDate).isBefore(userEndDate)) {
+			// 		filteredResultData.push(value);
+			// 	}
+			// });
+
+			// state.markets.data = filteredResultData;
 		},
 	},
 	extraReducers: builder => {
