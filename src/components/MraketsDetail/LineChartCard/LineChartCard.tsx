@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import {
 	Stack,
 	Card,
@@ -14,7 +15,11 @@ import {
 	TabPanels,
 	TabPanel,
 	Icon,
+	SkeletonCircle,
+	SkeletonText,
 } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMarketDetail, AppDispatch, RootState } from '@/store';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import {
 	LineChart,
@@ -75,74 +80,100 @@ const data = [
 ];
 
 function LineChartCard() {
+	const { isMarketDetailLoading, marketDetailData } = useSelector(
+		(state: RootState) => state.homeReducer
+	);
+
 	return (
 		<Card shadow="lg" border="1px solid #E2E8F0;" borderRadius="3xl">
 			<CardBody>
-				<Stack direction="row">
-					<Image
-						height="120px"
-						width="120px"
-						src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-						alt="Green double couch with wooden legs"
-						borderRadius="lg"
-					/>
-					<Stack pl={4} pt={{ base: '0px', sm: '0px', md: '0px', lg: '26px' }} pb={4} w={'100%'}>
-						<Stack direction="row" justify="space-between">
-							<Tag
-								px={4}
-								border="1px"
-								bg="pink.500"
-								borderColor="pink.500"
-								size={'sm'}
-								colorScheme="undefined"
-								borderRadius={'base'}
-							>
-								<TagLabel color="#fff">Crypto</TagLabel>
-							</Tag>
-							<AttachmentIcon cursor="pointer" />
+				{isMarketDetailLoading ? (
+					<>
+						<Stack direction={'row'}>
+							<SkeletonCircle borderRadius={8} size="120px" />
+							<Stack pl={4} pt={{ base: '0px', sm: '0px', md: '0px', lg: '26px' }} pb={4}>
+								<SkeletonText w={'60px'} noOfLines={1} spacing="0" skeletonHeight="4" />
+								<SkeletonText mt="4" w={'120px'} noOfLines={1} spacing="0" skeletonHeight="4" />
+							</Stack>
 						</Stack>
-						<Stack mt={'12px'}>
-							<Heading size="md" color="gray.800">
-								Bitcoin Forecase: How BTC Reacts to SEC
+						<SkeletonText mt="4" noOfLines={4} spacing="4" skeletonHeight="2" />
+					</>
+				) : (
+					<>
+						<Stack direction="row">
+							<Image
+								height="120px"
+								width="120px"
+								// src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+								src={marketDetailData?.image ? marketDetailData?.image : ''}
+								alt="Green double couch with wooden legs"
+								borderRadius="lg"
+							/>
+							<Stack
+								pl={4}
+								pt={{ base: '0px', sm: '0px', md: '0px', lg: '26px' }}
+								pb={4}
+								w={'100%'}
+							>
+								<Stack direction="row" justify="space-between">
+									<Tag
+										px={4}
+										py={1}
+										border="1px"
+										bg="pink.500"
+										borderColor="pink.500"
+										size={'sm'}
+										colorScheme="undefined"
+										borderRadius={'md'}
+									>
+										<TagLabel color="#fff">{marketDetailData?.category?.name}</TagLabel>
+									</Tag>
+									<AttachmentIcon cursor="pointer" />
+								</Stack>
+								<Stack mt={'12px'}>
+									<Heading noOfLines={3} size="md" color="gray.800" lineHeight={'5'}>
+										{marketDetailData?.title}
+									</Heading>
+								</Stack>
+							</Stack>
+						</Stack>
+						<Stack
+							// alignItems="center"
+							mt={'25px'}
+							spacing={2}
+							direction={{ base: 'column', sm: 'column', md: 'column', lg: 'row' }}
+						>
+							<Stack align={'center'} direction={'row'}>
+								<Icon as={HiChartBar} w={'16px'} h={'14px'} />
+								<Text fontSize="sm" color="gray.800" fontWeight={'400'} lineHeight={'18px'}>
+									{`Volume: $${marketDetailData?.volume.toLocaleString()} USDT`}
+								</Text>
+							</Stack>
+							<Stack align={'center'} direction={'row'}>
+								<Icon as={HiClock} w={'16px'} h={'16px'} />
+								<Text fontSize="sm" color="gray.800" fontWeight={'400'} lineHeight={'18px'}>
+									{`Expires: ${moment(marketDetailData?.endDate).format('MMM Do YYYY')}`}
+								</Text>
+							</Stack>
+						</Stack>
+						<Stack mt={'32px'} align={'start'}>
+							<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'} lineHeight={'17px'}>
+								Yes
+							</Heading>
+							<Heading fontSize={'24px'} color={'gray.800'} fontWeight={'700'} lineHeight={'14px'}>
+								0.6 USDT
 							</Heading>
 						</Stack>
-					</Stack>
-				</Stack>
-				<Stack
-					// alignItems="center"
-					mt={'25px'}
-					spacing={2}
-					direction={{ base: 'column', sm: 'column', md: 'column', lg: 'row' }}
-				>
-					<Stack align={'center'} direction={'row'}>
-						<Icon as={HiChartBar} w={'16px'} h={'14px'} />
-						<Text fontSize="sm" color="gray.800" fontWeight={'400'} lineHeight={'18px'}>
-							Volume: $2,186,639 USDT
-						</Text>
-					</Stack>
-					<Stack align={'center'} direction={'row'}>
-						<Icon as={HiClock} w={'16px'} h={'16px'} />
-						<Text fontSize="sm" color="gray.800" fontWeight={'400'} lineHeight={'18px'}>
-							Expires: Dec 28, 2023
-						</Text>
-					</Stack>
-				</Stack>
-				<Stack mt={'32px'} align={'start'}>
-					<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'} lineHeight={'17px'}>
-						Yes
-					</Heading>
-					<Heading fontSize={'24px'} color={'gray.800'} fontWeight={'700'} lineHeight={'14px'}>
-						0.6 USDT
-					</Heading>
-				</Stack>
-				<Stack align="start" direction={'row'} mt={'32px'}>
-					<Heading fontSize={'14px'} color={'green.600'} fontWeight={'700'}>
-						(+73.87%)
-					</Heading>
-					<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'}>
-						Since Market Creation
-					</Heading>
-				</Stack>
+						<Stack align="start" direction={'row'} mt={'32px'}>
+							<Heading fontSize={'14px'} color={'green.600'} fontWeight={'700'}>
+								(+73.87%)
+							</Heading>
+							<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'}>
+								Since Market Creation
+							</Heading>
+						</Stack>
+					</>
+				)}
 				<Tabs mt={'28px'}>
 					<TabList borderBottomColor={'gray.200'} borderBottomWidth={'2px'}>
 						<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>

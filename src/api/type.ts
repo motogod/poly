@@ -18,11 +18,18 @@ export interface MarketsItemType {
 	initialPrice: number;
 	settlePrice: number;
 	category: { slug: string; name: string };
+	description: string;
 }
 
 export type GetMarketsType = {
 	total: number;
 	data: MarketsItemType[];
+};
+
+export type GetMarketDetailType = {
+	message: string;
+	statusCode: number;
+	data: MarketsItemType;
 };
 
 export type CheckAuthType = {

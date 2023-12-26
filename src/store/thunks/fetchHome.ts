@@ -1,6 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import moment from 'moment';
-import { GetMarkets, GetMarketsType, MarketsItemType } from '@/api';
+import {
+	GetMarkets,
+	GetMarketsType,
+	MarketsItemType,
+	GetMarketDetail,
+	GetMarketDetailType,
+} from '@/api';
 import { DateRadioType, VolumeType } from '@/store/slice/dataSlice';
 
 const getMarkets = createAsyncThunk(
@@ -103,4 +109,15 @@ const getMarkets = createAsyncThunk(
 	}
 );
 
-export { getMarkets };
+const getMarketDetail = createAsyncThunk(
+	'api/getMarketDetail',
+	async (params: { slug: string }) => {
+		const { slug } = params;
+		const resp = await GetMarketDetail<GetMarketDetailType>({ slug });
+		console.log('getMarketDetail resp', resp);
+
+		return resp;
+	}
+);
+
+export { getMarkets, getMarketDetail };

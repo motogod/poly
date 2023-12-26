@@ -570,9 +570,9 @@ function Markets() {
 						onScroll={(event: any) => handelScroll(event)}
 						overflowY={'scroll'}
 						templateColumns={'repeat(auto-fill, minmax(290px, 1fr))'}
-						gap={'16px'}
+						gap={'20px'}
 						pt={'1px'}
-						pb={'10px'}
+						pb={'190px'}
 					>
 						{markets?.data?.map((value, index) => {
 							return <CategoryCard key={index} data={value} />;

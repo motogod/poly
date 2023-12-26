@@ -55,7 +55,13 @@ function Home({ homePage = true }) {
 	const dispatch = useDispatch<AppDispatch>();
 
 	useEffect(() => {
-		// dispatch(getMarkets({ categories: '' }));
+		dispatch(
+			getMarkets({
+				categories: '',
+				volumeValue: 'volume-default',
+				dateValue: 'date-default',
+			})
+		);
 	}, [dispatch]);
 
 	return (

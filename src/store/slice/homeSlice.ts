@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import moment from 'moment';
-import { getMarkets } from '../thunks/fetchHome';
+import { getMarkets, getMarketDetail } from '../thunks/fetchHome';
 import { GetMarketsType, MarketsItemType } from '@/api';
 import { VolumeType } from './dataSlice';
 
@@ -9,6 +9,8 @@ type HomeState = {
 	markets: GetMarketsType;
 	userSelectedMarketsStartDate: string;
 	userSelectedMarketsEndDate: string;
+	isMarketDetailLoading: boolean;
+	marketDetailData: MarketsItemType;
 };
 
 const initialState: HomeState = {
@@ -16,6 +18,8 @@ const initialState: HomeState = {
 	markets: {} as GetMarketsType,
 	userSelectedMarketsStartDate: '',
 	userSelectedMarketsEndDate: '',
+	isMarketDetailLoading: true,
+	marketDetailData: {} as MarketsItemType,
 };
 
 const homeSlice = createSlice({
@@ -56,6 +60,23 @@ const homeSlice = createSlice({
 		builder.addCase(getMarkets.rejected, state => {
 			state.isMarketsLoading = false;
 			console.log('getMarkets rejected');
+		});
+
+		builder.addCase(getMarketDetail.pending, state => {
+			console.log('getMarketDetail pending');
+			state.isMarketDetailLoading = true;
+		});
+		builder.addCase(getMarketDetail.fulfilled, (state, action) => {
+			console.log('getMarketDetail fulfilled', action);
+			const { statusCode, data } = action.payload;
+			if (statusCode === 200) {
+				state.marketDetailData = data;
+				state.isMarketDetailLoading = false;
+			}
+		});
+		builder.addCase(getMarketDetail.rejected, state => {
+			console.log('getMarketDetail rejected');
+			state.isMarketDetailLoading = false;
 		});
 	},
 });

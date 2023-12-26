@@ -54,7 +54,7 @@ function Header() {
 				</Heading>
 				<Heading
 					display={{ lg: 'inline', md: 'none', sm: 'none' }}
-					onClick={() => router.push('./markets')}
+					onClick={() => router.push('/markets')}
 					cursor="pointer"
 					size="sm"
 					color="gray.800"

@@ -91,7 +91,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 				<Text
 					onClick={() => {
 						onPopClose();
-						router.push('./markets');
+						router.push('/markets');
 					}}
 					cursor="pointer"
 					fontSize="md"
