@@ -5,8 +5,20 @@ import { DateRadioType, VolumeType } from '@/store/slice/dataSlice';
 
 const getMarkets = createAsyncThunk(
 	'api/getMarkets',
-	async (params: { categories: string; volumeValue: VolumeType; dateValue: DateRadioType }) => {
-		const { categories, volumeValue, dateValue } = params;
+	async (params: {
+		categories: string;
+		volumeValue: VolumeType;
+		dateValue: DateRadioType;
+		startDate?: string;
+		endDate?: string;
+	}) => {
+		const {
+			categories,
+			volumeValue,
+			dateValue,
+			startDate: userStartDate,
+			endDate: userEndDate,
+		} = params;
 		const resp = await GetMarkets<GetMarketsType>({ categories });
 		console.log('getMarkets resp', resp);
 		let filteredVolumeData: MarketsItemType[] = [];
@@ -43,6 +55,9 @@ const getMarkets = createAsyncThunk(
 
 		let filteredResultData: MarketsItemType[] = [];
 
+		console.log('Break dateValue', dateValue);
+		console.log('Break date', { userStartDate, userEndDate });
+
 		// 拿過濾 Volume 結束的資料，接著過濾出符合前端所設定的 Date 範圍資料
 		filteredVolumeData.forEach(value => {
 			switch (dateValue) {
@@ -66,6 +81,16 @@ const getMarkets = createAsyncThunk(
 					}
 					break;
 				case 'date-custom':
+					if (userStartDate && userEndDate) {
+						if (
+							moment(value.startDate).isAfter(userStartDate) &&
+							moment(value.endDate).isBefore(userEndDate)
+						) {
+							filteredResultData.push(value);
+						}
+					} else {
+						filteredResultData.push(value);
+					}
 					break;
 				default:
 					filteredResultData.push(value);

@@ -335,14 +335,15 @@ const LeftMenu = () => {
 										setStartDate(date);
 
 										if (endDate && date) {
-											// dispatch(
-											// 	handleDateRadio({
-											// 		dateRadioValue: `date-custom`,
-											// 		routerAsPath: router.asPath,
-											// 		startDate,
-											// 		endDate,
-											// 	})
-											// );
+											dispatch(
+												handleDateRadio({
+													dateRadioValue: `date-custom`,
+													routerAsPath: router.asPath,
+													startDate,
+													endDate,
+												})
+											);
+											dispatch(filterStartDateAndEndDateMarket({ startDate: date, endDate }));
 										}
 									}}
 									disabledKeyboardNavigation
@@ -364,14 +365,15 @@ const LeftMenu = () => {
 										}
 										setEndDate(date);
 										if (startDate && date) {
-											// dispatch(
-											// 	handleDateRadio({
-											// 		dateRadioValue: `date-custom`,
-											// 		routerAsPath: router.asPath,
-											// 		startDate,
-											// 		endDate,
-											// 	})
-											// );
+											dispatch(
+												handleDateRadio({
+													dateRadioValue: `date-custom`,
+													routerAsPath: router.asPath,
+													startDate,
+													endDate,
+												})
+											);
+											dispatch(filterStartDateAndEndDateMarket({ startDate, endDate: date }));
 										}
 									}}
 									disabledKeyboardNavigation
@@ -383,7 +385,6 @@ const LeftMenu = () => {
 									startDate && endDate && moment(startDate).isBefore(endDate) ? false : true
 								}
 								onClick={() => {
-									console.log({ startDate, endDate });
 									if (startDate && endDate && moment(startDate).isBefore(endDate)) {
 										dispatch(
 											handleDateRadio({
@@ -393,9 +394,7 @@ const LeftMenu = () => {
 												endDate,
 											})
 										);
-										setTimeout(() => {
-											dispatch(filterStartDateAndEndDateMarket({ startDate, endDate }));
-										}, 1000);
+										dispatch(filterStartDateAndEndDateMarket({ startDate, endDate }));
 									}
 								}}
 								w={'100%'}
