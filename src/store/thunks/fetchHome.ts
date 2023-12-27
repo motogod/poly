@@ -25,6 +25,13 @@ const getMarkets = createAsyncThunk(
 			startDate: userStartDate,
 			endDate: userEndDate,
 		} = params;
+		console.log('getMarkets api params =>', {
+			categories,
+			volumeValue,
+			dateValue,
+			userStartDate,
+			userEndDate,
+		});
 		const resp = await GetMarkets<GetMarketsType>({ categories });
 		console.log('getMarkets resp', resp);
 		let filteredVolumeData: MarketsItemType[] = [];
