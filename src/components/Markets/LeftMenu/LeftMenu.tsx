@@ -14,7 +14,7 @@ import {
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'next-i18next';
 import moment from 'moment';
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
 import { useSelector, useDispatch } from 'react-redux';
 import {
 	AppDispatch,
@@ -27,11 +27,16 @@ import {
 	handleVolumeRadio,
 	handleDateRadio,
 	filterStartDateAndEndDateMarket,
+	getCategories,
+	resetVolumeAndDateStatus,
 } from '@/store';
 import { leftMenuItem } from '../data';
 import { zIndexMinimum } from '@/utils/zIndex';
 import { CategoriesType, ChildrenCategoriesType, MenuType, SubMenuType } from '@/api/type';
 import styles from './leftMenu.module.scss';
+import zh from 'date-fns/locale/zh-TW';
+import ja from 'date-fns/locale/ja';
+import { LocalesType } from '@/../public/locales/type';
 
 let firstRender = true;
 
@@ -46,6 +51,27 @@ const LeftMenu = () => {
 	const [endDate, setEndDate] = useState(null);
 
 	const dispatch = useDispatch<AppDispatch>();
+
+	useEffect(() => {
+		// 如果使用者網頁路徑 /markets 無包含其他 query 參數，將選單資料恢復為預設狀態
+		if (router.isReady) {
+			if (router.asPath === '/markets') {
+				dispatch(getCategories());
+				dispatch(resetVolumeAndDateStatus({}));
+			}
+		}
+	}, [dispatch, router]);
+
+	useEffect(() => {
+		const locale = router.locale as LocalesType;
+		if (locale === 'zh') {
+			registerLocale('zh', zh);
+		}
+
+		if (locale === 'jp') {
+			registerLocale('jp', ja);
+		}
+	}, [router]);
 
 	useEffect(() => {
 		// 第一次開啟頁面先撈取網址對應的 query 更新選單 每個 query 後都有一個逗點
@@ -321,6 +347,7 @@ const LeftMenu = () => {
 								<DatePicker
 									className={styles.datePicker}
 									selected={startDate}
+									locale={router.locale}
 									onChange={(date: any) => {
 										if (moment(endDate).isBefore(date)) {
 											toast({
@@ -352,6 +379,7 @@ const LeftMenu = () => {
 								<DatePicker
 									className={styles.datePicker}
 									selected={endDate}
+									locale={router.locale}
 									onChange={(date: any) => {
 										if (moment(startDate).isAfter(date)) {
 											toast({

@@ -6,7 +6,7 @@ import { useSignMessage, useDisconnect } from 'wagmi';
 import { useDispatch } from 'react-redux';
 import { loginWithSiwe, AppDispatch } from '@/store';
 
-function useCategoryTabsList() {
+function useSiwe() {
 	const [provider, setProvider] = useState<any>();
 
 	const { signMessageAsync, isLoading, reset } = useSignMessage();
@@ -95,4 +95,4 @@ function useCategoryTabsList() {
 	return { signInWithEthereum, connectWallet, isLoading, reset };
 }
 
-export default useCategoryTabsList;
+export default useSiwe;

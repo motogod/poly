@@ -5,7 +5,7 @@ import { SettingsIcon } from '@chakra-ui/icons';
 import { HiChartBar } from 'react-icons/hi';
 import { MarketsItemType } from '@/api/type';
 
-function CategoryCard({ data }: { data: MarketsItemType }) {
+function CategoryCard({ data, isLoading }: { data: MarketsItemType; isLoading?: boolean }) {
 	const router = useRouter();
 
 	const { title, volume, category, image, outcome, slug } = data;
@@ -19,7 +19,7 @@ function CategoryCard({ data }: { data: MarketsItemType }) {
 				border="1px solid #EDF2F7;"
 				borderRadius="3xl"
 			>
-				<CardBody>
+				<CardBody opacity={isLoading ? 0.5 : 1}>
 					<Stack direction="row">
 						<Image
 							height="88px"
