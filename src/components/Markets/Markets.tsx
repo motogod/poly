@@ -57,7 +57,7 @@ function Markets() {
 	const dispatch = useDispatch<AppDispatch>();
 	const { markets, isMarketsLoading, userSelectedMarketsStartDate, userSelectedMarketsEndDate } =
 		useSelector((state: RootState) => state.homeReducer);
-	const { categoriesData } = useSelector((state: RootState) => state.dataReducer);
+	const { categoriesData, routerPath } = useSelector((state: RootState) => state.dataReducer);
 
 	// 第一次進網頁撈取 url query call API，使用者每次點擊 Filter 選單也會更新 url 再次觸發該區段 call API
 	useEffect(() => {
@@ -65,6 +65,7 @@ function Markets() {
 			setTimeout(() => {
 				let queryString = '';
 				const { categories } = router.query;
+
 				const routerString = categories as string;
 				let routerStringArray: string[] = [];
 
@@ -72,8 +73,14 @@ function Markets() {
 					routerStringArray = routerString?.split(',');
 				}
 
+				// 要有成功抓到分類資料選單 才 Call API
+				if (categoriesData[0].menuData[2].subMenuData?.length <= 0) {
+					return;
+				}
+
 				categoriesData[0].menuData[2].subMenuData.forEach((subMenuValue: SubMenuType) => {
 					const subMenuExistedString = routerStringArray.find(value => value === subMenuValue.slug);
+					console.log('subMenuExistedString =>', subMenuExistedString);
 					if (subMenuExistedString) {
 						subMenuValue.childrenCategories.forEach((childrenMenuData: ChildrenCategoriesType) => {
 							if (queryString === '') {
@@ -129,6 +136,7 @@ function Markets() {
 							})
 						);
 					} else if (firstRender) {
+						console.log('firstRender 5', firstRender);
 						// 第一次直接開啟網頁若為 date-custom 卻沒時間的值，預設 call API 全部資料
 						dispatch(
 							getMarkets({
@@ -143,8 +151,9 @@ function Markets() {
 				}
 			}, 0);
 		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [router, dispatch, userSelectedMarketsStartDate]);
+	}, [router, dispatch, userSelectedMarketsStartDate, categoriesData]);
 
 	// display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 	const handelScroll = (event: Event) => {
@@ -155,7 +164,7 @@ function Markets() {
 			console.log('Call API');
 		}
 	};
-	console.log('markets data', JSON.stringify(markets.data));
+
 	const renderSelector = () => {
 		return (
 			<Stack>

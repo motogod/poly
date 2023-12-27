@@ -11,6 +11,7 @@ import {
 	Input,
 	useToast,
 	ScaleFade,
+	Divider,
 } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'next-i18next';
@@ -423,6 +424,7 @@ const LeftMenu = () => {
 										: true
 								}
 								onClick={() => {
+									console.log('onClick 1');
 									if (startDate && endDate && moment(startDate).isBefore(endDate)) {
 										dispatch(
 											handleDateRadio({
@@ -481,6 +483,7 @@ const LeftMenu = () => {
 							borderRadius={4}
 							zIndex={0}
 							onClick={e => {
+								console.log('onClick 2');
 								e.preventDefault();
 								dispatch(
 									handleClickSubMenu({ userClickId: subValue.id, routerAsPath: router.asPath })
@@ -519,6 +522,7 @@ const LeftMenu = () => {
 										p={1}
 										borderRadius={4}
 										onClick={e => {
+											console.log('onClick 3');
 											e.preventDefault();
 											dispatch(
 												handleClickSubMenuItem({
@@ -594,10 +598,15 @@ const LeftMenu = () => {
 							{value.menuSelected ? <ChevronDownIcon boxSize={6} /> : <ChevronUpIcon boxSize={6} />}
 						</Stack>
 						{value.menuSelected && renderMenuSection(value.menuId, value)}
-						{value.menuId === '2' && (
-							<Center m={8} display={{ lg: 'none', md: 'inline', sm: 'inline' }}>
-								{/* <Divider m={8} borderColor="gray" /> */}
-							</Center>
+						{value.menuId === '2' && value.menuSelected && (
+							<Stack mr={'32px'} mb={{ lg: 0, md: 20, sm: 20 }}>
+								<Divider
+									mb={2}
+									mt={4}
+									borderColor="gray.300"
+									display={{ lg: 'inline', md: 'none', sm: 'none' }}
+								/>
+							</Stack>
 						)}
 					</>
 				);
