@@ -28,6 +28,7 @@ import {
 	resetVolumeAndDateStatus,
 	resetRouterPath,
 } from '@/store';
+import { SkeletonCard } from '@/components/common';
 import { useCategoryTabsList } from '@/hooks';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import useFilter from './useFilter';
@@ -37,9 +38,9 @@ import { zIndexMarket } from '@/utils/zIndex';
 import { ChildrenCategoriesType, SubMenuType } from '@/api/type';
 import { DateRadioType, VolumeType } from '@/store/slice/dataSlice';
 
-const additionalHeight = '114px';
+const additionalHeight = '100px';
 
-const empty_array = [...Array(13)];
+const dummyArrayCount = [...Array(20)];
 const dummyArray = [
 	{
 		outcome: { yes: 0.6, no: 0.4 },
@@ -368,7 +369,7 @@ function Markets() {
 	// useEffect(() => {
 	// 	dispatch(getMarkets({ categories: '' }));
 	// }, [dispatch]);
-
+	console.log('markets =>', markets);
 	// 第一次進網頁撈取 url query call API，使用者每次點擊 Filter 選單也會更新 url 再次觸發該區段 call API
 	useEffect(() => {
 		if (router.isReady) {
@@ -549,36 +550,28 @@ function Markets() {
 					transition="all 0.5s ease-in-out;"
 					transform={isOpen ? 'translate(0, 0);' : 'translate(-290px, 0);'}
 				>
-					<Stack h="calc(100vh - 186px)" overflow="auto">
+					<Stack h={`calc(100vh - ${headerHeight} - ${additionalHeight})`} overflow="auto">
 						<LeftMenu />
 						{/* <Divider mt={6} borderColor="gray.300" /> */}
 					</Stack>
 				</Stack>
-				{isMarketsLoading ? (
-					<Stack w={'100%'} align={'center'}>
-						<Spinner
-							thickness="4px"
-							speed="0.65s"
-							emptyColor="gray.200"
-							color="blue.500"
-							size="xl"
-						/>
-					</Stack>
-				) : (
-					<Grid
-						w="100%"
-						onScroll={(event: any) => handelScroll(event)}
-						overflowY={'scroll'}
-						templateColumns={'repeat(auto-fill, minmax(290px, 1fr))'}
-						gap={'20px'}
-						pt={'1px'}
-						pb={'190px'}
-					>
-						{markets?.data?.map((value, index) => {
-							return <CategoryCard key={index} data={value} />;
-						})}
-					</Grid>
-				)}
+				<Grid
+					w="100%"
+					onScroll={(event: any) => handelScroll(event)}
+					overflowY={'scroll'}
+					templateColumns={'repeat(auto-fill, minmax(290px, 1fr))'}
+					gap={'20px'}
+					pt={'1px'}
+					pb={'190px'}
+				>
+					{Object.keys(markets).length === 0
+						? dummyArrayCount.map((value, index) => {
+								return <SkeletonCard key={index} />;
+						  })
+						: markets?.data?.map((value, index) => {
+								return <CategoryCard isLoading={isMarketsLoading} key={index} data={value} />;
+						  })}
+				</Grid>
 			</Stack>
 
 			<Modal size="full" isOpen={isModalOpen} onClose={onClose}>
