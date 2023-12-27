@@ -29,7 +29,7 @@ const homeSlice = createSlice({
 		//
 		filterStartDateAndEndDateMarket: (state, action) => {
 			const { startDate: userStartDate, endDate: userEndDate } = action.payload;
-
+			console.log('filterStartDateAndEndDateMarket userStartDate =>', userStartDate);
 			state.userSelectedMarketsStartDate = userStartDate;
 			state.userSelectedMarketsEndDate = userEndDate;
 			// const { startDate: userStartDate, endDate: userEndDate } = action.payload;

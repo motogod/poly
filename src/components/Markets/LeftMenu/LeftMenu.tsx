@@ -10,6 +10,7 @@ import {
 	Button,
 	Input,
 	useToast,
+	ScaleFade,
 } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'next-i18next';
@@ -49,6 +50,7 @@ const LeftMenu = () => {
 
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
+	const [dateErrorMsg, setDateErrorMsg] = useState('');
 
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -344,73 +346,81 @@ const LeftMenu = () => {
 								colorScheme="teal"
 							></Radio>
 							<Stack w={'100%'} mt={2} direction={'row'} justify={'space-evenly'}>
-								<DatePicker
-									className={styles.datePicker}
-									selected={startDate}
-									locale={router.locale}
-									onChange={(date: any) => {
-										if (moment(endDate).isBefore(date)) {
-											toast({
-												title: 'start date is after end date',
-												position: 'top',
-												status: 'error',
-												duration: 2000,
-												isClosable: true,
-											});
-											return;
-										}
-										setStartDate(date);
+								<Stack w={'100%'} h={'100%'} mb={0}>
+									<DatePicker
+										className={styles.datePicker}
+										selected={startDate}
+										locale={router.locale}
+										onChange={(date: any) => {
+											setStartDate(date);
 
-										if (endDate && date) {
-											dispatch(
-												handleDateRadio({
-													dateRadioValue: `date-custom`,
-													routerAsPath: router.asPath,
-													startDate,
-													endDate,
-												})
-											);
-											dispatch(filterStartDateAndEndDateMarket({ startDate: date, endDate }));
-										}
-									}}
-									disabledKeyboardNavigation
-									placeholderText="Start date"
-								/>
-								<DatePicker
-									className={styles.datePicker}
-									selected={endDate}
-									locale={router.locale}
-									onChange={(date: any) => {
-										if (moment(startDate).isAfter(date)) {
-											toast({
-												title: 'start date is after end date',
-												position: 'top',
-												status: 'error',
-												duration: 2000,
-												isClosable: true,
-											});
-											return;
-										}
-										setEndDate(date);
-										if (startDate && date) {
-											dispatch(
-												handleDateRadio({
-													dateRadioValue: `date-custom`,
-													routerAsPath: router.asPath,
-													startDate,
-													endDate,
-												})
-											);
-											dispatch(filterStartDateAndEndDateMarket({ startDate, endDate: date }));
-										}
-									}}
-									disabledKeyboardNavigation
-									placeholderText="End date"
-								/>
+											if (moment(endDate).isBefore(date) || moment(endDate).isSame(date)) {
+												setDateErrorMsg('Start must be before end');
+												return;
+											}
+
+											if (endDate && date) {
+												setDateErrorMsg('');
+												dispatch(
+													handleDateRadio({
+														dateRadioValue: `date-custom`,
+														routerAsPath: router.asPath,
+														startDate,
+														endDate,
+													})
+												);
+												dispatch(filterStartDateAndEndDateMarket({ startDate: date, endDate }));
+											}
+										}}
+										disabledKeyboardNavigation
+										placeholderText="Start Date"
+									/>
+								</Stack>
+								<Stack w={'100%'} h={'100%'}>
+									<DatePicker
+										className={styles.datePicker}
+										selected={endDate}
+										locale={router.locale}
+										onChange={(date: any) => {
+											setEndDate(date.setHours(23, 59, 59, 999));
+
+											if (moment(startDate).isAfter(date) || moment(startDate).isSame(date)) {
+												setDateErrorMsg('Start must be before end');
+												return;
+											}
+
+											if (startDate && date) {
+												setDateErrorMsg('');
+												dispatch(
+													handleDateRadio({
+														dateRadioValue: `date-custom`,
+														routerAsPath: router.asPath,
+														startDate,
+														endDate,
+													})
+												);
+												dispatch(filterStartDateAndEndDateMarket({ startDate, endDate: date }));
+											}
+										}}
+										disabledKeyboardNavigation
+										placeholderText="End Date"
+									/>
+								</Stack>
 							</Stack>
+							{dateErrorMsg !== '' ? (
+								<Stack w={'100%'}>
+									<ScaleFade initialScale={0.9} in={true}>
+										<Text fontSize={'small'} color={'red.500'} fontWeight={'bold'}>
+											{dateErrorMsg}
+										</Text>
+									</ScaleFade>
+								</Stack>
+							) : null}
 							<Button
 								isDisabled={
-									startDate && endDate && moment(startDate).isBefore(endDate) ? false : true
+									startDate && endDate && moment(startDate).isBefore(endDate) && dateErrorMsg === ''
+										? false
+										: true
 								}
 								onClick={() => {
 									if (startDate && endDate && moment(startDate).isBefore(endDate)) {
