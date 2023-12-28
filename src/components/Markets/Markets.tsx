@@ -62,6 +62,7 @@ function Markets() {
 	// 第一次進網頁撈取 url query call API，使用者每次點擊 Filter 選單也會更新 url 再次觸發該區段 call API
 	useEffect(() => {
 		if (router.isReady) {
+			console.log('Markets useEffect firstRender 1', firstRender);
 			setTimeout(() => {
 				let queryString = '';
 				const { categories } = router.query;
@@ -73,11 +74,13 @@ function Markets() {
 					routerStringArray = routerString?.split(',');
 				}
 
+				console.log('Markets useEffect firstRender 2', firstRender);
 				// 要有成功抓到分類資料選單 才 Call API
 				if (categoriesData[0].menuData[2].subMenuData?.length <= 0) {
+					console.log('Markets useEffect firstRender 3', firstRender);
 					return;
 				}
-
+				console.log('Markets useEffect firstRender 4', firstRender);
 				categoriesData[0].menuData[2].subMenuData.forEach((subMenuValue: SubMenuType) => {
 					const subMenuExistedString = routerStringArray.find(value => value === subMenuValue.slug);
 					console.log('subMenuExistedString =>', subMenuExistedString);
@@ -116,6 +119,7 @@ function Markets() {
 				) as DateRadioType;
 
 				if (dateValue !== 'date-custom') {
+					console.log('Markets useEffect firstRender 5', firstRender);
 					dispatch(
 						getMarkets({
 							categories: queryString,
@@ -125,7 +129,9 @@ function Markets() {
 					);
 				} else {
 					// 使用者有輸入開始與結束時間區段 才去 call API
+					console.log('Markets useEffect firstRender 6', firstRender);
 					if (userSelectedMarketsStartDate && userSelectedMarketsEndDate) {
+						console.log('Markets useEffect firstRender 7', firstRender);
 						dispatch(
 							getMarkets({
 								categories: queryString,
@@ -136,7 +142,7 @@ function Markets() {
 							})
 						);
 					} else if (firstRender) {
-						console.log('firstRender 5', firstRender);
+						console.log('Markets useEffect firstRender 8', firstRender);
 						// 第一次直接開啟網頁若為 date-custom 卻沒時間的值，預設 call API 全部資料
 						dispatch(
 							getMarkets({

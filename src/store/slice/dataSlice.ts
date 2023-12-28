@@ -167,6 +167,20 @@ const dataSlice = createSlice({
 			// 更新完勾選狀態之後接著更新 router query url
 			let newRouterAsPath = routerAsPath;
 			let queryString = '';
+			let dateRadioString = '';
+			let startDateQueryString = '';
+			let endDateQueryString = '';
+			console.log('newRouterAsPath => 1', newRouterAsPath);
+			// 如果有 query 日期 一定有兩個 & 第一個為 startDate 第二個為 endDate
+			if (newRouterAsPath.includes('&')) {
+				if (newRouterAsPath.length > 2) {
+					startDateQueryString = '&' + newRouterAsPath.split('&')[1];
+					endDateQueryString = '&' + newRouterAsPath.split('&')[2];
+					// 將舊的日期移除乾淨
+					newRouterAsPath = newRouterAsPath.split('&')[0];
+				}
+			}
+			console.log('newRouterAsPath => 2', newRouterAsPath);
 
 			state.categoriesData[0].menuData[2].subMenuData.forEach(value => {
 				// 如果分類選單有被勾選，將分類選單主名稱加入
@@ -219,12 +233,14 @@ const dataSlice = createSlice({
 
 			if (!routerAsPath.includes('=')) {
 				console.log('Enter 3');
-				state.routerPath = `${newRouterAsPath}?categories=${queryString}`;
+				state.routerPath = `${newRouterAsPath}?categories=${queryString}${startDateQueryString}${endDateQueryString}`;
 			} else {
 				if (queryString) {
 					console.log('Enter 4');
 					// state.routerPath = `${newRouterAsPath}${queryString}`;
-					state.routerPath = `/markets?categories=${queryString}`;
+					state.routerPath = `/markets?categories=${queryString}${startDateQueryString}${endDateQueryString}`;
+				} else if (!queryString && startDateQueryString && endDateQueryString) {
+					state.routerPath = `/markets?categories=${startDateQueryString}${endDateQueryString}`;
 				} else {
 					state.routerPath = `/markets`;
 				}
@@ -264,11 +280,23 @@ const dataSlice = createSlice({
 			// 更新完勾選狀態之後接著更新 router query url
 			let newRouterAsPath = routerAsPath;
 			let queryString = '';
+			let startDateQueryString = '';
+			let endDateQueryString = '';
 
+			// 如果有 query 日期 一定有兩個 & 第一個為 startDate 第二個為 endDate
+			if (newRouterAsPath.includes('&')) {
+				if (newRouterAsPath.length > 2) {
+					startDateQueryString = '&' + newRouterAsPath.split('&')[1];
+					endDateQueryString = '&' + newRouterAsPath.split('&')[2];
+					// 將舊的日期移除乾淨
+					newRouterAsPath = newRouterAsPath.split('&')[0];
+				}
+			}
+			console.log('newRouterAsPath =>', newRouterAsPath);
 			state.categoriesData[0].menuData[2].subMenuData.forEach(value => {
 				// 分類選單有被勾選
 				if (value.subMenuSelected) {
-					newRouterAsPath = decodeURI(newRouterAsPath).replace(`${value.slug},`, '');
+					// newRouterAsPath = decodeURI(newRouterAsPath).replace(`${value.slug},`, '');
 					queryString += `${value.slug},`;
 					// 分類主選單勾選即全選，將子項目全移除 qeury url
 					value.childrenCategories.forEach(childrenValue => {
@@ -279,7 +307,7 @@ const dataSlice = createSlice({
 
 					queryString = queryString.replace(`${value.slug},`, '');
 					value.childrenCategories.forEach(childrenValue => {
-						newRouterAsPath = decodeURI(newRouterAsPath).replace(`${childrenValue.slug},`, '');
+						// newRouterAsPath = decodeURI(newRouterAsPath).replace(`${childrenValue.slug},`, '');
 
 						if (childrenValue.itemSelected) {
 							queryString += `${childrenValue.slug},`;
@@ -289,7 +317,7 @@ const dataSlice = createSlice({
 					});
 				}
 			});
-			console.log('Check final newRouterAsPath', newRouterAsPath);
+
 			// 補上原本如果有 Volume 或 Date 的 query
 			let routerStringArray: string[] = [];
 
@@ -316,12 +344,14 @@ const dataSlice = createSlice({
 
 			console.log('Check final queryString', queryString);
 			if (!routerAsPath.includes('=')) {
-				state.routerPath = `${newRouterAsPath}?categories=${queryString}`;
+				state.routerPath = `${newRouterAsPath}?categories=${queryString}${startDateQueryString}${endDateQueryString}`;
 			} else {
 				if (queryString) {
 					console.log('Here', { newRouterAsPath, queryString });
 					// state.routerPath = `${newRouterAsPath}${queryString}`;
-					state.routerPath = `/markets?categories=${queryString}`;
+					state.routerPath = `/markets?categories=${queryString}${startDateQueryString}${endDateQueryString}`;
+				} else if (!queryString && startDateQueryString && endDateQueryString) {
+					state.routerPath = `/markets?categories=${startDateQueryString}${endDateQueryString}`;
 				} else {
 					state.routerPath = `/markets`;
 				}
@@ -344,20 +374,43 @@ const dataSlice = createSlice({
 			const { volumeValue, routerAsPath } = action.payload;
 
 			state.categoriesData[0].menuData[0].selectedValue = volumeValue;
-
+			console.log('handleVolumeRadio volumeValue =>', volumeValue);
 			// 更新完勾選狀態之後接著更新 router query url
 			let newRouterAsPath = routerAsPath;
 			let queryString = '';
+			let startDateQueryString = '';
+			let endDateQueryString = '';
+
+			// 如果有 query 日期 一定有兩個 & 第一個為 startDate 第二個為 endDate
+			if (newRouterAsPath.includes('&')) {
+				if (newRouterAsPath.length > 2) {
+					startDateQueryString = '&' + newRouterAsPath.split('&')[1];
+					endDateQueryString = '&' + newRouterAsPath.split('&')[2];
+					// 將舊的日期移除乾淨
+					newRouterAsPath = newRouterAsPath.split('&')[0];
+				}
+			}
 
 			volumeRadioArray.forEach(value => {
 				newRouterAsPath = newRouterAsPath.replace(`${value},`, '');
 			});
 
+			console.log('newRouterAsPath final', newRouterAsPath);
+
 			if (newRouterAsPath.includes('=')) {
-				state.routerPath = newRouterAsPath += `${volumeValue},`;
+				console.log('Volume => 1');
+				console.log('newRouterAsPath', newRouterAsPath);
+				state.routerPath =
+					newRouterAsPath += `${volumeValue},${startDateQueryString}${endDateQueryString}`;
 			} else {
-				state.routerPath = `/markets?categories=${volumeValue},`;
+				console.log('Volume 2');
+				state.routerPath = `/markets?categories=${volumeValue},${startDateQueryString}${endDateQueryString}`;
 			}
+			// if (newRouterAsPath.includes('=')) {
+			// 	state.routerPath = newRouterAsPath += `${volumeValue},`;
+			// } else {
+			// 	state.routerPath = `/markets?categories=${volumeValue},`;
+			// }
 		},
 
 		// Date 更新 radio 選取狀態
@@ -370,17 +423,64 @@ const dataSlice = createSlice({
 			// 更新完勾選狀態之後接著更新 router query url
 			let newRouterAsPath = routerAsPath;
 			let queryString = '';
+			let startDateQueryString = '';
+			let endDateQueryString = '';
 
-			// Test section
+			// 如果有 query 日期 一定有兩個 & 第一個為 startDate 第二個為 endDate
+			if (newRouterAsPath.includes('&')) {
+				if (newRouterAsPath.length > 2) {
+					startDateQueryString = '&' + newRouterAsPath.split('&')[1];
+					endDateQueryString = '&' + newRouterAsPath.split('&')[2];
+					// 將舊的日期移除乾淨
+					newRouterAsPath = newRouterAsPath.split('&')[0];
+				}
+			}
 
 			dateRadioArray.forEach(value => {
 				newRouterAsPath = newRouterAsPath.replace(`${value},`, '');
 			});
 
 			if (newRouterAsPath.includes('=')) {
-				state.routerPath = newRouterAsPath += `${dateRadioValue},`;
+				state.routerPath =
+					newRouterAsPath += `${dateRadioValue},${startDateQueryString}${endDateQueryString}`;
 			} else {
-				state.routerPath = `/markets?categories=${dateRadioValue},`;
+				state.routerPath = `/markets?categories=${dateRadioValue},${startDateQueryString}${endDateQueryString}`;
+			}
+		},
+
+		// 更新日期選擇
+		filterStartDateAndEndDateMarket: (state, action) => {
+			console.log('Test');
+			const { startDate, endDate, routerAsPath } = action.payload;
+
+			// 更新完勾選狀態之後接著更新 router query url
+			let newRouterAsPath = routerAsPath;
+			let startDateQueryString = '';
+			let endDateQueryString = '';
+			console.log('newRouterAsPath => 1', newRouterAsPath);
+			// 如果有 query 日期 一定有兩個 & 第一個為 startDate 第二個為 endDate
+			if (newRouterAsPath.includes('&')) {
+				if (newRouterAsPath.length > 2) {
+					startDateQueryString = '&' + newRouterAsPath.split('&')[1];
+					endDateQueryString = '&' + newRouterAsPath.split('&')[2];
+					// 將舊的日期移除乾淨
+					newRouterAsPath = newRouterAsPath.split('&')[0];
+				}
+			}
+			console.log('newRouterAsPath => 2', newRouterAsPath);
+			if (!newRouterAsPath.includes('=')) {
+				console.log('StartDate 1', startDate);
+				console.log('EndDate 1', endDate);
+				state.routerPath =
+					newRouterAsPath +
+					'?categories=date-custom,' +
+					`&startDate=${startDate}` +
+					`&endDate=${endDate}`;
+			} else {
+				console.log('StartDate 2', startDate);
+				console.log('EndDate 2', endDate);
+				state.routerPath =
+					newRouterAsPath + `date-custom,&startDate=${startDate}&endDate=${endDate}`;
 			}
 		},
 
@@ -457,5 +557,6 @@ export const {
 	handleVolumeRadio,
 	handleDateRadio,
 	resetVolumeAndDateStatus,
+	filterStartDateAndEndDateMarket,
 } = dataSlice.actions;
 export const dataReducer = dataSlice.reducer;

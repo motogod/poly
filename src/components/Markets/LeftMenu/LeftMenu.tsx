@@ -370,7 +370,13 @@ const LeftMenu = () => {
 														endDate,
 													})
 												);
-												dispatch(filterStartDateAndEndDateMarket({ startDate: date, endDate }));
+												dispatch(
+													filterStartDateAndEndDateMarket({
+														startDate: date,
+														endDate,
+														routerAsPath: router.asPath,
+													})
+												);
 											}
 										}}
 										disabledKeyboardNavigation
@@ -400,7 +406,13 @@ const LeftMenu = () => {
 														endDate,
 													})
 												);
-												dispatch(filterStartDateAndEndDateMarket({ startDate, endDate: date }));
+												dispatch(
+													filterStartDateAndEndDateMarket({
+														startDate,
+														endDate: date,
+														routerAsPath: router.asPath,
+													})
+												);
 											}
 										}}
 										disabledKeyboardNavigation
@@ -434,7 +446,13 @@ const LeftMenu = () => {
 												endDate,
 											})
 										);
-										dispatch(filterStartDateAndEndDateMarket({ startDate, endDate }));
+										dispatch(
+											filterStartDateAndEndDateMarket({
+												startDate,
+												endDate,
+												routerAsPath: router.asPath,
+											})
+										);
 									}
 								}}
 								w={'100%'}
