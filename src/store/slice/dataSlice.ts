@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import moment from 'moment';
 import { getCategories } from '../thunks/fetchData';
 import { CategoriesType, ChildrenCategoriesType } from '@/api';
 
@@ -185,22 +186,29 @@ const dataSlice = createSlice({
 			state.categoriesData[0].menuData[2].subMenuData.forEach(value => {
 				// 如果分類選單有被勾選，將分類選單主名稱加入
 				if (value.subMenuSelected) {
-					console.log('Enter 1');
 					// newRouterAsPath = decodeURI(newRouterAsPath).replace(`${value.slug},`, '');
 					queryString += `${value.slug},`;
-					console.log('query string', queryString);
+
 					// 分類主選單勾選即全選，將子項目全移除 qeury url
 					value.childrenCategories.forEach(childrenValue => {
-						newRouterAsPath = decodeURI(newRouterAsPath).replace(`${childrenValue.slug},`, '');
+						let routerStringArray = [];
+						if (newRouterAsPath.includes('=')) {
+							routerStringArray = newRouterAsPath.split('=')[1].split(',');
+							if (routerStringArray === childrenValue.slug) {
+								newRouterAsPath = newRouterAsPath.replace(`${childrenValue.slug},`, '');
+							}
+						} else {
+							newRouterAsPath = newRouterAsPath.replace(`${childrenValue.slug},`, '');
+						}
+						// newRouterAsPath = newRouterAsPath.replace(`${childrenValue.slug},`, '');
 					});
 				} else {
-					console.log('Enter 2');
 					// decodeURI 恢復網址的空白符號 %20，好做後續正確的字串比對
 					// newRouterAsPath = decodeURI(newRouterAsPath).replace(`${value.slug},`, '');
 					queryString = queryString.replace(`${value.slug},`, '');
 
 					value.childrenCategories.forEach(childrenValue => {
-						newRouterAsPath = decodeURI(newRouterAsPath).replace(`${childrenValue.slug},`, '');
+						// newRouterAsPath = decodeURI(newRouterAsPath).replace(`${childrenValue.slug},`, '');
 						if (childrenValue.itemSelected) {
 							queryString += `${childrenValue.slug},`;
 						} else {
@@ -209,7 +217,7 @@ const dataSlice = createSlice({
 					});
 				}
 			});
-
+			console.log('newRouterAsPath => 3', newRouterAsPath);
 			// 補上原本如果有 Volume 或 Date 的 query
 			let routerStringArray: string[] = [];
 
@@ -237,6 +245,7 @@ const dataSlice = createSlice({
 			} else {
 				if (queryString) {
 					console.log('Enter 4');
+					console.log('queryString', queryString);
 					// state.routerPath = `${newRouterAsPath}${queryString}`;
 					state.routerPath = `/markets?categories=${queryString}${startDateQueryString}${endDateQueryString}`;
 				} else if (!queryString && startDateQueryString && endDateQueryString) {
@@ -395,15 +404,34 @@ const dataSlice = createSlice({
 				newRouterAsPath = newRouterAsPath.replace(`${value},`, '');
 			});
 
-			console.log('newRouterAsPath final', newRouterAsPath);
-
 			if (newRouterAsPath.includes('=')) {
 				console.log('Volume => 1');
 				console.log('newRouterAsPath', newRouterAsPath);
+				// url query 有 date 字串的位置
+				let volumeAndDateStringUrl = '';
+				const dateStringIndex = newRouterAsPath.indexOf('date');
+				console.log('dateStringIndex', dateStringIndex);
+				if (dateStringIndex > -1) {
+					const dateQueryString = newRouterAsPath.substring(dateStringIndex);
+					console.log('dateQueryString', dateQueryString);
+					// const arr = newRouterAsPath.split('');
+					// arr.splice(dateStringIndex, 0, `${volumeValue},`); // 將 Volume query string 放在 date 之前
+					// volumeAndDateStringUrl = arr.join('') + '';
+					volumeAndDateStringUrl = volumeValue + ',' + dateQueryString;
+					console.log('volumeAndDateStringUrl', volumeAndDateStringUrl);
+					//
+					dateRadioArray.forEach(value => {
+						newRouterAsPath = newRouterAsPath.replace(`${value},`, '');
+					});
+				} else {
+					volumeAndDateStringUrl = volumeValue + ',';
+				}
+
 				state.routerPath =
-					newRouterAsPath += `${volumeValue},${startDateQueryString}${endDateQueryString}`;
+					newRouterAsPath += `${volumeAndDateStringUrl}${startDateQueryString}${endDateQueryString}`;
 			} else {
 				console.log('Volume 2');
+				console.log({ volumeValue, startDateQueryString, endDateQueryString });
 				state.routerPath = `/markets?categories=${volumeValue},${startDateQueryString}${endDateQueryString}`;
 			}
 			// if (newRouterAsPath.includes('=')) {
@@ -450,7 +478,6 @@ const dataSlice = createSlice({
 
 		// 更新日期選擇
 		filterStartDateAndEndDateMarket: (state, action) => {
-			console.log('Test');
 			const { startDate, endDate, routerAsPath } = action.payload;
 
 			// 更新完勾選狀態之後接著更新 router query url
@@ -467,20 +494,23 @@ const dataSlice = createSlice({
 					newRouterAsPath = newRouterAsPath.split('&')[0];
 				}
 			}
-			console.log('newRouterAsPath => 2', newRouterAsPath);
+
+			dateRadioArray.forEach(value => {
+				newRouterAsPath = newRouterAsPath.replace(`${value},`, '');
+			});
+
+			const unixStartDate = moment(startDate).unix();
+			const unixEndDate = moment(endDate).unix();
+
 			if (!newRouterAsPath.includes('=')) {
-				console.log('StartDate 1', startDate);
-				console.log('EndDate 1', endDate);
 				state.routerPath =
 					newRouterAsPath +
 					'?categories=date-custom,' +
-					`&startDate=${startDate}` +
-					`&endDate=${endDate}`;
+					`&startDate=${unixStartDate}` +
+					`&endDate=${unixEndDate}`;
 			} else {
-				console.log('StartDate 2', startDate);
-				console.log('EndDate 2', endDate);
 				state.routerPath =
-					newRouterAsPath + `date-custom,&startDate=${startDate}&endDate=${endDate}`;
+					newRouterAsPath + `date-custom,&startDate=${unixStartDate}&endDate=${unixEndDate}`;
 			}
 		},
 

@@ -39,6 +39,7 @@ import { CategoryCard } from '@/components/common';
 import { zIndexMarket } from '@/utils/zIndex';
 import { ChildrenCategoriesType, SubMenuType } from '@/api/type';
 import { DateRadioType, VolumeType } from '@/store/slice/dataSlice';
+import moment from 'moment';
 
 const additionalHeight = '100px';
 
@@ -62,10 +63,18 @@ function Markets() {
 	// 第一次進網頁撈取 url query call API，使用者每次點擊 Filter 選單也會更新 url 再次觸發該區段 call API
 	useEffect(() => {
 		if (router.isReady) {
-			console.log('Markets useEffect firstRender 1', firstRender);
 			setTimeout(() => {
 				let queryString = '';
-				const { categories } = router.query;
+				const { categories, startDate, endDate } = router.query;
+
+				if (startDate && endDate) {
+					console.log('Markets startDate', startDate);
+					console.log('Markets endDate', endDate);
+					console.log({
+						startDate: moment(startDate),
+						endDate: moment(endDate),
+					});
+				}
 
 				const routerString = categories as string;
 				let routerStringArray: string[] = [];
@@ -74,16 +83,13 @@ function Markets() {
 					routerStringArray = routerString?.split(',');
 				}
 
-				console.log('Markets useEffect firstRender 2', firstRender);
 				// 要有成功抓到分類資料選單 才 Call API
 				if (categoriesData[0].menuData[2].subMenuData?.length <= 0) {
-					console.log('Markets useEffect firstRender 3', firstRender);
 					return;
 				}
-				console.log('Markets useEffect firstRender 4', firstRender);
+
 				categoriesData[0].menuData[2].subMenuData.forEach((subMenuValue: SubMenuType) => {
 					const subMenuExistedString = routerStringArray.find(value => value === subMenuValue.slug);
-					console.log('subMenuExistedString =>', subMenuExistedString);
 					if (subMenuExistedString) {
 						subMenuValue.childrenCategories.forEach((childrenMenuData: ChildrenCategoriesType) => {
 							if (queryString === '') {
@@ -117,6 +123,18 @@ function Markets() {
 				const dateValue = routerStringArray.find(
 					value => value.indexOf('date') > -1
 				) as DateRadioType;
+
+				dispatch(
+					getMarkets({
+						categories: queryString,
+						volumeValue,
+						dateValue,
+						startDate: startDate ? Number(startDate) : 0,
+						endDate: endDate ? Number(endDate) : 0,
+					})
+				);
+
+				return;
 
 				if (dateValue !== 'date-custom') {
 					console.log('Markets useEffect firstRender 5', firstRender);
@@ -159,7 +177,7 @@ function Markets() {
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [router, dispatch, userSelectedMarketsStartDate, categoriesData]);
+	}, [router, dispatch, userSelectedMarketsStartDate]);
 
 	// display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 	const handelScroll = (event: Event) => {

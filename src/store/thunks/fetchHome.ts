@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import {
 	GetMarkets,
 	GetMarketsType,
@@ -15,8 +15,8 @@ const getMarkets = createAsyncThunk(
 		categories: string;
 		volumeValue: VolumeType;
 		dateValue: DateRadioType;
-		startDate?: string;
-		endDate?: string;
+		startDate?: number;
+		endDate?: number;
 	}) => {
 		const {
 			categories,
@@ -94,10 +94,11 @@ const getMarkets = createAsyncThunk(
 					}
 					break;
 				case 'date-custom':
+					// 比較 timestamp
 					if (userStartDate && userEndDate) {
 						if (
-							moment(value.startDate).isAfter(userStartDate) &&
-							moment(value.endDate).isBefore(userEndDate)
+							moment(value.startDate).unix() > userStartDate &&
+							moment(value.endDate).unix() < userEndDate
 						) {
 							filteredResultData.push(value);
 						}
