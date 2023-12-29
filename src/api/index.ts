@@ -1,7 +1,7 @@
 import { request, requestWithSession } from './request';
 
 export const GetMarkets = <T>(params: any) =>
-	requestWithSession.get<T>('/markets', params, { timeout: 15000 });
+	requestWithSession.get<T>(`/markets?categories=${params.categories}`, {}, { timeout: 15000 });
 
 export const GetMarketDetail = <T>(params: { slug: string }) =>
 	requestWithSession.get<T>(
@@ -51,5 +51,9 @@ export const PostWithdraw = <T>(params: any) =>
 // Get Categories
 export const GetCategories = <T>(params: any) =>
 	requestWithSession.get<T>('/categories', params, { timeout: 15000 });
+
+// 紀錄分類點擊
+export const CategoryClickEvent = <T>(params: any) =>
+	requestWithSession.post<T>('/events/markets', params, { timeout: 15000 });
 
 export * from './type';

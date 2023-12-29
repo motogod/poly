@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { homeReducer, filterStartDateAndEndDateMarket } from './slice/homeSlice';
+import { homeReducer } from './slice/homeSlice';
 import { authReducer, showAuthToast } from './slice/authSlice';
 import { ipReducer, setIpState } from './slice/ipSlice';
 import { toastReducer, showToast, resetToast } from './slice/toastSlice';
@@ -14,6 +14,8 @@ import {
 	handleVolumeRadio,
 	handleDateRadio,
 	resetVolumeAndDateStatus,
+	filterStartDateAndEndDateMarket,
+	filterSortSelector,
 } from './slice/dataSlice';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg } from './actions';
 
@@ -53,6 +55,7 @@ export {
 	handleDateRadio,
 	resetVolumeAndDateStatus,
 	filterStartDateAndEndDateMarket,
+	filterSortSelector,
 };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';

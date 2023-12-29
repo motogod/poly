@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Stack, Button, Card, CardBody, Heading, Text, Icon } from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
 import { HiCreditCard } from 'react-icons/hi';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 import { useContractForRead, useDepositUsdtModal, useWithdrawUsdtModal } from '@/hooks';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 
 function Funds() {
 	const { t } = useTranslation();
 
+	const { userFunds } = useSelector((state: RootState) => state.authReducer);
 	const { ethValue } = useContractForRead();
 
 	const {
@@ -52,7 +55,7 @@ function Funds() {
 						<Stack direction={'row'} alignItems={'center'}>
 							<Icon as={HiCreditCard} w={'25px'} h={'25px'} />
 							<Text fontSize={'xl'} color={'gray.800'}>
-								Balance
+								Funds
 							</Text>
 						</Stack>
 						<Text
@@ -60,7 +63,7 @@ function Funds() {
 							color={'gray.800'}
 							lineHeight={{ lg: 10, md: 1, sm: 1 }}
 						>
-							{`$ ${ethValue} USDT`}
+							{`$ ${userFunds.hold} USDT`}
 						</Text>
 						<Stack direction={'row'} mt={{ lg: '36px', md: '16px', sm: '16px' }}>
 							<Button

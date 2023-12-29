@@ -29,7 +29,7 @@ type HeaderPopType = {
 
 function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 	// for Pop
-	const { isOpen: isPopOpen, onToggle, onClose: onPopClose } = useDisclosure();
+	const { isOpen: isPopOpen, onToggle, onClose: onPopClose, onOpen: onPopOpen } = useDisclosure();
 
 	const router = useRouter();
 

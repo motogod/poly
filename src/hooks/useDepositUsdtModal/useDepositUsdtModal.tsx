@@ -165,12 +165,12 @@ function useDepositUsdtModal() {
 		return 'Send USDT (on Arbitrum) and receive the equivalent value in your wallet in <1 minute.';
 	}, [selectedEther]);
 
-	// 顯示 Select 第二個選項要顯示 Arbitrum Goerli or Arbitrum One
+	// 顯示 Select 第二個選項要顯示 Arbitrum Sepolia or Arbitrum One
 	const renderArbitrumName = useCallback(() => {
 		// 如果使用者目前在主鏈上，看是否為開發環境
 		if (currentChain?.id === 1) {
 			if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
-				return 'Arbitrum Goerli';
+				return 'Arbitrum Sepolia';
 			} else {
 				return 'Arbitrum One';
 			}
@@ -190,7 +190,7 @@ function useDepositUsdtModal() {
 
 		// 不在主鏈 也不在 Arbitrum，一率顯示 Arbitrum
 		if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
-			return 'Arbitrum Goerli';
+			return 'Arbitrum Sepolia';
 		}
 
 		return 'Arbitrum One';

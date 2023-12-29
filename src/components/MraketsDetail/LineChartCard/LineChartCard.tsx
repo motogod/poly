@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import {
 	Stack,
 	Card,
@@ -19,7 +20,7 @@ import {
 	SkeletonText,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMarketDetail, AppDispatch, RootState } from '@/store';
+import { getMarketDetail, AppDispatch, RootState, queryUrlToChangeMenuStatus } from '@/store';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import {
 	LineChart,
@@ -84,6 +85,10 @@ function LineChartCard() {
 		(state: RootState) => state.homeReducer
 	);
 
+	const router = useRouter();
+
+	const dispatch = useDispatch<AppDispatch>();
+
 	return (
 		<Card shadow="lg" border="1px solid #E2E8F0;" borderRadius="3xl">
 			<CardBody>
@@ -126,7 +131,22 @@ function LineChartCard() {
 										colorScheme="undefined"
 										borderRadius={'md'}
 									>
-										<TagLabel color="#fff">{marketDetailData?.category?.name}</TagLabel>
+										<TagLabel
+											cursor={'pointer'}
+											onClick={() => {
+												// 變更 /markets 路徑下的目錄選單選取狀態
+												dispatch(
+													queryUrlToChangeMenuStatus({
+														queryString: `${marketDetailData.category.slug},`,
+													})
+												);
+												// 接著將頁面導回 markets 並附上 qeury 參數 讓 Markets 底下的 useEffect 去 call API
+												router.push(`/markets?categories=${marketDetailData.category.slug},`);
+											}}
+											color="#fff"
+										>
+											{marketDetailData?.category?.name}
+										</TagLabel>
 									</Tag>
 									<AttachmentIcon cursor="pointer" />
 								</Stack>

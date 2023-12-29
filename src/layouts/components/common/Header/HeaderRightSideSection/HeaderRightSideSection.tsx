@@ -81,12 +81,8 @@ function HeaderRightSideSection() {
 		if (isLoading) return <div>Fetching balance…</div>;
 		if (isError) return <div>Error fetching balance</div>;
 
-		return `Balance: ${ethValue} USDT`;
-		// return (
-		// 	<p>
-		// 		Balance: {data?.formatted} {data?.symbol}
-		// 	</p>
-		// );
+		// return `$${ethValue.toLocaleString()} USDT`;
+		return `$${userFunds.load.toLocaleString()}`;
 	};
 
 	const renderModalContent = () => {
@@ -222,15 +218,15 @@ function HeaderRightSideSection() {
 						align={'center'}
 						spacing={'32px'}
 					>
-						<Stack onClick={() => router.push('./portfolio')} cursor={'pointer'}>
-							<Text fontSize={'16px'} color={'gray.800'} lineHeight={'12px'}>
+						<Stack onClick={() => router.push('/portfolio')} cursor={'pointer'}>
+							<Text fontSize={'md'} color={'gray.800'} lineHeight={'12px'}>
 								{checkBalance()}
 							</Text>
 							<Heading size={'xs'} color={'gray.800'}>
 								Portfolio
 							</Heading>
 						</Stack>
-						<Stack onClick={() => router.push('./funds')} cursor={'pointer'}>
+						<Stack onClick={() => router.push('/funds')} cursor={'pointer'}>
 							<Text fontSize={'16px'} color={'gray.800'} lineHeight={'12px'}>
 								{`$${userFunds.hold}`}
 							</Text>

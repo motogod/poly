@@ -1,11 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import {
 	GetMarkets,
 	GetMarketsType,
 	MarketsItemType,
 	GetMarketDetail,
 	GetMarketDetailType,
+	CategoryClickEvent,
 } from '@/api';
 import { DateRadioType, VolumeType } from '@/store/slice/dataSlice';
 
@@ -15,8 +16,8 @@ const getMarkets = createAsyncThunk(
 		categories: string;
 		volumeValue: VolumeType;
 		dateValue: DateRadioType;
-		startDate?: string;
-		endDate?: string;
+		startDate?: number;
+		endDate?: number;
 	}) => {
 		const {
 			categories,
@@ -94,10 +95,11 @@ const getMarkets = createAsyncThunk(
 					}
 					break;
 				case 'date-custom':
+					// 比較 timestamp
 					if (userStartDate && userEndDate) {
 						if (
-							moment(value.startDate).isAfter(userStartDate) &&
-							moment(value.endDate).isBefore(userEndDate)
+							moment(value.startDate).unix() > userStartDate &&
+							moment(value.endDate).unix() < userEndDate
 						) {
 							filteredResultData.push(value);
 						}
@@ -127,4 +129,15 @@ const getMarketDetail = createAsyncThunk(
 	}
 );
 
-export { getMarkets, getMarketDetail };
+const clickCategoryEvent = createAsyncThunk(
+	'api/getMarketDetail',
+	async (params: { slug: string }) => {
+		const { slug } = params;
+		const resp = await CategoryClickEvent<GetMarketDetailType>({ action: 'click', slug });
+		console.log('clickCategoryEvent resp', resp);
+
+		return resp;
+	}
+);
+
+export { getMarkets, getMarketDetail, clickCategoryEvent };
