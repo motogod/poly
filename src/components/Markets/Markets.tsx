@@ -302,6 +302,7 @@ function Markets() {
 		return (
 			<Stack>
 				<Select
+					cursor={'pointer'}
 					border={'1px'}
 					borderColor={'gray.200'}
 					bg={'#fff'}

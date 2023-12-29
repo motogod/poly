@@ -1,6 +1,24 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Card, CardBody, Stack, Image, Text, Heading, GridItem, Icon } from '@chakra-ui/react';
+import {
+	Card,
+	CardBody,
+	Stack,
+	Image,
+	Text,
+	Heading,
+	GridItem,
+	Icon,
+	Popover,
+	PopoverTrigger,
+	PopoverContent,
+	useDisclosure,
+	Button,
+	PopoverHeader,
+	PopoverArrow,
+	PopoverCloseButton,
+	PopoverBody,
+} from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { HiChartBar } from 'react-icons/hi';
 import { useDispatch } from 'react-redux';
@@ -11,6 +29,8 @@ function CategoryCard({ data, isLoading }: { data: MarketsItemType; isLoading?: 
 	const router = useRouter();
 
 	const dispatch = useDispatch<AppDispatch>();
+
+	const { isOpen: isPopOpen, onToggle, onClose: onPopClose, onOpen: onPopOpen } = useDisclosure();
 
 	const { title, volume, category, image, outcome, slug } = data;
 
@@ -24,6 +44,7 @@ function CategoryCard({ data, isLoading }: { data: MarketsItemType; isLoading?: 
 				opacity={isLoading ? 0.5 : 1}
 				cursor="pointer"
 				shadow="md"
+				_hover={{ shadow: 'xl' }}
 				border="1px solid #EDF2F7;"
 				borderRadius="3xl"
 			>
@@ -38,7 +59,7 @@ function CategoryCard({ data, isLoading }: { data: MarketsItemType; isLoading?: 
 							borderRadius="lg"
 						/>
 						<Stack pl={1}>
-							<Heading size="xs" color="gray.500">
+							<Heading size="xs" color="gray.500" _hover={{ color: 'gray.700' }}>
 								{category.name}
 							</Heading>
 							<Stack mt={'2px'}>
@@ -94,7 +115,7 @@ function CategoryCard({ data, isLoading }: { data: MarketsItemType; isLoading?: 
 							</Stack>
 						</Stack>
 					</Stack>
-					<Stack alignItems="center" mt={3} spacing={2} direction="row">
+					<Stack align="center" mt={3} spacing={2} direction="row">
 						<Icon as={HiChartBar} w={'16px'} h={'14px'} />
 						<Text fontSize="xs" color="gray.800">
 							{`$${Number(volume).toLocaleString()} USDT`}

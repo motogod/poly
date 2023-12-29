@@ -18,6 +18,15 @@ import {
 	useDisclosure,
 	Icon,
 	ModalFooter,
+	Popover,
+	PopoverTrigger,
+	PopoverContent,
+	PopoverHeader,
+	PopoverBody,
+	PopoverFooter,
+	PopoverArrow,
+	PopoverCloseButton,
+	PopoverAnchor,
 } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -267,7 +276,6 @@ function HeaderRightSideSection() {
 						</Heading>
 					</>
 				)}
-
 				<HeaderPopover
 					isLogin={isAuthenticated !== null && isAuthenticated}
 					onModalOpen={onOpen}
