@@ -14,6 +14,8 @@ import {
 	PopoverHeader,
 	PopoverFooter,
 	Icon,
+	Button,
+	PopoverBody,
 } from '@chakra-ui/react';
 import { BiSolidUserCircle, BiMenuAltLeft } from 'react-icons/bi';
 import LoggedInfoSectioin from '../LoggedInfoSectioin';
@@ -43,7 +45,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 		if (isLogin) {
 			return (
 				<>
-					<Icon as={ArbIcon} boxSize={5} borderRadius={'12px'} mr={'-8px'} />
+					<Icon as={ArbIcon} boxSize={5} borderRadius={'12px'} />
 					<Icon as={BiMenuAltLeft} boxSize={6} />
 				</>
 			);
@@ -51,7 +53,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 
 		return (
 			<>
-				<Icon as={BiSolidUserCircle} boxSize={6} mr={'-10px'} />
+				<Icon as={BiSolidUserCircle} boxSize={6} />
 				<Icon as={BiMenuAltLeft} boxSize={6} />
 			</>
 		);
@@ -126,28 +128,23 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 		<>
 			<Popover
 				placement="bottom-start"
-				isOpen={isPopOpen}
-				onClose={() => {
-					onPopClose();
-				}}
+				// isOpen={isPopOpen}
+				// onClose={() => {
+				// 	onPopClose();
+				// }}
 			>
 				<PopoverTrigger>
-					<Stack
-						onClick={() => {
-							isDesktop ? onToggle() : onModalOpen();
-						}}
+					<Button
 						cursor={'pointer'}
 						w={'74px'}
 						h={'38px'}
-						direction={'row'}
-						align={'center'}
-						justify={'center'}
 						borderRadius={'19px'}
 						border={'1px'}
 						borderColor={'gray.400'}
+						bg={'#fff'}
 					>
 						{renderTriggerIcon()}
-					</Stack>
+					</Button>
 				</PopoverTrigger>
 				<PopoverContent
 					_focus={{ boxShadow: 'md' }}
