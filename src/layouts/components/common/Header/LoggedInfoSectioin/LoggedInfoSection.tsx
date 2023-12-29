@@ -48,12 +48,8 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 		if (isFetching) return <Spinner />;
 		// if (isLoading) return <div>Fetching balance…</div>;
 		// if (isError) return <div>Error fetching balance</div>;
-		return `Balance: ${ethValue} USDT`;
-		// return (
-		// 	<p>
-		// 		Balance: {data?.formatted} {data?.symbol}
-		// 	</p>
-		// );
+		return `$${userFunds.load.toLocaleString()}`;
+		// return `Balance: ${ethValue} USDT`;
 	};
 
 	return (
@@ -90,7 +86,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 					cursor={'pointer'}
 					onClick={() => {
 						close();
-						router.push('./portfolio');
+						router.push('/portfolio');
 					}}
 					w={'100%'}
 					p={'8px'}
@@ -119,7 +115,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 					cursor={'pointer'}
 					onClick={() => {
 						close();
-						router.push('./funds');
+						router.push('/funds');
 					}}
 					w={'100%'}
 					p={'8px'}

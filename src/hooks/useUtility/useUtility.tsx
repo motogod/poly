@@ -40,7 +40,7 @@ function useUtility() {
 	const getContractAddress = (chainId: number) => {
 		if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
 			// https://support.rubydex.com/en/how-to-use-the-arbitrum-goerli-testnet-with-rubydex
-			// Test for Arbitrum Goerli
+			// Test for Arbitrum Sepolia
 			if (chainId === 421614) {
 				return '0xa3b54346EB20F015bBa6Df41D998E2BF48549D21';
 			} else if (chainId === 42161) {

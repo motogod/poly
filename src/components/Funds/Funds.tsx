@@ -55,7 +55,7 @@ function Funds() {
 						<Stack direction={'row'} alignItems={'center'}>
 							<Icon as={HiCreditCard} w={'25px'} h={'25px'} />
 							<Text fontSize={'xl'} color={'gray.800'}>
-								Portfolio
+								Funds
 							</Text>
 						</Stack>
 						<Text
@@ -63,7 +63,7 @@ function Funds() {
 							color={'gray.800'}
 							lineHeight={{ lg: 10, md: 1, sm: 1 }}
 						>
-							{`$ ${ethValue.toLocaleString()} USDT`}
+							{`$ ${userFunds.hold} USDT`}
 						</Text>
 						<Stack direction={'row'} mt={{ lg: '36px', md: '16px', sm: '16px' }}>
 							<Button
