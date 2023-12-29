@@ -3,23 +3,31 @@ import { useRouter } from 'next/router';
 import { Card, CardBody, Stack, Image, Text, Heading, GridItem, Icon } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { HiChartBar } from 'react-icons/hi';
+import { useDispatch } from 'react-redux';
+import { clickCategoryEvent, AppDispatch } from '@/store';
 import { MarketsItemType } from '@/api/type';
 
 function CategoryCard({ data, isLoading }: { data: MarketsItemType; isLoading?: boolean }) {
 	const router = useRouter();
 
+	const dispatch = useDispatch<AppDispatch>();
+
 	const { title, volume, category, image, outcome, slug } = data;
 
 	return (
-		<GridItem w="100%">
+		<GridItem>
 			<Card
-				onClick={() => router.push(`./marketsDetail/${slug}`)}
+				onClick={() => {
+					dispatch(clickCategoryEvent({ slug }));
+					router.push(`./marketsDetail/${slug}`);
+				}}
+				opacity={isLoading ? 0.5 : 1}
 				cursor="pointer"
 				shadow="md"
 				border="1px solid #EDF2F7;"
 				borderRadius="3xl"
 			>
-				<CardBody opacity={isLoading ? 0.5 : 1}>
+				<CardBody>
 					<Stack direction="row">
 						<Image
 							height="88px"

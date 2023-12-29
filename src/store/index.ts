@@ -15,6 +15,7 @@ import {
 	handleDateRadio,
 	resetVolumeAndDateStatus,
 	filterStartDateAndEndDateMarket,
+	filterSortSelector,
 } from './slice/dataSlice';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg } from './actions';
 
@@ -54,6 +55,7 @@ export {
 	handleDateRadio,
 	resetVolumeAndDateStatus,
 	filterStartDateAndEndDateMarket,
+	filterSortSelector,
 };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';

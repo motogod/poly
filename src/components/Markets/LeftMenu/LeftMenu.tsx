@@ -39,6 +39,7 @@ import styles from './leftMenu.module.scss';
 import zh from 'date-fns/locale/zh-TW';
 import ja from 'date-fns/locale/ja';
 import { LocalesType } from '@/../public/locales/type';
+import { VolumeType, volumeRadioArray } from '@/store/slice/dataSlice';
 
 let firstRender = true;
 
@@ -49,8 +50,8 @@ const LeftMenu = () => {
 
 	const toast = useToast();
 
-	const [startDate, setStartDate] = useState(null);
-	const [endDate, setEndDate] = useState(null);
+	const [startDate, setStartDate] = useState<Date | null>(null);
+	const [endDate, setEndDate] = useState<Date | null>(null);
 	const [dateErrorMsg, setDateErrorMsg] = useState('');
 
 	const dispatch = useDispatch<AppDispatch>();
@@ -65,7 +66,9 @@ const LeftMenu = () => {
 		}
 	}, [dispatch, router]);
 
+	// 日期選單 DatePicker 相關設置
 	useEffect(() => {
+		// 註冊相關語系給 DatePicker
 		const locale = router.locale as LocalesType;
 		if (locale === 'zh') {
 			registerLocale('zh', zh);
@@ -73,6 +76,13 @@ const LeftMenu = () => {
 
 		if (locale === 'jp') {
 			registerLocale('jp', ja);
+		}
+
+		const { startDate, endDate } = router.query;
+
+		if (startDate && endDate) {
+			setStartDate(moment(Number(startDate) * 1000).toDate());
+			setEndDate(moment(Number(endDate) * 1000).toDate());
 		}
 	}, [router]);
 
@@ -93,6 +103,21 @@ const LeftMenu = () => {
 		}
 	}, [router, dispatch, routerPath]);
 
+	const renderVolumeRadioTitle = (radioValue: VolumeType) => {
+		switch (radioValue) {
+			case 'volume-default':
+				return t('default');
+			case 'volume-1000':
+				return `1000 USDT ${t('below')}`;
+			case 'volume-100000':
+				return `1,000 - 100,000 USDT`;
+			case 'volume-over':
+				return `1,000 ${t('above')}`;
+			default:
+				return '';
+		}
+	};
+
 	const renderMenuSection = (menuId: string, data: MenuType) => {
 		// Volume section
 		if (menuId === '0') {
@@ -105,106 +130,37 @@ const LeftMenu = () => {
 					value={data.selectedValue}
 				>
 					<Stack>
-						<Stack
-							position={'relative'}
-							pt={2}
-							pb={2}
-							pl={3}
-							pr={3}
-							w={'100%'}
-							alignItems={'center'}
-							borderRadius={4}
-							_hover={{ bg: 'gray.100' }}
-						>
-							<Stack position={'absolute'} right={0} left={3} top={1}>
-								<Text>{t('default')}</Text>
-							</Stack>
-							<Radio
-								pr={{ lg: 6, md: 2, sm: 2 }}
-								alignItems={'center'}
-								justifyContent={'flex-end'}
-								w={'100%'}
-								value="volume-default"
-								size="md"
-								borderColor="gray.200"
-								colorScheme="teal"
-							></Radio>
-						</Stack>
-						<Stack
-							position={'relative'}
-							pt={2}
-							pb={2}
-							pl={3}
-							pr={3}
-							w={'100%'}
-							alignItems={'center'}
-							borderRadius={4}
-							_hover={{ bg: 'gray.100' }}
-						>
-							<Stack position={'absolute'} right={0} left={3} top={1}>
-								<Text>{`1000 USDT ${t('below')}`}</Text>
-							</Stack>
-							<Radio
-								pr={{ lg: 6, md: 2, sm: 2 }}
-								alignItems={'center'}
-								justifyContent={'flex-end'}
-								w={'100%'}
-								value="volume-1000"
-								size="md"
-								borderColor="gray.200"
-								colorScheme="teal"
-							></Radio>
-						</Stack>
-						<Stack
-							position={'relative'}
-							pt={2}
-							pb={2}
-							pl={3}
-							pr={3}
-							w={'100%'}
-							alignItems={'center'}
-							borderRadius={4}
-							_hover={{ bg: 'gray.100' }}
-						>
-							<Stack position={'absolute'} right={0} left={3} top={1}>
-								<Text>{`1,000 - 100,000 USDT`}</Text>
-							</Stack>
-							<Radio
-								pr={{ lg: 6, md: 2, sm: 2 }}
-								alignItems={'center'}
-								justifyContent={'flex-end'}
-								w={'100%'}
-								value="volume-100000"
-								size="md"
-								borderColor="gray.200"
-								colorScheme="teal"
-							></Radio>
-						</Stack>
-						<Stack
-							position={'relative'}
-							pt={2}
-							pb={2}
-							pl={3}
-							pr={3}
-							w={'100%'}
-							alignItems={'center'}
-							borderRadius={4}
-							_hover={{ bg: 'gray.100' }}
-						>
-							<Stack position={'absolute'} right={0} left={3} top={1}>
-								<Text>{`1,000 ${t('above')}`}</Text>
-							</Stack>
-							<Radio
-								pr={{ lg: 6, md: 2, sm: 2 }}
-								alignItems={'center'}
-								justifyContent={'flex-end'}
-								w={'100%'}
-								value="volume-over"
-								size="md"
-								borderColor="gray.200"
-								colorScheme="teal"
-							></Radio>
-						</Stack>
+						{volumeRadioArray.map(radioValue => {
+							return (
+								<>
+									<Stack
+										position={'relative'}
+										pt={2}
+										pb={2}
+										pl={3}
+										pr={3}
+										w={'100%'}
+										alignItems={'center'}
+										borderRadius={4}
+										_hover={{ bg: 'gray.100' }}
+									>
+										<Stack position={'absolute'} right={0} left={3} top={1}>
+											<Text>{renderVolumeRadioTitle(radioValue)}</Text>
+										</Stack>
+										<Radio
+											pr={{ lg: 6, md: 2, sm: 2 }}
+											alignItems={'center'}
+											justifyContent={'flex-end'}
+											w={'100%'}
+											value={radioValue}
+											size="md"
+											borderColor="gray.200"
+											colorScheme="teal"
+										></Radio>
+									</Stack>
+								</>
+							);
+						})}
 					</Stack>
 				</RadioGroup>
 			);
@@ -346,7 +302,7 @@ const LeftMenu = () => {
 								borderColor="gray.200"
 								colorScheme="teal"
 							></Radio>
-							<Stack w={'100%'} mt={2} direction={'row'} justify={'space-evenly'}>
+							<Stack w={'100%'} mt={2} direction={'row'} justify={'space-evenly'} align={'center'}>
 								<Stack w={'100%'} h={'100%'} mb={0}>
 									<DatePicker
 										className={styles.datePicker}
@@ -383,6 +339,9 @@ const LeftMenu = () => {
 										placeholderText="Start Date"
 									/>
 								</Stack>
+								<Text fontSize={'md'} color={'gray.500'}>
+									to
+								</Text>
 								<Stack w={'100%'} h={'100%'}>
 									<DatePicker
 										className={styles.datePicker}

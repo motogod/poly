@@ -29,6 +29,7 @@ import {
 	getCategories,
 	resetVolumeAndDateStatus,
 	resetRouterPath,
+	filterSortSelector,
 } from '@/store';
 import { SkeletonCard } from '@/components/common';
 import { useCategoryTabsList } from '@/hooks';
@@ -38,20 +39,24 @@ import LeftMenu from './LeftMenu';
 import { CategoryCard } from '@/components/common';
 import { zIndexMarket } from '@/utils/zIndex';
 import { ChildrenCategoriesType, SubMenuType } from '@/api/type';
-import { DateRadioType, VolumeType } from '@/store/slice/dataSlice';
-import moment from 'moment';
+import {
+	DateRadioType,
+	VolumeType,
+	SortDescType,
+	sortSelectorArray,
+} from '@/store/slice/dataSlice';
 
 const additionalHeight = '100px';
 
 const dummyArrayCount = [...Array(20)];
 
-let firstRender = true;
+let isFirstRender = true;
 
 function Markets() {
 	const { Filter, isOpen } = useFilter();
 	const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
 	const [TabDom, selectedTab] = useCategoryTabsList();
-	const [selectorValue, setSelectorValue] = useState('trending');
+	const [selectorValue, setSelectorValue] = useState(sortSelectorArray[0]);
 
 	const router = useRouter();
 
@@ -64,17 +69,9 @@ function Markets() {
 	useEffect(() => {
 		if (router.isReady) {
 			setTimeout(() => {
+				console.log('Markets useEffect 1');
 				let queryString = '';
 				const { categories, startDate, endDate } = router.query;
-
-				if (startDate && endDate) {
-					console.log('Markets startDate', startDate);
-					console.log('Markets endDate', endDate);
-					console.log({
-						startDate: moment(startDate),
-						endDate: moment(endDate),
-					});
-				}
 
 				const routerString = categories as string;
 				let routerStringArray: string[] = [];
@@ -115,69 +112,66 @@ function Markets() {
 				});
 
 				// 篩選符合所篩選的 Volume 範圍設定值
-				const volumeValue = routerStringArray.find(
-					value => value.indexOf('volume') > -1
-				) as VolumeType;
+				const volumeValue = routerStringArray.find(value => {
+					// 排除 sort 選單的值 避免跟分類衝突
+					if (
+						value.indexOf('volume') > -1 &&
+						sortSelectorArray.filter(sortValue => sortValue !== value)
+					) {
+						return value;
+					}
+				}) as VolumeType;
+
+				// 篩選符合所篩選的 Sort 範圍設定值
+				const sortValue = routerStringArray.find(value => {
+					if (sortSelectorArray.find(sortValue => sortValue === value)) {
+						return value;
+					}
+				}) as SortDescType;
 
 				// 篩選符合所篩選的 Date radio 選取值
 				const dateValue = routerStringArray.find(
 					value => value.indexOf('date') > -1
 				) as DateRadioType;
 
-				dispatch(
-					getMarkets({
-						categories: queryString,
-						volumeValue,
-						dateValue,
-						startDate: startDate ? Number(startDate) : 0,
-						endDate: endDate ? Number(endDate) : 0,
-					})
-				);
+				// 若有排序 加排序加入至最後的 query 裡面
+				if (sortValue) {
+					queryString += `&sort=${sortValue}`;
+				}
 
-				return;
-
-				if (dateValue !== 'date-custom') {
-					console.log('Markets useEffect firstRender 5', firstRender);
+				// routerPath 為空表示第一次進入 Markets 網頁 或 使用者有點擊選單更新過 url
+				if (routerPath === '') {
 					dispatch(
 						getMarkets({
 							categories: queryString,
 							volumeValue,
 							dateValue,
+							startDate: startDate ? Number(startDate) : 0,
+							endDate: endDate ? Number(endDate) : 0,
 						})
 					);
-				} else {
-					// 使用者有輸入開始與結束時間區段 才去 call API
-					console.log('Markets useEffect firstRender 6', firstRender);
-					if (userSelectedMarketsStartDate && userSelectedMarketsEndDate) {
-						console.log('Markets useEffect firstRender 7', firstRender);
-						dispatch(
-							getMarkets({
-								categories: queryString,
-								volumeValue,
-								dateValue,
-								startDate: userSelectedMarketsStartDate ? userSelectedMarketsStartDate : '',
-								endDate: userSelectedMarketsEndDate ? userSelectedMarketsEndDate : '',
-							})
-						);
-					} else if (firstRender) {
-						console.log('Markets useEffect firstRender 8', firstRender);
-						// 第一次直接開啟網頁若為 date-custom 卻沒時間的值，預設 call API 全部資料
-						dispatch(
-							getMarkets({
-								categories: queryString,
-								volumeValue,
-								dateValue,
-							})
-						);
-
-						firstRender = false;
-					}
 				}
+
+				isFirstRender = false;
+
+				return;
 			}, 0);
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [router, dispatch, userSelectedMarketsStartDate]);
+	}, [router, dispatch, userSelectedMarketsStartDate, categoriesData]);
+
+	// 根據 URL 設置 Sort 選單
+	useEffect(() => {
+		if (router.isReady) {
+			const path = router.asPath;
+
+			const sortValue = sortSelectorArray.find(value => path.includes(value));
+			if (sortValue) {
+				setSelectorValue(sortValue);
+			}
+		}
+	}, [router]);
 
 	// display={{ lg: 'none', md: 'inline', sm: 'inline' }}
 	const handelScroll = (event: Event) => {
@@ -200,12 +194,17 @@ function Markets() {
 					placeholder=""
 					size="md"
 					value={selectorValue}
-					onChange={e => setSelectorValue(e.target.value)}
+					onChange={(e: any) => {
+						setSelectorValue(e.target.value);
+						dispatch(
+							filterSortSelector({ sortValue: e.target.value, routerAsPath: router.asPath })
+						);
+					}}
 				>
-					<option value="trending">Trending</option>
-					<option value="volume">Volume</option>
-					<option value="newest">Newest</option>
-					<option value="endingSoonest">Ending Soonest</option>
+					<option value={sortSelectorArray[0]}>Trending</option>
+					<option value={sortSelectorArray[1]}>Volume</option>
+					<option value={sortSelectorArray[2]}>Newest</option>
+					<option value={sortSelectorArray[3]}>Ending Soonest</option>
 				</Select>
 			</Stack>
 		);
@@ -278,7 +277,11 @@ function Markets() {
 					}
 					gap={'20px'}
 					pt={'1px'}
-					pb={'190px'}
+					pb={{
+						lg: `calc(100vh - ${headerHeight} - ${additionalHeight})`,
+						md: `calc(100vh - ${headerHeight} - ${additionalHeight})`,
+						sm: '40px',
+					}}
 				>
 					{Object.keys(markets).length === 0 ? (
 						dummyArrayCount.map((value, index) => {

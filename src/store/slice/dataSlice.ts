@@ -4,7 +4,7 @@ import { getCategories } from '../thunks/fetchData';
 import { CategoriesType, ChildrenCategoriesType } from '@/api';
 
 export type VolumeType = 'volume-default' | 'volume-1000' | 'volume-100000' | 'volume-over' | '';
-const volumeRadioArray: Array<VolumeType> = [
+export const volumeRadioArray: Array<VolumeType> = [
 	'volume-default',
 	'volume-1000',
 	'volume-100000',
@@ -23,6 +23,14 @@ const dateRadioArray: Array<DateRadioType> = [
 	'date-week',
 	'date-month',
 	'date-custom',
+];
+
+export type SortDescType = 'trending:desc' | 'volume:desc' | 'startDate:desc' | 'endDate:asc';
+export const sortSelectorArray: Array<SortDescType> = [
+	'trending:desc',
+	'volume:desc',
+	'startDate:desc',
+	'endDate:asc',
 ];
 
 type CategoriesState = {
@@ -221,19 +229,31 @@ const dataSlice = createSlice({
 			// 補上原本如果有 Volume 或 Date 的 query
 			let routerStringArray: string[] = [];
 
-			// 如果至少有一個選單分類資料 可能是 Volume 或 Date
+			// 如果至少有一個選單分類資料 可能是 Sort 或 Volume 或 Date
+			// url 這些參數順序必需依序為 sort volume date
 			if (newRouterAsPath.includes('=')) {
 				const routerStringWithCommas = newRouterAsPath.split('=')[1];
 				routerStringArray = routerStringWithCommas.split(',');
 			}
-
+			console.log('routerStringArray', routerStringArray);
 			if (routerStringArray.length > 0) {
-				const firstVolumeQueryString = routerStringArray.find(v => v.indexOf('volume') > -1);
+				const sortQueryString = routerStringArray.find(v => v.indexOf('desc') > -1);
 
+				if (sortQueryString) {
+					queryString += `${sortQueryString},`;
+				}
+
+				const firstVolumeQueryString = routerStringArray.find(routerStringValue => {
+					return volumeRadioArray.find(value => value === routerStringValue);
+				});
+
+				// 將會撈到的 sort 選單 volume:desc 排除
 				if (firstVolumeQueryString) {
 					queryString += `${firstVolumeQueryString},`;
 				}
+
 				const firstDateQueryString = routerStringArray.find(v => v.indexOf('date') > -1);
+
 				if (firstDateQueryString) {
 					queryString += `${firstDateQueryString},`;
 				}
@@ -330,16 +350,25 @@ const dataSlice = createSlice({
 			// 補上原本如果有 Volume 或 Date 的 query
 			let routerStringArray: string[] = [];
 
-			// 如果至少有一個選單分類資料 可能是 Volume 或 Date
-			console.log('Check newRouterAsPath', newRouterAsPath);
+			// 如果至少有一個選單分類資料 可能是 Sort 或 Volume 或 Date
+			// url 這些參數順序必需依序為 sort volume date
 			if (newRouterAsPath.includes('=')) {
 				const routerStringWithCommas = newRouterAsPath.split('=')[1];
 				routerStringArray = routerStringWithCommas.split(',');
 			}
 
 			if (routerStringArray.length > 0) {
-				const firstVolumeQueryString = routerStringArray.find(v => v.indexOf('volume') > -1);
+				const sortQueryString = routerStringArray.find(v => v.indexOf('desc') > -1);
 
+				if (sortQueryString) {
+					queryString += `${sortQueryString},`;
+				}
+
+				const firstVolumeQueryString = routerStringArray.find(routerStringValue => {
+					return volumeRadioArray.find(value => value === routerStringValue);
+				});
+
+				// 將會撈到的 sort 選單 volume:desc 排除
 				if (firstVolumeQueryString) {
 					queryString += `${firstVolumeQueryString},`;
 				}
@@ -553,6 +582,10 @@ const dataSlice = createSlice({
 					} else if (isSlugExistInItemQuery) {
 						// 否則逐一比對所有子選單是否需勾選
 						childrenValue.itemSelected = true;
+					} else {
+						// 都沒有則全部取消不勾選
+						value.subMenuSelected = false;
+						childrenValue.itemSelected = false;
 					}
 
 					return childrenValue;
@@ -560,6 +593,44 @@ const dataSlice = createSlice({
 
 				return value;
 			});
+		},
+
+		// 過濾排序選單
+		filterSortSelector: (state, action) => {
+			const { sortValue, routerAsPath } = action.payload;
+
+			let newRouterAsPath = routerAsPath;
+			console.log('filterSortSelector', { sortValue, routerAsPath });
+
+			const addSortValueIntoQueryString = (value: string) => {
+				const valueIndex = newRouterAsPath.indexOf(value);
+				const arr = newRouterAsPath.split('');
+				arr.splice(valueIndex, 0, `${sortValue},`);
+				return arr.join('');
+			};
+
+			// 若有先前 sort value 先清掉
+			sortSelectorArray.forEach(value => {
+				newRouterAsPath = newRouterAsPath.replace(`${value},`, '');
+			});
+			console.log('newRouterAsPath =>', newRouterAsPath);
+			console.log('includes', newRouterAsPath.includes('date'));
+			// url 路徑 volume 一定在 date 前面
+			if (newRouterAsPath.includes('volume')) {
+				newRouterAsPath = addSortValueIntoQueryString('volume');
+			} else if (!newRouterAsPath.includes('volume') && newRouterAsPath.includes('date')) {
+				newRouterAsPath = addSortValueIntoQueryString('date');
+			} else {
+				if (newRouterAsPath.includes('=')) {
+					console.log('SORT 1', { newRouterAsPath, sortValue });
+					newRouterAsPath += `${sortValue},`;
+				} else {
+					console.log('SORT 2', { newRouterAsPath, sortValue });
+					newRouterAsPath += `?categories=${sortValue},`;
+				}
+			}
+
+			state.routerPath = newRouterAsPath;
 		},
 	},
 	extraReducers: builder => {
@@ -588,5 +659,6 @@ export const {
 	handleDateRadio,
 	resetVolumeAndDateStatus,
 	filterStartDateAndEndDateMarket,
+	filterSortSelector,
 } = dataSlice.actions;
 export const dataReducer = dataSlice.reducer;

@@ -6,6 +6,7 @@ import {
 	MarketsItemType,
 	GetMarketDetail,
 	GetMarketDetailType,
+	CategoryClickEvent,
 } from '@/api';
 import { DateRadioType, VolumeType } from '@/store/slice/dataSlice';
 
@@ -128,4 +129,15 @@ const getMarketDetail = createAsyncThunk(
 	}
 );
 
-export { getMarkets, getMarketDetail };
+const clickCategoryEvent = createAsyncThunk(
+	'api/getMarketDetail',
+	async (params: { slug: string }) => {
+		const { slug } = params;
+		const resp = await CategoryClickEvent<GetMarketDetailType>({ action: 'click', slug });
+		console.log('clickCategoryEvent resp', resp);
+
+		return resp;
+	}
+);
+
+export { getMarkets, getMarketDetail, clickCategoryEvent };
