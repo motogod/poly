@@ -7,8 +7,6 @@ import { VolumeType } from './dataSlice';
 type HomeState = {
 	isMarketsLoading: boolean;
 	markets: GetMarketsType;
-	userSelectedMarketsStartDate: string;
-	userSelectedMarketsEndDate: string;
 	isMarketDetailLoading: boolean;
 	marketDetailData: MarketsItemType;
 };
@@ -16,8 +14,6 @@ type HomeState = {
 const initialState: HomeState = {
 	isMarketsLoading: false,
 	markets: {} as GetMarketsType,
-	userSelectedMarketsStartDate: '',
-	userSelectedMarketsEndDate: '',
 	isMarketDetailLoading: true,
 	marketDetailData: {} as MarketsItemType,
 };
@@ -25,28 +21,7 @@ const initialState: HomeState = {
 const homeSlice = createSlice({
 	name: 'home',
 	initialState,
-	reducers: {
-		//
-		filterStartDateAndEndDateMarket: (state, action) => {
-			const { startDate: userStartDate, endDate: userEndDate } = action.payload;
-			console.log('filterStartDateAndEndDateMarket userStartDate =>', userStartDate);
-			state.userSelectedMarketsStartDate = userStartDate;
-			state.userSelectedMarketsEndDate = userEndDate;
-			// const { startDate: userStartDate, endDate: userEndDate } = action.payload;
-
-			// let filteredResultData: MarketsItemType[] = [];
-
-			// state.markets.data.forEach(value => {
-			// 	const { startDate, endDate } = value;
-
-			// 	if (moment(startDate).isAfter(userStartDate) && moment(endDate).isBefore(userEndDate)) {
-			// 		filteredResultData.push(value);
-			// 	}
-			// });
-
-			// state.markets.data = filteredResultData;
-		},
-	},
+	reducers: {},
 	extraReducers: builder => {
 		builder.addCase(getMarkets.pending, state => {
 			console.log('getMarkets pending');
@@ -81,5 +56,4 @@ const homeSlice = createSlice({
 	},
 });
 
-export const { filterStartDateAndEndDateMarket } = homeSlice.actions;
 export const homeReducer = homeSlice.reducer;

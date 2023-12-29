@@ -61,105 +61,97 @@ function Markets() {
 	const router = useRouter();
 
 	const dispatch = useDispatch<AppDispatch>();
-	const { markets, isMarketsLoading, userSelectedMarketsStartDate, userSelectedMarketsEndDate } =
-		useSelector((state: RootState) => state.homeReducer);
+	const { markets, isMarketsLoading } = useSelector((state: RootState) => state.homeReducer);
 	const { categoriesData, routerPath } = useSelector((state: RootState) => state.dataReducer);
 
 	// 第一次進網頁撈取 url query call API，使用者每次點擊 Filter 選單也會更新 url 再次觸發該區段 call API
 	useEffect(() => {
 		if (router.isReady) {
-			setTimeout(() => {
-				console.log('Markets useEffect 1');
-				let queryString = '';
-				const { categories, startDate, endDate } = router.query;
+			console.log('Markets useEffect 1');
+			let queryString = '';
+			const { categories, startDate, endDate } = router.query;
 
-				const routerString = categories as string;
-				let routerStringArray: string[] = [];
+			const routerString = categories as string;
+			let routerStringArray: string[] = [];
 
-				if (routerString?.includes(',')) {
-					routerStringArray = routerString?.split(',');
-				}
+			if (routerString?.includes(',')) {
+				routerStringArray = routerString?.split(',');
+			}
 
-				// 要有成功抓到分類資料選單 才 Call API
-				if (categoriesData[0].menuData[2].subMenuData?.length <= 0) {
-					return;
-				}
+			// 要有成功抓到分類資料選單 才 Call API
+			if (categoriesData[0].menuData[2].subMenuData?.length <= 0) {
+				return;
+			}
 
-				categoriesData[0].menuData[2].subMenuData.forEach((subMenuValue: SubMenuType) => {
-					const subMenuExistedString = routerStringArray.find(value => value === subMenuValue.slug);
-					if (subMenuExistedString) {
-						subMenuValue.childrenCategories.forEach((childrenMenuData: ChildrenCategoriesType) => {
+			categoriesData[0].menuData[2].subMenuData.forEach((subMenuValue: SubMenuType) => {
+				const subMenuExistedString = routerStringArray.find(value => value === subMenuValue.slug);
+				if (subMenuExistedString) {
+					subMenuValue.childrenCategories.forEach((childrenMenuData: ChildrenCategoriesType) => {
+						if (queryString === '') {
+							queryString += childrenMenuData.slug;
+						} else {
+							queryString += `,${childrenMenuData.slug}`;
+						}
+					});
+				} else {
+					subMenuValue.childrenCategories.forEach((childrenMenuData: ChildrenCategoriesType) => {
+						const childrenMenuExistedString = routerStringArray.find(
+							value => value === childrenMenuData.slug
+						);
+						if (childrenMenuExistedString) {
 							if (queryString === '') {
 								queryString += childrenMenuData.slug;
 							} else {
 								queryString += `,${childrenMenuData.slug}`;
 							}
-						});
-					} else {
-						subMenuValue.childrenCategories.forEach((childrenMenuData: ChildrenCategoriesType) => {
-							const childrenMenuExistedString = routerStringArray.find(
-								value => value === childrenMenuData.slug
-							);
-							if (childrenMenuExistedString) {
-								if (queryString === '') {
-									queryString += childrenMenuData.slug;
-								} else {
-									queryString += `,${childrenMenuData.slug}`;
-								}
-							}
-						});
-					}
-				});
-
-				// 篩選符合所篩選的 Volume 範圍設定值
-				const volumeValue = routerStringArray.find(value => {
-					// 排除 sort 選單的值 避免跟分類衝突
-					if (
-						value.indexOf('volume') > -1 &&
-						sortSelectorArray.filter(sortValue => sortValue !== value)
-					) {
-						return value;
-					}
-				}) as VolumeType;
-
-				// 篩選符合所篩選的 Sort 範圍設定值
-				const sortValue = routerStringArray.find(value => {
-					if (sortSelectorArray.find(sortValue => sortValue === value)) {
-						return value;
-					}
-				}) as SortDescType;
-
-				// 篩選符合所篩選的 Date radio 選取值
-				const dateValue = routerStringArray.find(
-					value => value.indexOf('date') > -1
-				) as DateRadioType;
-
-				// 若有排序 加排序加入至最後的 query 裡面
-				if (sortValue) {
-					queryString += `&sort=${sortValue}`;
+						}
+					});
 				}
+			});
 
-				// routerPath 為空表示第一次進入 Markets 網頁 或 使用者有點擊選單更新過 url
-				if (routerPath === '') {
-					dispatch(
-						getMarkets({
-							categories: queryString,
-							volumeValue,
-							dateValue,
-							startDate: startDate ? Number(startDate) : 0,
-							endDate: endDate ? Number(endDate) : 0,
-						})
-					);
+			// 篩選符合所篩選的 Volume 範圍設定值
+			const volumeValue = routerStringArray.find(value => {
+				// 排除 sort 選單的值 避免跟分類衝突
+				if (
+					value.indexOf('volume') > -1 &&
+					sortSelectorArray.filter(sortValue => sortValue !== value)
+				) {
+					return value;
 				}
+			}) as VolumeType;
 
-				isFirstRender = false;
+			// 篩選符合所篩選的 Sort 範圍設定值
+			const sortValue = routerStringArray.find(value => {
+				if (sortSelectorArray.find(sortValue => sortValue === value)) {
+					return value;
+				}
+			}) as SortDescType;
 
-				return;
-			}, 0);
+			// 篩選符合所篩選的 Date radio 選取值
+			const dateValue = routerStringArray.find(
+				value => value.indexOf('date') > -1
+			) as DateRadioType;
+
+			// 若有排序 加排序加入至最後的 query 裡面
+			if (sortValue) {
+				queryString += `&sort=${sortValue}`;
+			}
+
+			// routerPath 為空表示第一次進入 Markets 網頁 或 使用者有點擊選單更新過 url
+			if (routerPath === '') {
+				dispatch(
+					getMarkets({
+						categories: queryString,
+						volumeValue,
+						dateValue,
+						startDate: startDate ? Number(startDate) : 0,
+						endDate: endDate ? Number(endDate) : 0,
+					})
+				);
+			}
 		}
-
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [router, dispatch, userSelectedMarketsStartDate, categoriesData]);
+	}, [router, dispatch, categoriesData]);
 
 	// 根據 URL 設置 Sort 選單
 	useEffect(() => {

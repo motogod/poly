@@ -81,7 +81,7 @@ function HeaderRightSideSection() {
 		if (isLoading) return <div>Fetching balance…</div>;
 		if (isError) return <div>Error fetching balance</div>;
 
-		return `Balance: ${ethValue} USDT`;
+		return `$${ethValue.toLocaleString()} USDT`;
 		// return (
 		// 	<p>
 		// 		Balance: {data?.formatted} {data?.symbol}
