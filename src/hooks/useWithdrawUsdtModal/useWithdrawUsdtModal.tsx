@@ -67,8 +67,26 @@ function useWithdrawUsdtModal() {
 
 		setIsAddressEmpty(false);
 		setIsAmountEmpay(false);
+
+		// 如果使用者輸入的數值不符合正確格式的 wallet address，返回不執行交易
+		if (inputAddressValueMsg(inputAddressValue) !== '') {
+			return;
+		}
+
+		// 如果使用者輸入的數值不符合正確格式或範圍內的 amount，返回不執行交易
+		if (inputValueAndEthValueMsg(amountValue, userFunds.hold, 'withdraw')) {
+			return;
+		}
+
 		disaptch(postWithdraw({ address: inputAddressValue, amount: Number(amountValue) }));
-	}, [disaptch, inputAddressValue, amountValue]);
+	}, [
+		inputAddressValue,
+		amountValue,
+		inputAddressValueMsg,
+		inputValueAndEthValueMsg,
+		userFunds.hold,
+		disaptch,
+	]);
 
 	useEffect(() => {
 		// 開啟 Modal 資料恢復為預設
