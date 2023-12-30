@@ -33,7 +33,9 @@ function useWithdrawUsdtModal() {
 	const disaptch = useDispatch<AppDispatch>();
 
 	const [inputAddressValue, setInputAddressValue] = useState('');
-	const [inputValue, setInputValue] = useState<string>('');
+	const [isAddressEmpty, setIsAddressEmpty] = useState(false);
+	const [amountValue, setAmountValue] = useState<string>('');
+	const [isAmountEmpay, setIsAmountEmpay] = useState(false);
 
 	const { userFunds, isWithdrawSuccess, isWithdrawLoading } = useSelector(
 		(state: RootState) => state.authReducer
@@ -43,7 +45,7 @@ function useWithdrawUsdtModal() {
 
 	const { ethValue } = useContractForRead();
 
-	const { inputValueAndEthValueMsg, initInputAmountValue } = useUtility();
+	const { inputValueAndEthValueMsg, initInputAmountValue, inputAddressValueMsg } = useUtility();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -52,8 +54,29 @@ function useWithdrawUsdtModal() {
 	});
 
 	const confirm = useCallback(() => {
-		disaptch(postWithdraw({ address: inputAddressValue, amount: Number(inputValue) }));
-	}, [disaptch, inputAddressValue, inputValue]);
+		// 使用者按下執行按鈕之後 確認是否空欄位 顯示提醒告知訊息
+		if (inputAddressValue === '') {
+			setIsAddressEmpty(true);
+			return;
+		}
+
+		if (amountValue === '') {
+			setIsAmountEmpay(true);
+			return;
+		}
+
+		setIsAddressEmpty(false);
+		setIsAmountEmpay(false);
+		disaptch(postWithdraw({ address: inputAddressValue, amount: Number(amountValue) }));
+	}, [disaptch, inputAddressValue, amountValue]);
+
+	useEffect(() => {
+		// 開啟 Modal 資料恢復為預設
+		setInputAddressValue('');
+		setIsAddressEmpty(false);
+		setAmountValue('');
+		setIsAmountEmpay(false);
+	}, [isOpen]);
 
 	useEffect(() => {
 		if (isWithdrawSuccess !== null) {
@@ -108,7 +131,10 @@ function useWithdrawUsdtModal() {
 								<Text
 									textDecoration={'underline'}
 									cursor={'pointer'}
-									onClick={() => setInputAddressValue(address as `0x${string}`)}
+									onClick={() => {
+										setInputAddressValue(address as `0x${string}`);
+										setIsAddressEmpty(false);
+									}}
 									fontSize={'small'}
 									color={'gray.500'}
 								>
@@ -120,18 +146,36 @@ function useWithdrawUsdtModal() {
 									minLength={0}
 									value={inputAddressValue}
 									autoCapitalize={'none'}
-									onChange={e => setInputAddressValue(e.target.value)}
+									onChange={e => {
+										if (e.target.value) {
+											setIsAddressEmpty(false);
+										}
+										setInputAddressValue(e.target.value);
+									}}
 									placeholder={'0x...'}
 									border="2px solid #E2E8F0;"
 								/>
 							</InputGroup>
+							<Collapse
+								in={isAddressEmpty ? true : inputAddressValueMsg(inputAddressValue) !== ''}
+								animateOpacity
+							>
+								<Text fontSize={'sm'} mt={1} color={'red.500'}>
+									{isAddressEmpty
+										? 'Please enter a avlid address that starts with "0x"'
+										: inputAddressValueMsg(inputAddressValue)}
+								</Text>
+							</Collapse>
 						</FormControl>
 						<FormControl mt={'10px'}>
 							<Stack direction={'row'} justify={'space-between'} alignItems={'center'}>
 								<FormLabel fontWeight={'800'}>Amount</FormLabel>
 								<Text
 									cursor={'pointer'}
-									onClick={() => setInputValue(String(userFunds.hold))}
+									onClick={() => {
+										setAmountValue(String(userFunds.hold));
+										setIsAmountEmpay(false);
+									}}
 									fontSize={'small'}
 									color={'gray.500'}
 								>
@@ -140,29 +184,38 @@ function useWithdrawUsdtModal() {
 							</Stack>
 							<Input
 								position={'relative'}
-								value={initInputAmountValue(inputValue)}
+								value={initInputAmountValue(amountValue)}
 								autoCapitalize={'none'}
 								pl={5}
 								onChange={e => {
+									if (e.target.value) {
+										setIsAmountEmpay(false);
+									}
 									const changeValue = e.target.value.replaceAll(',', '');
 
 									// 非數字系列或逗點，不儲存進輸入欄位
 									if (!isNaN(Number(changeValue))) {
-										setInputValue(changeValue);
+										setAmountValue(changeValue);
 									}
 								}}
-								placeholder={''}
+								placeholder={'$'}
 								border="2px solid #E2E8F0;"
 							/>
 							<Text position={'absolute'} top={'41px'} left={2}>
-								{inputValue && '$'}
+								{amountValue && '$'}
 							</Text>
 							<Collapse
-								in={inputValueAndEthValueMsg(inputValue, ethValue, 'withdraw') !== ''}
+								in={
+									isAmountEmpay
+										? true
+										: inputValueAndEthValueMsg(amountValue, userFunds.hold, 'withdraw') !== ''
+								}
 								animateOpacity
 							>
 								<Text fontSize={'sm'} mt={1} color={'red.500'}>
-									{inputValueAndEthValueMsg(inputValue, ethValue, 'withdraw')}
+									{isAmountEmpay
+										? 'Please enter amount'
+										: inputValueAndEthValueMsg(amountValue, userFunds.hold, 'withdraw')}
 								</Text>
 							</Collapse>
 						</FormControl>
@@ -171,7 +224,7 @@ function useWithdrawUsdtModal() {
 						<Stack w={'100%'} align={'center'}>
 							<Button
 								isLoading={isWithdrawLoading}
-								isDisabled={inputValue === '' || inputAddressValue === ''}
+								// isDisabled={amountValue === '' || inputAddressValue === ''}
 								w={'100%'}
 								bg={'teal.500'}
 								color="#fff"
@@ -185,18 +238,20 @@ function useWithdrawUsdtModal() {
 			</Modal>
 		),
 		[
+			isDesktop,
 			isOpen,
 			onClose,
-			isDesktop,
-			inputValue,
-			ethValue,
 			inputAddressValue,
-			address,
-			isWithdrawLoading,
-			inputValueAndEthValueMsg,
+			isAddressEmpty,
+			inputAddressValueMsg,
+			userFunds.hold,
 			initInputAmountValue,
+			amountValue,
+			isAmountEmpay,
+			inputValueAndEthValueMsg,
+			isWithdrawLoading,
+			address,
 			confirm,
-			userFunds,
 		]
 	);
 

@@ -555,17 +555,29 @@ const dataSlice = createSlice({
 
 			// 更新 Volume 勾選狀態
 			if (queryStringArray.length > 0) {
-				const firstVolumeQueryString = queryStringArray.find(v => v.indexOf('volume') > -1);
+				// const firstVolumeQueryString = queryStringArray.find(v => v.indexOf('volume') > -1);
+				const firstVolumeQueryString = queryStringArray.find(stringValue =>
+					volumeRadioArray.find(radioValue => radioValue === stringValue)
+				);
 				if (firstVolumeQueryString) {
 					state.categoriesData[0].menuData[0].selectedValue = firstVolumeQueryString;
+				} else {
+					// 比對不到則為預設值
+					state.categoriesData[0].menuData[0].selectedValue = volumeRadioArray[0];
 				}
 			}
 
 			// 更新 Date 勾選狀態
 			if (queryStringArray.length > 0) {
-				const firstDateQueryString = queryStringArray.find(v => v.indexOf('date') > -1);
+				// const firstDateQueryString = queryStringArray.find(v => v.indexOf('date') > -1);
+				const firstDateQueryString = queryStringArray.find(stringValue =>
+					dateRadioArray.find(radioValue => radioValue === stringValue)
+				);
 				if (firstDateQueryString) {
 					state.categoriesData[0].menuData[1].selectedValue = firstDateQueryString;
+				} else {
+					// 比對不到則為預設值
+					state.categoriesData[0].menuData[1].selectedValue = dateRadioArray[0];
 				}
 			}
 

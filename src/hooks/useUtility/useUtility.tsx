@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { isAddress } from 'web3-validator';
 import { useBaseUrl } from '@/hooks';
 
 function useUtility() {
@@ -60,12 +61,25 @@ function useUtility() {
 		return '0xdAC17F958D2ee523a2206206994597C13D831ec7';
 	};
 
-	// 使用者輸入的金額數值 跟 錢包餘額做比對之後 要顯示的資訊
+	// 使用者輸入的錢包地址是否符合格式
+	const inputAddressValueMsg = (inputValue: string, type?: 'deposit' | 'withdraw') => {
+		if (inputValue) {
+			console.log('inputValue=>', inputValue);
+			if (!isAddress(inputValue)) {
+				return 'Please enter a avlid address that starts with "0x"';
+			}
+		}
+
+		return '';
+	};
+
+	// 使用者輸入的金額數值 跟 錢包的餘額(deposit) 或 存入平台的餘額(withdraw)做比對之後 要顯示的資訊
 	const inputValueAndEthValueMsg = (
 		inputValue: string,
 		ethValue: number,
 		type: 'deposit' | 'withdraw'
 	) => {
+		console.log('inputValueAndEthValueMsg');
 		if (inputValue) {
 			if (Number(inputValue) === 0 && !inputValue.includes('.')) {
 				return "Amount must can't be 0";
@@ -114,6 +128,7 @@ function useUtility() {
 		getContractAddress,
 		inputValueAndEthValueMsg,
 		initInputAmountValue,
+		inputAddressValueMsg,
 	};
 }
 
