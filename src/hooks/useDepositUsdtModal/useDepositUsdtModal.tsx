@@ -108,6 +108,12 @@ function useDepositUsdtModal() {
 	);
 
 	useEffect(() => {
+		// 開啟 Modal 資料恢復為預設
+		setInputValue('');
+		setIsShowInputLayout(true);
+	}, [isOpen]);
+
+	useEffect(() => {
 		// disaptch(getCategories());
 		if (currentChain) {
 			// 依據使用者一開始在哪條鏈上，來決定初始 Select 的值 不是在主鏈上就是 arbitrum
@@ -241,7 +247,7 @@ function useDepositUsdtModal() {
 								setInputValue(changeValue);
 							}
 						}}
-						placeholder={''}
+						placeholder={'$'}
 						border="2px solid #E2E8F0;"
 					/>
 					<Text position={'absolute'} top={'40px'} left={2}>
@@ -396,7 +402,7 @@ function useDepositUsdtModal() {
 										onChange={e => console.log(e.target.value)}
 									>
 										<option value="ethereumAsset">USDT</option>
-										<option value=""></option>
+										<option value="">USDT</option>
 									</Select>
 								</FormControl>
 							</Stack>
