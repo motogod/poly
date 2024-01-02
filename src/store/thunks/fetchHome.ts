@@ -130,7 +130,7 @@ const getMarketDetail = createAsyncThunk(
 );
 
 const clickCategoryEvent = createAsyncThunk(
-	'api/getMarketDetail',
+	'api/clickCategoryEvent',
 	async (params: { slug: string }) => {
 		const { slug } = params;
 		const resp = await CategoryClickEvent<GetMarketDetailType>({ action: 'click', slug });
