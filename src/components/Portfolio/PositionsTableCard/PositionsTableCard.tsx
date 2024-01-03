@@ -33,6 +33,11 @@ function PositionsTableCard() {
 				as={Stack}
 			>
 				<Select
+					_hover={{ bg: 'gray.100' }}
+					cursor={'pointer'}
+					_focusVisible={{
+						outline: 'none',
+					}}
 					border={'1px'}
 					borderColor={'gray.200'}
 					bg={'#fff'}

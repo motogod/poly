@@ -18,7 +18,7 @@ import {
 	PopoverBody,
 } from '@chakra-ui/react';
 import { BiSolidUserCircle, BiMenuAltLeft } from 'react-icons/bi';
-import LoggedInfoSectioin from '../LoggedInfoSectioin';
+import LoggedInfoSection from '../LoggedInfoSection';
 import LoggedMenuSection from '../LoggedMenuSection';
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
 import { zIndexPop } from '@/utils/zIndex';
@@ -64,7 +64,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 			return (
 				<>
 					<PopoverHeader>
-						<LoggedInfoSectioin close={onPopClose} />
+						<LoggedInfoSection close={onPopClose} />
 					</PopoverHeader>
 					<LoggedMenuSection close={onPopClose} type="pop" />
 					<PopoverFooter>

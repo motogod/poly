@@ -41,14 +41,17 @@ export default function LargeWithAppLinksAndSocial() {
 	const router = useRouter();
 
 	const changeLocale = (locale: any) => {
+		// 變更語系網址 shallow: true 避免刷新頁面
 		router.push(
 			{
 				pathname: router.pathname,
 				query: router.query,
 			},
 			router.asPath,
-			{ locale }
+			{ locale, shallow: true }
 		);
+		// 直接動態變換更新語系
+		i18n.changeLanguage(locale);
 	};
 
 	return (
@@ -69,6 +72,11 @@ export default function LargeWithAppLinksAndSocial() {
 						</Stack>
 						<Box mt="2" as={Stack}>
 							<Select
+								_hover={{ bg: 'gray.100' }}
+								cursor={'pointer'}
+								_focusVisible={{
+									outline: 'none',
+								}}
 								border={'1px'}
 								borderColor={'gray.200'}
 								bg={'#fff'}
@@ -89,13 +97,13 @@ export default function LargeWithAppLinksAndSocial() {
 
 					<Stack align={'flex-start'}>
 						<ListHeader>Markets</ListHeader>
-						<Box as="a" href={'#'}>
+						<Box as="a" href={'#'} _hover={{ color: 'gray.600' }}>
 							How it works
 						</Box>
-						<Box as="a" href={'#'}>
+						<Box as="a" href={'#'} _hover={{ color: 'gray.600' }}>
 							FAQ
 						</Box>
-						<Box as="a" href={'#'}>
+						<Box as="a" href={'#'} _hover={{ color: 'gray.600' }}>
 							{t('privacy_policy')}
 						</Box>
 					</Stack>

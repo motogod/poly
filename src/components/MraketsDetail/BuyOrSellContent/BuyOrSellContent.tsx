@@ -31,12 +31,13 @@ function BuyOrSellContent() {
 	const { hold } = useSelector((state: RootState) => state.authReducer.userFunds);
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
 
-	const {
-		ModalDom,
-		isOpen: modalIsOpen,
-		onOpen: modalOnOpen,
-		onClose: modalOnClose,
-	} = useLoginModal();
+	// 這邊的 hook 會導致觸發 disconnect 如果要導入 待處理
+	// const {
+	// 	ModalDom,
+	// 	isOpen: modalIsOpen,
+	// 	onOpen: modalOnOpen,
+	// 	onClose: modalOnClose,
+	// } = useLoginModal();
 
 	const {
 		getInputProps: getLimitInputProps,
@@ -96,6 +97,11 @@ function BuyOrSellContent() {
 				bg={'#fff'}
 			>
 				<Select
+					_hover={{ bg: 'gray.100' }}
+					cursor={'pointer'}
+					_focusVisible={{
+						outline: 'none',
+					}}
 					fontWeight={'800'}
 					border={'0px'}
 					borderRadius={'0px'}
@@ -199,7 +205,7 @@ function BuyOrSellContent() {
 					onClick={() => {
 						if (isAuthenticated) {
 						} else {
-							modalOnOpen();
+							// modalOnOpen();
 						}
 					}}
 					mt={'24px'}
@@ -245,7 +251,7 @@ function BuyOrSellContent() {
 						</Heading>
 					</Stack>
 				</Stack>
-				{modalIsOpen && ModalDom}
+				{/* {modalIsOpen && ModalDom} */}
 			</Stack>
 		</>
 	);

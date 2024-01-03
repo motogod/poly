@@ -1,18 +1,23 @@
-import { Center, Heading, Stack, Text, Grid, GridItem, Button, Image } from '@chakra-ui/react';
+import { Center, Heading, Stack, Text, Grid, GridItem, Button, Icon, Box } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
-import NextImage from 'next/image';
-import { Icon } from '@chakra-ui/react';
+import Image from 'next/image';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { HiCreditCard, PlaceIcon, ChooseMarketIcon, EarnIcon } from '../../../../public/assets/svg';
 import styles from './howItWork.module.scss';
+import Next from '../../../../public/next.svg';
 
 function HowItWorkSection() {
 	return (
 		<>
-			{/* <Stack p={0} m={0} position={'relative'} direction={'row'}>
-				<div className={styles.triangle} />
-				<div className={styles.skewRectangle} />
-			</Stack> */}
+			{/* <Image
+				src="/testHow.png"
+				alt="next"
+				sizes="100vw"
+				width={100}
+				height={100}
+				style={{ width: '100%', height: '500' }}
+			/> */}
+			{/* <div className={styles.triangle}></div> */}
 			<Stack mt={{ sm: '48px', md: '48px', lg: '120px' }} backgroundColor="gray.800">
 				<Stack px={paddingMainHorizontal}>
 					<Center>

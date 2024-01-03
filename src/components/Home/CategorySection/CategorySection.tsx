@@ -34,12 +34,24 @@ function CategorySection() {
 				<Center className={styles.tabsContainer}>
 					<CustomTabsOption>
 						<TabList>
-							<Tab _selected={{ bg: 'teal.500', color: '#fff' }}>All</Tab>
-							<Tab _selected={{ bg: 'teal.500', color: '#fff' }}>Business</Tab>
-							<Tab _selected={{ bg: 'teal.500', color: '#fff' }}>Crypto</Tab>
-							<Tab _selected={{ bg: 'teal.500', color: '#fff' }}>AI</Tab>
-							<Tab _selected={{ bg: 'teal.500', color: '#fff' }}>Politics</Tab>
-							<Tab _selected={{ bg: 'teal.500', color: '#fff' }}>Sports</Tab>
+							<Tab _hover={{ color: 'gray.800' }} _selected={{ bg: 'teal.500', color: '#fff' }}>
+								All
+							</Tab>
+							<Tab _hover={{ color: 'gray.800' }} _selected={{ bg: 'teal.500', color: '#fff' }}>
+								Business
+							</Tab>
+							<Tab _hover={{ color: 'gray.800' }} _selected={{ bg: 'teal.500', color: '#fff' }}>
+								Crypto
+							</Tab>
+							<Tab _hover={{ color: 'gray.800' }} _selected={{ bg: 'teal.500', color: '#fff' }}>
+								AI
+							</Tab>
+							<Tab _hover={{ color: 'gray.800' }} _selected={{ bg: 'teal.500', color: '#fff' }}>
+								Politics
+							</Tab>
+							<Tab _hover={{ color: 'gray.800' }} _selected={{ bg: 'teal.500', color: '#fff' }}>
+								Sports
+							</Tab>
 						</TabList>
 					</CustomTabsOption>
 				</Center>

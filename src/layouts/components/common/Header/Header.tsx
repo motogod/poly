@@ -44,6 +44,7 @@ function Header() {
 			<Stack direction="row" alignItems="center" spacing={1}>
 				<CircleIcon cursor="pointer" boxSize={12} color={PrimaryPink} />
 				<Heading
+					_hover={{ color: 'gray.600' }}
 					onClick={() => router.push('/')}
 					cursor="pointer"
 					size="md"
@@ -53,6 +54,7 @@ function Header() {
 					Gomarket
 				</Heading>
 				<Heading
+					_hover={{ color: 'gray.600' }}
 					display={{ lg: 'inline', md: 'none', sm: 'none' }}
 					onClick={() => router.push('/markets')}
 					cursor="pointer"
@@ -63,6 +65,7 @@ function Header() {
 					Markets
 				</Heading>
 				<Heading
+					_hover={{ color: 'gray.600' }}
 					display={{ lg: 'inline', md: 'none', sm: 'none' }}
 					cursor="pointer"
 					size="sm"

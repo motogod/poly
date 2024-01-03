@@ -41,7 +41,7 @@ import {
 import { CommunityIcon } from '../../../../../../public/assets/svg';
 import SocialPng from './social.png';
 import HeaderPopover from '../HeaderPopover';
-import LoggedInfoSectioin from '../LoggedInfoSectioin';
+import LoggedInfoSectioin from '../LoggedInfoSection';
 import LoggedMenuSection from '../LoggedMenuSection';
 import { zIndexHeader } from '@/utils/zIndex';
 
@@ -225,9 +225,14 @@ function HeaderRightSideSection() {
 						display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline-flex' }}
 						direction={'row'}
 						align={'center'}
-						spacing={'32px'}
+						spacing={'16px'}
 					>
-						<Stack onClick={() => router.push('/portfolio')} cursor={'pointer'}>
+						<Stack
+							p={'12px'}
+							_hover={{ bg: 'gray.100', p: '12px', borderRadius: 6 }}
+							onClick={() => router.push('/portfolio')}
+							cursor={'pointer'}
+						>
 							<Text fontSize={'md'} color={'gray.800'} lineHeight={'12px'}>
 								{checkBalance()}
 							</Text>
@@ -235,7 +240,12 @@ function HeaderRightSideSection() {
 								Portfolio
 							</Heading>
 						</Stack>
-						<Stack onClick={() => router.push('/funds')} cursor={'pointer'}>
+						<Stack
+							p={'12px'}
+							_hover={{ bg: 'gray.100', p: '12px', borderRadius: 6 }}
+							onClick={() => router.push('/funds')}
+							cursor={'pointer'}
+						>
 							<Text fontSize={'16px'} color={'gray.800'} lineHeight={'12px'}>
 								{`$${userFunds.hold}`}
 							</Text>
