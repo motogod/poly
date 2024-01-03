@@ -32,12 +32,12 @@ function BuyOrSellContent() {
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
 
 	// 這邊的 hook 會導致觸發 disconnect 如果要導入 待處理
-	// const {
-	// 	ModalDom,
-	// 	isOpen: modalIsOpen,
-	// 	onOpen: modalOnOpen,
-	// 	onClose: modalOnClose,
-	// } = useLoginModal();
+	const {
+		ModalDom,
+		isOpen: modalIsOpen,
+		onOpen: modalOnOpen,
+		onClose: modalOnClose,
+	} = useLoginModal();
 
 	const {
 		getInputProps: getLimitInputProps,
@@ -251,7 +251,7 @@ function BuyOrSellContent() {
 						</Heading>
 					</Stack>
 				</Stack>
-				{/* {modalIsOpen && ModalDom} */}
+				{modalIsOpen && ModalDom}
 			</Stack>
 		</>
 	);

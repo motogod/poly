@@ -82,8 +82,10 @@ function useLoginModal() {
 
 	// 確保登入視窗打開時，清除 connect 的狀態，避免 ConnectorAlreadyConnectedError
 	useEffect(() => {
-		disconnect();
-	}, [disconnect]);
+		if (isOpen) {
+			disconnect();
+		}
+	}, [disconnect, isOpen]);
 
 	useEffect(() => {
 		// Google 新視窗登入成功時，關閉原本的登入 Modal
