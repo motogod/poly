@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 // import ScrollContainer from 'react-indiana-drag-scroll';
+import { ScrollContainer } from 'react-indiana-drag-scroll';
+import 'react-indiana-drag-scroll/dist/style.css';
 import { Element, scroller } from 'react-scroll';
 import { useTranslation } from 'next-i18next';
 import {
@@ -114,6 +116,7 @@ function TopicCardList() {
 					/>
 				</Stack>
 			</Stack>
+
 			<Stack id="topicCard" className={styles.listContainer}>
 				<Stack spacing={'16px'} display="grid" gridAutoFlow="column" my="0.5">
 					{dummyDataArray.map((value, index) => (
