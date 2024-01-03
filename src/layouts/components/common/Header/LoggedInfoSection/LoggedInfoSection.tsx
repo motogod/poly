@@ -83,6 +83,8 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 			</Stack>
 			<Stack mt={'12px'} gap={'12px'} align={'center'} direction={'row'} justify={'space-between'}>
 				<Stack
+					_hover={{ bg: 'gray.200' }}
+					borderRadius={6}
 					cursor={'pointer'}
 					onClick={() => {
 						close();
@@ -112,6 +114,8 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 					</Stack>
 				</Stack>
 				<Stack
+					_hover={{ bg: 'gray.200' }}
+					borderRadius={6}
 					cursor={'pointer'}
 					onClick={() => {
 						close();

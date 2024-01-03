@@ -42,7 +42,7 @@ function useWithdrawUsdtModal() {
 	);
 
 	const { address } = useAccount();
-
+	console.log('useWithdrawUsdtModal address =>', address);
 	const { ethValue } = useContractForRead();
 
 	const { inputValueAndEthValueMsg, initInputAmountValue, inputAddressValueMsg } = useUtility();
@@ -90,6 +90,7 @@ function useWithdrawUsdtModal() {
 
 	useEffect(() => {
 		// 開啟 Modal 資料恢復為預設
+		console.log('useWithdrawUsdtModal useEffect');
 		setInputAddressValue('');
 		setIsAddressEmpty(false);
 		setAmountValue('');
@@ -146,18 +147,20 @@ function useWithdrawUsdtModal() {
 						<FormControl mt={'10px'}>
 							<Stack direction={'row'} justify={'space-between'} alignItems={'center'}>
 								<FormLabel fontWeight={'800'}>Address</FormLabel>
-								<Text
-									textDecoration={'underline'}
-									cursor={'pointer'}
-									onClick={() => {
-										setInputAddressValue(address as `0x${string}`);
-										setIsAddressEmpty(false);
-									}}
-									fontSize={'small'}
-									color={'gray.500'}
-								>
-									{`Use connected`}
-								</Text>
+								{address && (
+									<Text
+										textDecoration={'underline'}
+										cursor={'pointer'}
+										onClick={() => {
+											setInputAddressValue(address as `0x${string}`);
+											setIsAddressEmpty(false);
+										}}
+										fontSize={'small'}
+										color={'gray.500'}
+									>
+										{`Use connected`}
+									</Text>
+								)}
 							</Stack>
 							<InputGroup>
 								<Input

@@ -392,6 +392,10 @@ function useDepositUsdtModal() {
 								<FormControl>
 									<FormLabel fontWeight={'800'}>Asset</FormLabel>
 									<Select
+										cursor={'pointer'}
+										_focusVisible={{
+											outline: 'none',
+										}}
 										disabled={true}
 										border={'1px'}
 										borderColor={'gray.200'}
@@ -410,7 +414,11 @@ function useDepositUsdtModal() {
 								<FormControl>
 									<FormLabel fontWeight={'800'}>Network</FormLabel>
 									<Select
+										_hover={{ bg: 'gray.100' }}
 										cursor={'pointer'}
+										_focusVisible={{
+											outline: 'none',
+										}}
 										border={'1px'}
 										borderColor={'gray.200'}
 										bg={'#fff'}
