@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import {
@@ -20,7 +20,13 @@ import {
 	SkeletonText,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMarketDetail, AppDispatch, RootState, queryUrlToChangeMenuStatus } from '@/store';
+import {
+	getMarketDetail,
+	AppDispatch,
+	RootState,
+	queryUrlToChangeMenuStatus,
+	getMarketOrderBook,
+} from '@/store';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import {
 	LineChart,
@@ -88,6 +94,13 @@ function LineChartCard() {
 	const router = useRouter();
 
 	const dispatch = useDispatch<AppDispatch>();
+
+	useEffect(() => {
+		if (Object.keys(marketDetailData).length > 0) {
+			console.log('marketDetailData', marketDetailData);
+			dispatch(getMarketOrderBook({ slug: marketDetailData.category.slug, outcome: 'YES' }));
+		}
+	}, [dispatch, marketDetailData]);
 
 	return (
 		<Card shadow="lg" border="1px solid #E2E8F0;" borderRadius="3xl">
