@@ -12,6 +12,15 @@ export const GetMarketDetail = <T>(params: { slug: string }) =>
 		}
 	);
 
+export const GetMarketOrderBook = <T>(params: { slug: string; outcome: string }) =>
+	requestWithSession.get<T>(
+		`/markets/${params.slug}/orderbook?outcome=${params.outcome}`,
+		{},
+		{
+			timeout: 15000,
+		}
+	);
+
 // nonce
 export const GetNonceFromServer = <T>(params: any) =>
 	requestWithSession.get<T>('/auth/nonce', params, { timeout: 15000 });

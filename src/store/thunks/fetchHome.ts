@@ -7,6 +7,7 @@ import {
 	GetMarketDetail,
 	GetMarketDetailType,
 	CategoryClickEvent,
+	GetMarketOrderBook,
 } from '@/api';
 import { DateRadioType, VolumeType } from '@/store/slice/dataSlice';
 
@@ -129,6 +130,17 @@ const getMarketDetail = createAsyncThunk(
 	}
 );
 
+const getMarketOrderBook = createAsyncThunk(
+	'api/getMarketOrderBook',
+	async (params: { slug: string; outcome: 'YES' | 'NO' }) => {
+		const { slug, outcome } = params;
+		const resp = await GetMarketOrderBook<GetMarketDetailType>({ slug, outcome });
+		console.log('getMarketOrderBook resp', resp);
+
+		return resp;
+	}
+);
+
 const clickCategoryEvent = createAsyncThunk(
 	'api/clickCategoryEvent',
 	async (params: { slug: string }) => {
@@ -140,4 +152,4 @@ const clickCategoryEvent = createAsyncThunk(
 	}
 );
 
-export { getMarkets, getMarketDetail, clickCategoryEvent };
+export { getMarkets, getMarketDetail, clickCategoryEvent, getMarketOrderBook };
