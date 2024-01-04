@@ -34,33 +34,32 @@ const empty_array = [...Array(13)];
 // const paddingMainVertical = { lg: '120px', md: '48px', sm: '48px' };
 
 function MarketsDetail() {
-	// const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
-	// const [transactionType, setTransactionType] = useState<TransactionEnum>(TransactionEnum.buy);
+	const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
+	const [transactionType, setTransactionType] = useState<TransactionEnum>(TransactionEnum.buy);
 
 	const router = useRouter();
 
-	// const { t } = useTranslation();
+	const { t } = useTranslation();
 
 	const dispatch = useDispatch<AppDispatch>();
-	// const { isMarketDetailLoading } = useSelector((state: RootState) => state.homeReducer);
+	const { isMarketDetailLoading } = useSelector((state: RootState) => state.homeReducer);
 
-	// const isDesktop = useMediaQuery({
-	// 	query: '(min-width: 768px)',
-	// });
+	const isDesktop = useMediaQuery({
+		query: '(min-width: 768px)',
+	});
 
 	useEffect(() => {
-		// if (router.isReady) {
-		// 	const { marketSlug } = router.query;
-		// 	if (marketSlug) {
-		// 		dispatch(getMarketDetail({ slug: marketSlug as string }));
-		// 	}
-		// }
+		if (router.isReady) {
+			const { marketSlug } = router.query;
+			if (marketSlug) {
+				dispatch(getMarketDetail({ slug: marketSlug as string }));
+			}
+		}
 	}, [router, dispatch]);
 
 	return (
 		<Stack mt={headerHeight}>
-			<Text>Detail</Text>
-			{/* <Stack
+			<Stack
 				// px={{ md: 116, sm: 8 }}
 				px={paddingMainHorizontal}
 				py={{ md: '60px', sm: '40px' }}
@@ -119,7 +118,7 @@ function MarketsDetail() {
 						</Stack>
 					</ModalBody>
 				</ModalContent>
-			</Modal> */}
+			</Modal>
 		</Stack>
 	);
 }
