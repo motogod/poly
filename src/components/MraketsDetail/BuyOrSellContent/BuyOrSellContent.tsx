@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	Stack,
 	Card,
@@ -14,8 +14,8 @@ import {
 } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch, userClickYesOrNoButton } from '@/store';
 import { useLoginModal } from '@/hooks';
 import BuyOrSellButton from '../Buttons/BuyOrSellButton';
 import YesOrNoButton from '../Buttons/YesOrNoButton';
@@ -28,9 +28,13 @@ function BuyOrSellContent() {
 	const [isYes, setIsYes] = useState(true);
 	const [selected, setSelected] = useState<SelectedType>('market');
 
+	const dispatch = useDispatch<AppDispatch>();
+
 	const { hold } = useSelector((state: RootState) => state.authReducer.userFunds);
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
-
+	const { isUserClickBuyButton, marketDetailData } = useSelector(
+		(state: RootState) => state.homeReducer
+	);
 	// 這邊的 hook 會導致觸發 disconnect 如果要導入 待處理
 	const {
 		ModalDom,
@@ -137,16 +141,23 @@ function BuyOrSellContent() {
 						Select Outcome
 					</Heading>
 					<YesOrNoButton
-						onClick={() => setIsYes(true)}
+						onClick={() => {
+							// 一併去改變 LineChartCard 要顯示 Buy or Sell
+							dispatch(userClickYesOrNoButton(true));
+							setIsYes(true);
+						}}
 						selected={isYes}
 						leftText="Yes"
-						rightText="0.6 USDT"
+						rightText={`${marketDetailData?.outcome ? marketDetailData?.outcome?.yes : ''} USDT`}
 					/>
 					<YesOrNoButton
-						onClick={() => setIsYes(false)}
+						onClick={() => {
+							dispatch(userClickYesOrNoButton(false));
+							setIsYes(false);
+						}}
 						selected={!isYes}
 						leftText="No"
-						rightText="0.4 USDT"
+						rightText={`${marketDetailData?.outcome ? marketDetailData?.outcome?.no : ''} USDT`}
 					/>
 				</Stack>
 				{selected === 'limit' && (

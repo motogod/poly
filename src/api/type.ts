@@ -32,6 +32,17 @@ export type GetMarketDetailType = {
 	data: MarketsItemType;
 };
 
+export type OrderBookDataType = {
+	bids: [{ price: number; quantity: number }];
+	asks: [{ price: number; quantity: number }];
+};
+
+export type OrderBookType = {
+	message: string;
+	statusCode: number;
+	data: OrderBookDataType;
+};
+
 export type CheckAuthType = {
 	data: {
 		isAuthenticated: boolean;

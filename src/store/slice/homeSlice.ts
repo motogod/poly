@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import moment from 'moment';
-import { getMarkets, getMarketDetail } from '../thunks/fetchHome';
-import { GetMarketsType, MarketsItemType } from '@/api';
+import {
+	getMarkets,
+	getMarketDetail,
+	getMarketOrderBookYes,
+	getMarketOrderBookNo,
+} from '../thunks/fetchHome';
+import { GetMarketsType, MarketsItemType, OrderBookDataType, OrderBookType } from '@/api';
 import { VolumeType } from './dataSlice';
 
 type HomeState = {
@@ -9,6 +14,9 @@ type HomeState = {
 	markets: GetMarketsType;
 	isMarketDetailLoading: boolean;
 	marketDetailData: MarketsItemType;
+	isUserClickBuyButton: boolean; // 使用者在 /marketsDetail 的 Buy 跟 Sell 切換點擊
+	orderBookYesData: OrderBookDataType;
+	orderBookNoData: OrderBookDataType;
 };
 
 const initialState: HomeState = {
@@ -16,12 +24,20 @@ const initialState: HomeState = {
 	markets: {} as GetMarketsType,
 	isMarketDetailLoading: true,
 	marketDetailData: {} as MarketsItemType,
+	isUserClickBuyButton: true,
+	orderBookYesData: {} as OrderBookDataType,
+	orderBookNoData: {} as OrderBookDataType,
 };
 
 const homeSlice = createSlice({
 	name: 'home',
 	initialState,
-	reducers: {},
+	reducers: {
+		// 使用者點擊 Yes or No 改變 LineChartCard 上要顯示的 Yes or No
+		userClickYesOrNoButton: (state, action) => {
+			state.isUserClickBuyButton = action.payload;
+		},
+	},
 	extraReducers: builder => {
 		builder.addCase(getMarkets.pending, state => {
 			console.log('getMarkets pending');
@@ -53,7 +69,32 @@ const homeSlice = createSlice({
 			console.log('getMarketDetail rejected');
 			state.isMarketDetailLoading = false;
 		});
+
+		builder.addCase(getMarketOrderBookYes.pending, state => {
+			console.log('getMarketOrderBookYes pending');
+		});
+		builder.addCase(getMarketOrderBookYes.fulfilled, (state, action) => {
+			console.log('getMarketOrderBookYes fulfilled', action);
+			// YES
+			state.orderBookYesData = action.payload.data;
+		});
+		builder.addCase(getMarketOrderBookYes.rejected, state => {
+			console.log('getMarketOrderBookYes rejected');
+		});
+
+		builder.addCase(getMarketOrderBookNo.pending, state => {
+			console.log('getMarketOrderBookNo pending');
+		});
+		builder.addCase(getMarketOrderBookNo.fulfilled, (state, action) => {
+			console.log('getMarketOrderBookNo fulfilled', action);
+			// NO
+			state.orderBookNoData = action.payload.data;
+		});
+		builder.addCase(getMarketOrderBookNo.rejected, state => {
+			console.log('getMarketOrderBookNo rejected');
+		});
 	},
 });
 
+export const { userClickYesOrNoButton } = homeSlice.actions;
 export const homeReducer = homeSlice.reducer;
