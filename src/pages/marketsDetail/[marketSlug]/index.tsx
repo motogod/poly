@@ -1,5 +1,5 @@
 import MraketsDetail from '@/components/MraketsDetail';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 function marketsDetail() {
 	return (
@@ -9,13 +9,12 @@ function marketsDetail() {
 	);
 }
 
-export async function getServerSideProps({ locale }: { locale: string }) {
-	return {
-		props: {
-			...(await serverSideTranslations(locale, ['common'])),
-			// Will be passed to the page component as props
-		},
-	};
-}
+// export async function getServerSideProps({ locale }: { locale: string }) {
+// 	return {
+// 		props: {
+// 			...(await serverSideTranslations(locale, ['common'])),
+// 		},
+// 	};
+// }
 
 export default marketsDetail;

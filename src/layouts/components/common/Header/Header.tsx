@@ -25,6 +25,9 @@ function Header() {
 	useEffect(() => {
 		if (isAuthenticated) {
 			dispatch(getUserFunds({}));
+			setInterval(() => {
+				dispatch(getUserFunds({}));
+			}, 60000);
 		}
 	}, [dispatch, isAuthenticated]);
 

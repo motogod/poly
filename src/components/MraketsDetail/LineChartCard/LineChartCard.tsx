@@ -25,7 +25,8 @@ import {
 	AppDispatch,
 	RootState,
 	queryUrlToChangeMenuStatus,
-	getMarketOrderBook,
+	getMarketOrderBookYes,
+	getMarketOrderBookNo,
 } from '@/store';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import {
@@ -87,7 +88,7 @@ const data = [
 ];
 
 function LineChartCard() {
-	const { isMarketDetailLoading, marketDetailData } = useSelector(
+	const { isMarketDetailLoading, marketDetailData, isUserClickBuyButton } = useSelector(
 		(state: RootState) => state.homeReducer
 	);
 
@@ -96,11 +97,29 @@ function LineChartCard() {
 	const dispatch = useDispatch<AppDispatch>();
 
 	useEffect(() => {
-		if (Object.keys(marketDetailData).length > 0) {
-			console.log('marketDetailData', marketDetailData);
-			dispatch(getMarketOrderBook({ slug: marketDetailData.category.slug, outcome: 'YES' }));
+		if (router.isReady) {
+			const { marketSlug } = router.query;
+			// call API 取得的 marketDetailData 資料 在 redux 裡與網址的一樣，才去 call YES NO 的相關 API資料
+			if (Object.keys(marketDetailData).length > 0 && marketDetailData.slug === marketSlug) {
+				dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
+				dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
+			}
 		}
-	}, [dispatch, marketDetailData]);
+	}, [dispatch, marketDetailData, router]);
+
+	const renderBuyOrSellInfo = () => {
+		const { outcome } = marketDetailData;
+		return (
+			<>
+				<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'} lineHeight={'17px'}>
+					{isUserClickBuyButton ? 'Yes' : 'No'}
+				</Heading>
+				<Heading fontSize={'24px'} color={'gray.800'} fontWeight={'700'} lineHeight={'14px'}>
+					{`${isUserClickBuyButton ? outcome.yes : outcome.no} USDT`}
+				</Heading>
+			</>
+		);
+	};
 
 	return (
 		<Card shadow="lg" border="1px solid #E2E8F0;" borderRadius="3xl">
@@ -190,12 +209,7 @@ function LineChartCard() {
 							</Stack>
 						</Stack>
 						<Stack mt={'32px'} align={'start'}>
-							<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'} lineHeight={'17px'}>
-								Yes
-							</Heading>
-							<Heading fontSize={'24px'} color={'gray.800'} fontWeight={'700'} lineHeight={'14px'}>
-								0.6 USDT
-							</Heading>
+							{renderBuyOrSellInfo()}
 						</Stack>
 						<Stack align="start" direction={'row'} mt={'32px'}>
 							<Heading fontSize={'14px'} color={'green.600'} fontWeight={'700'}>

@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { homeReducer } from './slice/homeSlice';
+import { homeReducer, userClickYesOrNoButton } from './slice/homeSlice';
 import { authReducer, showAuthToast } from './slice/authSlice';
 import { ipReducer, setIpState } from './slice/ipSlice';
 import { toastReducer, showToast, resetToast } from './slice/toastSlice';
@@ -56,6 +56,7 @@ export {
 	resetVolumeAndDateStatus,
 	filterStartDateAndEndDateMarket,
 	filterSortSelector,
+	userClickYesOrNoButton,
 };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';
