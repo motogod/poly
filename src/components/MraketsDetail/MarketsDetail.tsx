@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import {
 	Stack,
 	Button,
@@ -39,7 +39,7 @@ function MarketsDetail() {
 
 	const router = useRouter();
 
-	// const { t } = useTranslation();
+	const { t } = useTranslation();
 
 	const dispatch = useDispatch<AppDispatch>();
 	const { isMarketDetailLoading } = useSelector((state: RootState) => state.homeReducer);

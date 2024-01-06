@@ -17,7 +17,7 @@ export type DateRadioType =
 	| 'date-week'
 	| 'date-month'
 	| 'date-custom';
-const dateRadioArray: Array<DateRadioType> = [
+export const dateRadioArray: Array<DateRadioType> = [
 	'date-default',
 	'date-today',
 	'date-week',

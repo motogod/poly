@@ -88,7 +88,7 @@ const data = [
 ];
 
 function LineChartCard() {
-	const { isMarketDetailLoading, marketDetailData, isUserClickBuyButton } = useSelector(
+	const { isMarketDetailLoading, marketDetailData, isUserClickYesOrNo } = useSelector(
 		(state: RootState) => state.homeReducer
 	);
 
@@ -112,10 +112,10 @@ function LineChartCard() {
 		return (
 			<>
 				<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'} lineHeight={'17px'}>
-					{isUserClickBuyButton ? 'Yes' : 'No'}
+					{isUserClickYesOrNo ? 'Yes' : 'No'}
 				</Heading>
 				<Heading fontSize={'24px'} color={'gray.800'} fontWeight={'700'} lineHeight={'14px'}>
-					{`${isUserClickBuyButton ? outcome.yes : outcome.no} USDT`}
+					{`${isUserClickYesOrNo ? outcome.yes : outcome.no} USDT`}
 				</Heading>
 			</>
 		);

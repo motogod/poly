@@ -14,7 +14,7 @@ type HomeState = {
 	markets: GetMarketsType;
 	isMarketDetailLoading: boolean;
 	marketDetailData: MarketsItemType;
-	isUserClickBuyButton: boolean; // 使用者在 /marketsDetail 的 Buy 跟 Sell 切換點擊
+	isUserClickYesOrNo: boolean; // 使用者在 /marketsDetail 的 Yes 跟 No 切換點擊
 	orderBookYesData: OrderBookDataType;
 	orderBookNoData: OrderBookDataType;
 };
@@ -24,7 +24,7 @@ const initialState: HomeState = {
 	markets: {} as GetMarketsType,
 	isMarketDetailLoading: true,
 	marketDetailData: {} as MarketsItemType,
-	isUserClickBuyButton: true,
+	isUserClickYesOrNo: true,
 	orderBookYesData: {} as OrderBookDataType,
 	orderBookNoData: {} as OrderBookDataType,
 };
@@ -35,7 +35,7 @@ const homeSlice = createSlice({
 	reducers: {
 		// 使用者點擊 Yes or No 改變 LineChartCard 上要顯示的 Yes or No
 		userClickYesOrNoButton: (state, action) => {
-			state.isUserClickBuyButton = action.payload;
+			state.isUserClickYesOrNo = action.payload;
 		},
 	},
 	extraReducers: builder => {
