@@ -39,7 +39,8 @@ function CategoryCard({ data, isLoading }: { data: MarketsItemType; isLoading?: 
 			<Card
 				onClick={() => {
 					dispatch(clickCategoryEvent({ slug }));
-					router.push(`/marketsDetail/${slug}`, undefined, { shallow: true });
+					// router.push(`/marketsDetail/${slug}`, undefined, { shallow: true });
+					slug ? router.push(`/marketsDetail?marketSlug=${slug}`) : null;
 				}}
 				opacity={isLoading ? 0.5 : 1}
 				cursor="pointer"
