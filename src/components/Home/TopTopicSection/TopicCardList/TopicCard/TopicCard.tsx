@@ -10,7 +10,7 @@ function TopicCard({ data, index }: any) {
 
 	return (
 		<Card
-			onClick={() => router.push('./marketsDetail')}
+			onClick={() => router.push('./')}
 			cursor="pointer"
 			width="xs"
 			ml={{ md: index === 0 ? '116px' : '0px', sm: index === 0 ? '16px' : '0px' }}

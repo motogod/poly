@@ -51,6 +51,7 @@ function MarketsDetail() {
 	useEffect(() => {
 		if (router.isReady) {
 			const { marketSlug } = router.query;
+			console.log('router.query', router.query);
 			if (marketSlug) {
 				dispatch(getMarketDetail({ slug: marketSlug as string }));
 			}
