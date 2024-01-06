@@ -1,5 +1,5 @@
 import MraketsDetail from '@/components/MraketsDetail';
-// import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 function marketsDetail() {
 	return (

@@ -20,7 +20,7 @@ import {
 	ScaleFade,
 } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
-import { BiFilter } from 'react-icons/bi';
+import { BiFilter, BiX } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	getMarkets,
@@ -44,6 +44,8 @@ import {
 	VolumeType,
 	SortDescType,
 	sortSelectorArray,
+	volumeRadioArray,
+	dateRadioArray,
 } from '@/store/slice/dataSlice';
 
 const additionalHeight = '100px';
@@ -150,6 +152,32 @@ function Markets() {
 		};
 	};
 
+	// 確認任一選單是否有被勾選
+	const itemsIsClicked = () => {
+		let isAtLeastOneItemClicked = false;
+
+		categoriesData?.forEach(menuValue => {
+			// 如果 Volume 不是第一個預設值
+			if (menuValue?.menuData[0].selectedValue !== volumeRadioArray[0]) {
+				isAtLeastOneItemClicked = true;
+			}
+			// 如果 Date 不是第一個預設值
+			if (menuValue?.menuData[1].selectedValue !== dateRadioArray[0]) {
+				isAtLeastOneItemClicked = true;
+			}
+			// 如果任一個分選選單有被勾選
+			menuValue?.menuData[2].subMenuData.forEach(subMenuValue => {
+				subMenuValue.childrenCategories.forEach(childrenMenuValue => {
+					if (childrenMenuValue.itemSelected) {
+						isAtLeastOneItemClicked = true;
+					}
+				});
+			});
+		});
+
+		return isAtLeastOneItemClicked;
+	};
+
 	// 使用者每次點擊 Filter 相關選單去更新 url 時，觸發該區段 call API
 	useEffect(() => {
 		if (router.isReady) {
@@ -234,7 +262,7 @@ function Markets() {
 
 	const renderSelector = () => {
 		return (
-			<Stack>
+			<Stack w={'100%'} align={'flex-end'}>
 				<Select
 					_hover={{ bg: 'gray.100' }}
 					cursor={'pointer'}
@@ -264,6 +292,13 @@ function Markets() {
 		);
 	};
 
+	const resetDefautStatus = () => {
+		setSelectorValue(sortSelectorArray[0]); // 排序 Selector 恢復第一個預設值
+		dispatch(getCategories()); // 重新撈取分類選單
+		dispatch(resetVolumeAndDateStatus({})); // 恢復 Volume 和 Date 相關選單資料為預設值
+		router.push('/markets', undefined, { shallow: true }); // 恢復預設網址 但不重新刷新網頁
+	};
+
 	return (
 		<Stack
 			h={`calc(100vh - ${headerHeight} - ${additionalHeight})`}
@@ -282,7 +317,21 @@ function Markets() {
 				<Stack w="290px">
 					<Filter />
 				</Stack>
-				{renderSelector()}
+				<Stack pl={4} direction={'row'} justify={'space-between'} flexShrink={36} w={'100%'}>
+					{itemsIsClicked() ? (
+						<ScaleFade initialScale={0.9} in={itemsIsClicked()}>
+							<Button
+								onClick={() => resetDefautStatus()}
+								rightIcon={<BiX />}
+								color={'gray.500'}
+								variant="outline"
+							>
+								Clear All
+							</Button>
+						</ScaleFade>
+					) : null}
+					{renderSelector()}
+				</Stack>
 			</Stack>
 			{/* for Mobile filter TabDom height is 64px */}
 			{TabDom}
@@ -386,11 +435,7 @@ function Markets() {
 					>
 						<Button
 							w={'100%'}
-							onClick={() => {
-								dispatch(getCategories());
-								dispatch(resetVolumeAndDateStatus({}));
-								router.push('/markets', undefined, { shallow: true });
-							}}
+							onClick={() => resetDefautStatus()}
 							bg="#fff"
 							borderColor="#ccd0d5"
 							color="teal.500"

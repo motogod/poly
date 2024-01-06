@@ -15,7 +15,13 @@ import {
 import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch, userClickYesOrNoButton } from '@/store';
+import {
+	RootState,
+	AppDispatch,
+	userClickYesOrNoButton,
+	getMarketOrderBookYes,
+	getMarketOrderBookNo,
+} from '@/store';
 import { useLoginModal } from '@/hooks';
 import BuyOrSellButton from '../Buttons/BuyOrSellButton';
 import YesOrNoButton from '../Buttons/YesOrNoButton';
@@ -32,7 +38,7 @@ function BuyOrSellContent() {
 
 	const { hold } = useSelector((state: RootState) => state.authReducer.userFunds);
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
-	const { isUserClickBuyButton, marketDetailData } = useSelector(
+	const { isUserClickYesOrNo, marketDetailData } = useSelector(
 		(state: RootState) => state.homeReducer
 	);
 	// 這邊的 hook 會導致觸發 disconnect 如果要導入 待處理
@@ -142,6 +148,7 @@ function BuyOrSellContent() {
 					</Heading>
 					<YesOrNoButton
 						onClick={() => {
+							dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
 							// 一併去改變 LineChartCard 要顯示 Buy or Sell
 							dispatch(userClickYesOrNoButton(true));
 							setIsYes(true);
@@ -152,6 +159,7 @@ function BuyOrSellContent() {
 					/>
 					<YesOrNoButton
 						onClick={() => {
+							dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
 							dispatch(userClickYesOrNoButton(false));
 							setIsYes(false);
 						}}
