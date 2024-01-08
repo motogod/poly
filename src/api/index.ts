@@ -65,4 +65,8 @@ export const GetCategories = <T>(params: any) =>
 export const CategoryClickEvent = <T>(params: any) =>
 	requestWithSession.post<T>('/events/markets', params, { timeout: 15000 });
 
+// Get protfolio orders
+export const GetPortfolioOrders = <T>(params: any) =>
+	requestWithSession.get<T>('/orders', params, { timeout: 15000 });
+
 export * from './type';

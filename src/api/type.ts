@@ -184,3 +184,26 @@ export type GetCategoriesType = {
 	message: string;
 	statusCode: number;
 };
+
+export type GetPortfolioType = {
+	data: [
+		{
+			id: string;
+			status: string;
+			type: string;
+			direction: string | null;
+			outcome: boolean;
+			market: {
+				id: string;
+				slug: string;
+				title: string;
+			};
+			price: number;
+			closingPrice: number;
+			closedAmount: number;
+			totalAmount: number;
+		}
+	];
+	message: string;
+	statusCode: number;
+};
