@@ -141,6 +141,12 @@ const authSlice = createSlice({
 				state.checkAuthSuccess = true;
 				state.checkAuthTitle = 'Logout suceesfully';
 				state.user = { address: '', email: '', id: '', username: '', origin: '' };
+				state.userFunds = {
+					hold: 0.0,
+					load: 0.0,
+					symbol: '',
+					total: 0.0,
+				};
 			}
 		});
 		builder.addCase(logout.rejected, state => {

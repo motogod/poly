@@ -25,9 +25,8 @@ function About() {
 					</>
 				) : (
 					<>
-						{' '}
 						<Text mt={'20px'} fontSize={'md'} color={'gray.600'}>
-							{marketDetailData?.description}
+							<div dangerouslySetInnerHTML={{ __html: `${marketDetailData?.description}` }} />
 						</Text>
 					</>
 				)}
