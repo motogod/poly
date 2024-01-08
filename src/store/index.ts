@@ -4,6 +4,7 @@ import { homeReducer, userClickYesOrNoButton } from './slice/homeSlice';
 import { authReducer, showAuthToast } from './slice/authSlice';
 import { ipReducer, setIpState } from './slice/ipSlice';
 import { toastReducer, showToast, resetToast } from './slice/toastSlice';
+import { portfolioReducer } from './slice/portfolioSlice';
 import {
 	dataReducer,
 	handleClickMenu,
@@ -26,6 +27,7 @@ export const store = configureStore({
 		ipReducer,
 		toastReducer,
 		dataReducer,
+		portfolioReducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -61,3 +63,4 @@ export {
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';
 export * from './thunks/fetchData';
+export * from './thunks/fetchPortfolio';
