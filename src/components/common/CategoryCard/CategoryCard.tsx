@@ -22,8 +22,9 @@ import {
 import { SettingsIcon } from '@chakra-ui/icons';
 import { HiChartBar } from 'react-icons/hi';
 import { useDispatch } from 'react-redux';
-import { clickCategoryEvent, AppDispatch } from '@/store';
+import { clickCategoryEvent, AppDispatch, queryUrlToChangeMenuStatus } from '@/store';
 import { MarketsItemType } from '@/api/type';
+import { zIndexMinimum } from '@/utils/zIndex';
 
 function CategoryCard({ data, isLoading }: { data: MarketsItemType; isLoading?: boolean }) {
 	const router = useRouter();
@@ -60,7 +61,17 @@ function CategoryCard({ data, isLoading }: { data: MarketsItemType; isLoading?: 
 							borderRadius="lg"
 						/>
 						<Stack pl={1}>
-							<Heading size="xs" color="gray.500" _hover={{ color: 'gray.700' }}>
+							<Heading
+								onClick={e => {
+									// 接著將頁面導回 markets 並附上 qeury 參數 讓 Markets 底下的 useEffect 去 call API
+									e.stopPropagation();
+									router.push(`/markets?categories=${category.slug},`);
+									dispatch(queryUrlToChangeMenuStatus({ queryString: `${category.slug},` }));
+								}}
+								size="xs"
+								color="gray.500"
+								_hover={{ color: 'gray.700' }}
+							>
 								{category.name}
 							</Heading>
 							<Stack mt={'2px'}>

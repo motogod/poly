@@ -87,6 +87,7 @@ const LeftMenu = () => {
 	}, [router]);
 
 	useEffect(() => {
+		console.log('useEffect LeftMenu', router.query);
 		// 第一次開啟頁面先撈取網址對應的 query 更新選單 每個 query 後都有一個逗點
 		// 確保 Markets 底下選單有跟後端要到資列才更新選單 且只執行一次
 		if (firstRender && categoriesData[0].menuData[2].subMenuData.length > 0 && router.isReady) {
@@ -429,17 +430,19 @@ const LeftMenu = () => {
 		if (menuId === '2') {
 			return data.subMenuData.map((subValue, subIndex) => {
 				// 分類的子選單是否全部被勾選
-				const subValueItemChecked = subValue.childrenCategories.filter(value => value.itemSelected);
-				const subValueItemUnChecked = subValue.childrenCategories.filter(
+				const subValueItemChecked = subValue?.childrenCategories?.filter(
+					value => value.itemSelected
+				);
+				const subValueItemUnChecked = subValue?.childrenCategories?.filter(
 					value => !value.itemSelected
 				);
 
 				// 所有子選單皆被勾選
-				const isAllItemChecked = subValueItemUnChecked.length === 0;
+				const isAllItemChecked = subValueItemUnChecked?.length === 0;
 				console.log('subValueItemUnChecked', subValueItemUnChecked);
 				console.log('isAllItemChecked', isAllItemChecked);
 				// 包含有勾選與未勾選的狀態
-				const isAtLeastOneItemChecked = subValueItemChecked.length !== 0;
+				const isAtLeastOneItemChecked = subValueItemChecked?.length !== 0;
 
 				let isIndeterminate;
 
@@ -491,7 +494,7 @@ const LeftMenu = () => {
 								colorScheme="teal"
 							></Checkbox>
 						</Stack>
-						{subValue.childrenCategories.map((itemValue, itemIndex) => {
+						{subValue?.childrenCategories?.map((itemValue, itemIndex) => {
 							return (
 								<>
 									<Stack

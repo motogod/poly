@@ -18,7 +18,7 @@ import {
 	filterStartDateAndEndDateMarket,
 	filterSortSelector,
 } from './slice/dataSlice';
-import { resetCheckAuthToast, resetPutUserProfileErrMsg } from './actions';
+import { resetCheckAuthToast, resetPutUserProfileErrMsg, resetTradeOrdersStatus } from './actions';
 
 export const store = configureStore({
 	reducer: {
@@ -59,6 +59,7 @@ export {
 	filterStartDateAndEndDateMarket,
 	filterSortSelector,
 	userClickYesOrNoButton,
+	resetTradeOrdersStatus,
 };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';

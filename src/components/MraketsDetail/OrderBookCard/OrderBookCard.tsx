@@ -113,7 +113,7 @@ function OrderBookCard() {
 									{`${value.price} USDT`}
 								</Td>
 								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-									{value.quantity}
+									{value.quantity.toFixed(2)}
 								</Td>
 							</Tr>
 						</>
@@ -136,7 +136,7 @@ function OrderBookCard() {
 									{`${value.price} USDT`}
 								</Td>
 								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-									{value.quantity}
+									{value.quantity.toFixed(2)}
 								</Td>
 								{/* <Td
 													fontSize={'md'}

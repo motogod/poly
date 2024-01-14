@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	Box,
 	Select,
@@ -18,8 +18,9 @@ import {
 	Stack,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPortfolioOrders, AppDispatch, RootState } from '@/store';
+import { getPortfolioOrders, AppDispatch, RootState, deleteOrder } from '@/store';
 import { useMediaQuery } from 'react-responsive';
+import { OrderStatusType } from '@/api';
 
 const dummyOrdersData = [
 	{
@@ -41,20 +42,64 @@ const dummyOrdersData = [
 ];
 
 function OrdersTableCard() {
+	// 使用者當下點選刪除的 order id
+	const [userClickDeleteOrderId, setUserClickDeleteOrderId] = useState('');
 	const dispatch = useDispatch<AppDispatch>();
 
-	const { portfolioOrdersData } = useSelector((state: RootState) => state.portfolioReducer);
+	const { portfolioOrdersData, isDeleteOrderLoading } = useSelector(
+		(state: RootState) => state.portfolioReducer
+	);
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 960px)',
 	});
-
+	console.log('portfolioOrdersData =>', portfolioOrdersData);
 	useEffect(() => {
 		dispatch(getPortfolioOrders());
 	}, [dispatch]);
 
+	const renderActionButton = (status: OrderStatusType, orderId: string) => {
+		const buttonText = () => {
+			if (status === 'PENDING' || status === 'PARTIALLY_FILLED') {
+				return 'DELETE';
+			}
+
+			if (status === 'CANCELED') {
+				return 'Cancelled';
+			}
+
+			if (status === 'FILLED') {
+				return 'Filled';
+			}
+
+			return '';
+		};
+
+		return (
+			<Button
+				isLoading={userClickDeleteOrderId === orderId && isDeleteOrderLoading}
+				isDisabled={status !== 'PENDING' && status !== 'PARTIALLY_FILLED'}
+				onClick={() => {
+					// Delete
+					if (status === 'PENDING' || status === 'PARTIALLY_FILLED') {
+						setUserClickDeleteOrderId(orderId);
+						dispatch(deleteOrder({ id: orderId }));
+					}
+				}}
+				top={'26%'}
+				size="sm"
+				bg="#fff"
+				border={'1px'}
+				borderColor={'pink.500'}
+				color="pink.500"
+			>
+				{buttonText()}
+			</Button>
+		);
+	};
+
 	const renderTableRow = () => {
-		return dummyOrdersData.map(value => {
+		return portfolioOrdersData.map(value => {
 			return (
 				<>
 					<Tr>
@@ -132,16 +177,7 @@ function OrdersTableCard() {
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Button
-								top={'26%'}
-								size="sm"
-								bg="#fff"
-								border={'1px'}
-								borderColor={'pink.500'}
-								color="pink.500"
-							>
-								{value?.status}
-							</Button>
+							{renderActionButton(value?.status, value.id)}
 						</Td>
 					</Tr>
 				</>

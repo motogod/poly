@@ -1,3 +1,4 @@
+import { id } from 'ethers';
 import { request, requestWithSession } from './request';
 
 export const GetMarkets = <T>(params: any) =>
@@ -68,5 +69,16 @@ export const CategoryClickEvent = <T>(params: any) =>
 // Get protfolio orders
 export const GetPortfolioOrders = <T>(params: any) =>
 	requestWithSession.get<T>('/orders', params, { timeout: 15000 });
+
+// Buy orders
+export const PostTradeOrders = <T>(params: any) =>
+	requestWithSession.post<T>('/orders', params, { timeout: 15000 });
+
+// Delete order
+// export const DeletePortfolioOrder = <T>(params: { id: string }) =>
+// 	requestWithSession.delete<T>(`/orders/${id}`, {}, { timeout: 15000 });
+
+export const DeletePortfolioOrder = <T>(params: { id: string }) =>
+	requestWithSession.delete<T>(`/orders`, params, { timeout: 15000 });
 
 export * from './type';
