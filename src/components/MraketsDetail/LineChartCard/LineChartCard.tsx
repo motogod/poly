@@ -109,6 +109,7 @@ function LineChartCard() {
 
 	const renderBuyOrSellInfo = () => {
 		const { outcome } = marketDetailData;
+
 		return (
 			<>
 				<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'} lineHeight={'17px'}>
@@ -116,6 +117,33 @@ function LineChartCard() {
 				</Heading>
 				<Heading fontSize={'24px'} color={'gray.800'} fontWeight={'700'} lineHeight={'14px'}>
 					{`${isUserClickYesOrNo ? outcome.yes : outcome.no} USDT`}
+				</Heading>
+			</>
+		);
+	};
+
+	const renderPercent = () => {
+		const { outcome } = marketDetailData;
+
+		let percent = '';
+
+		const yesOrNoData = isUserClickYesOrNo ? outcome.yes : outcome.no;
+		const isLargerThenInitData = yesOrNoData > 0.5;
+
+		if (isLargerThenInitData) {
+			percent += '+';
+		}
+
+		percent += `${((yesOrNoData - 0.5) / 0.5).toFixed(2)}%`;
+
+		return (
+			<>
+				<Heading
+					fontSize={'14px'}
+					color={isLargerThenInitData ? 'red.400' : 'green.600'}
+					fontWeight={'700'}
+				>
+					{percent}
 				</Heading>
 			</>
 		);
@@ -212,9 +240,7 @@ function LineChartCard() {
 							{renderBuyOrSellInfo()}
 						</Stack>
 						<Stack align="start" direction={'row'} mt={'32px'}>
-							<Heading fontSize={'14px'} color={'green.600'} fontWeight={'700'}>
-								(+73.87%)
-							</Heading>
+							{renderPercent()}
 							<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'}>
 								Since Market Creation
 							</Heading>

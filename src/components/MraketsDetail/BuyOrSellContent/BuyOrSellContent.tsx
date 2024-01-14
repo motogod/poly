@@ -25,6 +25,9 @@ import {
 	userClickYesOrNoButton,
 	getMarketOrderBookYes,
 	getMarketOrderBookNo,
+	tradeOrders,
+	showToast,
+	resetTradeOrdersStatus,
 } from '@/store';
 import { useLoginModal } from '@/hooks';
 import BuyOrSellButton from '../Buttons/BuyOrSellButton';
@@ -48,7 +51,10 @@ function BuyOrSellContent() {
 	const { isUserClickYesOrNo, marketDetailData } = useSelector(
 		(state: RootState) => state.homeReducer
 	);
-	console.log('');
+	const { isTradeOrdersLoading, isTradeSuccess } = useSelector(
+		(state: RootState) => state.portfolioReducer
+	);
+
 	// 這邊的 hook 會導致觸發 disconnect 如果要導入 待處理
 	const {
 		ModalDom,
@@ -59,6 +65,7 @@ function BuyOrSellContent() {
 
 	// Limit Price
 	const [limiInputValue, setLimitInputValue] = useState(0);
+	const [limitMax, setLimitMax] = useState(0);
 
 	const {
 		getInputProps: getLimitInputProps,
@@ -70,36 +77,57 @@ function BuyOrSellContent() {
 		min: 0.01,
 		max: 1.0,
 		precision: 2,
+		onChange: value => {
+			// 禁止使用者輸入負號
+			const newValue = value.replace('-', '');
+			setLimitInputValue(Number(newValue));
+		},
 	});
 
 	const incLimitPrice = getIncLimitBtnProps();
 	const decLimitPrice = getDescBtnProps();
 	const inputLimitPrice = getLimitInputProps();
 
+	useEffect(() => {
+		console.log('useEffect isTradeSuccess', isTradeSuccess);
+		if (isTradeSuccess !== null) {
+			const tradeResultTitle = isTradeSuccess ? 'Trade success' : 'Trade fail';
+			dispatch(showToast({ title: tradeResultTitle, isSuccess: isTradeSuccess }));
+			dispatch(resetTradeOrdersStatus());
+		}
+	}, [dispatch, isTradeSuccess]);
+
 	// 使用者切換 Yes No 改變 Limit input 的預設值
 	useEffect(() => {
 		if (router.isReady && Object.keys(marketDetailData).length > 0) {
 			if (isUserClickYesOrNo) {
 				setLimitInputValue(marketDetailData.outcome.yes);
+				setSharesMax(Math.round(hold / marketDetailData.outcome.yes));
 			} else {
 				setLimitInputValue(marketDetailData.outcome.no);
+				setSharesMax(Math.round(hold / marketDetailData.outcome.no));
 			}
 		}
-	}, [isUserClickYesOrNo, marketDetailData, router]);
+	}, [hold, isUserClickYesOrNo, marketDetailData, router]);
 
 	// Shares
 	const [shareInputValue, setShareInputValue] = useState(0);
-
-	// console.log('shareInputValue =>', shareInputValue);
+	const [sharesMax, setSharesMax] = useState(0);
 
 	const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
-		step: 1,
+		step: selected === 'market' ? 1 : 10,
 		// defaultValue: 0.0,
 		value: shareInputValue,
-		//defaultValue: shareInputValue,
+		// defaultValue: shareInputValue,
 		min: 0,
-		max: hold,
+		// max: hold,
+		max: sharesMax,
 		precision: 0,
+		onChange: value => {
+			// 禁止使用者輸入負號
+			const newValue = value.replace('-', '');
+			setShareInputValue(Number(newValue));
+		},
 	});
 
 	// Shares
@@ -117,6 +145,59 @@ function BuyOrSellContent() {
 		}
 
 		return 'Connect';
+	};
+
+	const renderPotentialReturn = () => {
+		if (shareInputValue > 0) {
+			const price = isYes ? marketDetailData?.outcome?.yes : marketDetailData?.outcome?.no;
+
+			const potentialReturnValue = (shareInputValue * 1) / (price * shareInputValue);
+
+			return potentialReturnValue.toFixed(2);
+		}
+
+		return `0.00`;
+	};
+
+	const isShowCollapseError = () => {
+		if (selected === 'market') {
+			if (shareInputValue > sharesMax) {
+				return true;
+			}
+
+			return false;
+		}
+
+		if (selected === 'limit') {
+			if (shareInputValue < 15) {
+				return true;
+			}
+
+			return false;
+		}
+
+		return false;
+	};
+
+	const renderSharesError = () => {
+		if (selected === 'market') {
+			if (shareInputValue > sharesMax) {
+				return 'Insufficient balance';
+			}
+		}
+		if (selected === 'limit' && shareInputValue > 0 && shareInputValue < 15) {
+			return 'Minimum 15 shares for limit orders';
+		}
+
+		return '';
+	};
+
+	const isDisableTradeButton = () => {
+		if (selected === 'market') {
+			return shareInputValue > sharesMax || shareInputValue === 0;
+		}
+
+		return shareInputValue < 15 || (limiInputValue < 0.01 && limiInputValue > 1);
 	};
 
 	return (
@@ -146,9 +227,10 @@ function BuyOrSellContent() {
 					placeholder=""
 					size="md"
 					defaultValue={selected}
-					onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-						setSelected(e.target.value as SelectedType)
-					}
+					onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+						setShareInputValue(0);
+						setSelected(e.target.value as SelectedType);
+					}}
 				>
 					<option value="market">Market</option>
 					<option value="limit">Limit</option>
@@ -175,6 +257,7 @@ function BuyOrSellContent() {
 							dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
 							// 一併去改變 LineChartCard 要顯示 Buy or Sell
 							dispatch(userClickYesOrNoButton(true));
+							setShareInputValue(0);
 							setIsYes(true);
 						}}
 						selected={isYes}
@@ -185,6 +268,7 @@ function BuyOrSellContent() {
 						onClick={() => {
 							dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
 							dispatch(userClickYesOrNoButton(false));
+							setShareInputValue(0);
 							setIsYes(false);
 						}}
 						selected={!isYes}
@@ -200,15 +284,7 @@ function BuyOrSellContent() {
 							</Heading>
 						</Stack>
 						<HStack mt={'16px'} gap={0} maxW="100%">
-							<Button
-								onClick={() => {
-									if (limiInputValue > 0) {
-										setLimitInputValue(prev => Number((prev - 0.1).toFixed(2)));
-									}
-								}}
-								borderRadius={'6px 0px 0px 6px'}
-								{...decLimitPrice}
-							>
+							<Button borderRadius={'6px 0px 0px 6px'} {...decLimitPrice}>
 								-
 							</Button>
 							<Input
@@ -217,28 +293,9 @@ function BuyOrSellContent() {
 								borderRadius={0}
 								border="1px solid #E2E8F0;"
 								value={limiInputValue}
-								onChange={e => {
-									const enterValue = Number(e.target.value);
-
-									if (enterValue < 1) {
-										setLimitInputValue(Number(enterValue.toFixed(2)));
-									}
-
-									if (enterValue >= 1) {
-										setLimitInputValue(1);
-									}
-								}}
-								// {...inputLimitPrice}
+								{...inputLimitPrice}
 							/>
-							<Button
-								onClick={() => {
-									if (limiInputValue < 1) {
-										setLimitInputValue(prev => Number((prev + 0.1).toFixed(2)));
-									}
-								}}
-								borderRadius={'0px 6px 6px 0px'}
-								{...incLimitPrice}
-							>
+							<Button borderRadius={'0px 6px 6px 0px'} {...incLimitPrice}>
 								+
 							</Button>
 						</HStack>
@@ -256,10 +313,12 @@ function BuyOrSellContent() {
 						</Heading>
 						<Stack direction={'row'}>
 							<Tag bg={'gray.100'} color={'gray.800'} borderRadius={20} pl={'16px'} pr={'16px'}>
-								<TagLabel>{`Funds: ${hold} USDT`}</TagLabel>
+								<TagLabel>{`Balance: ${hold} USDT`}</TagLabel>
 							</Tag>
 							<Button
-								onClick={() => setShareInputValue(hold)}
+								onClick={() => {
+									setShareInputValue(sharesMax);
+								}}
 								w={'57px'}
 								h={'28px'}
 								size="xs"
@@ -271,46 +330,47 @@ function BuyOrSellContent() {
 						</Stack>
 					</Stack>
 					<HStack mt={'16px'} gap={0} maxW="100%">
-						<Button
-							borderRadius={'6px 0px 0px 6px'}
-							onClick={() => {
-								if (shareInputValue > 0) {
-									setShareInputValue(prev => prev - 1);
-								}
-							}}
-							{...decShares}
-						>
+						<Button borderRadius={'6px 0px 0px 6px'} {...decShares}>
 							-
 						</Button>
 						<Input
+							type="number"
+							pattern="[0-9]*"
 							textAlign={'center'}
 							borderRadius={0}
 							border="1px solid #E2E8F0;"
 							value={shareInputValue}
-							onChange={e => {
-								const enterValue = Number(e.target.value);
-								if (enterValue <= hold) {
-									setShareInputValue(Number(e.target.value));
-								}
-							}}
-							// {...inputShares}
+							{...inputShares}
 						/>
-						<Button
-							borderRadius={'0px 6px 6px 0px'}
-							onClick={() => {
-								if (shareInputValue < hold) {
-									setShareInputValue(prev => prev + 1);
-								}
-							}}
-							{...incShares}
-						>
+						<Button borderRadius={'0px 6px 6px 0px'} {...incShares}>
 							+
 						</Button>
 					</HStack>
+					<Collapse in={isShowCollapseError()} animateOpacity>
+						<Text fontSize={'sm'} mt={0} color={'red.500'}>
+							{renderSharesError()}
+						</Text>
+					</Collapse>
 				</Stack>
 				<Button
+					isDisabled={isDisableTradeButton()}
+					isLoading={isTradeOrdersLoading}
 					onClick={() => {
 						if (isAuthenticated) {
+							dispatch(
+								tradeOrders({
+									type: 'MARKET',
+									direction: isBuy ? 'BUY' : 'SELL',
+									outcome: isUserClickYesOrNo ? 'YES' : 'NO',
+									marketId: marketDetailData?.id,
+									price: isUserClickYesOrNo
+										? marketDetailData?.outcome?.yes
+										: marketDetailData?.outcome?.no,
+									totalAmount: isUserClickYesOrNo
+										? Number((marketDetailData?.outcome?.yes * shareInputValue).toFixed(2))
+										: Number((marketDetailData?.outcome?.no * shareInputValue).toFixed(2)),
+								})
+							);
 						} else {
 							modalOnOpen();
 						}
@@ -330,7 +390,9 @@ function BuyOrSellContent() {
 							Share Price
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
-							0.6 USDT
+							{`${
+								isUserClickYesOrNo ? marketDetailData?.outcome?.yes : marketDetailData?.outcome?.no
+							} USDT`}
 						</Heading>
 					</Stack>
 					<Stack direction={'row'} justify={'space-between'}>
@@ -338,7 +400,7 @@ function BuyOrSellContent() {
 							Shares
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
-							0.00
+							{shareInputValue.toFixed(2)}
 						</Heading>
 					</Stack>
 					<Stack direction={'row'} justify={'space-between'}>
@@ -346,7 +408,7 @@ function BuyOrSellContent() {
 							Potential Return
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
-							{`0.00 USDT (0.00%)`}
+							{`${shareInputValue * 1} USDT (${renderPotentialReturn()}%)`}
 						</Heading>
 					</Stack>
 					<Stack direction={'row'} justify={'space-between'}>
@@ -354,7 +416,11 @@ function BuyOrSellContent() {
 							Total
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'700'} lineHeight={'17px'}>
-							0.00 USDT
+							{`${
+								isUserClickYesOrNo
+									? (marketDetailData?.outcome?.yes * shareInputValue).toFixed(2)
+									: (marketDetailData?.outcome?.no * shareInputValue).toFixed(2)
+							} USDT`}
 						</Heading>
 					</Stack>
 				</Stack>

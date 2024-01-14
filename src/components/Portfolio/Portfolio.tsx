@@ -67,13 +67,31 @@ function Portfolio() {
 			</HStack>
 			<Tabs mt={'68px'}>
 				<TabList borderBottomColor={'gray.200'} borderBottomWidth={'2px'}>
-					<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
+					<Tab
+						fontSize={'16px'}
+						color={'blue.400'}
+						fontWeight={'500'}
+						lineHeight={'20px'}
+						_hover={{ color: 'blue.600' }}
+					>
 						Positions
 					</Tab>
-					<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
+					<Tab
+						fontSize={'16px'}
+						color={'blue.400'}
+						fontWeight={'500'}
+						lineHeight={'20px'}
+						_hover={{ color: 'blue.600' }}
+					>
 						Orders
 					</Tab>
-					<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
+					<Tab
+						fontSize={'16px'}
+						color={'blue.400'}
+						fontWeight={'500'}
+						lineHeight={'20px'}
+						_hover={{ color: 'blue.600' }}
+					>
 						History
 					</Tab>
 				</TabList>

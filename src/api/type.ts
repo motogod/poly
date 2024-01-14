@@ -185,25 +185,54 @@ export type GetCategoriesType = {
 	statusCode: number;
 };
 
+export type OrderStatusType =
+	| 'PENDING'
+	| 'PARTIALLY_FILLED'
+	| 'FILLED'
+	| 'CANCELED'
+	| 'EXPIRED'
+	| 'TERMINATED';
+
+export type ProtfolioDataType = {
+	id: string;
+	status: OrderStatusType;
+	type: string;
+	direction: string | null;
+	outcome: 'YES' | 'NO';
+	market: {
+		id: string;
+		slug: string;
+		title: string;
+	};
+	price: number;
+	closingPrice: number;
+	closedAmount: number;
+	totalAmount: number;
+};
+
 export type GetPortfolioType = {
-	data: [
-		{
-			id: string;
-			status: string;
-			type: string;
-			direction: string | null;
-			outcome: boolean;
-			market: {
-				id: string;
-				slug: string;
-				title: string;
-			};
-			price: number;
-			closingPrice: number;
-			closedAmount: number;
-			totalAmount: number;
-		}
-	];
+	data: ProtfolioDataType[];
+	message: string;
+	statusCode: number;
+};
+
+export type PostBuyOrdersParameType = {
+	type: string;
+	direction: 'BUY' | 'SELL';
+	outcome: 'YES' | 'NO';
+	marketId: string;
+	price: number;
+	totalAmount: number;
+};
+
+export type PostBuyOrdersType = {
+	data: {};
+	message: string;
+	statusCode: number;
+};
+
+export type DeleteOrderType = {
+	data: {};
 	message: string;
 	statusCode: number;
 };

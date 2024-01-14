@@ -102,7 +102,7 @@ function Markets() {
 					}
 				});
 			} else {
-				subMenuValue.childrenCategories.forEach((childrenMenuData: ChildrenCategoriesType) => {
+				subMenuValue?.childrenCategories?.forEach((childrenMenuData: ChildrenCategoriesType) => {
 					const childrenMenuExistedString = routerStringArray.find(
 						value => value === childrenMenuData.slug
 					);
@@ -166,8 +166,9 @@ function Markets() {
 				isAtLeastOneItemClicked = true;
 			}
 			// 如果任一個分選選單有被勾選
-			menuValue?.menuData[2].subMenuData.forEach(subMenuValue => {
-				subMenuValue.childrenCategories.forEach(childrenMenuValue => {
+			console.log('menuValue', menuValue);
+			menuValue?.menuData[2].subMenuData?.forEach(subMenuValue => {
+				subMenuValue?.childrenCategories?.forEach(childrenMenuValue => {
 					if (childrenMenuValue.itemSelected) {
 						isAtLeastOneItemClicked = true;
 					}
