@@ -193,6 +193,11 @@ function BuyOrSellContent() {
 	};
 
 	const isDisableTradeButton = () => {
+		// 如果使用者未登入，該按鈕為 Connect 允許點擊
+		if (!isAuthenticated) {
+			return false;
+		}
+
 		if (selected === 'market') {
 			return shareInputValue > sharesMax || shareInputValue === 0;
 		}
