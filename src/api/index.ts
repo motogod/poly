@@ -79,6 +79,6 @@ export const PostTradeOrders = <T>(params: any) =>
 // 	requestWithSession.delete<T>(`/orders/${id}`, {}, { timeout: 15000 });
 
 export const DeletePortfolioOrder = <T>(params: { id: string }) =>
-	requestWithSession.delete<T>(`/orders`, params, { timeout: 15000 });
+	requestWithSession.delete<T>(`/orders/${params.id}`, {}, { timeout: 15000 });
 
 export * from './type';
