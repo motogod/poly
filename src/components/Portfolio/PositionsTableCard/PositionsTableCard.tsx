@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getUserPortfolio, AppDispatch } from '@/store';
 import {
 	Box,
 	Select,
@@ -20,9 +22,15 @@ import {
 import { useMediaQuery } from 'react-responsive';
 
 function PositionsTableCard() {
+	const dispatch = useDispatch<AppDispatch>();
+
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 960px)',
 	});
+
+	useEffect(() => {
+		dispatch(getUserPortfolio({ marketId: '' }));
+	}, [dispatch]);
 
 	return (
 		<>

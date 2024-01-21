@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import {
 	Box,
 	Select,
@@ -18,9 +19,15 @@ import {
 	Stack,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPortfolioOrders, AppDispatch, RootState, deleteOrder } from '@/store';
+import {
+	getPortfolioOrders,
+	AppDispatch,
+	RootState,
+	deleteOrder,
+	selectPortfolioOrders,
+} from '@/store';
 import { useMediaQuery } from 'react-responsive';
-import { OrderStatusType } from '@/api';
+import { OrderStatusType, PortfolioOrderSelectorStatus } from '@/api';
 
 const dummyOrdersData = [
 	{
@@ -41,22 +48,36 @@ const dummyOrdersData = [
 	},
 ];
 
+const selectorOptions = Object.entries(PortfolioOrderSelectorStatus).map(([value, label]) => ({
+	value,
+	label,
+}));
+
 function OrdersTableCard() {
 	// 使用者當下點選刪除的 order id
 	const [userClickDeleteOrderId, setUserClickDeleteOrderId] = useState('');
 	const dispatch = useDispatch<AppDispatch>();
 
-	const { portfolioOrdersData, isDeleteOrderLoading } = useSelector(
-		(state: RootState) => state.portfolioReducer
-	);
+	const router = useRouter();
+
+	const { isDeleteOrderLoading, filteredPortfolioOrdersData, portfolioSelectorStatus } =
+		useSelector((state: RootState) => state.portfolioReducer);
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 960px)',
 	});
-	console.log('portfolioOrdersData =>', portfolioOrdersData);
+	console.log('filteredPortfolioOrdersData =>', filteredPortfolioOrdersData);
 	useEffect(() => {
 		dispatch(getPortfolioOrders());
 	}, [dispatch]);
+
+	const renderExpirationText = (status: OrderStatusType) => {
+		if (status !== 'CANCELED') {
+			return 'Until Cancelled';
+		}
+
+		return '-';
+	};
 
 	const renderActionButton = (status: OrderStatusType, orderId: string) => {
 		const buttonText = () => {
@@ -79,7 +100,8 @@ function OrdersTableCard() {
 			<Button
 				isLoading={userClickDeleteOrderId === orderId && isDeleteOrderLoading}
 				isDisabled={status !== 'PENDING' && status !== 'PARTIALLY_FILLED'}
-				onClick={() => {
+				onClick={e => {
+					e.stopPropagation();
 					// Delete
 					if (status === 'PENDING' || status === 'PARTIALLY_FILLED') {
 						setUserClickDeleteOrderId(orderId);
@@ -99,16 +121,22 @@ function OrdersTableCard() {
 	};
 
 	const renderTableRow = () => {
-		return portfolioOrdersData.map(value => {
+		return filteredPortfolioOrdersData.map(value => {
+			const totalPrice = (Number(value.price) * Number(value.quantity)).toFixed(2);
+
 			return (
 				<>
-					<Tr>
+					<Tr
+						onClick={() => router.push(`/marketsDetail?marketSlug=${value?.market?.slug}`)}
+						cursor={'pointer'}
+						_hover={{ bg: 'gray.100', borderRadius: 18 }}
+					>
 						<Td verticalAlign={'middle'}>
 							<Stack align={'center'} direction={'row'}>
 								<Image
 									height="48px"
 									width="48px"
-									src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+									src={value?.market?.image ? value?.market?.image : ''}
 									alt="Green double couch with wooden legs"
 									borderRadius="lg"
 								/>
@@ -161,16 +189,20 @@ function OrdersTableCard() {
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text>{value?.totalAmount}</Text>
+							<Text>{totalPrice}</Text>
 						</Td>
 						<Td
+							textAlign={'center'}
 							verticalAlign={'middle'}
 							fontSize={'md'}
 							color={'gray.700'}
 							fontWeight={'500'}
 							lineHeight={'20px'}
-						></Td>
+						>
+							{renderExpirationText(value.status)}
+						</Td>
 						<Td
+							textAlign={'center'}
 							verticalAlign={'middle'}
 							fontSize={'md'}
 							color={'gray.700'}
@@ -194,6 +226,7 @@ function OrdersTableCard() {
 				as={Stack}
 			>
 				<Select
+					onChange={event => dispatch(selectPortfolioOrders(event.target.value))}
 					_hover={{ bg: 'gray.100' }}
 					cursor={'pointer'}
 					_focusVisible={{
@@ -205,12 +238,13 @@ function OrdersTableCard() {
 					w={isDesktop ? '200px' : '100%'}
 					placeholder=""
 					size="md"
-					defaultValue={'all'}
+					defaultValue={portfolioSelectorStatus}
 				>
-					<option value="all">All</option>
-					<option value="active">Active</option>
-					<option value="redeem">Redeem</option>
-					<option value="resolved">Resolved</option>
+					{selectorOptions.map(value => (
+						<>
+							<option value={value.value}>{value.label}</option>
+						</>
+					))}
 				</Select>
 			</Box>
 			<TableContainer p={'12px'} mt={'20px'} border="1px solid #E2E8F0;" borderRadius={'10px'}>
@@ -272,6 +306,7 @@ function OrdersTableCard() {
 								Total
 							</Th>
 							<Th
+								textAlign={'center'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}
@@ -281,6 +316,7 @@ function OrdersTableCard() {
 								Expiration
 							</Th>
 							<Th
+								textAlign={'center'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}

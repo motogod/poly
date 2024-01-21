@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useMediaQuery } from 'react-responsive';
 import {
 	Stack,
 	Text,
@@ -28,6 +30,29 @@ import { OrderBookDataType } from '@/api';
 const dummyYesData = {
 	bids: [
 		{
+			price: 0.95,
+			quantity: 100,
+		},
+		{
+			price: 0.75,
+			quantity: 100,
+		},
+	],
+	asks: [
+		{
+			price: 0.85,
+			quantity: 100,
+		},
+		{
+			price: 0.75,
+			quantity: 100,
+		},
+	],
+};
+
+const dummyNoData = {
+	bids: [
+		{
 			price: 0.75,
 			quantity: 100,
 		},
@@ -41,38 +66,17 @@ const dummyYesData = {
 			price: 0.75,
 			quantity: 100,
 		},
-		{
-			price: 0.75,
-			quantity: 100,
-		},
 	],
-};
-
-// const dummyNoData = {
-// 	bids: [
-// 		{
-// 			price: 0.75,
-// 			quantity: 100,
-// 		},
-// 		{
-// 			price: 0.75,
-// 			quantity: 100,
-// 		},
-// 	],
-// 	asks: [
-// 		{
-// 			price: 0.75,
-// 			quantity: 100,
-// 		},
-// 	],
-// };
-const dummyNoData = {
-	bids: [],
-	asks: [],
 };
 
 function OrderBookCard() {
 	const dispatch = useDispatch<AppDispatch>();
+
+	const router = useRouter();
+
+	const isDesktop = useMediaQuery({
+		query: '(min-width: 768px)',
+	});
 
 	const [tabIndex, setTabIndex] = useState(0);
 
@@ -93,60 +97,129 @@ function OrderBookCard() {
 		setTabIndex(index);
 	};
 
+	useEffect(() => {
+		let interval: NodeJS.Timeout;
+
+		if (router.isReady) {
+			const { marketSlug } = router.query;
+
+			// call API 取得的 marketDetailData 資料 在 redux 裡與網址的一樣，才去 call YES NO 的相關 API資料
+			if (Object.keys(marketDetailData).length > 0 && marketDetailData.slug === marketSlug) {
+				dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
+				dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
+
+				interval = setInterval(() => {
+					dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
+					dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
+				}, 60000);
+			}
+		}
+
+		return () => {
+			clearInterval(interval);
+		};
+	}, [dispatch, marketDetailData, router]);
+
+	const getLargetstTotalPrice = (orderData: [{ price: number; quantity: number }]) => {
+		const totalPriceArray = orderData.map(
+			value => Number(value.price) * Number(value.quantity.toFixed(2))
+		);
+
+		const largestToalPrice = totalPriceArray.reduce(
+			(largest, current) => (current * current > largest * largest ? current : largest),
+			totalPriceArray[0]
+		);
+
+		return largestToalPrice;
+	};
+
 	const renderTableRow = (orderData: OrderBookDataType) => {
+		const largestAskTotalPrice = getLargetstTotalPrice(orderData.asks);
+		const largestBidsTotalPrice = getLargetstTotalPrice(orderData.bids);
+
 		return (
 			<>
-				{orderData.asks.map(value => {
+				{orderData.asks.map((value, index) => {
+					const totalPrice = Number(value.price) * Number(value.quantity);
+
 					return (
 						<>
-							<Tr>
+							<Tr key={index}>
 								<Td
-									bg={'red.100'}
+									p={0}
+									position={'relative'}
 									fontSize={'md'}
 									color={'gray.700'}
 									fontWeight={'500'}
 									lineHeight={'20px'}
 								>
-									Ask
+									<Stack
+										justifyContent={'center'}
+										position={'absolute'}
+										bg={'red.100'}
+										w={`${Number(totalPrice / largestAskTotalPrice) * 100}%`}
+										h={'56px'}
+									>
+										<Text pl={6}>Ask</Text>
+									</Stack>
 								</Td>
 								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-									{`${value.price} USDT`}
+									{`$${value.price}`}
 								</Td>
 								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 									{value.quantity.toFixed(2)}
+								</Td>
+								<Td
+									fontSize={'md'}
+									color={'gray.700'}
+									fontWeight={'500'}
+									lineHeight={'20px'}
+									isNumeric
+								>
+									{`$${totalPrice.toFixed(2)}`}
 								</Td>
 							</Tr>
 						</>
 					);
 				})}
-				{orderData.bids.map(value => {
+				{orderData.bids.map((value, index) => {
+					const totalPrice = Number(value.price) * Number(value.quantity);
+
 					return (
 						<>
-							<Tr>
+							<Tr key={index}>
 								<Td
-									bg={'green.100'}
+									p={0}
+									position={'relative'}
 									fontSize={'md'}
-									color={'gray.700'}
 									fontWeight={'500'}
 									lineHeight={'20px'}
 								>
-									Bids
+									<Stack
+										justifyContent={'center'}
+										position={'absolute'}
+										bg={'green.100'}
+										w={`${Number(totalPrice / largestBidsTotalPrice) * 100}%`}
+										h={'56px'}
+									>
+										<Text pl={6}>Bids</Text>
+									</Stack>
 								</Td>
 								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
-									{`${value.price} USDT`}
+									{`$${value.price}`}
 								</Td>
 								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
 									{value.quantity.toFixed(2)}
 								</Td>
-								{/* <Td
-													fontSize={'md'}
-													color={'gray.700'}
-													fontWeight={'500'}
-													lineHeight={'20px'}
-													isNumeric
-												>
-													27.00 USDT
-												</Td> */}
+								<Td
+									fontSize={'md'}
+									color={'gray.700'}
+									fontWeight={'500'}
+									lineHeight={'20px'}
+									isNumeric
+								>
+									{`$${totalPrice.toFixed(2)}`}
+								</Td>
 							</Tr>
 						</>
 					);
@@ -154,6 +227,41 @@ function OrderBookCard() {
 			</>
 		);
 	};
+
+	// return (
+	// 	<>
+	// 		<table>
+	// 			<colgroup>
+	// 				<col width="25%"></col>
+	// 				<col width="25%"></col>
+	// 				<col width="25%"></col>
+	// 				<col width="25%"></col>
+	// 			</colgroup>
+	// 			<tr>
+	// 				<td>Fruit</td>
+	// 				<td>Wood</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td colSpan={1} style={{ backgroundColor: 'pink' }}>
+	// 					Apple
+	// 				</td>
+	// 				<td>100</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td colSpan={0.5} style={{ backgroundColor: 'pink' }}>
+	// 					Banana
+	// 				</td>
+	// 				<td>30</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td colSpan={0.3} style={{ backgroundColor: 'pink' }}>
+	// 					Orange
+	// 				</td>
+	// 				<td>80</td>
+	// 			</tr>
+	// 		</table>
+	// 	</>
+	// );
 
 	return (
 		<Card minH={'434px'} shadow="lg" border="1px solid #E2E8F0;" borderRadius="3xl">
@@ -201,12 +309,13 @@ function OrderBookCard() {
 										<Thead>
 											<Tr>
 												<Th
+													w={'50%'}
 													fontSize={'xs'}
 													color={'gray.700'}
 													fontWeight={'700'}
 													lineHeight={'16px'}
 												>
-													Trade Type
+													Trade Yes
 												</Th>
 												<Th
 													fontSize={'xs'}
@@ -222,17 +331,17 @@ function OrderBookCard() {
 													fontWeight={'700'}
 													lineHeight={'16px'}
 												>
-													Quantity
+													Shares
 												</Th>
-												{/* <Th
-												fontSize={'xs'}
-												color={'gray.700'}
-												fontWeight={'700'}
-												lineHeight={'16px'}
-												isNumeric
-											>
-												Total
-											</Th> */}
+												<Th
+													fontSize={'xs'}
+													color={'gray.700'}
+													fontWeight={'700'}
+													lineHeight={'16px'}
+													isNumeric
+												>
+													Total
+												</Th>
 											</Tr>
 										</Thead>
 										<Tbody>{renderTableRow(orderBookYesData)}</Tbody>
@@ -259,12 +368,13 @@ function OrderBookCard() {
 										<Thead>
 											<Tr>
 												<Th
+													w={'50%'}
 													fontSize={'xs'}
 													color={'gray.700'}
 													fontWeight={'700'}
 													lineHeight={'16px'}
 												>
-													Trade Type
+													Trade No
 												</Th>
 												<Th
 													fontSize={'xs'}
@@ -280,7 +390,16 @@ function OrderBookCard() {
 													fontWeight={'700'}
 													lineHeight={'16px'}
 												>
-													Quantity
+													Shares
+												</Th>
+												<Th
+													fontSize={'xs'}
+													color={'gray.700'}
+													fontWeight={'700'}
+													lineHeight={'16px'}
+													isNumeric
+												>
+													Total
 												</Th>
 											</Tr>
 										</Thead>

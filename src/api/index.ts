@@ -43,6 +43,19 @@ export const CheckAuth = <T>(params: any) =>
 export const GetUserProfile = <T>(params: any) =>
 	requestWithSession.get<T>('/accounts/profile', params, { timeout: 15000 });
 
+// Get user portfolio
+export const GetUserPortfolio = <T>(params: { marketId: string }) => {
+	let paramsData = {};
+
+	if (params.marketId !== '') {
+		paramsData = params;
+	}
+
+	return requestWithSession.get<T>('/accounts/portfolio', paramsData, {
+		timeout: 15000,
+	});
+};
+
 // Update User Profile (username)
 export const PutUserProfile = <T>(params: any) =>
 	requestWithSession.put<T>('/accounts/profile/username', params, { timeout: 15000 });
@@ -75,10 +88,7 @@ export const PostTradeOrders = <T>(params: any) =>
 	requestWithSession.post<T>('/orders', params, { timeout: 15000 });
 
 // Delete order
-// export const DeletePortfolioOrder = <T>(params: { id: string }) =>
-// 	requestWithSession.delete<T>(`/orders/${id}`, {}, { timeout: 15000 });
-
 export const DeletePortfolioOrder = <T>(params: { id: string }) =>
-	requestWithSession.delete<T>(`/orders`, params, { timeout: 15000 });
+	requestWithSession.delete<T>(`/orders/${params.id}`, {}, { timeout: 15000 });
 
 export * from './type';
