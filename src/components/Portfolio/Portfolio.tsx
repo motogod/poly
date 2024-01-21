@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	Container,
 	HStack,
@@ -11,11 +11,26 @@ import {
 	TabPanels,
 	TabPanel,
 } from '@chakra-ui/react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, selectedTabsIndex, AppDispatch } from '@/store';
 import AppContainer from '@/components/common/Container';
 import PositionsTableCard from './PositionsTableCard';
 import OrdersTableCard from './OrdersTableCard';
 
 function Portfolio() {
+	const dispatch = useDispatch<AppDispatch>();
+
+	const { userFunds } = useSelector((state: RootState) => state.authReducer);
+	const { filteredPortfolioOrdersData, portfolioTabsIndex } = useSelector(
+		(state: RootState) => state.portfolioReducer
+	);
+
+	const { load } = userFunds;
+
+	const handleTabsChange = (index: number) => {
+		dispatch(selectedTabsIndex(index));
+	};
+
 	return (
 		<AppContainer>
 			<HStack>
@@ -34,7 +49,7 @@ function Portfolio() {
 							Portfolio Value
 						</Heading>
 						<Text fontSize={'24px'} color={'#fff'}>
-							6210.78 USDT
+							{`${load} USDT`}
 						</Text>
 					</Container>
 					<Container
@@ -47,7 +62,7 @@ function Portfolio() {
 							Active Positions
 						</Heading>
 						<Text fontSize={'24px'} color={'#fff'}>
-							6
+							0 (Test)
 						</Text>
 					</Container>
 					<Container
@@ -60,12 +75,12 @@ function Portfolio() {
 							Orders
 						</Heading>
 						<Text fontSize={'24px'} color={'#fff'}>
-							2
+							{filteredPortfolioOrdersData.length}
 						</Text>
 					</Container>
 				</Grid>
 			</HStack>
-			<Tabs mt={'68px'}>
+			<Tabs mt={'68px'} index={portfolioTabsIndex} onChange={handleTabsChange}>
 				<TabList borderBottomColor={'gray.200'} borderBottomWidth={'2px'}>
 					<Tab
 						fontSize={'16px'}

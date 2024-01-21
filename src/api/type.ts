@@ -185,6 +185,12 @@ export type GetCategoriesType = {
 	statusCode: number;
 };
 
+export enum PortfolioOrderSelectorStatus {
+	all = 'All',
+	active = 'Active',
+	cancelled = 'Cancelled',
+}
+
 export type OrderStatusType =
 	| 'PENDING'
 	| 'PARTIALLY_FILLED'
@@ -201,13 +207,14 @@ export type ProtfolioDataType = {
 	outcome: 'YES' | 'NO';
 	market: {
 		id: string;
+		image: string;
 		slug: string;
 		title: string;
 	};
 	price: number;
 	closingPrice: number;
 	closedAmount: number;
-	totalAmount: number;
+	quantity: number;
 };
 
 export type GetPortfolioType = {
@@ -216,13 +223,30 @@ export type GetPortfolioType = {
 	statusCode: number;
 };
 
+export type UserProtfolioDataType = {
+	market: {
+		id: string;
+		slug: string;
+		title: string;
+		image: string;
+	};
+	outcome: {};
+	total: 100;
+};
+
+export type GetUserPortfolioType = {
+	data: UserProtfolioDataType[];
+	message: string;
+	statusCode: number;
+};
+
 export type PostBuyOrdersParameType = {
-	type: string;
+	type: 'MARKET' | 'LIMIT';
 	direction: 'BUY' | 'SELL';
 	outcome: 'YES' | 'NO';
 	marketId: string;
 	price: number;
-	totalAmount: number;
+	quantity: number; // 即 shares
 };
 
 export type PostBuyOrdersType = {

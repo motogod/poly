@@ -13,7 +13,7 @@ function BuyOrSellModal(props: BuyOrSellModalType) {
 
 	return (
 		<Stack w={'100%'} maxH={'606px'} overflowY={'scroll'}>
-			<BuyOrSellContent />
+			<BuyOrSellContent transactionType={transactionType} />
 			<Stack mt={'14px'} mb={'4px'}>
 				{/* <Button mt={'24px'} mb={'48px'} w={'100%'} size="lg" bg="teal.500" color="#fff">
 					{transactionType}

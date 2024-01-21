@@ -96,17 +96,6 @@ function LineChartCard() {
 
 	const dispatch = useDispatch<AppDispatch>();
 
-	useEffect(() => {
-		if (router.isReady) {
-			const { marketSlug } = router.query;
-			// call API 取得的 marketDetailData 資料 在 redux 裡與網址的一樣，才去 call YES NO 的相關 API資料
-			if (Object.keys(marketDetailData).length > 0 && marketDetailData.slug === marketSlug) {
-				dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
-				dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
-			}
-		}
-	}, [dispatch, marketDetailData, router]);
-
 	const renderBuyOrSellInfo = () => {
 		const { outcome } = marketDetailData;
 

@@ -33,16 +33,25 @@ import { useLoginModal } from '@/hooks';
 import BuyOrSellButton from '../Buttons/BuyOrSellButton';
 import YesOrNoButton from '../Buttons/YesOrNoButton';
 import { zIndexMinimum } from '@/utils/zIndex';
-import { log } from 'console';
+import { TransactionEnum } from '../type';
 
-type SelectedType = 'market' | 'limit';
+type SelectedType = 'MARKET' | 'LIMIT';
 
-function BuyOrSellContent() {
+type Props = {
+	transactionType?: TransactionEnum;
+};
+
+function BuyOrSellContent(props?: Props) {
 	const router = useRouter();
 
-	const [isBuy, setIsBuy] = useState(true);
+	const { transactionType } = {
+		transactionType: 'Buy', // default value
+		...props,
+	};
+
+	const [isBuy, setIsBuy] = useState(transactionType === 'Buy' ? true : false);
 	const [isYes, setIsYes] = useState(true);
-	const [selected, setSelected] = useState<SelectedType>('market');
+	const [selectedType, setSelectedType] = useState<SelectedType>('MARKET');
 
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -89,13 +98,20 @@ function BuyOrSellContent() {
 	const inputLimitPrice = getLimitInputProps();
 
 	useEffect(() => {
-		console.log('useEffect isTradeSuccess', isTradeSuccess);
 		if (isTradeSuccess !== null) {
 			const tradeResultTitle = isTradeSuccess ? 'Trade success' : 'Trade fail';
 			dispatch(showToast({ title: tradeResultTitle, isSuccess: isTradeSuccess }));
+			// 交易成功，更新 Order Book 資料
+			if (isYes) {
+				dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
+			} else {
+				dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
+			}
+
 			dispatch(resetTradeOrdersStatus());
 		}
-	}, [dispatch, isTradeSuccess]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dispatch, isTradeSuccess, marketDetailData.slug]);
 
 	// 使用者切換 Yes No 改變 Limit input 的預設值
 	useEffect(() => {
@@ -115,7 +131,7 @@ function BuyOrSellContent() {
 	const [sharesMax, setSharesMax] = useState(0);
 
 	const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
-		step: selected === 'market' ? 1 : 10,
+		step: selectedType === 'MARKET' ? 1 : 10,
 		// defaultValue: 0.0,
 		value: shareInputValue,
 		// defaultValue: shareInputValue,
@@ -160,7 +176,7 @@ function BuyOrSellContent() {
 	};
 
 	const isShowCollapseError = () => {
-		if (selected === 'market') {
+		if (selectedType === 'MARKET') {
 			if (shareInputValue > sharesMax) {
 				return true;
 			}
@@ -168,7 +184,7 @@ function BuyOrSellContent() {
 			return false;
 		}
 
-		if (selected === 'limit') {
+		if (selectedType === 'LIMIT') {
 			if (shareInputValue < 15) {
 				return true;
 			}
@@ -180,12 +196,12 @@ function BuyOrSellContent() {
 	};
 
 	const renderSharesError = () => {
-		if (selected === 'market') {
+		if (selectedType === 'MARKET') {
 			if (shareInputValue > sharesMax) {
 				return 'Insufficient balance';
 			}
 		}
-		if (selected === 'limit' && shareInputValue > 0 && shareInputValue < 15) {
+		if (selectedType === 'LIMIT' && shareInputValue > 0 && shareInputValue < 15) {
 			return 'Minimum 15 shares for limit orders';
 		}
 
@@ -198,7 +214,7 @@ function BuyOrSellContent() {
 			return false;
 		}
 
-		if (selected === 'market') {
+		if (selectedType === 'MARKET') {
 			return shareInputValue > sharesMax || shareInputValue === 0;
 		}
 
@@ -231,14 +247,14 @@ function BuyOrSellContent() {
 					w={'120px'}
 					placeholder=""
 					size="md"
-					defaultValue={selected}
+					defaultValue={selectedType}
 					onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 						setShareInputValue(0);
-						setSelected(e.target.value as SelectedType);
+						setSelectedType(e.target.value as SelectedType);
 					}}
 				>
-					<option value="market">Market</option>
-					<option value="limit">Limit</option>
+					<option value="MARKET">Market</option>
+					<option value="LIMIT">Limit</option>
 				</Select>
 			</Box>
 			<Stack>
@@ -281,7 +297,7 @@ function BuyOrSellContent() {
 						rightText={`${marketDetailData?.outcome ? marketDetailData?.outcome?.no : ''} USDT`}
 					/>
 				</Stack>
-				{selected === 'limit' && (
+				{selectedType === 'LIMIT' && (
 					<Stack mt={'24px'}>
 						<Stack align={'center'} direction={'row'} justify={'space-between'}>
 							<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'} lineHeight={'17px'}>
@@ -364,16 +380,19 @@ function BuyOrSellContent() {
 						if (isAuthenticated) {
 							dispatch(
 								tradeOrders({
-									type: 'MARKET',
+									type: selectedType,
 									direction: isBuy ? 'BUY' : 'SELL',
 									outcome: isUserClickYesOrNo ? 'YES' : 'NO',
 									marketId: marketDetailData?.id,
-									price: isUserClickYesOrNo
-										? marketDetailData?.outcome?.yes
-										: marketDetailData?.outcome?.no,
-									totalAmount: isUserClickYesOrNo
-										? Number((marketDetailData?.outcome?.yes * shareInputValue).toFixed(2))
-										: Number((marketDetailData?.outcome?.no * shareInputValue).toFixed(2)),
+									price:
+										selectedType === 'MARKET'
+											? isUserClickYesOrNo
+												? marketDetailData?.outcome?.yes
+												: marketDetailData?.outcome?.no
+											: limiInputValue,
+									quantity: isUserClickYesOrNo
+										? Number(shareInputValue.toFixed(2))
+										: Number(shareInputValue.toFixed(2)),
 								})
 							);
 						} else {

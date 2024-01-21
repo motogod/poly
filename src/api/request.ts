@@ -177,7 +177,7 @@ const requestHandlerWithSession = <T>(
 				// alert(JSON.stringify(res));
 				const data = res.data;
 				const status = res.status;
-				if (status !== 200 && status !== 201) {
+				if (status !== 200 && status !== 201 && status !== 204) {
 					if (status == 401) {
 						console.log('Error handle...');
 					}

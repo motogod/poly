@@ -1,21 +1,24 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Card, CardBody, Stack, Heading, Text, Image, Tag, TagLabel } from '@chakra-ui/react';
+import { MarketsItemType } from '@/api';
 import styles from './topicCard.module.scss';
 
-function TopicCard({ data, index }: any) {
-	const { title } = data;
+function TopicCard({ data, index }: { data: MarketsItemType; index: number }) {
+	const { slug, category, image, title, outcome } = data;
 
 	const router = useRouter();
 
 	return (
 		<Card
-			onClick={() => router.push('./')}
+			minH={'396px'}
+			onClick={() => router.push(`/marketsDetail?marketSlug=${slug}`)}
 			cursor="pointer"
 			width="xs"
 			ml={{ md: index === 0 ? '116px' : '0px', sm: index === 0 ? '16px' : '0px' }}
 			shadow="md"
 			borderRadius="3xl"
+			_hover={{ shadow: 'xl' }}
 		>
 			<CardBody p={0}>
 				<Tag
@@ -28,18 +31,30 @@ function TopicCard({ data, index }: any) {
 					position="absolute"
 					top="5"
 					left="5"
+					bg={'gray.900'}
+					opacity={0.3}
+					_hover={{ opacity: 0.6 }}
 				>
-					<TagLabel color="white">Crypto</TagLabel>
+					<TagLabel
+						onClick={e => {
+							e.stopPropagation();
+							router.push(`/markets?categories=${category.slug},`);
+						}}
+						color="white"
+					>
+						{category.name}
+					</TagLabel>
 				</Tag>
 				<Image
 					height="240px"
-					src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+					w={'100%'}
+					src={image}
 					alt="Green double couch with wooden legs"
 					borderRadius="3xl"
 				/>
 				<Stack p="5" mt="0" spacing="0">
-					<Heading size="md" color="gray.800">
-						{'Green double couch with wooden legs'}
+					<Heading minH={'48px'} noOfLines={2} size="md" color="gray.800">
+						{title}
 					</Heading>
 				</Stack>
 				<Stack pl="5" pb="5" spacing={10} direction="row">
@@ -48,7 +63,7 @@ function TopicCard({ data, index }: any) {
 							Yes
 						</Heading>
 						<Text color="gray.800" fontSize="sm">
-							0.6 USDT
+							{`${outcome.yes} USDT`}
 						</Text>
 					</Stack>
 					<Stack>
@@ -56,7 +71,7 @@ function TopicCard({ data, index }: any) {
 							No
 						</Heading>
 						<Text color="gray.800" fontSize="sm">
-							0.6 USDT
+							{`${outcome.no} USDT`}
 						</Text>
 					</Stack>
 				</Stack>

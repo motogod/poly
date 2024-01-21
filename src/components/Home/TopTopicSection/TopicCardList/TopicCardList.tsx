@@ -4,6 +4,8 @@ import { ScrollContainer } from 'react-indiana-drag-scroll';
 import 'react-indiana-drag-scroll/dist/style.css';
 import { Element, scroller } from 'react-scroll';
 import { useTranslation } from 'next-i18next';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 import {
 	Stack,
 	IconButton,
@@ -20,30 +22,23 @@ import {
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { useCategoryTabsList } from '@/hooks';
 import styles from './topicCardList.module.scss';
+import SkeletonTopicCard from './SkeletonTopicCard';
 import TopicCard from './TopicCard/TopicCard';
 import Draggable from '@/components/common/Draggable';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { zIndexMinimum } from '@/utils/zIndex';
 
-const dummyDataArray = [
-	{ title: 'One' },
-	{ title: 'Two' },
-	{ title: 'Three' },
-	{ title: 'Four' },
-	{ title: 'Five' },
-	{ title: 'Test test test' },
-	{ title: 'tttttaaaa loojsfk' },
-	{ title: 'Elevent test' },
-	{ title: 'fdsagasgj;g' },
-	{ title: 'dsafsafasdfasdf' },
-	{ title: 'Onsadfasdfasdfsdfasdfasdfe' },
-];
+const dummyArrayCount = [...Array(10)];
 
 function TopicCardList() {
 	const listRef = useRef<any>(null);
 
 	const { t } = useTranslation();
 
+	const { data } = useSelector((state: RootState) => state.homeReducer.markets);
+
+	const sliceData = data?.length > 10 ? data?.slice(0, 10) : data;
+	console.log('sliceData', sliceData);
 	const [TabDom, selectedTab] = useCategoryTabsList();
 
 	// for 點擊滑動
@@ -61,7 +56,7 @@ function TopicCardList() {
 
 		const elementIndex = scrollIndex + count;
 
-		if (elementIndex < 0 || elementIndex > dummyDataArray.length) {
+		if (elementIndex < 0 || elementIndex > sliceData.length) {
 			return;
 		}
 
@@ -118,17 +113,24 @@ function TopicCardList() {
 			</Stack>
 
 			<Stack id="topicCard" className={styles.listContainer}>
-				<Stack spacing={'16px'} display="grid" gridAutoFlow="column" my="0.5">
-					{dummyDataArray.map((value, index) => (
-						<>
-							<Element name={`com-${index}`} key={index}>
-								<TopicCard data={value} index={index} />
-							</Element>
-							{dummyDataArray.length === index + 1 ? (
-								<Stack w={{ md: '116px', sm: '16px' }}></Stack>
-							) : null}
-						</>
-					))}
+				<Stack direction={'row'} spacing={'16px'}>
+					{/* <Stack spacing={'16px'} display="grid" gridAutoFlow="column" my="0.5"> */}
+					{sliceData === undefined
+						? dummyArrayCount.map((value, index) => (
+								<Stack key={index}>
+									<SkeletonTopicCard index={index} />
+								</Stack>
+						  ))
+						: sliceData?.map((value, index) => (
+								<>
+									<Element name={`com-${index}`} key={index}>
+										<TopicCard data={value} index={index} />
+									</Element>
+									{sliceData?.length === index + 1 ? (
+										<Stack w={{ md: '116px', sm: '16px' }}></Stack>
+									) : null}
+								</>
+						  ))}
 				</Stack>
 			</Stack>
 

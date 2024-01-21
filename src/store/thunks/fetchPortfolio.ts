@@ -7,6 +7,8 @@ import {
 	PostBuyOrdersParameType,
 	DeletePortfolioOrder,
 	DeleteOrderType,
+	GetUserPortfolio,
+	GetUserPortfolioType,
 } from '@/api';
 
 const getPortfolioOrders = createAsyncThunk('api/getPortfolioOrders', async () => {
@@ -19,6 +21,7 @@ const tradeOrders = createAsyncThunk('api/tradeOrders', async (params: PostBuyOr
 	console.log('tradeOrders params', params);
 	const resp = await PostTradeOrders<PostBuyOrdersType>(params);
 	console.log('tradeOrders resp is', resp);
+
 	return resp;
 });
 
@@ -26,11 +29,17 @@ const deleteOrder = createAsyncThunk('api/deleteOrder', async (params: { id: str
 	console.log('deleteOrder params', params);
 	const resp = await DeletePortfolioOrder<DeleteOrderType>(params);
 	console.log('deleteOrder resp is', resp);
-	if (resp) {
-		return { ...resp, id: params.id };
-	}
 
-	return resp;
+	return { id: params.id };
 });
 
-export { getPortfolioOrders, tradeOrders, deleteOrder };
+const getUserPortfolio = createAsyncThunk(
+	'api/getUserPortfolio',
+	async (params: { marketId: string }) => {
+		const resp = await GetUserPortfolio<GetUserPortfolioType>(params);
+		console.log('getUserPortfolio resp', resp);
+		return resp;
+	}
+);
+
+export { getPortfolioOrders, tradeOrders, deleteOrder, getUserPortfolio };
