@@ -43,8 +43,8 @@ export const CheckAuth = <T>(params: any) =>
 export const GetUserProfile = <T>(params: any) =>
 	requestWithSession.get<T>('/accounts/profile', params, { timeout: 15000 });
 
-// Get user portfolio
-export const GetUserPortfolio = <T>(params: { marketId: string }) => {
+// Get user portfolio positions
+export const GetUserPortfolioPositions = <T>(params: { marketId: string }) => {
 	let paramsData = {};
 
 	if (params.marketId !== '') {

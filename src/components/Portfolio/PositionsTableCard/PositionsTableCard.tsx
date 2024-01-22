@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getUserPortfolio, AppDispatch } from '@/store';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserPortfolioPositions, AppDispatch, RootState } from '@/store';
 import {
 	Box,
 	Select,
@@ -24,13 +25,109 @@ import { useMediaQuery } from 'react-responsive';
 function PositionsTableCard() {
 	const dispatch = useDispatch<AppDispatch>();
 
+	const router = useRouter();
+
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 960px)',
 	});
 
+	const { portfolioPositionsListData } = useSelector((state: RootState) => state.portfolioReducer);
+
 	useEffect(() => {
-		dispatch(getUserPortfolio({ marketId: '' }));
+		dispatch(getUserPortfolioPositions({ marketId: '' }));
 	}, [dispatch]);
+
+	const renderTableRow = () => {
+		return portfolioPositionsListData.map((value: any, index: number) => {
+			return (
+				<>
+					<Tr
+						key={index}
+						onClick={() => router.push(`/marketsDetail?marketSlug=${value?.market?.slug}`)}
+						cursor={'pointer'}
+						_hover={{ bg: 'gray.100', borderRadius: 18 }}
+					>
+						<Td verticalAlign={'middle'}>
+							<Stack align={'center'} direction={'row'}>
+								<Image
+									height="48px"
+									width="48px"
+									src={value?.market?.image || ''}
+									alt="Green double couch with wooden legs"
+									borderRadius="lg"
+								/>
+								<Text fontSize={'14px'} color={'gray.700'} mr={'16px'}>
+									{value?.market?.title}
+								</Text>
+							</Stack>
+						</Td>
+						<Td verticalAlign={'middle'}>
+							<Badge px={'14px'} py={'4px'} variant="solid" colorScheme="green">
+								(Test)
+							</Badge>
+						</Td>
+						<Td
+							verticalAlign={'middle'}
+							fontSize={'md'}
+							color={'gray.700'}
+							fontWeight={'500'}
+							lineHeight={'20px'}
+						>
+							<Text>0.60(Test)</Text>
+						</Td>
+						<Td
+							verticalAlign={'middle'}
+							fontSize={'md'}
+							color={'gray.700'}
+							fontWeight={'500'}
+							lineHeight={'20px'}
+						>
+							<Text>27.00(Test)</Text>
+						</Td>
+						<Td
+							verticalAlign={'middle'}
+							fontSize={'md'}
+							color={'gray.700'}
+							fontWeight={'500'}
+							lineHeight={'20px'}
+						>
+							<Text>2.00(Test)</Text>
+						</Td>
+						<Td
+							verticalAlign={'middle'}
+							fontSize={'md'}
+							color={'gray.700'}
+							fontWeight={'500'}
+							lineHeight={'20px'}
+						>
+							<Stack align={'center'} direction={'row'}>
+								<Text color={'gray.700'}>1.60(T)</Text>
+								<Text color={'green.500'}>{`(+133.33%)`}</Text>
+							</Stack>
+						</Td>
+						<Td
+							verticalAlign={'middle'}
+							fontSize={'md'}
+							color={'gray.700'}
+							fontWeight={'500'}
+							lineHeight={'20px'}
+						>
+							<Button
+								top={'26%'}
+								size="sm"
+								bg="#fff"
+								border={'1px'}
+								borderColor={'teal.500'}
+								color="teal.500"
+							>
+								TradeTest
+							</Button>
+						</Td>
+					</Tr>
+				</>
+			);
+		});
+	};
 
 	return (
 		<>
@@ -54,7 +151,7 @@ function PositionsTableCard() {
 					size="md"
 					defaultValue={'all'}
 				>
-					<option value="all">All</option>
+					<option value="all">All(Test)</option>
 					<option value="active">Active</option>
 					<option value="redeem">Redeem</option>
 					<option value="resolved">Resolved</option>
@@ -110,6 +207,7 @@ function PositionsTableCard() {
 								Shares
 							</Th>
 							<Th
+								textAlign={'end'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}
@@ -119,6 +217,7 @@ function PositionsTableCard() {
 								Value
 							</Th>
 							<Th
+								textAlign={'center'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}
@@ -129,241 +228,7 @@ function PositionsTableCard() {
 							</Th>
 						</Tr>
 					</Thead>
-					<Tbody>
-						<Tr>
-							<Td verticalAlign={'middle'}>
-								<Stack align={'center'} direction={'row'}>
-									<Image
-										height="48px"
-										width="48px"
-										src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-										alt="Green double couch with wooden legs"
-										borderRadius="lg"
-									/>
-									<Text fontSize={'14px'} color={'gray.700'} mr={'16px'}>
-										Trump arrest full recap: Mugshot, surrender
-									</Text>
-								</Stack>
-							</Td>
-							<Td verticalAlign={'middle'}>
-								<Badge px={'14px'} py={'4px'} variant="solid" colorScheme="green">
-									Yes
-								</Badge>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Text>0.60</Text>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Text>27.00 USDT</Text>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Text>2.00</Text>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Stack align={'center'} direction={'row'}>
-									<Text color={'gray.700'}>1.60</Text>
-									<Text color={'green.500'}>{`(+133.33%)`}</Text>
-								</Stack>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Button
-									top={'26%'}
-									size="sm"
-									bg="#fff"
-									border={'1px'}
-									borderColor={'teal.500'}
-									color="teal.500"
-								>
-									Trade
-								</Button>
-							</Td>
-						</Tr>
-						<Tr>
-							<Td verticalAlign={'middle'}>
-								<Stack align={'center'} direction={'row'}>
-									<Image
-										height="48px"
-										width="48px"
-										src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-										alt="Green double couch with wooden legs"
-										borderRadius="lg"
-									/>
-									<Text fontSize={'14px'} color={'gray.700'} mr={'16px'}>
-										Trump arrest full recap: Mugshot, surrender test test
-									</Text>
-								</Stack>
-							</Td>
-							<Td verticalAlign={'middle'}>
-								<Badge mb={'0px'} px={'14px'} py={'4px'} variant="solid" colorScheme="red">
-									No
-								</Badge>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Text>0.60</Text>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Text>27.00 USDT</Text>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Text>2.00</Text>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Stack align={'center'} direction={'row'}>
-									<Text color={'gray.700'}>1.60</Text>
-									<Text color={'green.500'}>{`(+133.33%)`}</Text>
-								</Stack>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Button
-									top={'26%'}
-									size="sm"
-									bg="#fff"
-									border={'1px'}
-									borderColor={'teal.500'}
-									color="teal.500"
-								>
-									Trade
-								</Button>
-							</Td>
-						</Tr>
-						<Tr>
-							<Td verticalAlign={'middle'}>
-								<Stack align={'center'} direction={'row'}>
-									<Image
-										height="48px"
-										width="48px"
-										src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-										alt="Green double couch with wooden legs"
-										borderRadius="lg"
-									/>
-									<Text fontSize={'14px'} color={'gray.700'} mr={'16px'}>
-										Trump arrest full recap: Mugshot, surrender
-									</Text>
-								</Stack>
-							</Td>
-							<Td verticalAlign={'middle'}>
-								<Badge px={'14px'} py={'4px'} variant="solid" colorScheme="green">
-									Yes
-								</Badge>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Text>0.60</Text>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Text>27.00 USDT</Text>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Text>2.00</Text>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Stack align={'center'} direction={'row'}>
-									<Text color={'gray.700'}>1.60</Text>
-									<Text color={'green.500'}>{`(+133.33%)`}</Text>
-								</Stack>
-							</Td>
-							<Td
-								verticalAlign={'middle'}
-								fontSize={'md'}
-								color={'gray.700'}
-								fontWeight={'500'}
-								lineHeight={'20px'}
-							>
-								<Button
-									size="sm"
-									bg="#fff"
-									border={'1px'}
-									borderColor={'pink.500'}
-									color="pink.500"
-								>
-									Redeem
-								</Button>
-							</Td>
-						</Tr>
-					</Tbody>
+					<Tbody>{renderTableRow()}</Tbody>
 				</Table>
 			</TableContainer>
 		</>

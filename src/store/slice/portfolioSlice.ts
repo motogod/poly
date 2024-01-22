@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getPortfolioOrders, tradeOrders, deleteOrder } from '../thunks/fetchPortfolio';
+import {
+	getPortfolioOrders,
+	tradeOrders,
+	deleteOrder,
+	getUserPortfolioPositions,
+} from '../thunks/fetchPortfolio';
 import { GetPortfolioType, ProtfolioDataType, PortfolioOrderSelectorStatus } from '@/api';
 import { resetTradeOrdersStatus } from '../actions';
 
@@ -12,6 +17,7 @@ type IpState = {
 	isDeleteOrderSuccess: boolean | null;
 	portfolioTabsIndex: number; // Portfolio 的 tab 最後點擊位置狀態
 	portfolioSelectorStatus: 'all' | 'active' | 'cancelled'; // Portfolio 的 selector 最後選擇狀態
+	portfolioPositionsListData: any;
 };
 
 const initialState: IpState = {
@@ -23,6 +29,7 @@ const initialState: IpState = {
 	isDeleteOrderSuccess: null,
 	portfolioTabsIndex: 0,
 	portfolioSelectorStatus: 'all',
+	portfolioPositionsListData: [],
 };
 
 // 根據狀態 filter 正確的資料
@@ -139,6 +146,19 @@ const portfolioSlice = createSlice({
 		builder.addCase(deleteOrder.rejected, (state, action) => {
 			console.log('deleteOrder rejected', action);
 			state.isDeleteOrderLoading = false;
+		});
+
+		// Get user portfolio positions
+		builder.addCase(getUserPortfolioPositions.pending, (state, action) => {
+			console.log('getUserPortfolioPositions pending');
+		});
+		builder.addCase(getUserPortfolioPositions.fulfilled, (state, action) => {
+			console.log('getUserPortfolioPositions fulfilled', action);
+			const { data } = action.payload;
+			state.portfolioPositionsListData = data;
+		});
+		builder.addCase(getUserPortfolioPositions.rejected, (state, action) => {
+			console.log('getUserPortfolioPositions rejected', action);
 		});
 	},
 });

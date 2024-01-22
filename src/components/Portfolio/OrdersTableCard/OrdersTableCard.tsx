@@ -121,12 +121,13 @@ function OrdersTableCard() {
 	};
 
 	const renderTableRow = () => {
-		return filteredPortfolioOrdersData.map(value => {
+		return filteredPortfolioOrdersData.map((value, index) => {
 			const totalPrice = (Number(value.price) * Number(value.quantity)).toFixed(2);
 
 			return (
 				<>
 					<Tr
+						key={index}
 						onClick={() => router.push(`/marketsDetail?marketSlug=${value?.market?.slug}`)}
 						cursor={'pointer'}
 						_hover={{ bg: 'gray.100', borderRadius: 18 }}
@@ -180,7 +181,7 @@ function OrdersTableCard() {
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text></Text>
+							<Text letterSpacing={1}>{`${value.closingPrice}/${value.quantity}`}</Text>
 						</Td>
 						<Td
 							verticalAlign={'middle'}
