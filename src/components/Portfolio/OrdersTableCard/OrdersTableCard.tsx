@@ -66,7 +66,7 @@ function OrdersTableCard() {
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 960px)',
 	});
-	console.log('filteredPortfolioOrdersData =>', filteredPortfolioOrdersData);
+
 	useEffect(() => {
 		dispatch(getPortfolioOrders());
 	}, [dispatch]);

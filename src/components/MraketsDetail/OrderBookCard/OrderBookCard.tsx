@@ -134,13 +134,50 @@ function OrderBookCard() {
 	};
 
 	const renderTableRow = (orderData: OrderBookDataType) => {
-		const largestAskTotalPrice = getLargetstTotalPrice(orderData.asks);
-		const largestBidsTotalPrice = getLargetstTotalPrice(orderData.bids);
+		// const largestAskTotalPrice = getLargetstTotalPrice(orderData.asks);
+		// const largestBidsTotalPrice = getLargetstTotalPrice(orderData.bids);
+
+		// Asks 金額從下到上累加
+		let asksAccumulationTotalPrice: number[] = [];
+
+		if (orderData.asks.length > 0) {
+			const lastElement = orderData?.asks.slice(-1)[0]; // 取最後一個
+
+			asksAccumulationTotalPrice.push(lastElement.price * lastElement.quantity);
+
+			const reverseArray = [...orderData?.asks].reverse(); // 倒轉原本 array of object 的順序 方便後續金額加總
+
+			reverseArray?.reduce((accumulator, currentValue) => {
+				const prevTotalPrice = accumulator.price * accumulator.quantity;
+				const currentTotalPrice = currentValue.price * currentValue.quantity;
+
+				asksAccumulationTotalPrice.push(prevTotalPrice + currentTotalPrice);
+				return accumulator;
+			});
+
+			asksAccumulationTotalPrice.reverse(); // 再倒轉 呈現畫面想要的金額 下到上累加
+		}
+
+		// Bids 金額從上到下累加
+		let bidsAccumulationTotalPrice: number[] = [];
+
+		if (orderData.bids.length > 0) {
+			bidsAccumulationTotalPrice.push(orderData.bids[0].price * orderData.bids[0].quantity);
+
+			orderData.bids.reduce((accumulator, currentValue) => {
+				const prevTotalPrice = accumulator.price * accumulator.quantity;
+				const currentTotalPrice = currentValue.price * currentValue.quantity;
+
+				bidsAccumulationTotalPrice.push(prevTotalPrice + currentTotalPrice);
+				return accumulator;
+			});
+		}
 
 		return (
 			<>
 				{orderData.asks.map((value, index) => {
-					const totalPrice = Number(value.price) * Number(value.quantity);
+					const barPercent =
+						Number(asksAccumulationTotalPrice[index] / asksAccumulationTotalPrice[0]) * 100;
 
 					return (
 						<>
@@ -157,7 +194,7 @@ function OrderBookCard() {
 										justifyContent={'center'}
 										position={'absolute'}
 										bg={'red.100'}
-										w={`${Number(totalPrice / largestAskTotalPrice) * 100}%`}
+										w={`${barPercent > 10 ? barPercent : 10}%`}
 										h={'56px'}
 									>
 										<Text pl={6}>Ask</Text>
@@ -176,15 +213,16 @@ function OrderBookCard() {
 									lineHeight={'20px'}
 									isNumeric
 								>
-									{`$${totalPrice.toFixed(2)}`}
+									{`$${asksAccumulationTotalPrice[index].toFixed(2)}`}
 								</Td>
 							</Tr>
 						</>
 					);
 				})}
 				{orderData.bids.map((value, index) => {
-					const totalPrice = Number(value.price) * Number(value.quantity);
-
+					const barPercent =
+						Number(bidsAccumulationTotalPrice[index] / bidsAccumulationTotalPrice.slice(-1)[0]) *
+						100;
 					return (
 						<>
 							<Tr key={index}>
@@ -199,7 +237,7 @@ function OrderBookCard() {
 										justifyContent={'center'}
 										position={'absolute'}
 										bg={'green.100'}
-										w={`${Number(totalPrice / largestBidsTotalPrice) * 100}%`}
+										w={`${barPercent > 10 ? barPercent : 10}%`}
 										h={'56px'}
 									>
 										<Text pl={6}>Bids</Text>
@@ -218,7 +256,7 @@ function OrderBookCard() {
 									lineHeight={'20px'}
 									isNumeric
 								>
-									{`$${totalPrice.toFixed(2)}`}
+									{`$${bidsAccumulationTotalPrice[index].toFixed(2)}`}
 								</Td>
 							</Tr>
 						</>
