@@ -141,19 +141,14 @@ function OrderBookCard() {
 		let asksAccumulationTotalPrice: number[] = [];
 
 		if (orderData.asks.length > 0) {
-			const lastElement = orderData?.asks.slice(-1)[0]; // 取最後一個
+			const totalPriceArray = orderData?.asks.map(value => value.price * value.quantity);
 
-			asksAccumulationTotalPrice.push(lastElement.price * lastElement.quantity);
+			const reverseArray = totalPriceArray.reverse(); // 倒轉原本 array of object 的順序 方便後續金額加總
 
-			const reverseArray = [...orderData?.asks].reverse(); // 倒轉原本 array of object 的順序 方便後續金額加總
-
-			reverseArray?.reduce((accumulator, currentValue) => {
-				const prevTotalPrice = accumulator.price * accumulator.quantity;
-				const currentTotalPrice = currentValue.price * currentValue.quantity;
-
-				asksAccumulationTotalPrice.push(prevTotalPrice + currentTotalPrice);
-				return accumulator;
-			});
+			reverseArray.reduce((accumulator, currentValue) => {
+				asksAccumulationTotalPrice.push(accumulator + currentValue);
+				return accumulator + currentValue;
+			}, 0);
 
 			asksAccumulationTotalPrice.reverse(); // 再倒轉 呈現畫面想要的金額 下到上累加
 		}
@@ -162,15 +157,12 @@ function OrderBookCard() {
 		let bidsAccumulationTotalPrice: number[] = [];
 
 		if (orderData.bids.length > 0) {
-			bidsAccumulationTotalPrice.push(orderData.bids[0].price * orderData.bids[0].quantity);
+			const totalPriceArray = orderData.bids.map(value => value.price * value.quantity);
 
-			orderData.bids.reduce((accumulator, currentValue) => {
-				const prevTotalPrice = accumulator.price * accumulator.quantity;
-				const currentTotalPrice = currentValue.price * currentValue.quantity;
-
-				bidsAccumulationTotalPrice.push(prevTotalPrice + currentTotalPrice);
-				return accumulator;
-			});
+			totalPriceArray.reduce((accumulator, currentValue) => {
+				bidsAccumulationTotalPrice.push(accumulator + currentValue);
+				return accumulator + currentValue;
+			}, 0);
 		}
 
 		return (
