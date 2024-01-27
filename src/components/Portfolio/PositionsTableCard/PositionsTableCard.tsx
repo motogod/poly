@@ -21,6 +21,7 @@ import {
 	Stack,
 } from '@chakra-ui/react';
 import { useMediaQuery } from 'react-responsive';
+import { UserPortfolioDataType } from '@/api/type';
 
 function PositionsTableCard() {
 	const dispatch = useDispatch<AppDispatch>();
@@ -38,7 +39,7 @@ function PositionsTableCard() {
 	}, [dispatch]);
 
 	const renderTableRow = () => {
-		return portfolioPositionsListData.map((value: any, index: number) => {
+		return portfolioPositionsListData.map((value: UserPortfolioDataType, index: number) => {
 			return (
 				<>
 					<Tr
@@ -62,8 +63,13 @@ function PositionsTableCard() {
 							</Stack>
 						</Td>
 						<Td verticalAlign={'middle'}>
-							<Badge px={'14px'} py={'4px'} variant="solid" colorScheme="green">
-								(Test)
+							<Badge
+								px={'14px'}
+								py={'4px'}
+								variant="solid"
+								colorScheme={`${value?.outcome === 'NO' ? 'red' : 'green'}`}
+							>
+								{value.outcome}
 							</Badge>
 						</Td>
 						<Td
@@ -82,7 +88,7 @@ function PositionsTableCard() {
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text>27.00(Test)</Text>
+							<Text>{value.last24HrPrice.toFixed(2)}</Text>
 						</Td>
 						<Td
 							verticalAlign={'middle'}

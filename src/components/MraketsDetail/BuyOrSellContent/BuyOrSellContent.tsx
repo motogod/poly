@@ -166,8 +166,8 @@ function BuyOrSellContent(props?: Props) {
 	const renderPotentialReturn = () => {
 		if (shareInputValue > 0) {
 			const price = isYes ? marketDetailData?.outcome?.yes : marketDetailData?.outcome?.no;
-
-			const potentialReturnValue = (shareInputValue * 1) / (price * shareInputValue);
+			const cost = price * shareInputValue;
+			const potentialReturnValue = (shareInputValue / cost) * 100;
 
 			return potentialReturnValue.toFixed(2);
 		}

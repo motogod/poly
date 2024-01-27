@@ -21,7 +21,7 @@ function Portfolio() {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const { userFunds } = useSelector((state: RootState) => state.authReducer);
-	const { filteredPortfolioOrdersData, portfolioTabsIndex } = useSelector(
+	const { portfolioOrdersData, portfolioTabsIndex } = useSelector(
 		(state: RootState) => state.portfolioReducer
 	);
 
@@ -75,7 +75,13 @@ function Portfolio() {
 							Orders
 						</Heading>
 						<Text fontSize={'24px'} color={'#fff'}>
-							{filteredPortfolioOrdersData.length}
+							{
+								portfolioOrdersData?.filter(value => {
+									if (value.status === 'PENDING' || value.status === 'PARTIALLY_FILLED') {
+										return value;
+									}
+								}).length
+							}
 						</Text>
 					</Container>
 				</Grid>

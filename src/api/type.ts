@@ -223,19 +223,24 @@ export type GetPortfolioType = {
 	statusCode: number;
 };
 
-export type UserProtfolioDataType = {
+export type UserPortfolioDataType = {
+	hold: number;
+	load: number;
 	market: {
 		id: string;
 		slug: string;
 		title: string;
 		image: string;
 	};
-	outcome: {};
-	total: 100;
+	outcome: string;
+	total: number;
+	price: number;
+	last24HrPrice: number;
+	status: OrderStatusType;
 };
 
 export type GetUserPortfolioType = {
-	data: UserProtfolioDataType[];
+	data: UserPortfolioDataType[];
 	message: string;
 	statusCode: number;
 };
