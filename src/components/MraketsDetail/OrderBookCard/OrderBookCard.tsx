@@ -258,41 +258,6 @@ function OrderBookCard() {
 		);
 	};
 
-	// return (
-	// 	<>
-	// 		<table>
-	// 			<colgroup>
-	// 				<col width="25%"></col>
-	// 				<col width="25%"></col>
-	// 				<col width="25%"></col>
-	// 				<col width="25%"></col>
-	// 			</colgroup>
-	// 			<tr>
-	// 				<td>Fruit</td>
-	// 				<td>Wood</td>
-	// 			</tr>
-	// 			<tr>
-	// 				<td colSpan={1} style={{ backgroundColor: 'pink' }}>
-	// 					Apple
-	// 				</td>
-	// 				<td>100</td>
-	// 			</tr>
-	// 			<tr>
-	// 				<td colSpan={0.5} style={{ backgroundColor: 'pink' }}>
-	// 					Banana
-	// 				</td>
-	// 				<td>30</td>
-	// 			</tr>
-	// 			<tr>
-	// 				<td colSpan={0.3} style={{ backgroundColor: 'pink' }}>
-	// 					Orange
-	// 				</td>
-	// 				<td>80</td>
-	// 			</tr>
-	// 		</table>
-	// 	</>
-	// );
-
 	return (
 		<Card minH={'434px'} shadow="lg" border="1px solid #E2E8F0;" borderRadius="3xl">
 			<CardBody>
