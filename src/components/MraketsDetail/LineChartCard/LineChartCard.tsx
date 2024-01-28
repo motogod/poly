@@ -18,6 +18,7 @@ import {
 	Icon,
 	SkeletonCircle,
 	SkeletonText,
+	useToast,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -93,6 +94,8 @@ function LineChartCard() {
 	);
 
 	const router = useRouter();
+
+	const toast = useToast();
 
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -197,7 +200,23 @@ function LineChartCard() {
 											{marketDetailData?.category?.name}
 										</TagLabel>
 									</Tag>
-									<AttachmentIcon cursor="pointer" />
+									<AttachmentIcon
+										cursor="pointer"
+										onClick={() => {
+											if (typeof window !== 'undefined') {
+												const origin = window.location.origin;
+												const URL = `${origin}${router.asPath}`;
+												navigator.clipboard.writeText(URL);
+												toast({
+													title: 'Copied',
+													position: 'top',
+													status: 'success',
+													duration: 1000,
+													isClosable: true,
+												});
+											}
+										}}
+									/>
 								</Stack>
 								<Stack mt={'12px'}>
 									<Heading noOfLines={3} size="md" color="gray.800" lineHeight={'5'}>

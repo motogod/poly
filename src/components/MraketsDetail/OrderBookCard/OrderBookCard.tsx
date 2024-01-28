@@ -133,17 +133,28 @@ function OrderBookCard() {
 		return largestToalPrice;
 	};
 
-	const renderTableRow = (orderData: OrderBookDataType) => {
-		// const largestAskTotalPrice = getLargetstTotalPrice(orderData.asks);
-		// const largestBidsTotalPrice = getLargetstTotalPrice(orderData.bids);
+	const getSpreadPrice = (
+		orderAsksData: [{ price: number; quantity: number }],
+		orderBidsData: [{ price: number; quantity: number }]
+	) => {
+		// Spread = 最低的賣價 - 最高的出價
+		const asksPriceArray = orderAsksData.map(value => value.price);
+		const minimumAsksPrice = asksPriceArray.length > 0 ? Math.min(...asksPriceArray) : 0;
 
+		const bidsPriceArray = orderBidsData.map(value => value.price);
+		const largestBidsPrice = bidsPriceArray.length > 0 ? Math.max(...bidsPriceArray) : 0;
+
+		return Math.abs(minimumAsksPrice - largestBidsPrice);
+	};
+
+	const renderTableRow = (orderData: OrderBookDataType) => {
 		// Asks 金額從下到上累加
 		let asksAccumulationTotalPrice: number[] = [];
 
 		if (orderData.asks.length > 0) {
-			const totalPriceArray = orderData?.asks.map(value => value.price * value.quantity);
+			const totalAskPriceArray = orderData?.asks.map(value => value.price * value.quantity);
 
-			const reverseArray = totalPriceArray.reverse(); // 倒轉原本 array of object 的順序 方便後續金額加總
+			const reverseArray = totalAskPriceArray.reverse(); // 倒轉原本 array of object 的順序 方便後續金額加總
 
 			reverseArray.reduce((accumulator, currentValue) => {
 				asksAccumulationTotalPrice.push(accumulator + currentValue);
@@ -157,14 +168,14 @@ function OrderBookCard() {
 		let bidsAccumulationTotalPrice: number[] = [];
 
 		if (orderData.bids.length > 0) {
-			const totalPriceArray = orderData.bids.map(value => value.price * value.quantity);
+			const totalBidsPriceArray = orderData.bids.map(value => value.price * value.quantity);
 
-			totalPriceArray.reduce((accumulator, currentValue) => {
+			totalBidsPriceArray.reduce((accumulator, currentValue) => {
 				bidsAccumulationTotalPrice.push(accumulator + currentValue);
 				return accumulator + currentValue;
 			}, 0);
 		}
-
+		// Spread = 最低的賣價 - 最高的出價
 		return (
 			<>
 				{orderData.asks.map((value, index) => {
@@ -211,6 +222,12 @@ function OrderBookCard() {
 						</>
 					);
 				})}
+				<Tr>
+					<Td bg={'gray.100'}>Last:test</Td>
+					<Td bg={'gray.100'}>{`Spread:$${getSpreadPrice(orderData.asks, orderData.bids)}`}</Td>
+					<Td bg={'gray.100'} />
+					<Td bg={'gray.100'} />
+				</Tr>
 				{orderData.bids.map((value, index) => {
 					const barPercent =
 						Number(bidsAccumulationTotalPrice[index] / bidsAccumulationTotalPrice.slice(-1)[0]) *

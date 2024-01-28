@@ -4,7 +4,12 @@ import { homeReducer, userClickYesOrNoButton } from './slice/homeSlice';
 import { authReducer, showAuthToast } from './slice/authSlice';
 import { ipReducer, setIpState } from './slice/ipSlice';
 import { toastReducer, showToast, resetToast } from './slice/toastSlice';
-import { portfolioReducer, selectPortfolioOrders, selectedTabsIndex } from './slice/portfolioSlice';
+import {
+	portfolioReducer,
+	selectPortfolioOrders,
+	selectedTabsIndex,
+	selectPortfolioPositions,
+} from './slice/portfolioSlice';
 import {
 	dataReducer,
 	handleClickMenu,
@@ -62,6 +67,7 @@ export {
 	resetTradeOrdersStatus,
 	selectPortfolioOrders,
 	selectedTabsIndex,
+	selectPortfolioPositions,
 };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';

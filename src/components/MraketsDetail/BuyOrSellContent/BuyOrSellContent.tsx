@@ -28,6 +28,7 @@ import {
 	tradeOrders,
 	showToast,
 	resetTradeOrdersStatus,
+	getUserPortfolioPositionsForHold,
 } from '@/store';
 import { useLoginModal } from '@/hooks';
 import BuyOrSellButton from '../Buttons/BuyOrSellButton';
@@ -60,7 +61,7 @@ function BuyOrSellContent(props?: Props) {
 	const { isUserClickYesOrNo, marketDetailData } = useSelector(
 		(state: RootState) => state.homeReducer
 	);
-	const { isTradeOrdersLoading, isTradeSuccess } = useSelector(
+	const { isTradeOrdersLoading, isTradeSuccess, userMarketHold } = useSelector(
 		(state: RootState) => state.portfolioReducer
 	);
 
@@ -75,18 +76,19 @@ function BuyOrSellContent(props?: Props) {
 	// Limit Price
 	const [limiInputValue, setLimitInputValue] = useState(0);
 	const [limitMax, setLimitMax] = useState(0);
-
+	console.log('limiInputValue =>', limiInputValue);
 	const {
 		getInputProps: getLimitInputProps,
 		getIncrementButtonProps: getIncLimitBtnProps,
 		getDecrementButtonProps: getDescBtnProps,
 	} = useNumberInput({
 		step: 0.1,
-		value: limiInputValue,
+		defaultValue: limiInputValue,
 		min: 0.01,
 		max: 1.0,
 		precision: 2,
 		onChange: value => {
+			console.log(value);
 			// 禁止使用者輸入負號
 			const newValue = value.replace('-', '');
 			setLimitInputValue(Number(newValue));
@@ -96,6 +98,10 @@ function BuyOrSellContent(props?: Props) {
 	const incLimitPrice = getIncLimitBtnProps();
 	const decLimitPrice = getDescBtnProps();
 	const inputLimitPrice = getLimitInputProps();
+
+	useEffect(() => {
+		dispatch(getUserPortfolioPositionsForHold({ marketId: marketDetailData.id }));
+	}, [dispatch, marketDetailData.id]);
 
 	useEffect(() => {
 		if (isTradeSuccess !== null) {
@@ -137,7 +143,7 @@ function BuyOrSellContent(props?: Props) {
 		// defaultValue: shareInputValue,
 		min: 0,
 		// max: hold,
-		max: sharesMax,
+		max: isBuy ? sharesMax : userMarketHold,
 		precision: 0,
 		onChange: value => {
 			// 禁止使用者輸入負號
@@ -177,16 +183,28 @@ function BuyOrSellContent(props?: Props) {
 
 	const isShowCollapseError = () => {
 		if (selectedType === 'MARKET') {
-			if (shareInputValue > sharesMax) {
-				return true;
+			if (isBuy) {
+				if (shareInputValue > sharesMax) {
+					return true;
+				}
+			} else {
+				if (shareInputValue > userMarketHold) {
+					return true;
+				}
 			}
 
 			return false;
 		}
 
 		if (selectedType === 'LIMIT') {
-			if (shareInputValue < 15) {
-				return true;
+			if (isBuy) {
+				if (shareInputValue < 15 || shareInputValue > sharesMax) {
+					return true;
+				}
+			} else {
+				if (shareInputValue > userMarketHold) {
+					return true;
+				}
 			}
 
 			return false;
@@ -197,12 +215,31 @@ function BuyOrSellContent(props?: Props) {
 
 	const renderSharesError = () => {
 		if (selectedType === 'MARKET') {
-			if (shareInputValue > sharesMax) {
-				return 'Insufficient balance';
+			if (isBuy) {
+				if (shareInputValue > sharesMax) {
+					return 'Insufficient balance';
+				}
+			} else {
+				if (shareInputValue > userMarketHold) {
+					return `You Own ${userMarketHold} Shares`;
+				}
 			}
 		}
-		if (selectedType === 'LIMIT' && shareInputValue > 0 && shareInputValue < 15) {
-			return 'Minimum 15 shares for limit orders';
+		if (selectedType === 'LIMIT') {
+			if (isBuy) {
+				// 規定輸入 Shares 低於 15 不得買
+				if (shareInputValue > 0 && shareInputValue < 15) {
+					return 'Minimum 15 shares for limit orders';
+				}
+
+				if (shareInputValue > sharesMax) {
+					return 'Insufficient balance';
+				}
+			} else {
+				if (shareInputValue > userMarketHold) {
+					return `You Own ${userMarketHold} Shares`;
+				}
+			}
 		}
 
 		return '';
@@ -215,10 +252,26 @@ function BuyOrSellContent(props?: Props) {
 		}
 
 		if (selectedType === 'MARKET') {
-			return shareInputValue > sharesMax || shareInputValue === 0;
+			if (isBuy) {
+				return shareInputValue > sharesMax || shareInputValue === 0;
+			} else {
+				return shareInputValue > userMarketHold || userMarketHold === 0;
+			}
 		}
 
-		return shareInputValue < 15 || (limiInputValue < 0.01 && limiInputValue > 1);
+		if (selectedType === 'LIMIT') {
+			if (isBuy) {
+				return shareInputValue > sharesMax || shareInputValue === 0;
+			} else {
+				return (
+					(limiInputValue < 0.01 && limiInputValue > 1) ||
+					shareInputValue > userMarketHold ||
+					userMarketHold === 0
+				);
+			}
+		}
+
+		return false;
 	};
 
 	return (
@@ -260,7 +313,16 @@ function BuyOrSellContent(props?: Props) {
 			<Stack>
 				<Stack mt={'16px'} position="relative" spacing={1.5} direction="row">
 					<BuyOrSellButton onClick={() => setIsBuy(true)} text="Buy" selected={isBuy} />
-					<BuyOrSellButton onClick={() => setIsBuy(false)} text="Sell" selected={!isBuy} />
+					<BuyOrSellButton
+						onClick={() => {
+							setIsBuy(false);
+							if (shareInputValue > userMarketHold) {
+								setShareInputValue(userMarketHold);
+							}
+						}}
+						text="Sell"
+						selected={!isBuy}
+					/>
 				</Stack>
 
 				<Stack mt={'24px'}>
@@ -310,12 +372,20 @@ function BuyOrSellContent(props?: Props) {
 							</Button>
 							<Input
 								type="number"
+								value={limiInputValue}
+								textAlign={'center'}
+								borderRadius={0}
+								border="1px solid #E2E8F0;"
+								{...inputLimitPrice}
+							/>
+							{/* <Input
+								type="number"
 								textAlign={'center'}
 								borderRadius={0}
 								border="1px solid #E2E8F0;"
 								value={limiInputValue}
 								{...inputLimitPrice}
-							/>
+							/> */}
 							<Button borderRadius={'0px 6px 6px 0px'} {...incLimitPrice}>
 								+
 							</Button>
@@ -334,11 +404,13 @@ function BuyOrSellContent(props?: Props) {
 						</Heading>
 						<Stack direction={'row'}>
 							<Tag bg={'gray.100'} color={'gray.800'} borderRadius={20} pl={'16px'} pr={'16px'}>
-								<TagLabel>{`Balance: ${hold} USDT`}</TagLabel>
+								<TagLabel>
+									{isBuy ? `Balance: ${hold} USDT` : `You Own ${userMarketHold} Shares`}
+								</TagLabel>
 							</Tag>
 							<Button
 								onClick={() => {
-									setShareInputValue(sharesMax);
+									isBuy ? setShareInputValue(sharesMax) : setShareInputValue(userMarketHold);
 								}}
 								w={'57px'}
 								h={'28px'}

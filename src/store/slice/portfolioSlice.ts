@@ -4,8 +4,15 @@ import {
 	tradeOrders,
 	deleteOrder,
 	getUserPortfolioPositions,
+	getUserPortfolioPositionsForHold,
 } from '../thunks/fetchPortfolio';
-import { GetPortfolioType, ProtfolioDataType, PortfolioOrderSelectorStatus } from '@/api';
+import {
+	GetPortfolioType,
+	ProtfolioDataType,
+	PortfolioOrderSelectorStatus,
+	UserPortfolioDataType,
+	PortfoioPostionTableStatus,
+} from '@/api';
 import { resetTradeOrdersStatus } from '../actions';
 
 type IpState = {
@@ -17,7 +24,10 @@ type IpState = {
 	isDeleteOrderSuccess: boolean | null;
 	portfolioTabsIndex: number; // Portfolio 的 tab 最後點擊位置狀態
 	portfolioSelectorStatus: 'all' | 'active' | 'cancelled'; // Portfolio 的 selector 最後選擇狀態
-	portfolioPositionsListData: any;
+	portfolioPositionsListData: UserPortfolioDataType[]; // call API 得到的初始資料
+	filterPortfolioPositionsListData: UserPortfolioDataType[]; // 後續過濾條件要呈現的資料
+	portfolioPositionsSelectorStatus: 'all' | 'active' | 'reedeem' | 'claim';
+	userMarketHold: number; // 使用者在該市場擁有多少 Shares
 };
 
 const initialState: IpState = {
@@ -30,6 +40,9 @@ const initialState: IpState = {
 	portfolioTabsIndex: 0,
 	portfolioSelectorStatus: 'all',
 	portfolioPositionsListData: [],
+	filterPortfolioPositionsListData: [],
+	portfolioPositionsSelectorStatus: 'all',
+	userMarketHold: 0,
 };
 
 // 根據狀態 filter 正確的資料
@@ -59,10 +72,55 @@ const filetrData = (state: IpState, selectorStatus: string) => {
 	}
 };
 
+const filetrPositionsData = (state: IpState, selectorStatus: string) => {
+	if (selectorStatus === 'all') {
+		state.filterPortfolioPositionsListData = state.portfolioPositionsListData;
+	}
+
+	if (selectorStatus === 'active') {
+		state.filterPortfolioPositionsListData = state.portfolioPositionsListData.filter(value => {
+			const { status } = value;
+
+			if (status === 'OPEN') {
+				return value;
+			}
+		});
+	}
+
+	if (selectorStatus === 'reedeem') {
+		state.filterPortfolioPositionsListData = state.portfolioPositionsListData.filter(value => {
+			const { status } = value;
+
+			if (status === 'RESOLVED') {
+				return value;
+			}
+		});
+	}
+
+	if (selectorStatus === 'claim') {
+		state.filterPortfolioPositionsListData = state.portfolioPositionsListData.filter(value => {
+			const { status } = value;
+
+			if (status === 'CLOSED') {
+				return value;
+			}
+		});
+	}
+};
+
 const portfolioSlice = createSlice({
 	name: 'portfolio',
 	initialState,
 	reducers: {
+		// 點選 Selector 改變顯示的資料
+		selectPortfolioPositions: (state, action) => {
+			const status = action.payload;
+
+			state.portfolioPositionsSelectorStatus = status; // 更新 Selector 要顯示哪一個選項
+
+			filetrPositionsData(state, status);
+		},
+
 		// 點選 Selector 改變顯示的資料
 		selectPortfolioOrders: (state, action) => {
 			const status = action.payload;
@@ -156,12 +214,34 @@ const portfolioSlice = createSlice({
 			console.log('getUserPortfolioPositions fulfilled', action);
 			const { data } = action.payload;
 			state.portfolioPositionsListData = data;
+
+			// 根據原本選擇狀態去 filter 正確的資料
+			filetrPositionsData(state, state.portfolioPositionsSelectorStatus);
 		});
 		builder.addCase(getUserPortfolioPositions.rejected, (state, action) => {
 			console.log('getUserPortfolioPositions rejected', action);
 		});
+
+		// Get user portfolio for market hold
+		builder.addCase(getUserPortfolioPositionsForHold.pending, (state, action) => {
+			console.log('getUserPortfolioPositionsForHold pending');
+		});
+		builder.addCase(getUserPortfolioPositionsForHold.fulfilled, (state, action) => {
+			console.log('getUserPortfolioPositionsForHold fulfilled', action);
+			const { data } = action.payload;
+
+			if (data.length > 0) {
+				state.userMarketHold = data[0].hold;
+			} else {
+				state.userMarketHold = 0;
+			}
+		});
+		builder.addCase(getUserPortfolioPositionsForHold.rejected, (state, action) => {
+			console.log('getUserPortfolioPositionsForHold rejected', action);
+		});
 	},
 });
 
-export const { selectPortfolioOrders, selectedTabsIndex } = portfolioSlice.actions;
+export const { selectPortfolioOrders, selectedTabsIndex, selectPortfolioPositions } =
+	portfolioSlice.actions;
 export const portfolioReducer = portfolioSlice.reducer;

@@ -44,4 +44,20 @@ const getUserPortfolioPositions = createAsyncThunk(
 	}
 );
 
-export { getPortfolioOrders, tradeOrders, deleteOrder, getUserPortfolioPositions };
+// for Positions hold
+const getUserPortfolioPositionsForHold = createAsyncThunk(
+	'api/getUserPortfolioPositionsForHold',
+	async (params: { marketId: string }) => {
+		const resp = await GetUserPortfolioPositions<GetUserPortfolioType>(params);
+		console.log('getUserPortfolioPositionsForHold resp', resp);
+		return resp;
+	}
+);
+
+export {
+	getPortfolioOrders,
+	tradeOrders,
+	deleteOrder,
+	getUserPortfolioPositions,
+	getUserPortfolioPositionsForHold,
+};

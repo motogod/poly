@@ -223,9 +223,18 @@ export type GetPortfolioType = {
 	statusCode: number;
 };
 
+// 可以交易的倉位、無法交易也無法Redeem的倉位、可以Redeem或Claim的倉位
+export type PortfoioPostionTableStatus = 'OPEN' | 'CLOSED' | 'RESOLVED';
+export enum PortfoioPostionTableStatusEnum {
+	all = 'All',
+	active = 'Active',
+	reedeem = 'Redeem',
+	claim = 'Claim',
+}
+
 export type UserPortfolioDataType = {
-	hold: number;
-	load: number;
+	hold: number; // 持有的量
+	load: number; // 被圈存無法交易的量
 	market: {
 		id: string;
 		slug: string;
@@ -233,10 +242,10 @@ export type UserPortfolioDataType = {
 		image: string;
 	};
 	outcome: string;
-	total: number;
-	price: number;
+	total: number; // Shares
+	price: number; // Price
 	last24HrPrice: number;
-	status: OrderStatusType;
+	status: PortfoioPostionTableStatus;
 };
 
 export type GetUserPortfolioType = {

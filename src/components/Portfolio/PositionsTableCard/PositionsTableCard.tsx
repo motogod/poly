@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserPortfolioPositions, AppDispatch, RootState } from '@/store';
+import {
+	getUserPortfolioPositions,
+	AppDispatch,
+	RootState,
+	selectPortfolioPositions,
+} from '@/store';
 import {
 	Box,
 	Select,
@@ -21,7 +26,16 @@ import {
 	Stack,
 } from '@chakra-ui/react';
 import { useMediaQuery } from 'react-responsive';
-import { UserPortfolioDataType } from '@/api/type';
+import {
+	UserPortfolioDataType,
+	PortfoioPostionTableStatus,
+	PortfoioPostionTableStatusEnum,
+} from '@/api/type';
+
+const selectorOptions = Object.entries(PortfoioPostionTableStatusEnum).map(([value, label]) => ({
+	value,
+	label,
+}));
 
 function PositionsTableCard() {
 	const dispatch = useDispatch<AppDispatch>();
@@ -32,14 +46,61 @@ function PositionsTableCard() {
 		query: '(min-width: 960px)',
 	});
 
-	const { portfolioPositionsListData } = useSelector((state: RootState) => state.portfolioReducer);
+	const { filterPortfolioPositionsListData, portfolioPositionsSelectorStatus } = useSelector(
+		(state: RootState) => state.portfolioReducer
+	);
 
 	useEffect(() => {
 		dispatch(getUserPortfolioPositions({ marketId: '' }));
 	}, [dispatch]);
 
+	const getProfieOrLoasePercent = (currentValue: number, holdValue: number) => {
+		let percentValueString = '';
+		const value = Number(((currentValue - holdValue) / holdValue).toFixed(2)) * 100;
+
+		if (value > 0) {
+			percentValueString = '+' + String(value) + '%';
+		}
+
+		if (value < 0) {
+			percentValueString = '-' + String(value) + '%';
+		}
+
+		return percentValueString;
+	};
+
+	const renderActionButton = (status: PortfoioPostionTableStatus) => {
+		let color = '';
+		let buttonText = '';
+
+		if (status === 'OPEN') {
+			color = 'teal.500';
+			buttonText = 'Trade';
+		}
+
+		if (status === 'CLOSED') {
+			color = 'teal.500';
+			buttonText = '';
+		}
+
+		if (status === 'RESOLVED') {
+			color = 'red.500';
+			buttonText = 'Redeem';
+		}
+
+		if (status === 'OPEN' || status === 'RESOLVED') {
+			return (
+				<Button top={'26%'} size="sm" bg="#fff" border={'1px'} borderColor={color} color={color}>
+					{buttonText}
+				</Button>
+			);
+		}
+
+		return '';
+	};
+
 	const renderTableRow = () => {
-		return portfolioPositionsListData.map((value: UserPortfolioDataType, index: number) => {
+		return filterPortfolioPositionsListData.map((value: UserPortfolioDataType, index: number) => {
 			return (
 				<>
 					<Tr
@@ -73,15 +134,17 @@ function PositionsTableCard() {
 							</Badge>
 						</Td>
 						<Td
+							textAlign={'center'}
 							verticalAlign={'middle'}
 							fontSize={'md'}
 							color={'gray.700'}
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text>0.60(Test)</Text>
+							<Text>{value.price}</Text>
 						</Td>
 						<Td
+							textAlign={'center'}
 							verticalAlign={'middle'}
 							fontSize={'md'}
 							color={'gray.700'}
@@ -91,43 +154,44 @@ function PositionsTableCard() {
 							<Text>{value.last24HrPrice.toFixed(2)}</Text>
 						</Td>
 						<Td
+							textAlign={'center'}
 							verticalAlign={'middle'}
 							fontSize={'md'}
 							color={'gray.700'}
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text>2.00(Test)</Text>
+							<Text>{value.total}</Text>
 						</Td>
 						<Td
+							textAlign={'center'}
 							verticalAlign={'middle'}
 							fontSize={'md'}
 							color={'gray.700'}
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Stack align={'center'} direction={'row'}>
-								<Text color={'gray.700'}>1.60(T)</Text>
-								<Text color={'green.500'}>{`(+133.33%)`}</Text>
+							<Stack justify={'center'} direction={'row'}>
+								<Text
+									color={
+										getProfieOrLoasePercent(value.last24HrPrice, value.price).includes('+')
+											? 'red.500'
+											: 'green.500'
+									}
+								>
+									{getProfieOrLoasePercent(value.last24HrPrice, value.price)}
+								</Text>
 							</Stack>
 						</Td>
 						<Td
+							textAlign={'end'}
 							verticalAlign={'middle'}
 							fontSize={'md'}
 							color={'gray.700'}
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Button
-								top={'26%'}
-								size="sm"
-								bg="#fff"
-								border={'1px'}
-								borderColor={'teal.500'}
-								color="teal.500"
-							>
-								TradeTest
-							</Button>
+							{renderActionButton(value.status)}
 						</Td>
 					</Tr>
 				</>
@@ -144,6 +208,7 @@ function PositionsTableCard() {
 				as={Stack}
 			>
 				<Select
+					onChange={event => dispatch(selectPortfolioPositions(event.target.value))}
 					_hover={{ bg: 'gray.100' }}
 					cursor={'pointer'}
 					_focusVisible={{
@@ -155,12 +220,13 @@ function PositionsTableCard() {
 					w={isDesktop ? '200px' : '100%'}
 					placeholder=""
 					size="md"
-					defaultValue={'all'}
+					defaultValue={portfolioPositionsSelectorStatus}
 				>
-					<option value="all">All(Test)</option>
-					<option value="active">Active</option>
-					<option value="redeem">Redeem</option>
-					<option value="resolved">Resolved</option>
+					{selectorOptions.map(value => (
+						<>
+							<option value={value.value}>{value.label}</option>
+						</>
+					))}
 				</Select>
 			</Box>
 			<TableContainer p={'12px'} mt={'20px'} border="1px solid #E2E8F0;" borderRadius={'10px'}>
@@ -186,6 +252,7 @@ function PositionsTableCard() {
 								Outcome
 							</Th>
 							<Th
+								textAlign={'center'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}
@@ -195,6 +262,7 @@ function PositionsTableCard() {
 								Share Price
 							</Th>
 							<Th
+								textAlign={'center'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}
@@ -204,6 +272,7 @@ function PositionsTableCard() {
 								{`Price(24H)`}
 							</Th>
 							<Th
+								textAlign={'center'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}
@@ -213,7 +282,7 @@ function PositionsTableCard() {
 								Shares
 							</Th>
 							<Th
-								textAlign={'end'}
+								textAlign={'center'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}
@@ -223,7 +292,7 @@ function PositionsTableCard() {
 								Value
 							</Th>
 							<Th
-								textAlign={'center'}
+								textAlign={'end'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}
