@@ -49,150 +49,8 @@ const initialState: IpState = {
 	filterPortfolioPositionsListData: [],
 	portfolioPositionsSelectorStatus: 'all',
 	userMarketHold: 0,
-	portfolioHistoryListData: [
-		{
-			action: 'BUY',
-			market: {
-				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
-				slug: 'will-joe-biden-be-president-of-the-united-states-on',
-				title: 'Will Joe Biden be President of the United States on...?',
-				image: 'https://google.com',
-			},
-			outcome: 'YES',
-			time: '2024-02-01T07:55:11.739Z',
-			price: 0.6,
-			quantity: 100,
-			value: 60,
-		},
-		{
-			action: 'REDEEM',
-			market: {
-				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
-				slug: 'will-joe-biden-be-president-of-the-united-states-on',
-				title: 'Will Joe Biden be President of the United States on...?',
-				image: 'https://google.com',
-			},
-			outcome: 'NO',
-			time: '2024-01-01T07:55:11.739Z',
-			price: 0.6,
-			quantity: 100,
-			value: 60,
-		},
-		{
-			action: 'SELL',
-			market: {
-				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
-				slug: 'will-joe-biden-be-president-of-the-united-states-on',
-				title: 'Will Joe Biden be President of the United States on...?',
-				image: 'https://google.com',
-			},
-			outcome: 'YES',
-			time: '2024-01-31T07:55:11.739Z',
-			price: 0.6,
-			quantity: 100,
-			value: 60,
-		},
-		{
-			action: 'SELL',
-			market: {
-				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
-				slug: 'will-joe-biden-be-president-of-the-united-states-on',
-				title: 'Will Joe Biden be President of the United States on...?',
-				image: 'https://google.com',
-			},
-			outcome: 'YES',
-			time: '2021-08-12T07:55:11.739Z',
-			price: 0.6,
-			quantity: 100,
-			value: 60,
-		},
-		{
-			action: 'SELL',
-			market: {
-				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
-				slug: 'will-joe-biden-be-president-of-the-united-states-on',
-				title: 'Will Joe Biden be President of the United States on...?',
-				image: 'https://google.com',
-			},
-			outcome: 'YES',
-			time: '2023-01-31T07:55:11.739Z',
-			price: 0.6,
-			quantity: 100,
-			value: 60,
-		},
-	],
-	filterPortfolioHistoryListData: [
-		{
-			action: 'BUY',
-			market: {
-				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
-				slug: 'will-joe-biden-be-president-of-the-united-states-on',
-				title: 'Will Joe Biden be President of the United States on...?',
-				image: 'https://google.com',
-			},
-			outcome: 'YES',
-			time: '2024-02-01T07:55:11.739Z',
-			price: 0.6,
-			quantity: 100,
-			value: 60,
-		},
-		{
-			action: 'REDEEM',
-			market: {
-				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
-				slug: 'will-joe-biden-be-president-of-the-united-states-on',
-				title: 'Will Joe Biden be President of the United States on...?',
-				image: 'https://google.com',
-			},
-			outcome: 'NO',
-			time: '2024-01-01T07:55:11.739Z',
-			price: 0.6,
-			quantity: 100,
-			value: 60,
-		},
-		{
-			action: 'SELL',
-			market: {
-				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
-				slug: 'will-joe-biden-be-president-of-the-united-states-on',
-				title: 'Will Joe Biden be President of the United States on...?',
-				image: 'https://google.com',
-			},
-			outcome: 'YES',
-			time: '2024-01-31T07:55:11.739Z',
-			price: 0.6,
-			quantity: 100,
-			value: 60,
-		},
-		{
-			action: 'SELL',
-			market: {
-				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
-				slug: 'will-joe-biden-be-president-of-the-united-states-on',
-				title: 'Will Joe Biden be President of the United States on...?',
-				image: 'https://google.com',
-			},
-			outcome: 'YES',
-			time: '2021-08-12T07:55:11.739Z',
-			price: 0.6,
-			quantity: 100,
-			value: 60,
-		},
-		{
-			action: 'SELL',
-			market: {
-				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
-				slug: 'will-joe-biden-be-president-of-the-united-states-on',
-				title: 'Will Joe Biden be President of the United States on...?',
-				image: 'https://google.com',
-			},
-			outcome: 'YES',
-			time: '2023-01-31T07:55:11.739Z',
-			price: 0.6,
-			quantity: 100,
-			value: 60,
-		},
-	],
+	portfolioHistoryListData: [],
+	filterPortfolioHistoryListData: [],
 	portfolioHistorySelectorStatus: 'all',
 };
 
@@ -433,10 +291,10 @@ const portfolioSlice = createSlice({
 		builder.addCase(getPortfolioHistory.fulfilled, (state, action) => {
 			console.log('getPortfolioHistory fulfilled', action);
 			const { data } = action.payload;
-			// state.portfolioHistoryListData = data;
+			state.portfolioHistoryListData = data;
 
 			// 根據原本選擇狀態去 filter 正確的資料
-			// filterHistoryData(state, state.portfolioHistorySelectorStatus);
+			filterHistoryData(state, state.portfolioHistorySelectorStatus);
 		});
 		builder.addCase(getPortfolioHistory.rejected, (state, action) => {
 			console.log('getPortfolioHistory rejected', action);
