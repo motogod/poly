@@ -5,6 +5,7 @@ import {
 	deleteOrder,
 	getUserPortfolioPositions,
 	getUserPortfolioPositionsForHold,
+	getPortfolioHistory,
 } from '../thunks/fetchPortfolio';
 import {
 	GetPortfolioType,
@@ -12,6 +13,8 @@ import {
 	PortfolioOrderSelectorStatus,
 	UserPortfolioDataType,
 	PortfoioPostionTableStatus,
+	ProtfolioHistoryDataType,
+	PortfolioHistorySelectorType,
 } from '@/api';
 import { resetTradeOrdersStatus } from '../actions';
 
@@ -28,6 +31,9 @@ type IpState = {
 	filterPortfolioPositionsListData: UserPortfolioDataType[]; // 後續過濾條件要呈現的資料
 	portfolioPositionsSelectorStatus: 'all' | 'active' | 'reedeem' | 'claim';
 	userMarketHold: number; // 使用者在該市場擁有多少 Shares
+	portfolioHistoryListData: ProtfolioHistoryDataType[]; // Portfolio History 的資料
+	filterPortfolioHistoryListData: ProtfolioHistoryDataType[]; // 後續過濾條件要呈現的資料
+	portfolioHistorySelectorStatus: PortfolioHistorySelectorType;
 };
 
 const initialState: IpState = {
@@ -43,6 +49,151 @@ const initialState: IpState = {
 	filterPortfolioPositionsListData: [],
 	portfolioPositionsSelectorStatus: 'all',
 	userMarketHold: 0,
+	portfolioHistoryListData: [
+		{
+			action: 'BUY',
+			market: {
+				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+				slug: 'will-joe-biden-be-president-of-the-united-states-on',
+				title: 'Will Joe Biden be President of the United States on...?',
+				image: 'https://google.com',
+			},
+			outcome: 'YES',
+			time: '2024-02-01T07:55:11.739Z',
+			price: 0.6,
+			quantity: 100,
+			value: 60,
+		},
+		{
+			action: 'REDEEM',
+			market: {
+				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+				slug: 'will-joe-biden-be-president-of-the-united-states-on',
+				title: 'Will Joe Biden be President of the United States on...?',
+				image: 'https://google.com',
+			},
+			outcome: 'NO',
+			time: '2024-01-01T07:55:11.739Z',
+			price: 0.6,
+			quantity: 100,
+			value: 60,
+		},
+		{
+			action: 'SELL',
+			market: {
+				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+				slug: 'will-joe-biden-be-president-of-the-united-states-on',
+				title: 'Will Joe Biden be President of the United States on...?',
+				image: 'https://google.com',
+			},
+			outcome: 'YES',
+			time: '2024-01-31T07:55:11.739Z',
+			price: 0.6,
+			quantity: 100,
+			value: 60,
+		},
+		{
+			action: 'SELL',
+			market: {
+				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+				slug: 'will-joe-biden-be-president-of-the-united-states-on',
+				title: 'Will Joe Biden be President of the United States on...?',
+				image: 'https://google.com',
+			},
+			outcome: 'YES',
+			time: '2021-08-12T07:55:11.739Z',
+			price: 0.6,
+			quantity: 100,
+			value: 60,
+		},
+		{
+			action: 'SELL',
+			market: {
+				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+				slug: 'will-joe-biden-be-president-of-the-united-states-on',
+				title: 'Will Joe Biden be President of the United States on...?',
+				image: 'https://google.com',
+			},
+			outcome: 'YES',
+			time: '2023-01-31T07:55:11.739Z',
+			price: 0.6,
+			quantity: 100,
+			value: 60,
+		},
+	],
+	filterPortfolioHistoryListData: [
+		{
+			action: 'BUY',
+			market: {
+				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+				slug: 'will-joe-biden-be-president-of-the-united-states-on',
+				title: 'Will Joe Biden be President of the United States on...?',
+				image: 'https://google.com',
+			},
+			outcome: 'YES',
+			time: '2024-02-01T07:55:11.739Z',
+			price: 0.6,
+			quantity: 100,
+			value: 60,
+		},
+		{
+			action: 'REDEEM',
+			market: {
+				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+				slug: 'will-joe-biden-be-president-of-the-united-states-on',
+				title: 'Will Joe Biden be President of the United States on...?',
+				image: 'https://google.com',
+			},
+			outcome: 'NO',
+			time: '2024-01-01T07:55:11.739Z',
+			price: 0.6,
+			quantity: 100,
+			value: 60,
+		},
+		{
+			action: 'SELL',
+			market: {
+				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+				slug: 'will-joe-biden-be-president-of-the-united-states-on',
+				title: 'Will Joe Biden be President of the United States on...?',
+				image: 'https://google.com',
+			},
+			outcome: 'YES',
+			time: '2024-01-31T07:55:11.739Z',
+			price: 0.6,
+			quantity: 100,
+			value: 60,
+		},
+		{
+			action: 'SELL',
+			market: {
+				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+				slug: 'will-joe-biden-be-president-of-the-united-states-on',
+				title: 'Will Joe Biden be President of the United States on...?',
+				image: 'https://google.com',
+			},
+			outcome: 'YES',
+			time: '2021-08-12T07:55:11.739Z',
+			price: 0.6,
+			quantity: 100,
+			value: 60,
+		},
+		{
+			action: 'SELL',
+			market: {
+				id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+				slug: 'will-joe-biden-be-president-of-the-united-states-on',
+				title: 'Will Joe Biden be President of the United States on...?',
+				image: 'https://google.com',
+			},
+			outcome: 'YES',
+			time: '2023-01-31T07:55:11.739Z',
+			price: 0.6,
+			quantity: 100,
+			value: 60,
+		},
+	],
+	portfolioHistorySelectorStatus: 'all',
 };
 
 // 根據狀態 filter 正確的資料
@@ -108,11 +259,37 @@ const filetrPositionsData = (state: IpState, selectorStatus: string) => {
 	}
 };
 
+const filterHistoryData = (state: IpState, selectorStatus: PortfolioHistorySelectorType) => {
+	if (selectorStatus === 'all') {
+		state.filterPortfolioHistoryListData = state.portfolioHistoryListData;
+	}
+
+	if (selectorStatus === 'bought') {
+		state.filterPortfolioHistoryListData = state.portfolioHistoryListData.filter(value => {
+			const { action } = value;
+
+			if (action === 'BUY') {
+				return value;
+			}
+		});
+	}
+
+	if (selectorStatus === 'sold' || selectorStatus === 'redeem') {
+		state.filterPortfolioHistoryListData = state.portfolioHistoryListData.filter(value => {
+			const { action } = value;
+
+			if (action === 'SELL') {
+				return value;
+			}
+		});
+	}
+};
+
 const portfolioSlice = createSlice({
 	name: 'portfolio',
 	initialState,
 	reducers: {
-		// 點選 Selector 改變顯示的資料
+		// Positions 點選 Selector 改變顯示的資料
 		selectPortfolioPositions: (state, action) => {
 			const status = action.payload;
 
@@ -121,13 +298,22 @@ const portfolioSlice = createSlice({
 			filetrPositionsData(state, status);
 		},
 
-		// 點選 Selector 改變顯示的資料
+		// Orders 點選 Selector 改變顯示的資料
 		selectPortfolioOrders: (state, action) => {
 			const status = action.payload;
 
 			state.portfolioSelectorStatus = status; // 更新 Selector 要顯示哪一個選項
 
 			filetrData(state, status);
+		},
+
+		// History 點選 Selector 改變顯示的資料
+		selectPortfolioHistory: (state, action) => {
+			const status = action.payload;
+
+			state.portfolioHistorySelectorStatus = status; // 更新 Selector 要顯示哪一個選項
+
+			filterHistoryData(state, status);
 		},
 
 		// 在 Portfolio 點選 tab 改變 tab index 的值
@@ -239,9 +425,29 @@ const portfolioSlice = createSlice({
 		builder.addCase(getUserPortfolioPositionsForHold.rejected, (state, action) => {
 			console.log('getUserPortfolioPositionsForHold rejected', action);
 		});
+
+		// Get user portfolio history
+		builder.addCase(getPortfolioHistory.pending, (state, action) => {
+			console.log('getPortfolioHistory pending');
+		});
+		builder.addCase(getPortfolioHistory.fulfilled, (state, action) => {
+			console.log('getPortfolioHistory fulfilled', action);
+			const { data } = action.payload;
+			// state.portfolioHistoryListData = data;
+
+			// 根據原本選擇狀態去 filter 正確的資料
+			// filterHistoryData(state, state.portfolioHistorySelectorStatus);
+		});
+		builder.addCase(getPortfolioHistory.rejected, (state, action) => {
+			console.log('getPortfolioHistory rejected', action);
+		});
 	},
 });
 
-export const { selectPortfolioOrders, selectedTabsIndex, selectPortfolioPositions } =
-	portfolioSlice.actions;
+export const {
+	selectPortfolioOrders,
+	selectedTabsIndex,
+	selectPortfolioPositions,
+	selectPortfolioHistory,
+} = portfolioSlice.actions;
 export const portfolioReducer = portfolioSlice.reducer;

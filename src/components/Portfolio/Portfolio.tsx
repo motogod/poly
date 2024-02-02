@@ -16,6 +16,7 @@ import { RootState, selectedTabsIndex, AppDispatch } from '@/store';
 import AppContainer from '@/components/common/Container';
 import PositionsTableCard from './PositionsTableCard';
 import OrdersTableCard from './OrdersTableCard';
+import HistoryTableCard from './HistoryTableCard';
 
 function Portfolio() {
 	const dispatch = useDispatch<AppDispatch>();
@@ -123,8 +124,8 @@ function Portfolio() {
 					<TabPanel p={0}>
 						<OrdersTableCard />
 					</TabPanel>
-					<TabPanel>
-						<p>History</p>
+					<TabPanel p={0}>
+						<HistoryTableCard />
 					</TabPanel>
 				</TabPanels>
 			</Tabs>

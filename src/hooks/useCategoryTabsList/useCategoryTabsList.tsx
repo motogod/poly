@@ -4,7 +4,7 @@ import styles from './useCategoryTabsList.module.scss';
 import { zIndexMinimum } from '@/utils/zIndex';
 
 function useCategoryTabsList() {
-	const [selectedTab, setSelectedTab] = useState<string>('');
+	const [selectedTab, setSelectedTab] = useState<string>('Markets');
 
 	const TabDom = useMemo(
 		() => (
@@ -41,6 +41,7 @@ function useCategoryTabsList() {
 								_selected={{ bg: 'teal.500', color: '#fff' }}
 								color={'black'}
 								borderColor={'gray.200'}
+								_hover={{ bg: selectedTab !== 'Markets' && 'gray.100' }}
 							>
 								Markets
 							</Tab>
@@ -50,6 +51,7 @@ function useCategoryTabsList() {
 								_selected={{ bg: 'teal.500', color: '#fff' }}
 								color={'black'}
 								borderColor={'gray.200'}
+								_hover={{ bg: selectedTab !== 'Business' && 'gray.100' }}
 							>
 								Business
 							</Tab>
@@ -59,6 +61,7 @@ function useCategoryTabsList() {
 								_selected={{ bg: 'teal.500', color: '#fff' }}
 								color={'black'}
 								borderColor={'gray.200'}
+								_hover={{ bg: selectedTab !== 'Crypto' && 'gray.100' }}
 							>
 								Crypto
 							</Tab>
@@ -68,6 +71,7 @@ function useCategoryTabsList() {
 								_selected={{ bg: 'teal.500', color: '#fff' }}
 								color={'black'}
 								borderColor={'gray.200'}
+								_hover={{ bg: selectedTab !== 'AI' && 'gray.100' }}
 							>
 								AI
 							</Tab>
@@ -77,6 +81,7 @@ function useCategoryTabsList() {
 								_selected={{ bg: 'teal.500', color: '#fff' }}
 								color={'black'}
 								borderColor={'gray.200'}
+								_hover={{ bg: selectedTab !== 'Politics' && 'gray.100' }}
 							>
 								Politics
 							</Tab>
@@ -86,6 +91,7 @@ function useCategoryTabsList() {
 								_selected={{ bg: 'teal.500', color: '#fff' }}
 								color={'black'}
 								borderColor={'gray.200'}
+								_hover={{ bg: selectedTab !== 'Sports' && 'gray.100' }}
 							>
 								Sports
 							</Tab>
@@ -94,7 +100,7 @@ function useCategoryTabsList() {
 				</Center>
 			</Tabs>
 		),
-		[]
+		[selectedTab]
 	);
 
 	return [TabDom, selectedTab];

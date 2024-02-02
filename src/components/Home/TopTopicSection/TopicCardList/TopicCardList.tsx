@@ -77,13 +77,12 @@ function TopicCardList() {
 			<Stack mt={{ lg: '120px', md: '112px', sm: '112px' }} justify="center" direction="row">
 				<Stack>
 					<Heading size="lg" color="gray.700">
-						{/* {t('bet_on_markets_spotlight')} */}
 						{t('bet_on_markets_spotlight')}
 					</Heading>
 				</Stack>
 				<Stack
 					display={{ lg: 'inline', md: 'none', sm: 'none' }}
-					right={132}
+					right={'3%'}
 					position="absolute"
 					align="end"
 					justify="end"

@@ -223,8 +223,11 @@ function OrderBookCard() {
 					);
 				})}
 				<Tr>
-					<Td bg={'gray.100'}>Last:test</Td>
-					<Td bg={'gray.100'}>{`Spread:$${getSpreadPrice(orderData.asks, orderData.bids)}`}</Td>
+					<Td bg={'gray.100'} letterSpacing={1}>{`Last:$${orderData.last}`}</Td>
+					<Td bg={'gray.100'} letterSpacing={1}>{`Spread:$${getSpreadPrice(
+						orderData.asks,
+						orderData.bids
+					)}`}</Td>
 					<Td bg={'gray.100'} />
 					<Td bg={'gray.100'} />
 				</Tr>

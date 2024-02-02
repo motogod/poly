@@ -10,11 +10,13 @@ type BuyOrSellButtonType = {
 const selectedStyle = {
 	bg: 'gray.600',
 	color: '#fff',
+	hoverBg: 'gray.700',
 };
 
 const unSelectedStyle = {
 	bg: 'gray.100',
 	color: 'gray.500',
+	hoverBg: 'gray.200',
 };
 
 function BuyOrSellButton(props: BuyOrSellButtonType) {
@@ -26,6 +28,7 @@ function BuyOrSellButton(props: BuyOrSellButtonType) {
 			size="lg"
 			bg={selected ? selectedStyle.bg : unSelectedStyle.bg}
 			color={selected ? selectedStyle.color : unSelectedStyle.color}
+			_hover={{ bg: selected ? selectedStyle.hoverBg : unSelectedStyle.hoverBg }}
 			onClick={onClick}
 		>
 			{text}

@@ -56,6 +56,10 @@ export const GetUserPortfolioPositions = <T>(params: { marketId: string }) => {
 	});
 };
 
+// Get protfolio history
+export const GetPortfolioHistory = <T>(params: any) =>
+	requestWithSession.get<T>('/accounts/trades', params, { timeout: 15000 });
+
 // Update User Profile (username)
 export const PutUserProfile = <T>(params: any) =>
 	requestWithSession.put<T>('/accounts/profile/username', params, { timeout: 15000 });

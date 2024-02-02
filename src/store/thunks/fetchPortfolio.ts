@@ -9,6 +9,8 @@ import {
 	DeleteOrderType,
 	GetUserPortfolioPositions,
 	GetUserPortfolioType,
+	GetPortfolioHistory,
+	GetPortfolioHistoryType,
 } from '@/api';
 
 // Orders
@@ -23,6 +25,13 @@ const tradeOrders = createAsyncThunk('api/tradeOrders', async (params: PostBuyOr
 	const resp = await PostTradeOrders<PostBuyOrdersType>(params);
 	console.log('tradeOrders resp is', resp);
 
+	return resp;
+});
+
+// Portfolio History
+const getPortfolioHistory = createAsyncThunk('api/getPortfolioHistory', async () => {
+	const resp = await GetPortfolioHistory<GetPortfolioHistoryType>({});
+	console.log('getPortfolioHistory resp', resp);
 	return resp;
 });
 
@@ -60,4 +69,5 @@ export {
 	deleteOrder,
 	getUserPortfolioPositions,
 	getUserPortfolioPositionsForHold,
+	getPortfolioHistory,
 };
