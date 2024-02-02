@@ -371,6 +371,7 @@ function BuyOrSellContent(props?: Props) {
 								-
 							</Button>
 							<Input
+								focusBorderColor="gray.100"
 								type="number"
 								value={limiInputValue}
 								textAlign={'center'}
@@ -379,6 +380,7 @@ function BuyOrSellContent(props?: Props) {
 								{...inputLimitPrice}
 							/>
 							{/* <Input
+							focusBorderColor="gray.100"
 								type="number"
 								textAlign={'center'}
 								borderRadius={0}
@@ -416,6 +418,7 @@ function BuyOrSellContent(props?: Props) {
 								h={'28px'}
 								size="xs"
 								bg="gray.600"
+								_hover={{ bg: 'gray.700' }}
 								color="#fff"
 							>
 								Max
@@ -427,6 +430,7 @@ function BuyOrSellContent(props?: Props) {
 							-
 						</Button>
 						<Input
+							focusBorderColor="gray.100"
 							type="number"
 							pattern="[0-9]*"
 							textAlign={'center'}
@@ -476,6 +480,7 @@ function BuyOrSellContent(props?: Props) {
 					leftIcon={isAuthenticated ? <></> : <Icon as={BiWalletAlt} />}
 					size="lg"
 					bg={isAuthenticated ? 'gray.600' : 'teal.500'}
+					_hover={{ bg: isAuthenticated ? 'gray.700' : 'teal.600' }}
 					color="#fff"
 				>
 					{renderConfirmButtonText()}

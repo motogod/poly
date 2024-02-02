@@ -71,8 +71,7 @@ function CategorySection() {
 						px="7"
 						py="6"
 						borderRadius="3xl"
-						bg="teal.500"
-						color="#fff"
+						colorScheme="teal"
 					>
 						View More
 					</Button>

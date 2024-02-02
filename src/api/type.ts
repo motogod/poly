@@ -35,6 +35,7 @@ export type GetMarketDetailType = {
 export type OrderBookDataType = {
 	bids: [{ price: number; quantity: number }];
 	asks: [{ price: number; quantity: number }];
+	last: number;
 };
 
 export type OrderBookType = {
@@ -191,6 +192,14 @@ export enum PortfolioOrderSelectorStatus {
 	cancelled = 'Cancelled',
 }
 
+export type PortfolioHistorySelectorType = 'all' | 'bought' | 'sold' | 'redeem';
+export enum PortfolioHistorySelectorStatus {
+	all = 'All',
+	bought = 'Bought',
+	sold = 'Sold',
+	redeem = 'Redeem',
+}
+
 export type OrderStatusType =
 	| 'PENDING'
 	| 'PARTIALLY_FILLED'
@@ -219,6 +228,29 @@ export type ProtfolioDataType = {
 
 export type GetPortfolioType = {
 	data: ProtfolioDataType[];
+	message: string;
+	statusCode: number;
+};
+
+export type PortfoioHistoryActionType = 'BUY' | 'SELL' | 'REDEEM';
+
+export type ProtfolioHistoryDataType = {
+	action: PortfoioHistoryActionType;
+	market: {
+		id: string;
+		image: string;
+		slug: string;
+		title: string;
+	};
+	outcome: 'YES' | 'NO';
+	time: string;
+	price: number;
+	quantity: number;
+	value: number;
+};
+
+export type GetPortfolioHistoryType = {
+	data: ProtfolioHistoryDataType[];
 	message: string;
 	statusCode: number;
 };

@@ -15,7 +15,7 @@ function TopicCard({ data, index }: { data: MarketsItemType; index: number }) {
 			onClick={() => router.push(`/marketsDetail?marketSlug=${slug}`)}
 			cursor="pointer"
 			width="xs"
-			ml={{ md: index === 0 ? '116px' : '0px', sm: index === 0 ? '16px' : '0px' }}
+			ml={{ md: index === 0 ? '54px' : '0px', sm: index === 0 ? '16px' : '0px' }}
 			shadow="md"
 			borderRadius="3xl"
 			_hover={{ shadow: 'xl' }}

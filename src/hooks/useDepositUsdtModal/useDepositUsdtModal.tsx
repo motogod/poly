@@ -297,8 +297,9 @@ function useDepositUsdtModal() {
 				</InputGroup>
 				<Button
 					w={'100%'}
-					bg={'teal.500'}
-					color="#fff"
+					colorScheme="teal"
+					// bg={'teal.500'}
+					// color="#fff"
 					onClick={() => {
 						setIsCopied(true);
 						setTimeout(() => {
@@ -445,8 +446,9 @@ function useDepositUsdtModal() {
 									isLoading={isLoading}
 									isDisabled={isChainOnEtherOrArbitrum() && !inputValue}
 									w={'100%'}
-									bg={'teal.500'}
-									color="#fff"
+									colorScheme="teal"
+									// bg={'teal.500'}
+									// color="#fff"
 									onClick={() => confirm()}
 								>
 									{renderConfirmText()}

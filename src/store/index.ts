@@ -9,6 +9,7 @@ import {
 	selectPortfolioOrders,
 	selectedTabsIndex,
 	selectPortfolioPositions,
+	selectPortfolioHistory,
 } from './slice/portfolioSlice';
 import {
 	dataReducer,
@@ -68,6 +69,7 @@ export {
 	selectPortfolioOrders,
 	selectedTabsIndex,
 	selectPortfolioPositions,
+	selectPortfolioHistory,
 };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';

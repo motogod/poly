@@ -67,12 +67,12 @@ function MarketsDetail() {
 				gap={'28px'}
 				direction="row"
 			>
-				<Stack spacing={'20px'} w={'100%'}>
+				<Stack spacing={'20px'} w={{ lg: `calc(100% - 400px)`, md: '100%', sm: '100%' }}>
 					<LineChartCard />
 					<OrderBookCard />
 					<About />
 				</Stack>
-				<Stack display={{ lg: 'inline', md: 'none', sm: 'none' }} w={'558px'}>
+				<Stack display={{ lg: 'inline', md: 'none', sm: 'none' }} w={'400px'}>
 					<BuyOrSellCard />
 				</Stack>
 			</Stack>

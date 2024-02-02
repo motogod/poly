@@ -304,8 +304,10 @@ function Markets() {
 		<Stack
 			h={`calc(100vh - ${headerHeight} - ${additionalHeight})`}
 			mt={headerHeight}
-			pl={{ md: '120px', sm: '16px' }}
-			pr={{ md: '116px', sm: '16px' }}
+			// pl={{ md: '120px', sm: '16px' }}
+			// pr={{ md: '116px', sm: '16px' }}
+			pl={{ md: '3%', sm: '16px' }}
+			pr={{ md: '3%', sm: '16px' }}
 			py={{ lg: '40px' }}
 		>
 			{/* for Desktop filter */}

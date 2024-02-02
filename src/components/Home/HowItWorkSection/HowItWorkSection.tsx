@@ -85,8 +85,7 @@ function HowItWorkSection() {
 							px="7"
 							py="6"
 							borderRadius="3xl"
-							bg="teal.500"
-							color="#fff"
+							colorScheme="teal"
 						>
 							Learn More
 						</Button>

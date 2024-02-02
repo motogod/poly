@@ -1,12 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-	getUserPortfolioPositions,
-	AppDispatch,
-	RootState,
-	selectPortfolioPositions,
-} from '@/store';
 import {
 	Box,
 	Select,
@@ -25,88 +18,145 @@ import {
 	Td,
 	Stack,
 } from '@chakra-ui/react';
+import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	getPortfolioOrders,
+	AppDispatch,
+	RootState,
+	deleteOrder,
+	selectPortfolioOrders,
+	getPortfolioHistory,
+	selectPortfolioHistory,
+} from '@/store';
 import { useMediaQuery } from 'react-responsive';
 import {
-	UserPortfolioDataType,
-	PortfoioPostionTableStatus,
-	PortfoioPostionTableStatusEnum,
-} from '@/api/type';
+	OrderStatusType,
+	PortfolioOrderSelectorStatus,
+	PortfoioHistoryActionType,
+	PortfolioHistorySelectorStatus,
+} from '@/api';
 
-const selectorOptions = Object.entries(PortfoioPostionTableStatusEnum).map(([value, label]) => ({
+const dummyHistoryData = [
+	{
+		action: 'BUY',
+		market: {
+			id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+			slug: 'will-joe-biden-be-president-of-the-united-states-on',
+			title: 'Will Joe Biden be President of the United States on...?',
+			image: 'https://google.com',
+		},
+		outcome: 'YES',
+		time: '2024-02-01T07:55:11.739Z',
+		price: 0.6,
+		quantity: 100,
+		value: 60,
+	},
+	{
+		action: 'REDEEM',
+		market: {
+			id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+			slug: 'will-joe-biden-be-president-of-the-united-states-on',
+			title: 'Will Joe Biden be President of the United States on...?',
+			image: 'https://google.com',
+		},
+		outcome: 'NO',
+		time: '2024-01-01T07:55:11.739Z',
+		price: 0.6,
+		quantity: 100,
+		value: 60,
+	},
+	{
+		action: 'SELL',
+		market: {
+			id: '85050c9d-8269-41f7-8811-005a6970b8ef',
+			slug: 'will-joe-biden-be-president-of-the-united-states-on',
+			title: 'Will Joe Biden be President of the United States on...?',
+			image: 'https://google.com',
+		},
+		outcome: 'YES',
+		time: '2024-01-31T07:55:11.739Z',
+		price: 0.6,
+		quantity: 100,
+		value: 60,
+	},
+];
+
+const selectorOptions = Object.entries(PortfolioHistorySelectorStatus).map(([value, label]) => ({
 	value,
 	label,
 }));
 
-function PositionsTableCard() {
+function HistoryTableCard() {
+	// 使用者當下點選刪除的 order id
+	const [userClickDeleteOrderId, setUserClickDeleteOrderId] = useState('');
 	const dispatch = useDispatch<AppDispatch>();
 
 	const router = useRouter();
+
+	const { portfolioHistorySelectorStatus, filterPortfolioHistoryListData } = useSelector(
+		(state: RootState) => state.portfolioReducer
+	);
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 960px)',
 	});
 
-	const { filterPortfolioPositionsListData, portfolioPositionsSelectorStatus } = useSelector(
-		(state: RootState) => state.portfolioReducer
-	);
-
 	useEffect(() => {
-		dispatch(getUserPortfolioPositions({ marketId: '' }));
+		dispatch(getPortfolioHistory());
 	}, [dispatch]);
 
-	const getProfieOrLoasePercent = (currentValue: number, holdValue: number) => {
-		let percentValueString = '';
-
-		const value = Number(((currentValue - holdValue) / holdValue).toFixed(2)) * 100;
-
-		if (holdValue === 0) {
-			percentValueString = '+' + String(Number(currentValue.toFixed(2)) * 100) + '%';
-			return percentValueString;
+	const renderActionText = (action: PortfoioHistoryActionType) => {
+		switch (action) {
+			case 'BUY':
+				return 'Bought';
+			case 'SELL':
+				return 'Sold';
+			case 'REDEEM':
+				return 'Redeem';
+			default:
+				return '';
 		}
-
-		if (value > 0) {
-			percentValueString = '+' + String(value) + '%';
-		}
-
-		if (value < 0) {
-			percentValueString = '-' + String(value) + '%';
-		}
-
-		return percentValueString;
 	};
 
-	const renderActionButton = (status: PortfoioPostionTableStatus) => {
-		let color = '';
-		let buttonText = '';
+	const renderTimeDiff = (time: string) => {
+		const givenTime = moment(time);
 
-		if (status === 'OPEN') {
-			color = 'teal.500';
-			buttonText = 'Trade';
+		const currentTime = moment();
+
+		const minutes = currentTime.diff(givenTime, 'minutes');
+
+		if (minutes < 60) {
+			return `${minutes} ${minutes === 1 ? 'min' : 'mins'} ago`;
 		}
 
-		if (status === 'CLOSED') {
-			color = 'teal.500';
-			buttonText = '';
+		const hours = currentTime.diff(givenTime, 'hours');
+
+		if (hours < 24) {
+			return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
 		}
 
-		if (status === 'RESOLVED') {
-			color = 'red.500';
-			buttonText = 'Redeem';
+		const days = currentTime.diff(givenTime, 'days');
+
+		if (days < 32) {
+			return `${days} ${days === 1 ? 'day' : 'days'} ago`;
 		}
 
-		if (status === 'OPEN' || status === 'RESOLVED') {
-			return (
-				<Button top={'26%'} size="sm" bg="#fff" border={'1px'} borderColor={color} color={color}>
-					{buttonText}
-				</Button>
-			);
+		const months = currentTime.diff(givenTime, 'months');
+
+		if (months < 12) {
+			return `${months} ${months === 1 ? 'month' : 'months'} ago`;
 		}
 
-		return '';
+		const years = currentTime.diff(givenTime, 'years');
+
+		return `${years} ${years === 1 ? 'year' : 'years'} ago`;
 	};
 
 	const renderTableRow = () => {
-		return filterPortfolioPositionsListData.map((value: UserPortfolioDataType, index: number) => {
+		return filterPortfolioHistoryListData.map((value, index) => {
+			const totalPrice = (Number(value.price) * Number(value.quantity)).toFixed(2);
+
 			return (
 				<>
 					<Tr
@@ -115,12 +165,21 @@ function PositionsTableCard() {
 						cursor={'pointer'}
 						_hover={{ bg: 'gray.100', borderRadius: 18 }}
 					>
-						<Td verticalAlign={'middle'}>
+						<Td
+							verticalAlign={'middle'}
+							fontSize={'md'}
+							color={'gray.700'}
+							fontWeight={'500'}
+							lineHeight={'20px'}
+						>
+							<Text>{renderActionText(value?.action)}</Text>
+						</Td>
+						<Td verticalAlign={'middle'} w={'0px'}>
 							<Stack align={'center'} direction={'row'}>
 								<Image
 									height="48px"
 									width="48px"
-									src={value?.market?.image || ''}
+									src={value?.market?.image ? value?.market?.image : ''}
 									alt="Green double couch with wooden legs"
 									borderRadius="lg"
 								/>
@@ -136,58 +195,35 @@ function PositionsTableCard() {
 								variant="solid"
 								colorScheme={`${value?.outcome === 'NO' ? 'red' : 'green'}`}
 							>
-								{value.outcome}
+								{value?.outcome}
 							</Badge>
 						</Td>
 						<Td
-							textAlign={'center'}
 							verticalAlign={'middle'}
 							fontSize={'md'}
 							color={'gray.700'}
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text>{value.price}</Text>
+							<Text>{value?.price}</Text>
 						</Td>
 						<Td
-							textAlign={'center'}
 							verticalAlign={'middle'}
 							fontSize={'md'}
 							color={'gray.700'}
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text>{value.last24HrPrice.toFixed(2)}</Text>
+							<Text>{value?.quantity}</Text>
 						</Td>
 						<Td
-							textAlign={'center'}
 							verticalAlign={'middle'}
 							fontSize={'md'}
 							color={'gray.700'}
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text>{value.total}</Text>
-						</Td>
-						<Td
-							textAlign={'center'}
-							verticalAlign={'middle'}
-							fontSize={'md'}
-							color={'gray.700'}
-							fontWeight={'500'}
-							lineHeight={'20px'}
-						>
-							<Stack justify={'center'} direction={'row'}>
-								<Text
-									color={
-										getProfieOrLoasePercent(value.last24HrPrice, value.price).includes('+')
-											? 'red.500'
-											: 'green.500'
-									}
-								>
-									{getProfieOrLoasePercent(value.last24HrPrice, value.price)}
-								</Text>
-							</Stack>
+							<Text>{value?.value}</Text>
 						</Td>
 						<Td
 							textAlign={'end'}
@@ -197,7 +233,7 @@ function PositionsTableCard() {
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							{renderActionButton(value.status)}
+							<Text>{renderTimeDiff(value?.time)}</Text>
 						</Td>
 					</Tr>
 				</>
@@ -214,7 +250,7 @@ function PositionsTableCard() {
 				as={Stack}
 			>
 				<Select
-					onChange={event => dispatch(selectPortfolioPositions(event.target.value))}
+					onChange={event => dispatch(selectPortfolioHistory(event.target.value))}
 					_hover={{ bg: 'gray.100' }}
 					cursor={'pointer'}
 					_focusVisible={{
@@ -226,7 +262,7 @@ function PositionsTableCard() {
 					w={isDesktop ? '200px' : '100%'}
 					placeholder=""
 					size="md"
-					defaultValue={portfolioPositionsSelectorStatus}
+					defaultValue={portfolioHistorySelectorStatus}
 				>
 					{selectorOptions.map(value => (
 						<>
@@ -246,6 +282,15 @@ function PositionsTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
+								Action
+							</Th>
+							<Th
+								textTransform={'none'}
+								fontSize={'xs'}
+								color={'gray.700'}
+								fontWeight={'700'}
+								lineHeight={'16px'}
+							>
 								Market
 							</Th>
 							<Th
@@ -258,27 +303,15 @@ function PositionsTableCard() {
 								Outcome
 							</Th>
 							<Th
-								textAlign={'center'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Share Price
+								Price
 							</Th>
 							<Th
-								textAlign={'center'}
-								textTransform={'none'}
-								fontSize={'xs'}
-								color={'gray.700'}
-								fontWeight={'700'}
-								lineHeight={'16px'}
-							>
-								{`Price(24H)`}
-							</Th>
-							<Th
-								textAlign={'center'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}
@@ -288,7 +321,6 @@ function PositionsTableCard() {
 								Shares
 							</Th>
 							<Th
-								textAlign={'center'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}
@@ -305,7 +337,7 @@ function PositionsTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Action
+								Date
 							</Th>
 						</Tr>
 					</Thead>
@@ -316,4 +348,4 @@ function PositionsTableCard() {
 	);
 }
 
-export default PositionsTableCard;
+export default HistoryTableCard;

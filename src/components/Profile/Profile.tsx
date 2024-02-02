@@ -132,9 +132,10 @@ function Profile() {
 											isLoading={putUsrProfileIsLoading === true ? true : false}
 											isDisabled={!isTriggerGoogle || userEmail === '' || userEmail === null}
 											onClick={() => dispatch(putUserEmail({ idToken }))}
-											bg="#0034EB"
 											size={{ lg: 'md', md: 'sm', sm: 'sm' }}
-											color="#fff"
+											colorScheme="purple"
+											// bg="#0034EB"
+											// color="#fff"
 										>
 											Save
 										</Button>
