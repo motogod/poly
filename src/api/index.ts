@@ -1,17 +1,28 @@
 import { id } from 'ethers';
-import { request, requestWithSession } from './request';
+import { requestWithSession, serviceWithSessing } from './request';
 
 export const GetMarkets = <T>(params: any) =>
 	requestWithSession.get<T>(`/markets?categories=${params.categories}`, {}, { timeout: 15000 });
 
-export const GetMarketDetail = <T>(params: { slug: string }) =>
-	requestWithSession.get<T>(
+// export const GetMarketDetail = <T>(params: { slug: string }) =>
+// 	requestWithSession.get<T>(
+// 		`/markets/${params.slug}`,
+// 		{},
+// 		{
+// 			timeout: 15000,
+// 		}
+// 	);
+export const GetMarketDetail = <T>(params: { slug: string }) => {
+	// console.log('serviceWithSessing =>', serviceWithSessing.defaults);
+	// serviceTest.get(`/markets/${params.slug}`);
+	return requestWithSession.get<T>(
 		`/markets/${params.slug}`,
 		{},
 		{
 			timeout: 15000,
 		}
 	);
+};
 
 export const GetMarketOrderBook = <T>(params: { slug: string; outcome: string }) =>
 	requestWithSession.get<T>(
