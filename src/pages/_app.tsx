@@ -37,6 +37,7 @@ import '@/styles/globals.scss';
 import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';
 import type { NextComponentType } from 'next';
 import Header from '@/layouts/components/common/Header';
+import { LocalesType } from '../../public/locales/type';
 
 // avoid ssr rendering, fix wagmi config server side Hydration error
 const Layout = dynamic(() => import('@/layouts/Layout'), { ssr: false });
@@ -112,7 +113,7 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 		console.log = function () {};
 	}
 
-	setLanguageHeader(i18n?.language);
+	setLanguageHeader(i18n?.language as LocalesType);
 
 	return (
 		<>

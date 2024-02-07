@@ -38,6 +38,7 @@ import { CategoriesType, ChildrenCategoriesType, MenuType, SubMenuType } from '@
 import styles from './leftMenu.module.scss';
 import zh from 'date-fns/locale/zh-TW';
 import ja from 'date-fns/locale/ja';
+import vi from 'date-fns/locale/vi';
 import { LocalesType } from '@/../public/locales/type';
 import { VolumeType, volumeRadioArray } from '@/store/slice/dataSlice';
 
@@ -70,12 +71,16 @@ const LeftMenu = () => {
 	useEffect(() => {
 		// 註冊相關語系給 DatePicker
 		const locale = router.locale as LocalesType;
-		if (locale === 'zh') {
+		if (locale === 'zh-Hans') {
 			registerLocale('zh', zh);
 		}
 
 		if (locale === 'jp') {
 			registerLocale('jp', ja);
+		}
+
+		if (locale === 'vi') {
+			registerLocale('vi', vi);
 		}
 
 		const { startDate, endDate } = router.query;

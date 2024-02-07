@@ -1,7 +1,7 @@
-export type LocalesType = 'en' | 'zh' | 'jp' | 'vi' | 'th';
+export type LocalesType = 'en' | 'zh-Hans' | 'jp' | 'vi' | 'th';
 export enum LocalesEnum {
 	en = 'English',
-	zh = 'Chinese',
+	'zh-Hans' = 'Chinese',
 	jp = 'Japanese',
 	vi = 'Vietnam',
 	th = 'Thailand',

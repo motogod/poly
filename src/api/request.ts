@@ -1,5 +1,6 @@
 // https://www.jianshu.com/p/efa82d282c1d
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
+import { LocalesType } from '@/../public/locales/type';
 
 // let baseURL =
 // 	process.env.NODE_ENV === 'development'
@@ -30,8 +31,6 @@ const serviceWithSessing = axios.create({
 // 			'Content-Type': 'application/json',
 // 			// 'ngrok-skip-browser-warning': true,
 // 			'Access-Control-Allow-Origin': true,
-// 			'Accept-Language': 'en-US,en,jp,zh-TW;',
-// 			// 'Accept-Language': 'zh-TW',
 // 		};
 // 		console.log('request', config);
 // 		// const TOKEN = Cookies.get('opentrust');
@@ -65,7 +64,7 @@ serviceWithSessing.interceptors.response.use(
 );
 
 // Function to set the language header
-const setLanguageHeader = (language: 'zh' | 'en-US' | 'jp') => {
+const setLanguageHeader = (language: LocalesType) => {
 	serviceWithSessing.defaults.headers.common['Accept-Language'] = language;
 };
 
