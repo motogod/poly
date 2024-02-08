@@ -37,8 +37,8 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 
 	// const { open } = useWeb3Modal();
 
-	const isDesktop = useMediaQuery({
-		query: '(min-width: 768px)',
+	const isMini = useMediaQuery({
+		query: '(min-width: 375px)',
 	});
 
 	const renderTriggerIcon = () => {
@@ -66,7 +66,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 					<PopoverHeader>
 						<LoggedInfoSection close={onPopClose} />
 					</PopoverHeader>
-					<LoggedMenuSection close={onPopClose} type="pop" />
+					<LoggedMenuSection close={onPopClose} type="pop" isMini={isMini} />
 					<PopoverFooter>
 						<Heading size={'sx'} color={'gray.800'} fontWeight={'800'}>
 							Community
@@ -149,8 +149,8 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 				<PopoverContent
 					_focus={{ boxShadow: 'md' }}
 					zIndex={zIndexPop}
-					px={'6px'}
-					py={'22px'}
+					px={!isMini ? '6px' : ''}
+					py={!isMini ? '22px' : ''}
 					mt={'34px'}
 					border={'1px'}
 					borderColor={'transparent'}

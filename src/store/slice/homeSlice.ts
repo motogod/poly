@@ -5,8 +5,15 @@ import {
 	getMarketDetail,
 	getMarketOrderBookYes,
 	getMarketOrderBookNo,
+	getMarketLineChart,
 } from '../thunks/fetchHome';
-import { GetMarketsType, MarketsItemType, OrderBookDataType, OrderBookType } from '@/api';
+import {
+	GetMarketsType,
+	MarketsItemType,
+	OrderBookDataType,
+	OrderBookType,
+	LineChartType,
+} from '@/api';
 import { VolumeType } from './dataSlice';
 
 type HomeState = {
@@ -17,6 +24,7 @@ type HomeState = {
 	isUserClickYesOrNo: boolean; // 使用者在 /marketsDetail 的 Yes 跟 No 切換點擊
 	orderBookYesData: OrderBookDataType;
 	orderBookNoData: OrderBookDataType;
+	lineChartData: LineChartType[];
 };
 
 const initialState: HomeState = {
@@ -27,6 +35,7 @@ const initialState: HomeState = {
 	isUserClickYesOrNo: true,
 	orderBookYesData: {} as OrderBookDataType,
 	orderBookNoData: {} as OrderBookDataType,
+	lineChartData: [],
 };
 
 const homeSlice = createSlice({
@@ -92,6 +101,29 @@ const homeSlice = createSlice({
 		});
 		builder.addCase(getMarketOrderBookNo.rejected, state => {
 			console.log('getMarketOrderBookNo rejected');
+		});
+
+		builder.addCase(getMarketLineChart.pending, state => {
+			console.log('getMarketLineChart pending');
+		});
+		builder.addCase(getMarketLineChart.fulfilled, (state, action) => {
+			console.log('getMarketLineChart fulfilled', action);
+			const { resp, interval } = action.payload;
+
+			resp?.data.map(value => {
+				if (interval === '6h' || interval === '1d') {
+					value.time = moment(value.time).format('HH:MM');
+				} else {
+					value.time = moment(value.time).format('MM/DD');
+				}
+
+				return value;
+			});
+
+			state.lineChartData = resp?.data;
+		});
+		builder.addCase(getMarketLineChart.rejected, state => {
+			console.log('getMarketLineChart rejected');
 		});
 	},
 });

@@ -32,6 +32,19 @@ export type GetMarketDetailType = {
 	data: MarketsItemType;
 };
 
+export type LineChartType = {
+	time: string;
+	price: number;
+};
+
+export type LineChartTabsIntervalType = 'all' | '1m' | '1w' | '1d' | '6h';
+
+export type GetMarketLineChartType = {
+	message: string;
+	statusCode: number;
+	data: LineChartType[];
+};
+
 export type OrderBookDataType = {
 	bids: [{ price: number; quantity: number }];
 	asks: [{ price: number; quantity: number }];

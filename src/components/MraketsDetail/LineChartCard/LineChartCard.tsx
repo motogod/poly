@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useRouter } from 'next/router';
+import ScrollContainer from 'react-indiana-drag-scroll';
 import {
 	Stack,
 	Card,
@@ -28,6 +29,7 @@ import {
 	queryUrlToChangeMenuStatus,
 	getMarketOrderBookYes,
 	getMarketOrderBookNo,
+	getMarketLineChart,
 } from '@/store';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import {
@@ -42,7 +44,17 @@ import {
 } from 'recharts';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { HiChartBar, HiClock } from 'react-icons/hi';
+import { LineChartTabsIntervalType } from '@/api';
 
+const simppleData = [
+	{ name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
+	{ name: 'Page B', uv: 3000, pv: 1398, amt: 2210 },
+	{ name: 'Page C', uv: 2000, pv: 9800, amt: 2290 },
+	{ name: 'Page D', uv: 2780, pv: 3908, amt: 2000 },
+	{ name: 'Page E', uv: 1890, pv: 4800, amt: 2181 },
+	{ name: 'Page F', uv: 2390, pv: 3800, amt: 2500 },
+	{ name: 'Page G', uv: 3490, pv: 4300, amt: 2100 },
+];
 const data = [
 	{
 		name: 'Page A',
@@ -68,36 +80,51 @@ const data = [
 		pv: 3908,
 		amt: 2000,
 	},
-	{
-		name: 'Page E',
-		uv: 1890,
-		pv: 4800,
-		amt: 2181,
-	},
-	{
-		name: 'Page F',
-		uv: 2390,
-		pv: 3800,
-		amt: 2500,
-	},
-	{
-		name: 'Page G',
-		uv: 3490,
-		pv: 4300,
-		amt: 2100,
-	},
+];
+
+const testServerData = [
+	{ time: '2024-02-07T05:06:00.000Z', price: 0.5 },
+	{ time: '2024-02-07', price: 0.5 },
+	{ time: '2024-02-07', price: 0.5 },
+	{ time: '2024-02-07', price: 0.5 },
+	{ time: '2024-02-07', price: 0.5 },
+];
+
+const testScrolldata = [
+	{ name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
+	{ name: 'Page B', uv: 3000, pv: 1398, amt: 2210 },
+	{ name: 'Page C', uv: 2000, pv: 9800, amt: 2290 },
+	{ name: 'Page D', uv: 2780, pv: 3908, amt: 2000 },
+	{ name: 'Page E', uv: 1890, pv: 4800, amt: 2181 },
+	{ name: 'Page F', uv: 2390, pv: 3800, amt: 2500 },
+	{ name: 'Page G', uv: 3490, pv: 4300, amt: 2100 },
 ];
 
 function LineChartCard() {
-	const { isMarketDetailLoading, marketDetailData, isUserClickYesOrNo } = useSelector(
-		(state: RootState) => state.homeReducer
-	);
+	const [selectedTab, setSelectedTab] = useState<LineChartTabsIntervalType>('6h');
+
+	const { isMarketDetailLoading, marketDetailData, isUserClickYesOrNo, lineChartData } =
+		useSelector((state: RootState) => state.homeReducer);
 
 	const router = useRouter();
 
 	const toast = useToast();
 
 	const dispatch = useDispatch<AppDispatch>();
+
+	useEffect(() => {
+		if (router.isReady) {
+			const { marketSlug } = router.query;
+
+			dispatch(
+				getMarketLineChart({
+					slug: marketSlug as string,
+					outcome: isUserClickYesOrNo ? 'YES' : 'NO',
+					interval: selectedTab,
+				})
+			);
+		}
+	}, [router, dispatch, isUserClickYesOrNo, selectedTab]);
 
 	const renderBuyOrSellInfo = () => {
 		const { outcome } = marketDetailData;
@@ -111,6 +138,78 @@ function LineChartCard() {
 					{`${isUserClickYesOrNo ? outcome.yes : outcome.no} USDT`}
 				</Heading>
 			</>
+		);
+	};
+
+	// const renderLineChart = () => {
+	// 	return (
+	// 		<Stack w={'100%'} h={'100%'}>
+	// 			<Stack mt={'8px'} w={'100%'} height={'415px'}>
+	// 				<ResponsiveContainer width="100%" height="100%">
+	// 					<LineChart
+	// 						// width={750}
+	// 						// height={490}
+	// 						// data={data}
+	// 						data={data}
+	// 						margin={{
+	// 							top: 0,
+	// 							right: 0,
+	// 							left: 0,
+	// 							bottom: 5,
+	// 						}}
+	// 					>
+	// 						<CartesianGrid strokeDasharray="3 3" />
+	// 						<XAxis tick={{ fontSize: 14 }} />
+	// 						<YAxis tick={{ fontSize: 14 }} />
+	// 						<Tooltip />
+	// 						<Legend />
+	// 						<Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+	// 						<Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+	// 					</LineChart>
+	// 				</ResponsiveContainer>
+	// 			</Stack>
+	// 		</Stack>
+	// 	);
+	// };
+
+	const renderLineChart = () => {
+		return (
+			<div style={{ overflowX: 'scroll', width: '100%', height: 450 }}>
+				{/* <ResponsiveContainer> */}
+				<LineChart width={1200} height={400} data={lineChartData}>
+					<CartesianGrid strokeDasharray="3 3" />
+					<XAxis dataKey="time" tick={{ fontSize: 14 }} />
+					<YAxis dataKey="price" />
+					<Tooltip />
+					<Legend />
+					<Line type="monotone" dataKey="time" stroke="#8884d8" />
+					<Line type="monotone" dataKey="price" stroke="#82ca9d" />
+				</LineChart>
+				{/* </ResponsiveContainer> */}
+			</div>
+			// <Stack overflowX={'scroll'} maxW={'100%'} h={'450px'}>
+			// 	<ResponsiveContainer width="100%" height="100%">
+			// 		<LineChart
+			// 			// width={'100%'}
+			// 			// height={490}
+			// 			data={data}
+			// 			margin={{
+			// 				top: 0,
+			// 				right: 0,
+			// 				left: 0,
+			// 				bottom: 5,
+			// 			}}
+			// 		>
+			// 			<CartesianGrid strokeDasharray="3 3" />
+			// 			<XAxis tick={{ width: 10, fontSize: 14 }} />
+			// 			<YAxis tick={{ fontSize: 14 }} />
+			// 			<Tooltip />
+			// 			<Legend />
+			// 			<Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+			// 			<Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+			// 		</LineChart>
+			// 	</ResponsiveContainer>
+			// </Stack>
 		);
 	};
 
@@ -255,7 +354,26 @@ function LineChartCard() {
 						</Stack>
 					</>
 				)}
-				<Tabs mt={'28px'}>
+				<Tabs
+					mt={'28px'}
+					onChange={value => {
+						if (value === 0) {
+							setSelectedTab('6h');
+						}
+
+						if (value === 1) {
+							setSelectedTab('1d');
+						}
+
+						if (value === 2) {
+							setSelectedTab('1w');
+						}
+
+						if (value === 3) {
+							setSelectedTab('1m');
+						}
+					}}
+				>
 					<TabList borderBottomColor={'gray.200'} borderBottomWidth={'2px'}>
 						<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
 							6H
@@ -272,42 +390,10 @@ function LineChartCard() {
 					</TabList>
 					{/* <TabIndicator mt="-1.5px" height="0px" bg="pink" borderRadius="1px" /> */}
 					<TabPanels>
-						<TabPanel p={0}>
-							<Stack w={'100%'} h={'100%'}>
-								<Stack mt={'8px'} w={'100%'} height={'415px'}>
-									<ResponsiveContainer width="100%" height="100%">
-										<LineChart
-											// width={750}
-											// height={490}
-											data={data}
-											margin={{
-												top: 0,
-												right: 0,
-												left: 0,
-												bottom: 5,
-											}}
-										>
-											<CartesianGrid strokeDasharray="3 3" />
-											<XAxis tick={{ fontSize: 14 }} dataKey="name" />
-											<YAxis tick={{ fontSize: 14 }} />
-											<Tooltip />
-											<Legend />
-											<Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-											<Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-										</LineChart>
-									</ResponsiveContainer>
-								</Stack>
-							</Stack>
-						</TabPanel>
-						<TabPanel>
-							<p>1 Day</p>
-						</TabPanel>
-						<TabPanel>
-							<p>1 Week</p>
-						</TabPanel>
-						<TabPanel>
-							<p>1 Month</p>
-						</TabPanel>
+						<TabPanel px={0}>{renderLineChart()}</TabPanel>
+						<TabPanel px={0}>{renderLineChart()}</TabPanel>
+						<TabPanel px={0}>{renderLineChart()}</TabPanel>
+						<TabPanel px={0}>{renderLineChart()}</TabPanel>
 					</TabPanels>
 				</Tabs>
 			</CardBody>
