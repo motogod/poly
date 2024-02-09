@@ -74,9 +74,8 @@ function BuyOrSellContent(props?: Props) {
 	} = useLoginModal();
 
 	// Limit Price
-	const [limiInputValue, setLimitInputValue] = useState(0);
-	const [limitMax, setLimitMax] = useState(0);
-	console.log('limiInputValue =>', limiInputValue);
+	const [limiInputValue, setLimitInputValue] = useState(0.1);
+
 	const {
 		getInputProps: getLimitInputProps,
 		getIncrementButtonProps: getIncLimitBtnProps,
@@ -122,15 +121,17 @@ function BuyOrSellContent(props?: Props) {
 	// 使用者切換 Yes No 改變 Limit input 的預設值
 	useEffect(() => {
 		if (router.isReady && Object.keys(marketDetailData).length > 0) {
-			if (isUserClickYesOrNo) {
-				setLimitInputValue(marketDetailData.outcome.yes);
-				setSharesMax(Math.round(hold / marketDetailData.outcome.yes));
-			} else {
-				setLimitInputValue(marketDetailData.outcome.no);
-				setSharesMax(Math.round(hold / marketDetailData.outcome.no));
+			if (selectedType === 'MARKET') {
+				if (isUserClickYesOrNo) {
+					setLimitInputValue(marketDetailData.outcome.yes);
+					setSharesMax(Math.round(hold / marketDetailData.outcome.yes));
+				} else {
+					setLimitInputValue(marketDetailData.outcome.no);
+					setSharesMax(Math.round(hold / marketDetailData.outcome.no));
+				}
 			}
 		}
-	}, [hold, isUserClickYesOrNo, marketDetailData, router]);
+	}, [hold, isUserClickYesOrNo, marketDetailData, router, selectedType, setLimitInputValue]);
 
 	// Shares
 	const [shareInputValue, setShareInputValue] = useState(0);
@@ -169,6 +170,16 @@ function BuyOrSellContent(props?: Props) {
 		return 'Connect';
 	};
 
+	const renderSharePrice = () => {
+		if (selectedType === 'MARKET') {
+			return `${
+				isUserClickYesOrNo ? marketDetailData?.outcome?.yes : marketDetailData?.outcome?.no
+			} USDT`;
+		}
+		console.log('CHECK HERE limiInputValue', limiInputValue);
+		return limiInputValue;
+	};
+
 	const renderPotentialReturn = () => {
 		if (shareInputValue > 0) {
 			const price = isYes ? marketDetailData?.outcome?.yes : marketDetailData?.outcome?.no;
@@ -181,71 +192,116 @@ function BuyOrSellContent(props?: Props) {
 		return `0.00`;
 	};
 
-	const isShowCollapseError = () => {
+	// const isShowCollapseError = () => {
+	// 	if (selectedType === 'MARKET') {
+	// 		if (isBuy) {
+	// 			// 輸入的 Share 不得大於 所能購買的 Share 最大量
+	// 			if (shareInputValue > sharesMax) {
+	// 				return true;
+	// 			}
+	// 		} else {
+	// 			// 賣出的 Share 不得大於 所擁有的最大量
+	// 			if (shareInputValue > userMarketHold) {
+	// 				return true;
+	// 			}
+	// 		}
+
+	// 		return false;
+	// 	}
+
+	// 	if (selectedType === 'LIMIT') {
+	// 		if (isBuy) {
+	// 			// 限制低於 15 不能掛單 ; 輸入的 Share 不得大於 所能掛單的 Share 最大量
+	// 			if (shareInputValue < 15 || shareInputValue > sharesMax) {
+	// 				return true;
+	// 			}
+	// 		} else {
+	// 			// 掛單的 Share 不得大於 所擁有的最大量
+	// 			if (shareInputValue > userMarketHold) {
+	// 				return true;
+	// 			}
+	// 		}
+
+	// 		return false;
+	// 	}
+
+	// 	return false;
+	// };
+
+	// const renderSharesError = () => {
+	// 	if (selectedType === 'MARKET') {
+	// 		if (isBuy) {
+	// 			if (shareInputValue > sharesMax) {
+	// 				return 'Insufficient balance';
+	// 			}
+	// 		} else {
+	// 			if (shareInputValue > userMarketHold) {
+	// 				return `You Own ${userMarketHold} Shares`;
+	// 			}
+	// 		}
+	// 	}
+	// 	if (selectedType === 'LIMIT') {
+	// 		if (isBuy) {
+	// 			// 規定輸入 Shares 低於 15 不得買
+	// 			if (shareInputValue > 0 && shareInputValue < 15) {
+	// 				return 'Minimum 15 shares for limit orders';
+	// 			}
+
+	// 			if (shareInputValue > sharesMax) {
+	// 				return 'Insufficient balance';
+	// 			}
+	// 		} else {
+	// 			if (shareInputValue > userMarketHold) {
+	// 				return `You Own ${userMarketHold} Shares`;
+	// 			}
+	// 		}
+	// 	}
+
+	// 	return '';
+	// };
+
+	const renderShareIsValidMsg = (): string => {
 		if (selectedType === 'MARKET') {
 			if (isBuy) {
-				if (shareInputValue > sharesMax) {
-					return true;
-				}
-			} else {
-				if (shareInputValue > userMarketHold) {
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		if (selectedType === 'LIMIT') {
-			if (isBuy) {
-				if (shareInputValue < 15 || shareInputValue > sharesMax) {
-					return true;
-				}
-			} else {
-				if (shareInputValue > userMarketHold) {
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		return false;
-	};
-
-	const renderSharesError = () => {
-		if (selectedType === 'MARKET') {
-			if (isBuy) {
+				// 輸入的 Share 不得大於 所能購買的 Share 最大量
 				if (shareInputValue > sharesMax) {
 					return 'Insufficient balance';
 				}
 			} else {
+				// 輸入的 Share 不得大於 使用者擁有的 Share 最大量
 				if (shareInputValue > userMarketHold) {
 					return `You Own ${userMarketHold} Shares`;
 				}
 			}
+
+			return '';
 		}
+
 		if (selectedType === 'LIMIT') {
 			if (isBuy) {
-				// 規定輸入 Shares 低於 15 不得買
+				// 限制低於 15 不能掛單
 				if (shareInputValue > 0 && shareInputValue < 15) {
 					return 'Minimum 15 shares for limit orders';
 				}
 
+				// 輸入的 Share 不得大於 所能掛單的 Share 最大量
 				if (shareInputValue > sharesMax) {
 					return 'Insufficient balance';
 				}
 			} else {
+				// 掛單的 Share 不得大於 所擁有的最大量
 				if (shareInputValue > userMarketHold) {
 					return `You Own ${userMarketHold} Shares`;
 				}
 			}
+
+			return '';
 		}
 
 		return '';
 	};
 
-	const isDisableTradeButton = () => {
+	const isDisableTradeButton = (): boolean => {
 		// 如果使用者未登入，該按鈕為 Connect 允許點擊
 		if (!isAuthenticated) {
 			return false;
@@ -272,6 +328,18 @@ function BuyOrSellContent(props?: Props) {
 		}
 
 		return false;
+	};
+
+	const renderTotal = (): string => {
+		if (selectedType === 'MARKET') {
+			return `${
+				isUserClickYesOrNo
+					? (marketDetailData?.outcome?.yes * shareInputValue).toFixed(2)
+					: (marketDetailData?.outcome?.no * shareInputValue).toFixed(2)
+			} USDT`;
+		}
+
+		return (limiInputValue * shareInputValue).toFixed(2);
 	};
 
 	return (
@@ -303,6 +371,7 @@ function BuyOrSellContent(props?: Props) {
 					defaultValue={selectedType}
 					onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 						setShareInputValue(0);
+						setLimitInputValue(inputLimitPrice.value);
 						setSelectedType(e.target.value as SelectedType);
 					}}
 				>
@@ -363,7 +432,7 @@ function BuyOrSellContent(props?: Props) {
 					<Stack mt={'24px'}>
 						<Stack align={'center'} direction={'row'} justify={'space-between'}>
 							<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'} lineHeight={'17px'}>
-								Limite Price
+								Limit Price
 							</Heading>
 						</Stack>
 						<HStack mt={'16px'} gap={0} maxW="100%">
@@ -443,9 +512,9 @@ function BuyOrSellContent(props?: Props) {
 							+
 						</Button>
 					</HStack>
-					<Collapse in={isShowCollapseError()} animateOpacity>
+					<Collapse in={renderShareIsValidMsg() !== ''} animateOpacity>
 						<Text fontSize={'sm'} mt={0} color={'red.500'}>
-							{renderSharesError()}
+							{renderShareIsValidMsg()}
 						</Text>
 					</Collapse>
 				</Stack>
@@ -491,9 +560,7 @@ function BuyOrSellContent(props?: Props) {
 							Share Price
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
-							{`${
-								isUserClickYesOrNo ? marketDetailData?.outcome?.yes : marketDetailData?.outcome?.no
-							} USDT`}
+							{renderSharePrice()}
 						</Heading>
 					</Stack>
 					<Stack direction={'row'} justify={'space-between'}>
@@ -517,11 +584,7 @@ function BuyOrSellContent(props?: Props) {
 							Total
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'700'} lineHeight={'17px'}>
-							{`${
-								isUserClickYesOrNo
-									? (marketDetailData?.outcome?.yes * shareInputValue).toFixed(2)
-									: (marketDetailData?.outcome?.no * shareInputValue).toFixed(2)
-							} USDT`}
+							{renderTotal()}
 						</Heading>
 					</Stack>
 				</Stack>

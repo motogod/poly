@@ -46,15 +46,6 @@ import { SettingsIcon } from '@chakra-ui/icons';
 import { HiChartBar, HiClock } from 'react-icons/hi';
 import { LineChartTabsIntervalType } from '@/api';
 
-const simppleData = [
-	{ name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
-	{ name: 'Page B', uv: 3000, pv: 1398, amt: 2210 },
-	{ name: 'Page C', uv: 2000, pv: 9800, amt: 2290 },
-	{ name: 'Page D', uv: 2780, pv: 3908, amt: 2000 },
-	{ name: 'Page E', uv: 1890, pv: 4800, amt: 2181 },
-	{ name: 'Page F', uv: 2390, pv: 3800, amt: 2500 },
-	{ name: 'Page G', uv: 3490, pv: 4300, amt: 2100 },
-];
 const data = [
 	{
 		name: 'Page A',
@@ -80,24 +71,6 @@ const data = [
 		pv: 3908,
 		amt: 2000,
 	},
-];
-
-const testServerData = [
-	{ time: '2024-02-07T05:06:00.000Z', price: 0.5 },
-	{ time: '2024-02-07', price: 0.5 },
-	{ time: '2024-02-07', price: 0.5 },
-	{ time: '2024-02-07', price: 0.5 },
-	{ time: '2024-02-07', price: 0.5 },
-];
-
-const testScrolldata = [
-	{ name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
-	{ name: 'Page B', uv: 3000, pv: 1398, amt: 2210 },
-	{ name: 'Page C', uv: 2000, pv: 9800, amt: 2290 },
-	{ name: 'Page D', uv: 2780, pv: 3908, amt: 2000 },
-	{ name: 'Page E', uv: 1890, pv: 4800, amt: 2181 },
-	{ name: 'Page F', uv: 2390, pv: 3800, amt: 2500 },
-	{ name: 'Page G', uv: 3490, pv: 4300, amt: 2100 },
 ];
 
 function LineChartCard() {
@@ -141,76 +114,50 @@ function LineChartCard() {
 		);
 	};
 
-	// const renderLineChart = () => {
-	// 	return (
-	// 		<Stack w={'100%'} h={'100%'}>
-	// 			<Stack mt={'8px'} w={'100%'} height={'415px'}>
-	// 				<ResponsiveContainer width="100%" height="100%">
-	// 					<LineChart
-	// 						// width={750}
-	// 						// height={490}
-	// 						// data={data}
-	// 						data={data}
-	// 						margin={{
-	// 							top: 0,
-	// 							right: 0,
-	// 							left: 0,
-	// 							bottom: 5,
-	// 						}}
-	// 					>
-	// 						<CartesianGrid strokeDasharray="3 3" />
-	// 						<XAxis tick={{ fontSize: 14 }} />
-	// 						<YAxis tick={{ fontSize: 14 }} />
-	// 						<Tooltip />
-	// 						<Legend />
-	// 						<Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-	// 						<Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-	// 					</LineChart>
-	// 				</ResponsiveContainer>
-	// 			</Stack>
-	// 		</Stack>
-	// 	);
-	// };
-
 	const renderLineChart = () => {
+		// 若加入 ResponsiveContainer 會將所有x元素 限縮在表格裡面
+		// 改用 ScrollContainer 讓x元素展開可以左右滑動
+		if (lineChartData.length > 0) {
+			return (
+				<Stack w={'100%'} h={'100%'}>
+					<Stack mt={'8px'} height={'415px'}>
+						<ResponsiveContainer width="100%" height="100%">
+							<LineChart data={lineChartData}>
+								<CartesianGrid strokeDasharray="3 3" />
+								<XAxis dataKey="time" tick={{ fontSize: 14 }} />
+								<YAxis dataKey="price" />
+								<Tooltip />
+								<Legend />
+								<Line type="monotone" dataKey="time" stroke="#8884d8" activeDot={{ r: 8 }} />
+								<Line type="monotone" dataKey="price" stroke="#82ca9d" />
+							</LineChart>
+						</ResponsiveContainer>
+					</Stack>
+				</Stack>
+			);
+		}
+
 		return (
-			<div style={{ overflowX: 'scroll', width: '100%', height: 450 }}>
-				{/* <ResponsiveContainer> */}
-				<LineChart width={1200} height={400} data={lineChartData}>
-					<CartesianGrid strokeDasharray="3 3" />
-					<XAxis dataKey="time" tick={{ fontSize: 14 }} />
-					<YAxis dataKey="price" />
-					<Tooltip />
-					<Legend />
-					<Line type="monotone" dataKey="time" stroke="#8884d8" />
-					<Line type="monotone" dataKey="price" stroke="#82ca9d" />
-				</LineChart>
-				{/* </ResponsiveContainer> */}
-			</div>
-			// <Stack overflowX={'scroll'} maxW={'100%'} h={'450px'}>
-			// 	<ResponsiveContainer width="100%" height="100%">
-			// 		<LineChart
-			// 			// width={'100%'}
-			// 			// height={490}
-			// 			data={data}
-			// 			margin={{
-			// 				top: 0,
-			// 				right: 0,
-			// 				left: 0,
-			// 				bottom: 5,
-			// 			}}
-			// 		>
-			// 			<CartesianGrid strokeDasharray="3 3" />
-			// 			<XAxis tick={{ width: 10, fontSize: 14 }} />
-			// 			<YAxis tick={{ fontSize: 14 }} />
-			// 			<Tooltip />
-			// 			<Legend />
-			// 			<Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-			// 			<Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-			// 		</LineChart>
-			// 	</ResponsiveContainer>
-			// </Stack>
+			<Text pt={34} textAlign={'center'} color={'gray.500'} fontSize={'md'}>
+				No data found
+			</Text>
 		);
+
+		// return (
+		// 	<ScrollContainer>
+		// 		<Stack width={'100%'}>
+		// 			<LineChart width={1000} height={400} data={lineChartData}>
+		// 				<CartesianGrid strokeDasharray="3 3" />
+		// 				<XAxis dataKey="time" tick={{ fontSize: 14 }} />
+		// 				<YAxis dataKey="price" />
+		// 				<Tooltip />
+		// 				<Legend />
+		// 				<Line type="monotone" dataKey="time" stroke="#8884d8" activeDot={{ r: 8 }} />
+		// 				<Line type="monotone" dataKey="price" stroke="#82ca9d" />
+		// 			</LineChart>
+		// 		</Stack>
+		// 	</ScrollContainer>
+		// );
 	};
 
 	const renderPercent = () => {
