@@ -20,6 +20,12 @@ import { PrimaryPink } from '@/utils/color';
 import { CommunityIcon } from '../../../../../public/assets/svg';
 import SocialIcon from '../../../../../public/assets/svg/socialIcons.png';
 import NextIcon from '../../../../../public/next.svg';
+import { LocalesEnum } from '@/../public/locales/type';
+
+const selectorOptions = Object.entries(LocalesEnum).map(([value, label]) => ({
+	value,
+	label,
+}));
 
 const CircleIcon = (props: any) => (
 	<Icon viewBox="0 0 200 200" {...props}>
@@ -42,13 +48,14 @@ export default function LargeWithAppLinksAndSocial() {
 
 	const changeLocale = (locale: any) => {
 		// 變更語系網址 shallow: true 避免刷新頁面
+		// 設為 true 避免刷新頁面 有時更換語言會失效
 		router.push(
 			{
 				pathname: router.pathname,
 				query: router.query,
 			},
 			router.asPath,
-			{ locale, shallow: true }
+			{ locale, shallow: false }
 		);
 		// 直接動態變換更新語系
 		i18n.changeLanguage(locale);
@@ -86,9 +93,14 @@ export default function LargeWithAppLinksAndSocial() {
 								defaultValue={i18n.language}
 								onChange={e => changeLocale(e.target.value)}
 							>
-								<option value="en">English</option>
+								{selectorOptions.map(value => (
+									<>
+										<option value={value.value}>{value.label}</option>
+									</>
+								))}
+								{/* <option value="en">English</option>
 								<option value="zh">Chinese</option>
-								<option value="jp">Japanese</option>
+								<option value="jp">Japanese</option> */}
 							</Select>
 						</Box>
 					</Stack>

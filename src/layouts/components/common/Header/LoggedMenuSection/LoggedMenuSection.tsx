@@ -9,9 +9,10 @@ import { logout, AppDispatch } from '@/store';
 type LoggedMenuSectionType = {
 	close: () => void;
 	type: 'pop' | 'modal';
+	isMini: boolean;
 };
 
-function LoggedMenuSection({ close, type }: LoggedMenuSectionType) {
+function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 	const router = useRouter();
 
 	const { disconnect } = useDisconnect();
@@ -25,8 +26,8 @@ function LoggedMenuSection({ close, type }: LoggedMenuSectionType) {
 	return (
 		<Stack
 			py={'32px'}
-			mt={'32px'}
-			mb={'44px'}
+			mt={!isMini ? '32px' : ''}
+			mb={!isMini ? '44px' : ''}
 			mx={'16px'}
 			spacing={spacing}
 			textAlign={textAlign}

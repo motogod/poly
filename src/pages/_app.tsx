@@ -9,6 +9,8 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 // need to be install for mobile device detect MetaMask APP
 import { MetaMaskProvider } from '@metamask/sdk-react';
+import { setLanguageHeader } from '@/api/request';
+import { i18n } from 'next-i18next';
 // import { InjectedConnector } from 'wagmi/connectors/injected';
 import { SessionProvider } from 'next-auth/react';
 import AuthProvider from '@/contex/AuthContext';
@@ -35,6 +37,7 @@ import '@/styles/globals.scss';
 import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';
 import type { NextComponentType } from 'next';
 import Header from '@/layouts/components/common/Header';
+import { LocalesType } from '../../public/locales/type';
 
 // avoid ssr rendering, fix wagmi config server side Hydration error
 const Layout = dynamic(() => import('@/layouts/Layout'), { ssr: false });
@@ -109,6 +112,8 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 	if (process.env.NODE_ENV !== 'development') {
 		console.log = function () {};
 	}
+
+	setLanguageHeader(i18n?.language as LocalesType);
 
 	return (
 		<>

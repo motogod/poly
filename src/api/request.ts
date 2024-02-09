@@ -1,6 +1,6 @@
 // https://www.jianshu.com/p/efa82d282c1d
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
-import Cookies from 'js-cookie';
+import { LocalesType } from '@/../public/locales/type';
 
 // let baseURL =
 // 	process.env.NODE_ENV === 'development'
@@ -11,59 +11,40 @@ let baseURL = process.env.NODE_ENV === 'development' ? process.env.DEV_API : pro
 const timeout = 30000;
 
 // create axios instance
-const service = axios.create({
-	timeout,
-	baseURL,
-	// if needs cookie, set true
-	// withCredentials: true,
-});
-
 const serviceWithSessing = axios.create({
 	timeout,
 	baseURL,
+	// if needs cookie, set true
 	withCredentials: true,
+	headers: {
+		'Content-Type': 'application/json',
+		'Access-Control-Allow-Origin': true,
+	},
 });
 
 // set interceptors, and headers like language、token...
-service.interceptors.request.use(
-	(config: any) => {
-		let customHeaders: any = {
-			// language: 'zh-cn',
-			// 'Content-Type': 'application/json',
-			'Content-Type': 'application/x-www-form-urlencoded',
-			// 'ngrok-skip-browser-warning': true,
-			'Access-Control-Allow-Origin': true,
-		};
-		config.headers = customHeaders;
-		return config;
-	},
-	error => {
-		console.log('interceptors error', error);
-		Promise.reject(error);
-	}
-);
-
-serviceWithSessing.interceptors.request.use(
-	(config: any) => {
-		let customHeaders: any = {
-			// language: 'zh-cn',
-			'Content-Type': 'application/json',
-			// 'ngrok-skip-browser-warning': true,
-			'Access-Control-Allow-Origin': true,
-		};
-		console.log('request', config);
-		// const TOKEN = Cookies.get('opentrust');
-		// console.log('TOKEN request', TOKEN);
-		// config.headers['authorization'] = TOKEN;
-		// console.log('config', config);
-		config.headers = customHeaders;
-		return config;
-	},
-	error => {
-		console.log('interceptors error', error);
-		Promise.reject(error);
-	}
-);
+// 這邊設置 headers 只會吃第一次的設定，導致後續動態改變 Accept-Language 失效
+// serviceWithSessing.interceptors.request.use(
+// 	(config: any) => {
+// 		let customHeaders: any = {
+// 			// language: 'zh-cn',
+// 			'Content-Type': 'application/json',
+// 			// 'ngrok-skip-browser-warning': true,
+// 			'Access-Control-Allow-Origin': true,
+// 		};
+// 		console.log('request', config);
+// 		// const TOKEN = Cookies.get('opentrust');
+// 		// console.log('TOKEN request', TOKEN);
+// 		// config.headers['authorization'] = TOKEN;
+// 		// console.log('config', config);
+// 		config.headers = customHeaders;
+// 		return config;
+// 	},
+// 	error => {
+// 		console.log('interceptors error', error);
+// 		Promise.reject(error);
+// 	}
+// );
 
 serviceWithSessing.interceptors.response.use(
 	(response: any) => {
@@ -82,6 +63,11 @@ serviceWithSessing.interceptors.response.use(
 	}
 );
 
+// Function to set the language header
+const setLanguageHeader = (language: LocalesType) => {
+	serviceWithSessing.defaults.headers.common['Accept-Language'] = language;
+};
+
 // axios return data
 interface axiosTypes<T> {
 	data: T;
@@ -95,58 +81,6 @@ interface responseTypes<T> {
 	msg: string;
 	result: T;
 }
-
-// return promise
-const requestHandler = <T>(
-	method: 'get' | 'post' | 'put' | 'delete',
-	url: string,
-	params: object = {},
-	config: AxiosRequestConfig = {}
-): Promise<T> => {
-	let response: Promise<axiosTypes<responseTypes<T>>>;
-	switch (method) {
-		case 'get':
-			response = service.get(url, { params: { ...params }, ...config });
-			break;
-		case 'post':
-			response = service.post(url, { ...params }, { ...config });
-			break;
-		case 'put':
-			response = service.put(url, { ...params }, { ...config });
-			break;
-		case 'delete':
-			response = service.delete(url, { params: { ...params }, ...config });
-			break;
-	}
-
-	return new Promise<T>((resolve, reject) => {
-		response
-			.then(res => {
-				console.log('request res', res);
-				const data = res.data;
-				const status = res.status;
-				if (status !== 200 && status !== 201) {
-					if (status == 401) {
-						console.log('Error handle...');
-					}
-
-					let e = JSON.stringify(data);
-					console.log(`Request error：${e}`);
-					// return error
-					reject(data);
-				} else {
-					// return correct data
-					console.log('data', data);
-					resolve(data as any);
-				}
-			})
-			.catch(error => {
-				let e = JSON.stringify(error);
-				console.log(`Internet error：${e}`);
-				reject(error);
-			});
-	});
-};
 
 const requestHandlerWithSession = <T>(
 	method: 'get' | 'post' | 'put' | 'delete',
@@ -205,17 +139,6 @@ const requestHandlerWithSession = <T>(
 	});
 };
 
-const request = {
-	get: <T>(url: string, params?: object, config?: AxiosRequestConfig) =>
-		requestHandler<T>('get', url, params, config),
-	post: <T>(url: string, params?: object, config?: AxiosRequestConfig) =>
-		requestHandler<T>('post', url, params, config),
-	put: <T>(url: string, params?: object, config?: AxiosRequestConfig) =>
-		requestHandler<T>('put', url, params, config),
-	delete: <T>(url: string, params?: object, config?: AxiosRequestConfig) =>
-		requestHandler<T>('delete', url, params, config),
-};
-
 const requestWithSession = {
 	get: <T>(url: string, params?: object, config?: AxiosRequestConfig) =>
 		requestHandlerWithSession<T>('get', url, params, config),
@@ -227,4 +150,4 @@ const requestWithSession = {
 		requestHandlerWithSession<T>('delete', url, params, config),
 };
 
-export { request, requestWithSession };
+export { requestWithSession, setLanguageHeader };

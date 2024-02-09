@@ -144,7 +144,7 @@ function OrderBookCard() {
 		const bidsPriceArray = orderBidsData.map(value => value.price);
 		const largestBidsPrice = bidsPriceArray.length > 0 ? Math.max(...bidsPriceArray) : 0;
 
-		return Math.abs(minimumAsksPrice - largestBidsPrice);
+		return Math.abs(minimumAsksPrice - largestBidsPrice).toFixed(2);
 	};
 
 	const renderTableRow = (orderData: OrderBookDataType) => {
@@ -223,7 +223,7 @@ function OrderBookCard() {
 					);
 				})}
 				<Tr>
-					<Td bg={'gray.100'} letterSpacing={1}>{`Last:$${orderData.last}`}</Td>
+					<Td h={50} bg={'gray.100'} letterSpacing={1}>{`Last:$${orderData.last}`}</Td>
 					<Td bg={'gray.100'} letterSpacing={1}>{`Spread:$${getSpreadPrice(
 						orderData.asks,
 						orderData.bids
@@ -248,6 +248,7 @@ function OrderBookCard() {
 									<Stack
 										justifyContent={'center'}
 										position={'absolute'}
+										top={-1}
 										bg={'green.100'}
 										w={`${barPercent > 10 ? barPercent : 10}%`}
 										h={'56px'}

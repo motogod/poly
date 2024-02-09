@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useRouter } from 'next/router';
+import ScrollContainer from 'react-indiana-drag-scroll';
 import {
 	Stack,
 	Card,
@@ -28,6 +29,7 @@ import {
 	queryUrlToChangeMenuStatus,
 	getMarketOrderBookYes,
 	getMarketOrderBookNo,
+	getMarketLineChart,
 } from '@/store';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import {
@@ -42,6 +44,7 @@ import {
 } from 'recharts';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { HiChartBar, HiClock } from 'react-icons/hi';
+import { LineChartTabsIntervalType } from '@/api';
 
 const data = [
 	{
@@ -68,36 +71,33 @@ const data = [
 		pv: 3908,
 		amt: 2000,
 	},
-	{
-		name: 'Page E',
-		uv: 1890,
-		pv: 4800,
-		amt: 2181,
-	},
-	{
-		name: 'Page F',
-		uv: 2390,
-		pv: 3800,
-		amt: 2500,
-	},
-	{
-		name: 'Page G',
-		uv: 3490,
-		pv: 4300,
-		amt: 2100,
-	},
 ];
 
 function LineChartCard() {
-	const { isMarketDetailLoading, marketDetailData, isUserClickYesOrNo } = useSelector(
-		(state: RootState) => state.homeReducer
-	);
+	const [selectedTab, setSelectedTab] = useState<LineChartTabsIntervalType>('6h');
+
+	const { isMarketDetailLoading, marketDetailData, isUserClickYesOrNo, lineChartData } =
+		useSelector((state: RootState) => state.homeReducer);
 
 	const router = useRouter();
 
 	const toast = useToast();
 
 	const dispatch = useDispatch<AppDispatch>();
+
+	useEffect(() => {
+		if (router.isReady) {
+			const { marketSlug } = router.query;
+
+			dispatch(
+				getMarketLineChart({
+					slug: marketSlug as string,
+					outcome: isUserClickYesOrNo ? 'YES' : 'NO',
+					interval: selectedTab,
+				})
+			);
+		}
+	}, [router, dispatch, isUserClickYesOrNo, selectedTab]);
 
 	const renderBuyOrSellInfo = () => {
 		const { outcome } = marketDetailData;
@@ -112,6 +112,52 @@ function LineChartCard() {
 				</Heading>
 			</>
 		);
+	};
+
+	const renderLineChart = () => {
+		// 若加入 ResponsiveContainer 會將所有x元素 限縮在表格裡面
+		// 改用 ScrollContainer 讓x元素展開可以左右滑動
+		if (lineChartData.length > 0) {
+			return (
+				<Stack w={'100%'} h={'100%'}>
+					<Stack mt={'8px'} height={'415px'}>
+						<ResponsiveContainer width="100%" height="100%">
+							<LineChart data={lineChartData}>
+								<CartesianGrid strokeDasharray="3 3" />
+								<XAxis dataKey="time" tick={{ fontSize: 14 }} />
+								<YAxis dataKey="price" />
+								<Tooltip />
+								<Legend />
+								<Line type="monotone" dataKey="time" stroke="#8884d8" activeDot={{ r: 8 }} />
+								<Line type="monotone" dataKey="price" stroke="#82ca9d" />
+							</LineChart>
+						</ResponsiveContainer>
+					</Stack>
+				</Stack>
+			);
+		}
+
+		return (
+			<Text pt={34} textAlign={'center'} color={'gray.500'} fontSize={'md'}>
+				No data found
+			</Text>
+		);
+
+		// return (
+		// 	<ScrollContainer>
+		// 		<Stack width={'100%'}>
+		// 			<LineChart width={1000} height={400} data={lineChartData}>
+		// 				<CartesianGrid strokeDasharray="3 3" />
+		// 				<XAxis dataKey="time" tick={{ fontSize: 14 }} />
+		// 				<YAxis dataKey="price" />
+		// 				<Tooltip />
+		// 				<Legend />
+		// 				<Line type="monotone" dataKey="time" stroke="#8884d8" activeDot={{ r: 8 }} />
+		// 				<Line type="monotone" dataKey="price" stroke="#82ca9d" />
+		// 			</LineChart>
+		// 		</Stack>
+		// 	</ScrollContainer>
+		// );
 	};
 
 	const renderPercent = () => {
@@ -255,7 +301,26 @@ function LineChartCard() {
 						</Stack>
 					</>
 				)}
-				<Tabs mt={'28px'}>
+				<Tabs
+					mt={'28px'}
+					onChange={value => {
+						if (value === 0) {
+							setSelectedTab('6h');
+						}
+
+						if (value === 1) {
+							setSelectedTab('1d');
+						}
+
+						if (value === 2) {
+							setSelectedTab('1w');
+						}
+
+						if (value === 3) {
+							setSelectedTab('1m');
+						}
+					}}
+				>
 					<TabList borderBottomColor={'gray.200'} borderBottomWidth={'2px'}>
 						<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
 							6H
@@ -272,42 +337,10 @@ function LineChartCard() {
 					</TabList>
 					{/* <TabIndicator mt="-1.5px" height="0px" bg="pink" borderRadius="1px" /> */}
 					<TabPanels>
-						<TabPanel p={0}>
-							<Stack w={'100%'} h={'100%'}>
-								<Stack mt={'8px'} w={'100%'} height={'415px'}>
-									<ResponsiveContainer width="100%" height="100%">
-										<LineChart
-											// width={750}
-											// height={490}
-											data={data}
-											margin={{
-												top: 0,
-												right: 0,
-												left: 0,
-												bottom: 5,
-											}}
-										>
-											<CartesianGrid strokeDasharray="3 3" />
-											<XAxis tick={{ fontSize: 14 }} dataKey="name" />
-											<YAxis tick={{ fontSize: 14 }} />
-											<Tooltip />
-											<Legend />
-											<Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-											<Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-										</LineChart>
-									</ResponsiveContainer>
-								</Stack>
-							</Stack>
-						</TabPanel>
-						<TabPanel>
-							<p>1 Day</p>
-						</TabPanel>
-						<TabPanel>
-							<p>1 Week</p>
-						</TabPanel>
-						<TabPanel>
-							<p>1 Month</p>
-						</TabPanel>
+						<TabPanel px={0}>{renderLineChart()}</TabPanel>
+						<TabPanel px={0}>{renderLineChart()}</TabPanel>
+						<TabPanel px={0}>{renderLineChart()}</TabPanel>
+						<TabPanel px={0}>{renderLineChart()}</TabPanel>
 					</TabPanels>
 				</Tabs>
 			</CardBody>

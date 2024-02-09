@@ -274,7 +274,7 @@ const portfolioSlice = createSlice({
 			console.log('getUserPortfolioPositionsForHold fulfilled', action);
 			const { data } = action.payload;
 
-			if (data.length > 0) {
+			if (data?.length > 0) {
 				state.userMarketHold = data[0].hold;
 			} else {
 				state.userMarketHold = 0;
