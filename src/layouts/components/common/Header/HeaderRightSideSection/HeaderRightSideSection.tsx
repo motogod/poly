@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import { useMediaQuery } from 'react-responsive';
 import { useAccount, useDisconnect, useConnect, useBalance } from 'wagmi';
 import {
 	Heading,
@@ -55,6 +56,10 @@ function HeaderRightSideSection() {
 	// const { write, isLoading: contractIsLoading } = useContract();
 	const { ethValue } = useContractForRead();
 
+	const isMini = useMediaQuery({
+		query: '(min-width: 375px)',
+	});
+
 	const {
 		ModalDom,
 		isOpen: modalIsOpen,
@@ -104,7 +109,7 @@ function HeaderRightSideSection() {
 							<Stack w={'100%'} h={'1px'} bg={'gray.100'} mt={'8px'} />
 						</Stack>
 						<Stack align={'center'}>
-							<LoggedMenuSection close={onClose} type="modal" />
+							<LoggedMenuSection close={onClose} type="modal" isMini={isMini} />
 							<Heading mt={'0px'} mb={'16px'} size={'xs'} color={'gray.800'}>
 								Community
 							</Heading>
