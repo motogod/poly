@@ -2,7 +2,6 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import common from '../public/locales/en/common.json';
 import zh from '../public/locales/zh-Hans/common.json';
-import jp from '../public/locales/jp/common.json';
 import vi from '../public/locales/vi/common.json';
 import th from '../public/locales/th/common.json';
 
@@ -13,9 +12,6 @@ export const resources = {
 	},
 	zh: {
 		zh,
-	},
-	jp: {
-		jp,
 	},
 	vi: {
 		vi,

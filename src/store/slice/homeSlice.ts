@@ -18,22 +18,24 @@ import { VolumeType } from './dataSlice';
 
 type HomeState = {
 	isMarketsLoading: boolean;
-	markets: GetMarketsType;
+	markets: MarketsItemType[];
 	isMarketDetailLoading: boolean;
 	marketDetailData: MarketsItemType;
 	isUserClickYesOrNo: boolean; // 使用者在 /marketsDetail 的 Yes 跟 No 切換點擊
 	orderBookYesData: OrderBookDataType;
+	isOrderBookYesLoading: boolean | null;
 	orderBookNoData: OrderBookDataType;
 	lineChartData: LineChartType[];
 };
 
 const initialState: HomeState = {
 	isMarketsLoading: false,
-	markets: {} as GetMarketsType,
+	markets: [],
 	isMarketDetailLoading: true,
 	marketDetailData: {} as MarketsItemType,
 	isUserClickYesOrNo: true,
 	orderBookYesData: {} as OrderBookDataType,
+	isOrderBookYesLoading: null,
 	orderBookNoData: {} as OrderBookDataType,
 	lineChartData: [],
 };
@@ -55,7 +57,10 @@ const homeSlice = createSlice({
 		builder.addCase(getMarkets.fulfilled, (state, action) => {
 			console.log('getMarkets fulfilled', action);
 			state.isMarketsLoading = false;
-			state.markets = action.payload;
+			// 後台設置 title 為空的議題不顯示
+			const filteredData = action.payload.data.filter(value => value.title !== '');
+
+			state.markets = filteredData;
 		});
 		builder.addCase(getMarkets.rejected, state => {
 			state.isMarketsLoading = false;
@@ -81,14 +86,17 @@ const homeSlice = createSlice({
 
 		builder.addCase(getMarketOrderBookYes.pending, state => {
 			console.log('getMarketOrderBookYes pending');
+			state.isOrderBookYesLoading = true;
 		});
 		builder.addCase(getMarketOrderBookYes.fulfilled, (state, action) => {
 			console.log('getMarketOrderBookYes fulfilled', action);
 			// YES
 			state.orderBookYesData = action.payload.data;
+			state.isOrderBookYesLoading = false;
 		});
 		builder.addCase(getMarketOrderBookYes.rejected, state => {
 			console.log('getMarketOrderBookYes rejected');
+			state.isOrderBookYesLoading = null;
 		});
 
 		builder.addCase(getMarketOrderBookNo.pending, state => {

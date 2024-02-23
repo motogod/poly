@@ -15,6 +15,8 @@ import {
 	Icon,
 } from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, getMarkets } from '@/store';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { PrimaryPink } from '@/utils/color';
 import { CommunityIcon } from '../../../../../public/assets/svg';
@@ -44,9 +46,11 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 export default function LargeWithAppLinksAndSocial() {
 	const { t, i18n } = useTranslation();
 
+	const dispatch = useDispatch<AppDispatch>();
+
 	const router = useRouter();
 
-	const changeLocale = (locale: any) => {
+	const changeLocale = (locale: LocalesEnum) => {
 		// 變更語系網址 shallow: true 避免刷新頁面
 		// 設為 true 避免刷新頁面 有時更換語言會失效
 		router.push(
@@ -57,8 +61,20 @@ export default function LargeWithAppLinksAndSocial() {
 			router.asPath,
 			{ locale, shallow: false }
 		);
+
 		// 直接動態變換更新語系
 		i18n.changeLanguage(locale);
+
+		// 一些透過 API 抓到的內容有區分語系 更新，必須設置點延遲才能使用到正確 seted language 的 API
+		setTimeout(() => {
+			dispatch(
+				getMarkets({
+					categories: '',
+					volumeValue: 'volume-default',
+					dateValue: 'date-default',
+				})
+			);
+		}, 100);
 	};
 
 	return (
@@ -91,7 +107,7 @@ export default function LargeWithAppLinksAndSocial() {
 								placeholder=""
 								size="md"
 								defaultValue={i18n.language}
-								onChange={e => changeLocale(e.target.value)}
+								onChange={e => changeLocale(e.target.value as LocalesEnum)}
 							>
 								{selectorOptions.map(value => (
 									<>

@@ -15,7 +15,7 @@ function CategoryActivityList() {
 			templateColumns={{ lg: 'repeat(3, 1fr)', md: 'repeat(2, 1fr)', sm: 'repeat(1, 1fr)' }}
 			gap={6}
 		>
-			{markets?.data?.map((value, index) => {
+			{markets?.map((value, index) => {
 				return <CategoryCard key={index} data={value} />;
 			})}
 		</Grid>

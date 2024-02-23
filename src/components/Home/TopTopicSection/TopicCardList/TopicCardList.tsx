@@ -35,9 +35,9 @@ function TopicCardList() {
 
 	const { t } = useTranslation();
 
-	const { data } = useSelector((state: RootState) => state.homeReducer.markets);
+	const { markets } = useSelector((state: RootState) => state.homeReducer);
 
-	const sliceData = data?.length > 10 ? data?.slice(0, 10) : data;
+	const sliceData = markets?.length > 10 ? markets?.slice(0, 10) : markets;
 	console.log('sliceData', sliceData);
 	const [TabDom, selectedTab] = useCategoryTabsList();
 
@@ -114,7 +114,7 @@ function TopicCardList() {
 			<Stack id="topicCard" className={styles.listContainer}>
 				<Stack direction={'row'} spacing={'16px'}>
 					{/* <Stack spacing={'16px'} display="grid" gridAutoFlow="column" my="0.5"> */}
-					{sliceData === undefined
+					{sliceData.length === 0
 						? dummyArrayCount.map((value, index) => (
 								<Stack key={index}>
 									<SkeletonTopicCard index={index} />

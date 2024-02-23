@@ -65,7 +65,7 @@ function Markets() {
 	const dispatch = useDispatch<AppDispatch>();
 	const { markets, isMarketsLoading } = useSelector((state: RootState) => state.homeReducer);
 	const { categoriesData, routerPath } = useSelector((state: RootState) => state.dataReducer);
-
+	console.log('markets =>', markets);
 	// 過濾 url stirng 去 call API
 	// 預設網址 /markets
 	// 有參數條件 /markets?categories=分類,分類,sort排序,volume,&startDate=timeStamp&endDate=timeStamp
@@ -378,9 +378,7 @@ function Markets() {
 					w="100%"
 					onScroll={(event: any) => handelScroll(event)}
 					overflowY={'scroll'}
-					templateColumns={
-						markets?.data?.length === 0 ? '' : 'repeat(auto-fill, minmax(290px, 1fr))'
-					}
+					templateColumns={markets?.length === 0 ? '' : 'repeat(auto-fill, minmax(290px, 1fr))'}
 					gap={'20px'}
 					pt={'1px'}
 					pb={{
@@ -389,18 +387,18 @@ function Markets() {
 						sm: '40px',
 					}}
 				>
-					{Object.keys(markets).length === 0 ? (
+					{isMarketsLoading ? (
 						dummyArrayCount.map((value, index) => {
 							return <SkeletonCard key={index} />;
 						})
-					) : markets?.data?.length === 0 ? (
+					) : markets?.length === 0 ? (
 						<ScaleFade initialScale={0.9} in={true}>
 							<Text textAlign={'center'} color={'gray.500'} fontSize={'md'}>
 								No results found
 							</Text>
 						</ScaleFade>
 					) : (
-						markets?.data?.map((value, index) => {
+						markets?.map((value, index) => {
 							return <CategoryCard isLoading={isMarketsLoading} key={index} data={value} />;
 						})
 					)}
