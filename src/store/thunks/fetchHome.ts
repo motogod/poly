@@ -145,6 +145,46 @@ const getMarketLineChart = createAsyncThunk(
 	}
 );
 
+const getMarketLineChartYesAndNo = createAsyncThunk(
+	'api/getMarketLineChartYesAndNo',
+	async (params: { slug: string; interval: LineChartTabsIntervalType }) => {
+		const { slug, interval } = params;
+
+		const yesResp = await GetMarketLineChart<GetMarketLineChartType>({
+			slug,
+			outcome: 'YES',
+			interval,
+		});
+
+		const noResp = await GetMarketLineChart<GetMarketLineChartType>({
+			slug,
+			outcome: 'NO',
+			interval,
+		});
+
+		let yesAndNoResp: { Time: string; Yes: number; No: number }[] = [];
+
+		if (yesResp.data.length > 0 && noResp.data.length > 0) {
+			// 共用時間
+			// Yes 的價格資料
+			yesResp?.data?.forEach((value, index) => {
+				yesAndNoResp.push({
+					Time: value.time,
+					Yes: value.price,
+					No: 0,
+				});
+			});
+
+			// No 的價格資料
+			noResp?.data.forEach((value, index) => {
+				yesAndNoResp[index].No = value.price;
+			});
+		}
+
+		return { resp: yesAndNoResp, interval };
+	}
+);
+
 const getMarketOrderBookYes = createAsyncThunk(
 	'api/getMarketOrderBookYes',
 	async (params: { slug: string }) => {
@@ -185,4 +225,5 @@ export {
 	getMarketOrderBookYes,
 	getMarketOrderBookNo,
 	getMarketLineChart,
+	getMarketLineChartYesAndNo,
 };

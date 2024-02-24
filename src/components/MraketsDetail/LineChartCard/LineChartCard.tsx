@@ -30,6 +30,7 @@ import {
 	getMarketOrderBookYes,
 	getMarketOrderBookNo,
 	getMarketLineChart,
+	getMarketLineChartYesAndNo,
 } from '@/store';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import {
@@ -48,36 +49,93 @@ import { LineChartTabsIntervalType } from '@/api';
 
 const data = [
 	{
-		name: 'Page A',
-		uv: 4000,
-		pv: 2400,
-		amt: 2400,
+		time: '01/31',
+		Yes: 0.5,
+		No: 0.8,
 	},
 	{
-		name: 'Page B',
-		uv: 3000,
-		pv: 1398,
-		amt: 2210,
+		time: '02/01',
+		Yes: 0.5,
+		No: 0.8,
 	},
 	{
-		name: 'Page C',
-		uv: 2000,
-		pv: 9800,
-		amt: 2290,
+		time: '02/02',
+		Yes: 0.5,
+		No: 0.8,
 	},
 	{
-		name: 'Page D',
-		uv: 2780,
-		pv: 3908,
-		amt: 2000,
+		time: '02/03',
+		Yes: 0.5,
+		No: 0.8,
+	},
+	{
+		time: '02/04',
+		Yes: 0.5,
+		No: 0.8,
+	},
+	{
+		time: '02/05',
+		Yes: 0.5,
+		No: 0.8,
+	},
+	{
+		time: '02/04',
+		Yes: 0.5,
+		No: 0.8,
+	},
+	{
+		time: '02/05',
+		Yes: 0.5,
+		No: 0.8,
+	},
+	{
+		time: '02/04',
+		Yes: 0.5,
+		No: 0.8,
+	},
+	{
+		time: '02/05',
+		Yes: 0.5,
+		No: 0.8,
 	},
 ];
+// const data = [
+// 	{
+// 		name: 'Page A',
+// 		bu: 4000,
+// 		pv: 2400,
+// 		amt: 2400,
+// 	},
+// 	{
+// 		name: 'Page B',
+// 		uv: 3000,
+// 		pv: 1398,
+// 		amt: 2210,
+// 	},
+// 	{
+// 		name: 'Page C',
+// 		uv: 2000,
+// 		pv: 9800,
+// 		amt: 2290,
+// 	},
+// 	{
+// 		name: 'Page D',
+// 		uv: 2780,
+// 		pv: 3908,
+// 		amt: 2000,
+// 	},
+// ];
 
 function LineChartCard() {
 	const [selectedTab, setSelectedTab] = useState<LineChartTabsIntervalType>('6h');
 
-	const { isMarketDetailLoading, marketDetailData, isUserClickYesOrNo, lineChartData } =
-		useSelector((state: RootState) => state.homeReducer);
+	const {
+		isMarketDetailLoading,
+		marketDetailData,
+		isUserClickYesOrNo,
+		lineChartData,
+		yesAndNoLineChartData,
+	} = useSelector((state: RootState) => state.homeReducer);
 
 	const router = useRouter();
 
@@ -96,6 +154,8 @@ function LineChartCard() {
 					interval: selectedTab,
 				})
 			);
+
+			dispatch(getMarketLineChartYesAndNo({ slug: marketSlug as string, interval: selectedTab }));
 		}
 	}, [router, dispatch, isUserClickYesOrNo, selectedTab]);
 
@@ -114,10 +174,37 @@ function LineChartCard() {
 		);
 	};
 
+	const checkIntervalDistance = (dataLength: number) => {
+		const distance = Math.floor(dataLength / 8);
+
+		return distance;
+	};
+
 	const renderLineChart = () => {
 		// 若加入 ResponsiveContainer 會將所有x元素 限縮在表格裡面
 		// 改用 ScrollContainer 讓x元素展開可以左右滑動
-		if (lineChartData.length > 0) {
+		if (yesAndNoLineChartData.length > 0) {
+			return (
+				<Stack w={'100%'} h={'100%'}>
+					<Stack mt={'8px'} height={'415px'}>
+						<ResponsiveContainer width="100%" height="100%">
+							<LineChart data={yesAndNoLineChartData}>
+								<CartesianGrid strokeDasharray="3 3" />
+								<XAxis
+									dataKey="Time"
+									tick={{ fontSize: 14 }}
+									interval={checkIntervalDistance(yesAndNoLineChartData.length)}
+								/>
+								<YAxis />
+								<Tooltip />
+								{/* <Legend /> */}
+								<Line type="monotone" dataKey="Yes" stroke="#82ca9d" activeDot={{ r: 8 }} />
+								<Line type="monotone" dataKey="No" stroke="red" activeDot={{ r: 8 }} />
+							</LineChart>
+						</ResponsiveContainer>
+					</Stack>
+				</Stack>
+			);
 			return (
 				<Stack w={'100%'} h={'100%'}>
 					<Stack mt={'8px'} height={'415px'}>
@@ -207,7 +294,6 @@ function LineChartCard() {
 							<Image
 								height="120px"
 								width="120px"
-								// src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
 								src={marketDetailData?.image ? marketDetailData?.image : ''}
 								alt="Green double couch with wooden legs"
 								borderRadius="lg"
@@ -305,23 +391,30 @@ function LineChartCard() {
 					mt={'28px'}
 					onChange={value => {
 						if (value === 0) {
-							setSelectedTab('6h');
+							setSelectedTab('all');
 						}
 
 						if (value === 1) {
-							setSelectedTab('1d');
+							setSelectedTab('6h');
 						}
 
 						if (value === 2) {
-							setSelectedTab('1w');
+							setSelectedTab('1d');
 						}
 
 						if (value === 3) {
+							setSelectedTab('1w');
+						}
+
+						if (value === 4) {
 							setSelectedTab('1m');
 						}
 					}}
 				>
 					<TabList borderBottomColor={'gray.200'} borderBottomWidth={'2px'}>
+						<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
+							All
+						</Tab>
 						<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
 							6H
 						</Tab>
@@ -337,6 +430,7 @@ function LineChartCard() {
 					</TabList>
 					{/* <TabIndicator mt="-1.5px" height="0px" bg="pink" borderRadius="1px" /> */}
 					<TabPanels>
+						<TabPanel px={0}>{renderLineChart()}</TabPanel>
 						<TabPanel px={0}>{renderLineChart()}</TabPanel>
 						<TabPanel px={0}>{renderLineChart()}</TabPanel>
 						<TabPanel px={0}>{renderLineChart()}</TabPanel>

@@ -52,7 +52,7 @@ function TopicCardList() {
 		setDisableScroll(true);
 		setTimeout(() => {
 			setDisableScroll(false);
-		}, 1000);
+		}, 100);
 
 		const elementIndex = scrollIndex + count;
 
@@ -126,7 +126,7 @@ function TopicCardList() {
 										<TopicCard data={value} index={index} />
 									</Element>
 									{sliceData?.length === index + 1 ? (
-										<Stack w={{ md: '116px', sm: '16px' }}></Stack>
+										<Stack pr={{ md: '16px', sm: '16px' }}></Stack>
 									) : null}
 								</>
 						  ))}

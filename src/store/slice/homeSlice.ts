@@ -6,6 +6,7 @@ import {
 	getMarketOrderBookYes,
 	getMarketOrderBookNo,
 	getMarketLineChart,
+	getMarketLineChartYesAndNo,
 } from '../thunks/fetchHome';
 import {
 	GetMarketsType,
@@ -13,8 +14,10 @@ import {
 	OrderBookDataType,
 	OrderBookType,
 	LineChartType,
+	YesAndNoLineChartType,
 } from '@/api';
 import { VolumeType } from './dataSlice';
+import { stat } from 'fs';
 
 type HomeState = {
 	isMarketsLoading: boolean;
@@ -26,6 +29,7 @@ type HomeState = {
 	isOrderBookYesLoading: boolean | null;
 	orderBookNoData: OrderBookDataType;
 	lineChartData: LineChartType[];
+	yesAndNoLineChartData: YesAndNoLineChartType[];
 };
 
 const initialState: HomeState = {
@@ -38,6 +42,7 @@ const initialState: HomeState = {
 	isOrderBookYesLoading: null,
 	orderBookNoData: {} as OrderBookDataType,
 	lineChartData: [],
+	yesAndNoLineChartData: [],
 };
 
 const homeSlice = createSlice({
@@ -118,7 +123,7 @@ const homeSlice = createSlice({
 			console.log('getMarketLineChart fulfilled', action);
 			const { resp, interval } = action.payload;
 
-			resp?.data.map(value => {
+			resp?.data?.map(value => {
 				if (interval === '6h' || interval === '1d') {
 					value.time = moment(value.time).format('HH:MM');
 				} else {
@@ -132,6 +137,29 @@ const homeSlice = createSlice({
 		});
 		builder.addCase(getMarketLineChart.rejected, state => {
 			console.log('getMarketLineChart rejected');
+		});
+
+		builder.addCase(getMarketLineChartYesAndNo.pending, state => {
+			console.log('getMarketLineChartYesAndNo pending');
+		});
+		builder.addCase(getMarketLineChartYesAndNo.fulfilled, (state, action) => {
+			console.log('getMarketLineChartYesAndNo fulfilled', action);
+			const { resp, interval } = action.payload;
+
+			resp?.map(value => {
+				if (interval === '6h' || interval === '1d') {
+					value.Time = moment(value.Time).format('HH:MM');
+				} else {
+					value.Time = moment(value.Time).format('MM/DD');
+				}
+
+				return value;
+			});
+
+			state.yesAndNoLineChartData = resp;
+		});
+		builder.addCase(getMarketLineChartYesAndNo.rejected, state => {
+			console.log('getMarketLineChartYesAndNo rejected');
 		});
 	},
 });
