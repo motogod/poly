@@ -387,7 +387,7 @@ function Markets() {
 						sm: '40px',
 					}}
 				>
-					{isMarketsLoading ? (
+					{isMarketsLoading && markets?.length === 0 ? (
 						dummyArrayCount.map((value, index) => {
 							return <SkeletonCard key={index} />;
 						})
