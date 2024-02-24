@@ -51,6 +51,7 @@ function TopicCard({ data, index }: { data: MarketsItemType; index: number }) {
 					src={image}
 					alt="Green double couch with wooden legs"
 					borderRadius="3xl"
+					objectFit={'cover'}
 				/>
 				<Stack p="5" mt="0" spacing="0">
 					<Heading minH={'48px'} noOfLines={2} size="md" color="gray.800">

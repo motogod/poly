@@ -15,10 +15,13 @@ import {
 	TagLabel,
 	Collapse,
 	Text,
+	Icon,
 } from '@chakra-ui/react';
-import { Icon } from '@chakra-ui/react';
-import { BiWalletAlt } from 'react-icons/bi';
+import { HiChartBar } from 'react-icons/hi';
+import { PhoneIcon, AddIcon, WarningIcon, SpinnerIcon } from '@chakra-ui/icons';
+import { BiWalletAlt, BiLoaderAlt } from 'react-icons/bi';
 import { useSelector, useDispatch } from 'react-redux';
+import { motion, useAnimationControls } from 'framer-motion';
 import {
 	RootState,
 	AppDispatch,
@@ -53,6 +56,15 @@ function BuyOrSellContent(props?: Props) {
 	const [isBuy, setIsBuy] = useState(transactionType === 'Buy' ? true : false);
 	const [isYes, setIsYes] = useState(true);
 	const [selectedType, setSelectedType] = useState<SelectedType>('MARKET');
+
+	const controls = useAnimationControls();
+
+	const [rotateDeg, setRotateDeg] = useState(0);
+
+	const rotateFunction = async (rotateDeg: number) => {
+		await controls.start({ rotate: rotateDeg, transition: { duration: 0.5 } });
+		return await controls.start({ rotate: rotateDeg + 360, transition: { duration: 0.5 } });
+	};
 
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -353,31 +365,53 @@ function BuyOrSellContent(props?: Props) {
 				borderBottom={'1px solid #E2E8F0;'}
 				bg={'#fff'}
 			>
-				<Select
-					_hover={{ bg: 'gray.100' }}
-					cursor={'pointer'}
-					_focusVisible={{
-						outline: 'none',
-					}}
-					fontWeight={'800'}
-					border={'0px'}
-					borderRadius={'0px'}
-					focusBorderColor="transparent"
-					borderColor={'gray.200'}
-					bg={'#fff'}
-					w={'120px'}
-					placeholder=""
-					size="md"
-					defaultValue={selectedType}
-					onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-						setShareInputValue(0);
-						setLimitInputValue(inputLimitPrice.value);
-						setSelectedType(e.target.value as SelectedType);
-					}}
-				>
-					<option value="MARKET">Market</option>
-					<option value="LIMIT">Limit</option>
-				</Select>
+				<Stack direction={'row'} justify={'space-between'} alignItems={'center'}>
+					<Select
+						_hover={{ bg: 'gray.100' }}
+						cursor={'pointer'}
+						_focusVisible={{
+							outline: 'none',
+						}}
+						fontWeight={'800'}
+						border={'0px'}
+						borderRadius={'0px'}
+						focusBorderColor="transparent"
+						borderColor={'gray.200'}
+						bg={'#fff'}
+						w={'120px'}
+						placeholder=""
+						size="md"
+						defaultValue={selectedType}
+						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+							setShareInputValue(0);
+							setLimitInputValue(inputLimitPrice.value);
+							setSelectedType(e.target.value as SelectedType);
+						}}
+					>
+						<option value="MARKET">Market</option>
+						<option value="LIMIT">Limit</option>
+					</Select>
+
+					<Box
+						as={motion.div}
+						cursor={'pointer'}
+						border="0px solid #fff;"
+						bg={'transparent'}
+						// drag="x"
+						// dragConstraints={{ left: -100, right: 100 }}
+						animate={controls}
+						onClick={() => {
+							dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
+							dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
+
+							setRotateDeg(prev => prev + 360);
+							rotateFunction(rotateDeg);
+						}}
+						transition="0.5s linear"
+					>
+						<Icon as={SpinnerIcon} w={'16px'} h={'14px'} />
+					</Box>
+				</Stack>
 			</Box>
 			<Stack>
 				<Stack mt={'16px'} position="relative" spacing={1.5} direction="row">

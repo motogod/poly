@@ -6,6 +6,7 @@ import {
 	getMarketOrderBookYes,
 	getMarketOrderBookNo,
 	getMarketLineChart,
+	getMarketLineChartYesAndNo,
 } from '../thunks/fetchHome';
 import {
 	GetMarketsType,
@@ -13,29 +14,35 @@ import {
 	OrderBookDataType,
 	OrderBookType,
 	LineChartType,
+	YesAndNoLineChartType,
 } from '@/api';
 import { VolumeType } from './dataSlice';
+import { stat } from 'fs';
 
 type HomeState = {
 	isMarketsLoading: boolean;
-	markets: GetMarketsType;
+	markets: MarketsItemType[];
 	isMarketDetailLoading: boolean;
 	marketDetailData: MarketsItemType;
 	isUserClickYesOrNo: boolean; // 使用者在 /marketsDetail 的 Yes 跟 No 切換點擊
 	orderBookYesData: OrderBookDataType;
+	isOrderBookYesLoading: boolean | null;
 	orderBookNoData: OrderBookDataType;
 	lineChartData: LineChartType[];
+	yesAndNoLineChartData: YesAndNoLineChartType[];
 };
 
 const initialState: HomeState = {
 	isMarketsLoading: false,
-	markets: {} as GetMarketsType,
+	markets: [],
 	isMarketDetailLoading: true,
 	marketDetailData: {} as MarketsItemType,
 	isUserClickYesOrNo: true,
 	orderBookYesData: {} as OrderBookDataType,
+	isOrderBookYesLoading: null,
 	orderBookNoData: {} as OrderBookDataType,
 	lineChartData: [],
+	yesAndNoLineChartData: [],
 };
 
 const homeSlice = createSlice({
@@ -55,7 +62,10 @@ const homeSlice = createSlice({
 		builder.addCase(getMarkets.fulfilled, (state, action) => {
 			console.log('getMarkets fulfilled', action);
 			state.isMarketsLoading = false;
-			state.markets = action.payload;
+			// 後台設置 title 為空的議題不顯示
+			const filteredData = action.payload.data.filter(value => value.title !== '');
+
+			state.markets = filteredData;
 		});
 		builder.addCase(getMarkets.rejected, state => {
 			state.isMarketsLoading = false;
@@ -81,14 +91,17 @@ const homeSlice = createSlice({
 
 		builder.addCase(getMarketOrderBookYes.pending, state => {
 			console.log('getMarketOrderBookYes pending');
+			state.isOrderBookYesLoading = true;
 		});
 		builder.addCase(getMarketOrderBookYes.fulfilled, (state, action) => {
 			console.log('getMarketOrderBookYes fulfilled', action);
 			// YES
 			state.orderBookYesData = action.payload.data;
+			state.isOrderBookYesLoading = false;
 		});
 		builder.addCase(getMarketOrderBookYes.rejected, state => {
 			console.log('getMarketOrderBookYes rejected');
+			state.isOrderBookYesLoading = null;
 		});
 
 		builder.addCase(getMarketOrderBookNo.pending, state => {
@@ -110,7 +123,7 @@ const homeSlice = createSlice({
 			console.log('getMarketLineChart fulfilled', action);
 			const { resp, interval } = action.payload;
 
-			resp?.data.map(value => {
+			resp?.data?.map(value => {
 				if (interval === '6h' || interval === '1d') {
 					value.time = moment(value.time).format('HH:MM');
 				} else {
@@ -124,6 +137,29 @@ const homeSlice = createSlice({
 		});
 		builder.addCase(getMarketLineChart.rejected, state => {
 			console.log('getMarketLineChart rejected');
+		});
+
+		builder.addCase(getMarketLineChartYesAndNo.pending, state => {
+			console.log('getMarketLineChartYesAndNo pending');
+		});
+		builder.addCase(getMarketLineChartYesAndNo.fulfilled, (state, action) => {
+			console.log('getMarketLineChartYesAndNo fulfilled', action);
+			const { resp, interval } = action.payload;
+
+			resp?.map(value => {
+				if (interval === '6h' || interval === '1d') {
+					value.Time = moment(value.Time).format('HH:MM');
+				} else {
+					value.Time = moment(value.Time).format('MM/DD');
+				}
+
+				return value;
+			});
+
+			state.yesAndNoLineChartData = resp;
+		});
+		builder.addCase(getMarketLineChartYesAndNo.rejected, state => {
+			console.log('getMarketLineChartYesAndNo rejected');
 		});
 	},
 });

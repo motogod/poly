@@ -37,6 +37,12 @@ export type LineChartType = {
 	price: number;
 };
 
+export type YesAndNoLineChartType = {
+	Time: string;
+	Yes: number;
+	No: number;
+};
+
 export type LineChartTabsIntervalType = 'all' | '1m' | '1w' | '1d' | '6h';
 
 export type GetMarketLineChartType = {
