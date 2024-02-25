@@ -41,7 +41,7 @@ function Home({ homePage = true }) {
 	const { chain, chains } = useNetwork();
 	const { categoriesData } = useSelector((state: RootState) => state.dataReducer);
 	console.log('categoriesData home', categoriesData);
-	// Test
+	// Test -2
 	const {
 		ModalDom,
 		isOpen: modalIsOpen,
