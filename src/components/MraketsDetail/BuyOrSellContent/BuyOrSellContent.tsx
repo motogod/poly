@@ -20,6 +20,7 @@ import {
 import { HiChartBar } from 'react-icons/hi';
 import { PhoneIcon, AddIcon, WarningIcon, SpinnerIcon } from '@chakra-ui/icons';
 import { BiWalletAlt, BiLoaderAlt } from 'react-icons/bi';
+import { HiRefresh } from 'react-icons/hi';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion, useAnimationControls } from 'framer-motion';
 import {
@@ -99,7 +100,6 @@ function BuyOrSellContent(props?: Props) {
 		max: 1.0,
 		precision: 2,
 		onChange: value => {
-			console.log(value);
 			// 禁止使用者輸入負號
 			const newValue = value.replace('-', '');
 			setLimitInputValue(Number(newValue));
@@ -156,7 +156,7 @@ function BuyOrSellContent(props?: Props) {
 		// defaultValue: shareInputValue,
 		min: 0,
 		// max: hold,
-		max: isBuy ? sharesMax : userMarketHold,
+		// max: isBuy ? sharesMax : userMarketHold,
 		precision: 0,
 		onChange: value => {
 			// 禁止使用者輸入負號
@@ -391,7 +391,6 @@ function BuyOrSellContent(props?: Props) {
 						<option value="MARKET">Market</option>
 						<option value="LIMIT">Limit</option>
 					</Select>
-
 					<Box
 						as={motion.div}
 						cursor={'pointer'}
@@ -408,8 +407,10 @@ function BuyOrSellContent(props?: Props) {
 							rotateFunction(rotateDeg);
 						}}
 						transition="0.5s linear"
+						textAlign={'center'}
+						justifyContent={'center'}
 					>
-						<Icon as={SpinnerIcon} w={'16px'} h={'14px'} />
+						<HiRefresh color="grey" />
 					</Box>
 				</Stack>
 			</Box>
@@ -440,7 +441,7 @@ function BuyOrSellContent(props?: Props) {
 					</Heading>
 					<YesOrNoButton
 						onClick={() => {
-							dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
+							// dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
 							// 一併去改變 LineChartCard 要顯示 Buy or Sell
 							dispatch(userClickYesOrNoButton(true));
 							setShareInputValue(0);
@@ -452,7 +453,7 @@ function BuyOrSellContent(props?: Props) {
 					/>
 					<YesOrNoButton
 						onClick={() => {
-							dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
+							// dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
 							dispatch(userClickYesOrNoButton(false));
 							setShareInputValue(0);
 							setIsYes(false);
@@ -476,7 +477,7 @@ function BuyOrSellContent(props?: Props) {
 							<Input
 								focusBorderColor="gray.100"
 								type="number"
-								value={limiInputValue}
+								// value={limiInputValue}
 								textAlign={'center'}
 								borderRadius={0}
 								border="1px solid #E2E8F0;"

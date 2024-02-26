@@ -189,7 +189,7 @@ function LineChartCard() {
 					<Stack mt={'8px'} height={'415px'}>
 						<ResponsiveContainer width="100%" height="100%">
 							<LineChart data={yesAndNoLineChartData}>
-								<CartesianGrid strokeDasharray="3 3" />
+								<CartesianGrid vertical={false} stroke="#E2E8F0" />
 								<XAxis
 									dataKey="Time"
 									tick={{ fontSize: 14 }}
@@ -198,8 +198,8 @@ function LineChartCard() {
 								<YAxis />
 								<Tooltip />
 								{/* <Legend /> */}
-								<Line type="monotone" dataKey="Yes" stroke="#82ca9d" activeDot={{ r: 8 }} />
-								<Line type="monotone" dataKey="No" stroke="red" activeDot={{ r: 8 }} />
+								<Line type="monotone" dataKey="Yes" stroke="#82ca9d" dot={false} />
+								<Line type="monotone" dataKey="No" stroke="red" dot={false} />
 							</LineChart>
 						</ResponsiveContainer>
 					</Stack>
@@ -413,9 +413,6 @@ function LineChartCard() {
 				>
 					<TabList borderBottomColor={'gray.200'} borderBottomWidth={'2px'}>
 						<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
-							All
-						</Tab>
-						<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
 							6H
 						</Tab>
 						<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
@@ -426,6 +423,9 @@ function LineChartCard() {
 						</Tab>
 						<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
 							1M
+						</Tab>
+						<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
+							All
 						</Tab>
 					</TabList>
 					{/* <TabIndicator mt="-1.5px" height="0px" bg="pink" borderRadius="1px" /> */}
