@@ -82,7 +82,7 @@ function OrdersTableCard() {
 	const renderActionButton = (status: OrderStatusType, orderId: string) => {
 		const buttonText = () => {
 			if (status === 'PENDING' || status === 'PARTIALLY_FILLED') {
-				return 'DELETE';
+				return 'Cancel';
 			}
 
 			if (status === 'CANCELED') {
