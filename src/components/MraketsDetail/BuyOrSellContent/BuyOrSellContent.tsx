@@ -87,7 +87,7 @@ function BuyOrSellContent(props?: Props) {
 	} = useLoginModal();
 
 	// Limit Price
-	const [limiInputValue, setLimitInputValue] = useState(0.1);
+	const [limiInputValue, setLimitInputValue] = useState(0);
 
 	const {
 		getInputProps: getLimitInputProps,
@@ -194,7 +194,8 @@ function BuyOrSellContent(props?: Props) {
 
 	const renderPotentialReturn = () => {
 		if (shareInputValue > 0) {
-			const price = isYes ? marketDetailData?.outcome?.yes : marketDetailData?.outcome?.no;
+			console.log('CHECK inputLimitPrice', inputLimitPrice.value);
+			const price = inputLimitPrice.value;
 			const cost = price * shareInputValue;
 			const potentialReturnValue = (shareInputValue / cost) * 100;
 
@@ -342,6 +343,16 @@ function BuyOrSellContent(props?: Props) {
 		return false;
 	};
 
+	const renderFeeOrPotentialReturn = (): string => {
+		if (selectedType === 'LIMIT' && !isBuy) {
+			const afterFeeCost = (limiInputValue * shareInputValue * 0.05).toFixed(2);
+
+			return `${afterFeeCost} USDT`;
+		}
+
+		return `${shareInputValue * 1} USDT (${renderPotentialReturn()}%)`;
+	};
+
 	const renderTotal = (): string => {
 		if (selectedType === 'MARKET') {
 			return `${
@@ -349,6 +360,13 @@ function BuyOrSellContent(props?: Props) {
 					? (marketDetailData?.outcome?.yes * shareInputValue).toFixed(2)
 					: (marketDetailData?.outcome?.no * shareInputValue).toFixed(2)
 			} USDT`;
+		}
+
+		if (selectedType === 'LIMIT' && !isBuy) {
+			const afterFeeCost = limiInputValue * shareInputValue * 0.05;
+			const estAmountReceived = limiInputValue * shareInputValue - afterFeeCost;
+
+			return estAmountReceived.toFixed(2);
 		}
 
 		return (limiInputValue * shareInputValue).toFixed(2);
@@ -592,7 +610,7 @@ function BuyOrSellContent(props?: Props) {
 				<Stack mt={'14px'} mb={'4px'}>
 					<Stack direction={'row'} justify={'space-between'}>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
-							Share Price
+							{selectedType === 'MARKET' ? 'Share Price' : 'Limit Price'}
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
 							{renderSharePrice()}
@@ -608,15 +626,15 @@ function BuyOrSellContent(props?: Props) {
 					</Stack>
 					<Stack direction={'row'} justify={'space-between'}>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
-							Potential Return
+							{selectedType === 'LIMIT' && !isBuy ? 'Fee(5%)' : 'Potential Return'}
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
-							{`${shareInputValue * 1} USDT (${renderPotentialReturn()}%)`}
+							{renderFeeOrPotentialReturn()}
 						</Heading>
 					</Stack>
 					<Stack direction={'row'} justify={'space-between'}>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'700'} lineHeight={'17px'}>
-							Total
+							{selectedType === 'LIMIT' && !isBuy ? 'Est.amount received' : 'Total'}
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'700'} lineHeight={'17px'}>
 							{renderTotal()}

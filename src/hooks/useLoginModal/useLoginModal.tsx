@@ -256,6 +256,7 @@ function useLoginModal() {
 												}}
 												w={'100%'}
 												size="lg"
+												_hover={{ bg: 'teal.600' }}
 												bg={'teal.500'}
 												color="#fff"
 												// justifyContent={'start'}

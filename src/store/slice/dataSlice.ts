@@ -545,6 +545,7 @@ const dataSlice = createSlice({
 
 		// 網頁第一次開啟，抓取網址 query 參數更新選單各項目是否勾選
 		queryUrlToChangeMenuStatus: (state, action) => {
+			console.log('queryUrlToChangeMenuStatus =>', action);
 			const { queryString } = action.payload;
 
 			let queryStringArray: string[] = [];
@@ -644,6 +645,13 @@ const dataSlice = createSlice({
 
 			state.routerPath = newRouterAsPath;
 		},
+
+		// Markets 頁面下點擊上方 tab 單純更新 router path with categories for 手機狀態
+		// 網址變動會觸發 LeftMenu 底下的 useEffect 重新撈取資料
+		changeRouterAsPathWithCategories: (state, action) => {
+			console.log('changeRouterAsPathWithCategories =>', action.payload);
+			state.routerPath = action.payload;
+		},
 	},
 	extraReducers: builder => {
 		builder.addCase(getCategories.pending, state => {
@@ -672,5 +680,6 @@ export const {
 	resetVolumeAndDateStatus,
 	filterStartDateAndEndDateMarket,
 	filterSortSelector,
+	changeRouterAsPathWithCategories,
 } = dataSlice.actions;
 export const dataReducer = dataSlice.reducer;

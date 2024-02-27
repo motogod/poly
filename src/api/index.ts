@@ -5,6 +5,12 @@ import { LineChartTabsIntervalType } from './type';
 export const GetMarkets = <T>(params: any) =>
 	requestWithSession.get<T>(`/markets?categories=${params.categories}`, {}, { timeout: 15000 });
 
+export const GetSpotlightMarkets = <T>() =>
+	requestWithSession.get<T>(`/markets?type=spotlight`, {}, { timeout: 15000 });
+
+export const GetHomeCategorySectionMarkets = <T>(params: any) =>
+	requestWithSession.get<T>(`/markets?categories=${params.categories}`, {}, { timeout: 15000 });
+
 export const GetMarketDetail = <T>(params: { slug: string }) =>
 	requestWithSession.get<T>(
 		`/markets/${params.slug}`,

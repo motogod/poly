@@ -384,7 +384,7 @@ function Markets() {
 					pb={{
 						lg: `calc(100vh - ${headerHeight} - ${additionalHeight})`,
 						md: `calc(100vh - ${headerHeight} - ${additionalHeight})`,
-						sm: '40px',
+						sm: '160px',
 					}}
 				>
 					{isMarketsLoading && markets?.length === 0 ? (

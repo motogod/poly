@@ -8,6 +8,7 @@
 .tabsContainer {
 	overflow-x: scroll;
 	scrollbar-width: none; // for FireFox
+	white-space: nowrap;
 	&::-webkit-scrollbar {
 		display: none;
 	}

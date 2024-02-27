@@ -7,10 +7,11 @@
 .listContainer {
 	position: relative;
 	width: 100%;
-	overflow: scroll;
+	overflow-x: scroll;
 	margin: 30px 0px;
 	overflow-x: scroll;
 	scrollbar-width: none; // for FireFox
+	flex-direction: row;
 	&::-webkit-scrollbar {
 		display: none;
 	}
@@ -18,6 +19,15 @@
 		display: grid;
 		grid-auto-flow: column;
 		margin: 1px 0px;
+	}
+}
+
+.tabsContainer {
+	overflow-x: scroll;
+	scrollbar-width: none; // for FireFox
+	white-space: nowrap;
+	&::-webkit-scrollbar {
+		display: none;
 	}
 }
 

@@ -2,6 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import moment, { Moment } from 'moment';
 import {
 	GetMarkets,
+	GetSpotlightMarkets,
+	GetHomeCategorySectionMarkets,
 	GetMarketsType,
 	MarketsItemType,
 	GetMarketDetail,
@@ -123,6 +125,25 @@ const getMarkets = createAsyncThunk(
 	}
 );
 
+const getSpotlightMarkets = createAsyncThunk('api/getSpotlightMarkets', async () => {
+	const resp = await GetSpotlightMarkets<GetMarketsType>();
+	console.log('getSpotlightMarkets resp', resp);
+	return resp;
+});
+
+const getHomeCategorySectionMarkets = createAsyncThunk(
+	'api/getHomeCategorySectionMarkets',
+	async (params: { childrenCategories: any[] }) => {
+		const { childrenCategories } = params;
+
+		const childrenSlug = childrenCategories.map(value => value.slug).join(',');
+		console.log('childrenSlug', childrenSlug);
+		const resp = await GetHomeCategorySectionMarkets<GetMarketsType>({ categories: childrenSlug });
+		console.log('getHomeCategorySectionMarkets resp', resp);
+		return resp;
+	}
+);
+
 const getMarketDetail = createAsyncThunk(
 	'api/getMarketDetail',
 	async (params: { slug: string }) => {
@@ -220,6 +241,8 @@ const clickCategoryEvent = createAsyncThunk(
 
 export {
 	getMarkets,
+	getSpotlightMarkets,
+	getHomeCategorySectionMarkets,
 	getMarketDetail,
 	clickCategoryEvent,
 	getMarketOrderBookYes,

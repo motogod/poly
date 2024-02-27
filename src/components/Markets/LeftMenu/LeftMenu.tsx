@@ -87,7 +87,6 @@ const LeftMenu = () => {
 	}, [router]);
 
 	useEffect(() => {
-		console.log('useEffect LeftMenu', router.query);
 		// 第一次開啟頁面先撈取網址對應的 query 更新選單 每個 query 後都有一個逗點
 		// 確保 Markets 底下選單有跟後端要到資列才更新選單 且只執行一次
 		if (firstRender && categoriesData[0].menuData[2].subMenuData.length > 0 && router.isReady) {
@@ -98,6 +97,7 @@ const LeftMenu = () => {
 
 	useEffect(() => {
 		if (router.isReady && routerPath !== '') {
+			console.log('useEffect routerPath', routerPath);
 			// 使用者點選選單 redux 改變 routerPath 的值，router.push 最後更新網頁上的正確 query 網址
 			router.push(routerPath, undefined, { shallow: true });
 			dispatch(resetRouterPath({}));
@@ -463,7 +463,6 @@ const LeftMenu = () => {
 							borderRadius={4}
 							zIndex={0}
 							onClick={e => {
-								console.log('onClick 2');
 								e.preventDefault();
 								dispatch(
 									handleClickSubMenu({ userClickId: subValue.id, routerAsPath: router.asPath })
@@ -502,7 +501,6 @@ const LeftMenu = () => {
 										p={1}
 										borderRadius={4}
 										onClick={e => {
-											console.log('onClick 3');
 											e.preventDefault();
 											dispatch(
 												handleClickSubMenuItem({
