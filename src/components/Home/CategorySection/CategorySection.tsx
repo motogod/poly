@@ -164,6 +164,7 @@ function CategorySection() {
 								return (
 									<>
 										<Tab
+											key={index}
 											onClick={() => {
 												dispatch(
 													getHomeCategorySectionMarkets({
@@ -174,7 +175,6 @@ function CategorySection() {
 												setSelectedCategory(categories[index].name);
 											}}
 											flexWrap={'nowrap'}
-											key={index}
 											_hover={{ color: 'gray.800' }}
 											_selected={{ bg: 'teal.500', color: '#fff' }}
 										>

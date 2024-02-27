@@ -110,9 +110,11 @@ export default function LargeWithAppLinksAndSocial() {
 								defaultValue={i18n.language}
 								onChange={e => changeLocale(e.target.value as LocalesEnum)}
 							>
-								{selectorOptions.map(value => (
+								{selectorOptions.map((value, index) => (
 									<>
-										<option value={value.value}>{value.label}</option>
+										<option key={`${value.value}${index}`} value={value.value}>
+											{value.label}
+										</option>
 									</>
 								))}
 								{/* <option value="en">English</option>

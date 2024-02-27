@@ -30,178 +30,6 @@ import { zIndexMinimum } from '@/utils/zIndex';
 
 const dummyArrayCount = [...Array(10)];
 
-const dummyArray = [
-	{
-		id: '17a7c98a-6f55-427f-9ae0-1d2f3c952d9a',
-		slug: 'ryan-test',
-		title: '简中测试',
-		image:
-			'https://plus.unsplash.com/premium_photo-1663931932735-8694976211ed?q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-		volume: 0,
-		liquidity: 0,
-		outcome: { yes: 0.5, no: 0.5 },
-		startDate: '2024-02-18T16:00:00.000Z',
-		endDate: '2024-02-28T16:00:00.000Z',
-		initialPrice: 0.5,
-		settlePrice: null,
-		category: { slug: 'finance', name: 'Finance' },
-	},
-	{
-		id: '5879b1e4-256d-4600-bd51-f5517ee22229',
-		slug: 'Bitcoin-on-Feb-15',
-		title: 'BTC 2 月份会触及 55,000 美元吗？',
-		image: 'https://i.imgur.com/JAJdc1e.png',
-		volume: 0,
-		liquidity: 0,
-		outcome: { yes: 0.5, no: 0.5 },
-		startDate: '2024-02-14T16:00:00.000Z',
-		endDate: '2024-02-29T16:00:00.000Z',
-		initialPrice: 0.5,
-		settlePrice: null,
-		category: { slug: 'prices', name: 'Prices' },
-	},
-	{
-		id: 'c7a702ae-a136-4e16-afe8-0a9e9ab3488b',
-		slug: 'Trump-on-Feb-15',
-		title: '川普在南卡罗来纳州初选中获胜',
-		image: 'https://i.imgur.com/PDUtiDA.png',
-		volume: 0,
-		liquidity: 0,
-		outcome: { yes: 0.5, no: 0.5 },
-		startDate: '2024-02-14T16:00:00.000Z',
-		endDate: '2024-02-28T16:00:00.000Z',
-		initialPrice: 0.5,
-		settlePrice: null,
-		category: { slug: 'global-politics', name: 'Global Politics' },
-	},
-	{
-		id: 'c7a702ae-a136-4e16-afe8-0a9e9ab3488b',
-		slug: 'Trump-on-Feb-15',
-		title: '川普在南卡罗来纳州初选中获胜',
-		image: 'https://i.imgur.com/PDUtiDA.png',
-		volume: 0,
-		liquidity: 0,
-		outcome: { yes: 0.5, no: 0.5 },
-		startDate: '2024-02-14T16:00:00.000Z',
-		endDate: '2024-02-28T16:00:00.000Z',
-		initialPrice: 0.5,
-		settlePrice: null,
-		category: { slug: 'global-politics', name: 'Global Politics' },
-	},
-	{
-		id: 'c7a702ae-a136-4e16-afe8-0a9e9ab3488b',
-		slug: 'Trump-on-Feb-15',
-		title: '川普在南卡罗来纳州初选中获胜',
-		image: 'https://i.imgur.com/PDUtiDA.png',
-		volume: 0,
-		liquidity: 0,
-		outcome: { yes: 0.5, no: 0.5 },
-		startDate: '2024-02-14T16:00:00.000Z',
-		endDate: '2024-02-28T16:00:00.000Z',
-		initialPrice: 0.5,
-		settlePrice: null,
-		category: { slug: 'global-politics', name: 'Global Politics' },
-	},
-	{
-		id: 'c7a702ae-a136-4e16-afe8-0a9e9ab3488b',
-		slug: 'Trump-on-Feb-15',
-		title: '川普在南卡罗来纳州初选中获胜',
-		image: 'https://i.imgur.com/PDUtiDA.png',
-		volume: 0,
-		liquidity: 0,
-		outcome: { yes: 0.5, no: 0.5 },
-		startDate: '2024-02-14T16:00:00.000Z',
-		endDate: '2024-02-28T16:00:00.000Z',
-		initialPrice: 0.5,
-		settlePrice: null,
-		category: { slug: 'global-politics', name: 'Global Politics' },
-	},
-	{
-		id: 'c7a702ae-a136-4e16-afe8-0a9e9ab3488b',
-		slug: 'Trump-on-Feb-15',
-		title: '川普在南卡罗来纳州初选中获胜',
-		image: 'https://i.imgur.com/PDUtiDA.png',
-		volume: 0,
-		liquidity: 0,
-		outcome: { yes: 0.5, no: 0.5 },
-		startDate: '2024-02-14T16:00:00.000Z',
-		endDate: '2024-02-28T16:00:00.000Z',
-		initialPrice: 0.5,
-		settlePrice: null,
-		category: { slug: 'global-politics', name: 'Global Politics' },
-	},
-	{
-		id: 'c7a702ae-a136-4e16-afe8-0a9e9ab3488b',
-		slug: 'Trump-on-Feb-15',
-		title: '川普在南卡罗来纳州初选中获胜',
-		image: 'https://i.imgur.com/PDUtiDA.png',
-		volume: 0,
-		liquidity: 0,
-		outcome: { yes: 0.5, no: 0.5 },
-		startDate: '2024-02-14T16:00:00.000Z',
-		endDate: '2024-02-28T16:00:00.000Z',
-		initialPrice: 0.5,
-		settlePrice: null,
-		category: { slug: 'global-politics', name: 'Global Politics' },
-	},
-	{
-		id: 'c7a702ae-a136-4e16-afe8-0a9e9ab3488b',
-		slug: 'Trump-on-Feb-15',
-		title: '川普在南卡罗来纳州初选中获胜',
-		image: 'https://i.imgur.com/PDUtiDA.png',
-		volume: 0,
-		liquidity: 0,
-		outcome: { yes: 0.5, no: 0.5 },
-		startDate: '2024-02-14T16:00:00.000Z',
-		endDate: '2024-02-28T16:00:00.000Z',
-		initialPrice: 0.5,
-		settlePrice: null,
-		category: { slug: 'global-politics', name: 'Global Politics' },
-	},
-	{
-		id: 'c7a702ae-a136-4e16-afe8-0a9e9ab3488b',
-		slug: 'Trump-on-Feb-15',
-		title: '川普在南卡罗来纳州初选中获胜',
-		image: 'https://i.imgur.com/PDUtiDA.png',
-		volume: 0,
-		liquidity: 0,
-		outcome: { yes: 0.5, no: 0.5 },
-		startDate: '2024-02-14T16:00:00.000Z',
-		endDate: '2024-02-28T16:00:00.000Z',
-		initialPrice: 0.5,
-		settlePrice: null,
-		category: { slug: 'global-politics', name: 'Global Politics' },
-	},
-	{
-		id: 'c7a702ae-a136-4e16-afe8-0a9e9ab3488b',
-		slug: 'Trump-on-Feb-15',
-		title: '川普在南卡罗来纳州初选中获胜',
-		image: 'https://i.imgur.com/PDUtiDA.png',
-		volume: 0,
-		liquidity: 0,
-		outcome: { yes: 0.5, no: 0.5 },
-		startDate: '2024-02-14T16:00:00.000Z',
-		endDate: '2024-02-28T16:00:00.000Z',
-		initialPrice: 0.5,
-		settlePrice: null,
-		category: { slug: 'global-politics', name: 'Global Politics' },
-	},
-	{
-		id: 'c7a702ae-a136-4e16-afe8-0a9e9ab3488b',
-		slug: 'Trump-on-Feb-15',
-		title: '川普在南卡罗来纳州初选中获胜',
-		image: 'https://i.imgur.com/PDUtiDA.png',
-		volume: 0,
-		liquidity: 0,
-		outcome: { yes: 0.5, no: 0.5 },
-		startDate: '2024-02-14T16:00:00.000Z',
-		endDate: '2024-02-28T16:00:00.000Z',
-		initialPrice: 0.5,
-		settlePrice: null,
-		category: { slug: 'global-politics', name: 'Global Politics' },
-	},
-];
-
 function TopicCardList() {
 	const listRef = useRef<any>(null);
 
@@ -347,18 +175,21 @@ function TopicCardList() {
 				className={styles.listContainer}
 				spacing={'16px'}
 			>
-				{dummyArray.length === 0
+				{spotlightMarkets.length === 0
 					? dummyArrayCount.map((value, index) => (
 							<Stack key={index}>
 								<SkeletonTopicCard index={index} />
 							</Stack>
 					  ))
-					: dummyArray?.map((value, index) => (
+					: spotlightMarkets?.map((value, index) => (
 							<>
-								<Element name={`com-${index}`} key={index}>
+								<Stack key={index}>
 									<TopicCard data={value} index={index} />
-								</Element>
-								{dummyArray?.length === index + 1 ? (
+								</Stack>
+								{/* <Element name={`com-${index}`} key={index}>
+									<TopicCard data={value} index={index} />
+								</Element> */}
+								{spotlightMarkets?.length === index + 1 ? (
 									<Stack pr={{ md: '16px', sm: '16px' }}></Stack>
 								) : null}
 							</>
