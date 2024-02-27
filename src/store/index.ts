@@ -23,6 +23,7 @@ import {
 	resetVolumeAndDateStatus,
 	filterStartDateAndEndDateMarket,
 	filterSortSelector,
+	changeRouterAsPathWithCategories,
 } from './slice/dataSlice';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg, resetTradeOrdersStatus } from './actions';
 
@@ -70,6 +71,7 @@ export {
 	selectedTabsIndex,
 	selectPortfolioPositions,
 	selectPortfolioHistory,
+	changeRouterAsPathWithCategories,
 };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';

@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import moment from 'moment';
 import {
 	getMarkets,
+	getSpotlightMarkets,
+	getHomeCategorySectionMarkets,
 	getMarketDetail,
 	getMarketOrderBookYes,
 	getMarketOrderBookNo,
@@ -22,6 +24,10 @@ import { stat } from 'fs';
 type HomeState = {
 	isMarketsLoading: boolean;
 	markets: MarketsItemType[];
+	spotlightMarkets: MarketsItemType[];
+	isSpotlightMarketsLoading: boolean;
+	homeCategorySectionMarkets: MarketsItemType[];
+	isHomeCategorySectionMarketsLoading: boolean;
 	isMarketDetailLoading: boolean;
 	marketDetailData: MarketsItemType;
 	isUserClickYesOrNo: boolean; // 使用者在 /marketsDetail 的 Yes 跟 No 切換點擊
@@ -35,6 +41,10 @@ type HomeState = {
 const initialState: HomeState = {
 	isMarketsLoading: false,
 	markets: [],
+	spotlightMarkets: [],
+	isSpotlightMarketsLoading: false,
+	homeCategorySectionMarkets: [],
+	isHomeCategorySectionMarketsLoading: false,
 	isMarketDetailLoading: true,
 	marketDetailData: {} as MarketsItemType,
 	isUserClickYesOrNo: true,
@@ -70,6 +80,40 @@ const homeSlice = createSlice({
 		builder.addCase(getMarkets.rejected, state => {
 			state.isMarketsLoading = false;
 			console.log('getMarkets rejected');
+		});
+
+		builder.addCase(getSpotlightMarkets.pending, state => {
+			console.log('getSpotlightMarkets pending');
+			state.isSpotlightMarketsLoading = true;
+		});
+		builder.addCase(getSpotlightMarkets.fulfilled, (state, action) => {
+			console.log('getSpotlightMarkets fulfilled', action);
+			state.isSpotlightMarketsLoading = false;
+			// 後台設置 title 為空的議題不顯示
+			const filteredData = action.payload.data.filter(value => value.title !== '');
+
+			state.spotlightMarkets = filteredData;
+		});
+		builder.addCase(getSpotlightMarkets.rejected, state => {
+			state.isSpotlightMarketsLoading = false;
+			console.log('getSpotlightMarkets rejected');
+		});
+
+		builder.addCase(getHomeCategorySectionMarkets.pending, state => {
+			console.log('getHomeCategorySectionMarkets pending');
+			state.isHomeCategorySectionMarketsLoading = true;
+		});
+		builder.addCase(getHomeCategorySectionMarkets.fulfilled, (state, action) => {
+			console.log('getHomeCategorySectionMarkets fulfilled', action);
+			state.isHomeCategorySectionMarketsLoading = false;
+			// 後台設置 title 為空的議題不顯示
+			const filteredData = action.payload.data.filter(value => value.title !== '');
+
+			state.homeCategorySectionMarkets = filteredData;
+		});
+		builder.addCase(getHomeCategorySectionMarkets.rejected, state => {
+			state.isHomeCategorySectionMarketsLoading = false;
+			console.log('getHomeCategorySectionMarkets rejected');
 		});
 
 		builder.addCase(getMarketDetail.pending, state => {
@@ -135,6 +179,7 @@ const homeSlice = createSlice({
 
 			state.lineChartData = resp?.data;
 		});
+
 		builder.addCase(getMarketLineChart.rejected, state => {
 			console.log('getMarketLineChart rejected');
 		});

@@ -14,7 +14,7 @@ import { useSession } from 'next-auth/react';
 import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMarkets, AppDispatch, RootState } from '@/store';
+import { getMarkets, getSpotlightMarkets, AppDispatch, RootState } from '@/store';
 import { useSiwe, useLoginModal, useLogout } from '@/hooks';
 import TopTopicSection from './TopTopicSection';
 import CategorySection from './CategorySection';
@@ -62,6 +62,7 @@ function Home({ homePage = true }) {
 				dateValue: 'date-default',
 			})
 		);
+		dispatch(getSpotlightMarkets());
 	}, [dispatch]);
 
 	return (

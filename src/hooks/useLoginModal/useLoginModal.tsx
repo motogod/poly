@@ -216,8 +216,8 @@ function useLoginModal() {
 									)}
 								</Box>
 								<Stack direction={'row'}>
-									{connectors.map(connector => (
-										<>
+									{connectors.map((connector, index) => (
+										<Stack key={index}>
 											<Button
 												isLoading={isSignInLoading}
 												leftIcon={
@@ -256,6 +256,7 @@ function useLoginModal() {
 												}}
 												w={'100%'}
 												size="lg"
+												_hover={{ bg: 'teal.600' }}
 												bg={'teal.500'}
 												color="#fff"
 												// justifyContent={'start'}
@@ -263,7 +264,7 @@ function useLoginModal() {
 												{connector.name}
 												{/* {isLoading && connector.id === pendingConnector?.id && ' (connecting)'} */}
 											</Button>
-										</>
+										</Stack>
 									))}
 								</Stack>
 							</Stack>

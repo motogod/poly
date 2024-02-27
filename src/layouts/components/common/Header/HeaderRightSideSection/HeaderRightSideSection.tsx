@@ -92,8 +92,18 @@ function HeaderRightSideSection() {
 	};
 
 	const checkBalance = () => {
-		if (isLoading) return <div>Fetching balance…</div>;
-		if (isError) return <div>Error fetching balance</div>;
+		if (isLoading)
+			return (
+				<div>
+					<p>Fetching balance…</p>
+				</div>
+			);
+		if (isError)
+			return (
+				<div>
+					<p>Error fetching balance</p>
+				</div>
+			);
 
 		// return `$${ethValue.toLocaleString()} USDT`;
 		return `$${userFunds.load.toLocaleString()}`;
