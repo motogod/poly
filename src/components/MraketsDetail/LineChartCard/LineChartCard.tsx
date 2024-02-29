@@ -391,23 +391,23 @@ function LineChartCard() {
 					mt={'28px'}
 					onChange={value => {
 						if (value === 0) {
-							setSelectedTab('all');
-						}
-
-						if (value === 1) {
 							setSelectedTab('6h');
 						}
 
-						if (value === 2) {
+						if (value === 1) {
 							setSelectedTab('1d');
 						}
 
-						if (value === 3) {
+						if (value === 2) {
 							setSelectedTab('1w');
 						}
 
-						if (value === 4) {
+						if (value === 3) {
 							setSelectedTab('1m');
+						}
+
+						if (value === 4) {
+							setSelectedTab('all');
 						}
 					}}
 				>
