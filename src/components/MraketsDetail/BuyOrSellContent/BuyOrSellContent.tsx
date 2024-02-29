@@ -193,7 +193,7 @@ function BuyOrSellContent(props?: Props) {
 	};
 
 	const renderPotentialReturn = () => {
-		if (selectedType === 'MARKET') {
+		if (selectedType === 'MARKET' && shareInputValue > 0) {
 			if (isUserClickYesOrNo) {
 				const cost = marketDetailData?.outcome?.yes * shareInputValue;
 

@@ -217,7 +217,7 @@ function useLoginModal() {
 								</Box>
 								<Stack direction={'row'}>
 									{connectors.map((connector, index) => (
-										<Stack key={index}>
+										<Stack w={'100%'} key={index}>
 											<Button
 												isLoading={isSignInLoading}
 												leftIcon={

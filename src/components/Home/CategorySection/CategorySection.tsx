@@ -166,6 +166,7 @@ function CategorySection() {
 										<Tab
 											key={index}
 											onClick={() => {
+												console.log('CHECK', categories[index].childrenCategories);
 												dispatch(
 													getHomeCategorySectionMarkets({
 														childrenCategories: categories[index].childrenCategories,
