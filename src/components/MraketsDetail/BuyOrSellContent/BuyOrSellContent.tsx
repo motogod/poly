@@ -193,8 +193,23 @@ function BuyOrSellContent(props?: Props) {
 	};
 
 	const renderPotentialReturn = () => {
-		if (shareInputValue > 0) {
-			console.log('CHECK inputLimitPrice', inputLimitPrice.value);
+		if (selectedType === 'MARKET') {
+			if (isUserClickYesOrNo) {
+				const cost = marketDetailData?.outcome?.yes * shareInputValue;
+
+				const potentialReturnValue = (shareInputValue / cost) * 100;
+
+				return potentialReturnValue.toFixed(2);
+			} else {
+				const cost = marketDetailData?.outcome?.no * shareInputValue;
+
+				const potentialReturnValue = (shareInputValue / cost) * 100;
+
+				return potentialReturnValue.toFixed(2);
+			}
+		}
+
+		if (selectedType === 'LIMIT' && shareInputValue > 0) {
 			const price = inputLimitPrice.value;
 			const cost = price * shareInputValue;
 			const potentialReturnValue = (shareInputValue / cost) * 100;
@@ -283,7 +298,7 @@ function BuyOrSellContent(props?: Props) {
 			} else {
 				// 輸入的 Share 不得大於 使用者擁有的 Share 最大量
 				if (shareInputValue > userMarketHold) {
-					return `You Own ${userMarketHold} Shares`;
+					return 'Insufficient balance';
 				}
 			}
 
@@ -344,6 +359,18 @@ function BuyOrSellContent(props?: Props) {
 	};
 
 	const renderFeeOrPotentialReturn = (): string => {
+		if (selectedType === 'MARKET' && !isBuy) {
+			if (isUserClickYesOrNo) {
+				const afterFeeCost = (marketDetailData?.outcome?.yes * shareInputValue * 0.05).toFixed(2);
+
+				return `${afterFeeCost} USDT`;
+			} else {
+				const afterFeeCost = (marketDetailData?.outcome?.no * shareInputValue * 0.05).toFixed(2);
+
+				return `${afterFeeCost} USDT`;
+			}
+		}
+
 		if (selectedType === 'LIMIT' && !isBuy) {
 			const afterFeeCost = (limiInputValue * shareInputValue * 0.05).toFixed(2);
 
@@ -354,12 +381,31 @@ function BuyOrSellContent(props?: Props) {
 	};
 
 	const renderTotal = (): string => {
-		if (selectedType === 'MARKET') {
+		if (selectedType === 'MARKET' && isBuy) {
 			return `${
 				isUserClickYesOrNo
 					? (marketDetailData?.outcome?.yes * shareInputValue).toFixed(2)
 					: (marketDetailData?.outcome?.no * shareInputValue).toFixed(2)
 			} USDT`;
+		}
+
+		if (selectedType === 'MARKET' && !isBuy) {
+			if (selectedType === 'MARKET' && !isBuy) {
+				if (isUserClickYesOrNo) {
+					const afterFeeCost = marketDetailData.outcome.yes * shareInputValue * 0.05;
+					const result = marketDetailData?.outcome?.yes * shareInputValue - afterFeeCost;
+
+					return `${result} USDT`;
+				} else {
+					const afterFeeCost = marketDetailData.outcome.no * shareInputValue * 0.05;
+
+					const result = (marketDetailData?.outcome?.no * shareInputValue - afterFeeCost).toFixed(
+						2
+					);
+
+					return `${result} USDT`;
+				}
+			}
 		}
 
 		if (selectedType === 'LIMIT' && !isBuy) {
@@ -626,7 +672,7 @@ function BuyOrSellContent(props?: Props) {
 					</Stack>
 					<Stack direction={'row'} justify={'space-between'}>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
-							{selectedType === 'LIMIT' && !isBuy ? 'Fee(5%)' : 'Potential Return'}
+							{!isBuy ? 'Fee(5%)' : 'Potential Return'}
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
 							{renderFeeOrPotentialReturn()}
@@ -634,7 +680,7 @@ function BuyOrSellContent(props?: Props) {
 					</Stack>
 					<Stack direction={'row'} justify={'space-between'}>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'700'} lineHeight={'17px'}>
-							{selectedType === 'LIMIT' && !isBuy ? 'Est.amount received' : 'Total'}
+							{!isBuy ? 'Est.amount received' : 'Total'}
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'700'} lineHeight={'17px'}>
 							{renderTotal()}
