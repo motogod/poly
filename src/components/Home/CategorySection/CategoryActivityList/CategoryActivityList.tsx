@@ -8,7 +8,7 @@ import styles from './categoryActivityList.module.scss';
 
 const dummyArrayCount = [...Array(3)];
 
-function CategoryActivityList({ selectedCategory }: { selectedCategory: string }) {
+function CategoryActivityList() {
 	const { isHomeCategorySectionMarketsLoading, homeCategorySectionMarkets } = useSelector(
 		(state: RootState) => state.homeReducer
 	);
@@ -46,7 +46,7 @@ function CategoryActivityList({ selectedCategory }: { selectedCategory: string }
 							color={'gray.500'}
 							fontSize={{ lg: '2xl', md: '2xl', sm: 'xl' }}
 						>
-							{`${selectedCategory} is currently no relevant topic information`}
+							{`Markets is currently no relevant topic information`}
 						</Text>
 					</ScaleFade>
 				</Stack>
