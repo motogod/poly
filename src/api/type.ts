@@ -208,7 +208,7 @@ export type GetCategoriesType = {
 export enum PortfolioOrderSelectorStatus {
 	all = 'All',
 	active = 'Active',
-	cancelled = 'Cancelled',
+	// cancelled = 'Cancelled',
 }
 
 export type PortfolioHistorySelectorType = 'all' | 'bought' | 'sold' | 'redeem';
