@@ -136,8 +136,12 @@ const getHomeCategorySectionMarkets = createAsyncThunk(
 	async (params: { childrenCategories: any[] }) => {
 		const { childrenCategories } = params;
 
-		const childrenSlug = childrenCategories.map(value => value.slug).join(',');
-		console.log('childrenSlug', childrenSlug);
+		let childrenSlug = '';
+
+		if (childrenCategories.length > 0) {
+			childrenSlug = childrenCategories.map(value => value.slug).join(',');
+		}
+
 		const resp = await GetHomeCategorySectionMarkets<GetMarketsType>({ categories: childrenSlug });
 		console.log('getHomeCategorySectionMarkets resp', resp);
 		return resp;

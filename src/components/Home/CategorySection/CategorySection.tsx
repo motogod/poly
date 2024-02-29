@@ -22,6 +22,7 @@ import CategoryActivityList from './CategoryActivityList';
 import CustomTabsOption from './CustomTabsOption';
 import styles from './categorySection.module.scss';
 import { paddingMainHorizontal } from '@/utils/screen';
+import { SubMenuType } from '@/api';
 
 const dummyCategories = [
 	'All',
@@ -49,24 +50,29 @@ function CategorySection() {
 
 	const { categoriesData } = useSelector((state: RootState) => state.dataReducer);
 
-	const categories = categoriesData[0].menuData[2].subMenuData;
+	const allTagCategory: SubMenuType[] = [
+		{
+			id: '',
+			slug: '',
+			name: 'All',
+			parentCategory: '',
+			subMenuSelected: false,
+			childrenCategories: [],
+		},
+	];
 
-	const [selectedCategory, setSelectedCategory] = useState('');
+	const apiCategories = categoriesData[0].menuData[2].subMenuData;
+
+	const categories = allTagCategory.concat(apiCategories);
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
 	});
 
 	useEffect(() => {
-		// 有撈到 categories 資料，首頁畫面預設撈取第一個 category 的 markets 議題資料
-		if (categories.length > 0) {
-			dispatch(
-				getHomeCategorySectionMarkets({ childrenCategories: categories[0].childrenCategories })
-			);
-
-			setSelectedCategory(categories[0].name);
-		}
-	}, [categories, dispatch]);
+		// 第一次顯示 All 的資料
+		dispatch(getHomeCategorySectionMarkets({ childrenCategories: [] }));
+	}, [dispatch]);
 
 	useEffect(() => {
 		if (listRef?.current) {
@@ -166,14 +172,11 @@ function CategorySection() {
 										<Tab
 											key={index}
 											onClick={() => {
-												console.log('CHECK', categories[index].childrenCategories);
 												dispatch(
 													getHomeCategorySectionMarkets({
 														childrenCategories: categories[index].childrenCategories,
 													})
 												);
-
-												setSelectedCategory(categories[index].name);
 											}}
 											flexWrap={'nowrap'}
 											_hover={{ color: 'gray.800' }}
@@ -210,7 +213,7 @@ function CategorySection() {
 					{categories.map((category, index) => {
 						return (
 							<TabPanel key={index} px={paddingMainHorizontal}>
-								<CategoryActivityList selectedCategory={selectedCategory} />
+								<CategoryActivityList />
 							</TabPanel>
 						);
 					})}

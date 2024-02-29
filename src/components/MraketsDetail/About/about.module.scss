@@ -1,0 +1,10 @@
+.htmlContent {
+	> a {
+		color: #007bff;
+		text-decoration: underline;
+		&:hover {
+			cursor: pointer;
+			text-decoration: underline;
+		}
+	}
+}

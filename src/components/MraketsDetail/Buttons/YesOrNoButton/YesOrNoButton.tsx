@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
-import { Box, Button } from '@chakra-ui/react';
+import React, { useEffect, useCallback, useRef } from 'react';
+import { Box, Button, Stack } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { motion, useAnimationControls } from 'framer-motion';
@@ -27,6 +27,8 @@ const unSelectedStyle = {
 };
 
 function YesOrNoButton(props: YesOrNoButtonType) {
+	const butRef = useRef<any>(null);
+
 	const { selected, leftText, rightText, onClick } = props;
 
 	const selectedColor = leftText === 'Yes' ? selectedYesStyle.color : selectedNoStyle.color;
@@ -44,13 +46,14 @@ function YesOrNoButton(props: YesOrNoButtonType) {
 
 	useEffect(() => {
 		// false 表示資料讀取完畢
-		if (!isOrderBookYesLoading) {
+		if (!isOrderBookYesLoading && butRef.current) {
 			sequence();
 		}
 	}, [isOrderBookYesLoading, sequence]);
 
 	return (
 		<Button
+			ref={butRef}
 			style={{ justifyContent: 'space-between' }}
 			rightIcon={
 				<Box as={motion.div} animate={controls}>

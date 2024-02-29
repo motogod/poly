@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { Card, CardBody, Heading, Text, SkeletonText } from '@chakra-ui/react';
+import styles from './about.module.scss';
 
 function About() {
 	const { isMarketDetailLoading, marketDetailData } = useSelector(
@@ -26,7 +27,10 @@ function About() {
 				) : (
 					<>
 						<Text mt={'20px'} fontSize={'md'} color={'gray.600'}>
-							<div dangerouslySetInnerHTML={{ __html: `${marketDetailData?.description}` }} />
+							<div
+								className={styles.htmlContent}
+								dangerouslySetInnerHTML={{ __html: `${marketDetailData?.description}` }}
+							/>
 						</Text>
 					</>
 				)}
