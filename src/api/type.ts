@@ -241,7 +241,7 @@ export type ProtfolioDataType = {
 	};
 	price: number;
 	closingPrice: number;
-	closedAmount: number;
+	closedQuantity: number;
 	quantity: number;
 };
 

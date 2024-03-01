@@ -166,6 +166,8 @@ function HistoryTableCard() {
 						_hover={{ bg: 'gray.100', borderRadius: 18 }}
 					>
 						<Td
+							w={'0px'}
+							pr={10}
 							verticalAlign={'middle'}
 							fontSize={'md'}
 							color={'gray.700'}
@@ -174,7 +176,7 @@ function HistoryTableCard() {
 						>
 							<Text>{renderActionText(value?.action)}</Text>
 						</Td>
-						<Td verticalAlign={'middle'} w={'0px'}>
+						<Td verticalAlign={'middle'} w={'0px'} pr={10}>
 							<Stack align={'center'} direction={'row'}>
 								<Image
 									height="48px"

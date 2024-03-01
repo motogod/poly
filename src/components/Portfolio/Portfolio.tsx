@@ -22,11 +22,15 @@ function Portfolio() {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const { userFunds } = useSelector((state: RootState) => state.authReducer);
-	const { portfolioOrdersData, portfolioTabsIndex } = useSelector(
+	const { portfolioOrdersData, portfolioTabsIndex, portfolioPositionsListData } = useSelector(
 		(state: RootState) => state.portfolioReducer
 	);
 
-	const { load } = userFunds;
+	const activePostionsCount = portfolioPositionsListData?.filter(
+		value => value.status === 'OPEN'
+	).length;
+
+	const { load, total } = userFunds;
 
 	const handleTabsChange = (index: number) => {
 		dispatch(selectedTabsIndex(index));
@@ -63,7 +67,7 @@ function Portfolio() {
 							Active Positions
 						</Heading>
 						<Text fontSize={'24px'} color={'#fff'}>
-							0 (Test)
+							{activePostionsCount}
 						</Text>
 					</Container>
 					<Container

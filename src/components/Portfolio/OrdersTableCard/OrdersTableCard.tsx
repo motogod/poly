@@ -132,7 +132,7 @@ function OrdersTableCard() {
 						cursor={'pointer'}
 						_hover={{ bg: 'gray.100', borderRadius: 18 }}
 					>
-						<Td verticalAlign={'middle'}>
+						<Td verticalAlign={'middle'} w={'0px'} pr={10}>
 							<Stack align={'center'} direction={'row'}>
 								<Image
 									height="48px"
@@ -181,7 +181,7 @@ function OrdersTableCard() {
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text letterSpacing={1}>{`${value.closingPrice}/${value.quantity}`}</Text>
+							<Text letterSpacing={1}>{`${value.closedQuantity}/${value.quantity}`}</Text>
 						</Td>
 						<Td
 							verticalAlign={'middle'}

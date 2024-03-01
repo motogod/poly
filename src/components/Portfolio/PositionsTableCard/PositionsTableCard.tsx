@@ -54,25 +54,45 @@ function PositionsTableCard() {
 		dispatch(getUserPortfolioPositions({ marketId: '' }));
 	}, [dispatch]);
 
+	const getTotalValue = (currentValue: number, totalShares: number) => {
+		return (currentValue * totalShares).toFixed(2);
+	};
+
+	const checkColorStyle = (currentValue: number, holdValue: number) => {
+		if (currentValue > holdValue) {
+			return 'red.500';
+		}
+
+		if (currentValue < holdValue) {
+			return 'green.500';
+		}
+
+		return 'gray.500';
+	};
+
 	const getProfieOrLoasePercent = (currentValue: number, holdValue: number) => {
 		let percentValueString = '';
 
-		const value = Number(((currentValue - holdValue) / holdValue).toFixed(2)) * 100;
+		const profitRate = Number(((currentValue - holdValue) / holdValue).toFixed(2)) * 100;
 
 		if (holdValue === 0) {
 			percentValueString = '+' + String(Number(currentValue.toFixed(2)) * 100) + '%';
-			return percentValueString;
+			return `(${percentValueString})`;
 		}
 
-		if (value > 0) {
-			percentValueString = '+' + String(value) + '%';
+		if (profitRate > 0) {
+			percentValueString = '+' + String(profitRate) + '%';
 		}
 
-		if (value < 0) {
-			percentValueString = '-' + String(value) + '%';
+		if (profitRate < 0) {
+			percentValueString = String(profitRate) + '%';
 		}
 
-		return percentValueString;
+		if (profitRate === 0) {
+			percentValueString = '0%';
+		}
+
+		return `(${percentValueString})`;
 	};
 
 	const renderActionButton = (status: PortfoioPostionTableStatus) => {
@@ -115,7 +135,7 @@ function PositionsTableCard() {
 						cursor={'pointer'}
 						_hover={{ bg: 'gray.100', borderRadius: 18 }}
 					>
-						<Td verticalAlign={'middle'}>
+						<Td w={'0px'} pr={10} verticalAlign={'middle'}>
 							<Stack align={'center'} direction={'row'}>
 								<Image
 									height="48px"
@@ -178,13 +198,8 @@ function PositionsTableCard() {
 							lineHeight={'20px'}
 						>
 							<Stack justify={'center'} direction={'row'}>
-								<Text
-									color={
-										getProfieOrLoasePercent(value.last24HrPrice, value.price).includes('+')
-											? 'red.500'
-											: 'green.500'
-									}
-								>
+								<Text>{getTotalValue(value.last24HrPrice, value.total)}</Text>
+								<Text color={checkColorStyle(value.last24HrPrice, value.price)}>
 									{getProfieOrLoasePercent(value.last24HrPrice, value.price)}
 								</Text>
 							</Stack>
