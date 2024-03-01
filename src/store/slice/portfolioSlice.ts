@@ -29,7 +29,7 @@ type IpState = {
 	portfolioTabsIndex: number; // Portfolio 的 tab 最後點擊位置狀態
 	portfolioSelectorStatus: 'all' | 'active' | 'cancelled'; // Portfolio 的 selector 最後選擇狀態
 	portfolioPositionsListData: PositionsDataType[]; // call API 得到的初始資料
-	filterPortfolioPositionsListData: UserPortfolioDataType[]; // 後續過濾條件要呈現的資料
+	filterPortfolioPositionsListData: PositionsDataType[]; // 後續過濾條件要呈現的資料
 	portfolioPositionsSelectorStatus: 'all' | 'active' | 'reedeem' | 'claim';
 	userMarketHold: number; // 使用者在該市場擁有多少 Shares
 	portfolioHistoryListData: ProtfolioHistoryDataType[]; // Portfolio History 的資料
@@ -275,8 +275,8 @@ const portfolioSlice = createSlice({
 			console.log('getUserPortfolioPositionsForHold fulfilled', action);
 			const { data } = action.payload;
 
-			if (data?.length > 0) {
-				state.userMarketHold = data[0].hold;
+			if (data?.positions.length > 0) {
+				state.userMarketHold = data.positions[0].hold;
 			} else {
 				state.userMarketHold = 0;
 			}

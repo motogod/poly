@@ -27,7 +27,7 @@ import {
 } from '@chakra-ui/react';
 import { useMediaQuery } from 'react-responsive';
 import {
-	UserPortfolioDataType,
+	PositionsDataType,
 	PortfoioPostionTableStatus,
 	PortfoioPostionTableStatusEnum,
 } from '@/api/type';
@@ -126,7 +126,7 @@ function PositionsTableCard() {
 	};
 
 	const renderTableRow = () => {
-		return filterPortfolioPositionsListData.map((value: UserPortfolioDataType, index: number) => {
+		return filterPortfolioPositionsListData.map((value: PositionsDataType, index: number) => {
 			return (
 				<>
 					<Tr
