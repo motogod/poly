@@ -18,6 +18,8 @@ import {
 	GetUserFundsType,
 	PostWithdraw,
 	PostWithdrawType,
+	GetUserPortfolioPositions,
+	GetUserPortfolioType,
 } from '@/api';
 
 // Get Nonce from server
@@ -65,6 +67,16 @@ const getUserProfile = createAsyncThunk('api/getUserProfile', async (params: any
 	return resp;
 });
 
+// Positions
+const getPortfolioValue = createAsyncThunk(
+	'api/getPortfolioValue',
+	async (params: { marketId: string }) => {
+		const resp = await GetUserPortfolioPositions<GetUserPortfolioType>(params);
+		console.log('getPortfolioValue resp', resp);
+		return resp;
+	}
+);
+
 // Put user profile
 const putUserProfile = createAsyncThunk(
 	'api/putUserProfile',
@@ -108,4 +120,5 @@ export {
 	putUserEmail,
 	getUserFunds,
 	postWithdraw,
+	getPortfolioValue,
 };

@@ -74,7 +74,9 @@ function HeaderRightSideSection() {
 		onClose: depositModalOnClose,
 	} = useDepositUsdtModal();
 
-	const { isAuthenticated, user, userFunds } = useSelector((state: RootState) => state.authReducer);
+	const { isAuthenticated, user, userFunds, portfolioValue } = useSelector(
+		(state: RootState) => state.authReducer
+	);
 
 	const { data, isError, isLoading } = useBalance({ address: user.address as `0x${string}` });
 
@@ -106,7 +108,7 @@ function HeaderRightSideSection() {
 			);
 
 		// return `$${ethValue.toLocaleString()} USDT`;
-		return `$${userFunds.load.toLocaleString()}`;
+		return portfolioValue;
 	};
 
 	const renderModalContent = () => {

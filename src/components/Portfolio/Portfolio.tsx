@@ -21,7 +21,7 @@ import HistoryTableCard from './HistoryTableCard';
 function Portfolio() {
 	const dispatch = useDispatch<AppDispatch>();
 
-	const { userFunds } = useSelector((state: RootState) => state.authReducer);
+	const { portfolioValue } = useSelector((state: RootState) => state.authReducer);
 	const { portfolioOrdersData, portfolioTabsIndex, portfolioPositionsListData } = useSelector(
 		(state: RootState) => state.portfolioReducer
 	);
@@ -29,8 +29,6 @@ function Portfolio() {
 	const activePostionsCount = portfolioPositionsListData?.filter(
 		value => value.status === 'OPEN'
 	).length;
-
-	const { load, total } = userFunds;
 
 	const handleTabsChange = (index: number) => {
 		dispatch(selectedTabsIndex(index));
@@ -54,7 +52,7 @@ function Portfolio() {
 							Portfolio Value
 						</Heading>
 						<Text fontSize={'24px'} color={'#fff'}>
-							{`${load} USDT`}
+							{`${portfolioValue} USDT`}
 						</Text>
 					</Container>
 					<Container

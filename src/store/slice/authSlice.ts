@@ -9,6 +9,7 @@ import {
 	putUserEmail,
 	getUserFunds,
 	postWithdraw,
+	getPortfolioValue,
 } from '../thunks/fetchAuth';
 import { UserProfile, FundsType } from '@/api';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg, resetWithdrawStatus } from '../actions';
@@ -30,6 +31,7 @@ type AuthState = {
 	putUsrProfileErrMsg: string; // 呈現創建名字 API 失敗時的顯示錯誤訊息
 	isWithdrawLoading: boolean; // Withdraw API 讀取狀態
 	isWithdrawSuccess: boolean | null; //
+	portfolioValue: number;
 };
 
 const initialState: AuthState = {
@@ -56,6 +58,7 @@ const initialState: AuthState = {
 	putUsrProfileErrMsg: '',
 	isWithdrawLoading: false,
 	isWithdrawSuccess: null,
+	portfolioValue: 0,
 };
 
 const authSlice = createSlice({
@@ -273,7 +276,19 @@ const authSlice = createSlice({
 			console.log('getUserFunds rejected', action);
 		});
 
-		// Get user funds
+		// Get user profile for profile value
+		builder.addCase(getPortfolioValue.pending, state => {
+			console.log('getPortfolioValue pending');
+		});
+		builder.addCase(getPortfolioValue.fulfilled, (state, action) => {
+			console.log('getPortfolioValue fulfilled', action);
+			const { data } = action.payload;
+			state.portfolioValue = data?.totalValue;
+		});
+		builder.addCase(getPortfolioValue.rejected, (state, action) => {
+			console.log('getPortfolioValue rejected', action);
+		});
+
 		builder.addCase(postWithdraw.pending, state => {
 			console.log('postWithdraw pending');
 			state.isWithdrawLoading = true;

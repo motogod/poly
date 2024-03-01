@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Heading, Stack } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, getUserFunds, RootState } from '@/store';
+import { AppDispatch, getUserFunds, RootState, getPortfolioValue } from '@/store';
 import HeaderRightSideSection from './HeaderRightSideSection';
 
 import { PrimaryPink } from '@/utils/color';
@@ -25,8 +25,11 @@ function Header() {
 	useEffect(() => {
 		if (isAuthenticated) {
 			dispatch(getUserFunds({}));
+			// 目前只能透過這隻 API 取得 User 的 Portfolio Value
+			dispatch(getPortfolioValue({ marketId: '' }));
 			setInterval(() => {
 				dispatch(getUserFunds({}));
+				dispatch(getPortfolioValue({ marketId: '' }));
 			}, 60000);
 		}
 	}, [dispatch, isAuthenticated]);

@@ -15,6 +15,7 @@ import {
 	PortfoioPostionTableStatus,
 	ProtfolioHistoryDataType,
 	PortfolioHistorySelectorType,
+	PositionsDataType,
 } from '@/api';
 import { resetTradeOrdersStatus } from '../actions';
 
@@ -27,7 +28,7 @@ type IpState = {
 	isDeleteOrderSuccess: boolean | null;
 	portfolioTabsIndex: number; // Portfolio 的 tab 最後點擊位置狀態
 	portfolioSelectorStatus: 'all' | 'active' | 'cancelled'; // Portfolio 的 selector 最後選擇狀態
-	portfolioPositionsListData: UserPortfolioDataType[]; // call API 得到的初始資料
+	portfolioPositionsListData: PositionsDataType[]; // call API 得到的初始資料
 	filterPortfolioPositionsListData: UserPortfolioDataType[]; // 後續過濾條件要呈現的資料
 	portfolioPositionsSelectorStatus: 'all' | 'active' | 'reedeem' | 'claim';
 	userMarketHold: number; // 使用者在該市場擁有多少 Shares
@@ -257,7 +258,7 @@ const portfolioSlice = createSlice({
 		builder.addCase(getUserPortfolioPositions.fulfilled, (state, action) => {
 			console.log('getUserPortfolioPositions fulfilled', action);
 			const { data } = action.payload;
-			state.portfolioPositionsListData = data;
+			state.portfolioPositionsListData = data?.positions || [];
 
 			// 根據原本選擇狀態去 filter 正確的資料
 			filetrPositionsData(state, state.portfolioPositionsSelectorStatus);

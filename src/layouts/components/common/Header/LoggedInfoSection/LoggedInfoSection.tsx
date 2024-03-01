@@ -21,7 +21,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 	const router = useRouter();
 
 	const { proxyWallet } = useSelector((state: RootState) => state.authReducer.userProfile);
-	const { userFunds } = useSelector((state: RootState) => state.authReducer);
+	const { userFunds, portfolioValue } = useSelector((state: RootState) => state.authReducer);
 
 	const { ethValue } = useContractForRead();
 	const { address } = useAccount();
@@ -48,7 +48,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 		if (isFetching) return <Spinner />;
 		// if (isLoading) return <div>Fetching balance…</div>;
 		// if (isError) return <div>Error fetching balance</div>;
-		return `$${userFunds.load.toLocaleString()}`;
+		return portfolioValue;
 		// return `Balance: ${ethValue} USDT`;
 	};
 

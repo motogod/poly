@@ -283,7 +283,7 @@ export enum PortfoioPostionTableStatusEnum {
 	claim = 'Claim',
 }
 
-export type UserPortfolioDataType = {
+export type PositionsDataType = {
 	hold: number; // 持有的量
 	load: number; // 被圈存無法交易的量
 	market: {
@@ -295,12 +295,18 @@ export type UserPortfolioDataType = {
 	outcome: string;
 	total: number; // Shares
 	price: number; // Price
+	value: number;
 	last24HrPrice: number;
 	status: PortfoioPostionTableStatus;
 };
 
+export type UserPortfolioDataType = {
+	positions: PositionsDataType[];
+	totalValue: number;
+};
+
 export type GetUserPortfolioType = {
-	data: UserPortfolioDataType[];
+	data: UserPortfolioDataType;
 	message: string;
 	statusCode: number;
 };
