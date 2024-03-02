@@ -104,9 +104,8 @@ function BuyOrSellContent(props?: Props) {
 		value: limiInputValue,
 		onChange: value => {
 			// 禁止使用者輸入負號
-			// const newValue = value.replace('-', '');
-			// setLimitInputValue(Number(newValue));
-			setLimitInputValue(value);
+			const newValue = value.replace('-', '');
+			setLimitInputValue(newValue);
 		},
 	});
 
@@ -353,7 +352,7 @@ function BuyOrSellContent(props?: Props) {
 				return shareInputValue > sharesMax || shareInputValue === 0;
 			} else {
 				return (
-					(limiInputValue < 0.01 && limiInputValue > 1) ||
+					((limiInputValue as number) < 0.01 && (limiInputValue as number) > 1) ||
 					shareInputValue > userMarketHold ||
 					userMarketHold === 0
 				);
@@ -377,7 +376,7 @@ function BuyOrSellContent(props?: Props) {
 		}
 
 		if (selectedType === 'LIMIT' && !isBuy) {
-			const afterFeeCost = (limiInputValue * shareInputValue * 0.05).toFixed(2);
+			const afterFeeCost = ((limiInputValue as number) * shareInputValue * 0.05).toFixed(2);
 
 			return `${afterFeeCost} USDT`;
 		}
@@ -416,13 +415,13 @@ function BuyOrSellContent(props?: Props) {
 		}
 
 		if (selectedType === 'LIMIT' && !isBuy) {
-			const afterFeeCost = limiInputValue * shareInputValue * 0.05;
-			const estAmountReceived = limiInputValue * shareInputValue - afterFeeCost;
+			const afterFeeCost = (limiInputValue as number) * shareInputValue * 0.05;
+			const estAmountReceived = (limiInputValue as number) * shareInputValue - afterFeeCost;
 
 			return estAmountReceived.toFixed(2);
 		}
 
-		return (limiInputValue * shareInputValue).toFixed(2);
+		return ((limiInputValue as number) * shareInputValue).toFixed(2);
 	};
 
 	return (
@@ -588,7 +587,10 @@ function BuyOrSellContent(props?: Props) {
 								+
 							</Button>
 						</HStack>
-						<Collapse in={limiInputValue < 0.01 || limiInputValue > 1} animateOpacity>
+						<Collapse
+							in={(limiInputValue as number) < 0.01 || (limiInputValue as number) > 1}
+							animateOpacity
+						>
 							<Text fontSize={'sm'} mt={0} color={'red.500'}>
 								Price should be 0.01 ~ 1.00
 							</Text>
@@ -661,7 +663,7 @@ function BuyOrSellContent(props?: Props) {
 											? isUserClickYesOrNo
 												? marketDetailData?.outcome?.yes
 												: marketDetailData?.outcome?.no
-											: limiInputValue,
+											: (limiInputValue as number),
 									quantity: isUserClickYesOrNo
 										? Number(shareInputValue.toFixed(2))
 										: Number(shareInputValue.toFixed(2)),
