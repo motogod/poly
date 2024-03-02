@@ -113,6 +113,41 @@ function BuyOrSellContent(props?: Props) {
 	const decLimitPrice = getDescBtnProps();
 	const inputLimitPrice = getLimitInputProps();
 
+	// 選擇 Market、Limit 或 Ｂuy、Sell 按鈕的點擊切換，將所有顯示的值恢復成預設值
+	const setAllValueToDefault = () => {
+		// selectedType 不變 其他值均恢復為預設該顯示的值
+		setShareInputValue(0);
+		setIsBuy(true);
+		setIsYes(true);
+		setLimitInputValue(marketDetailData?.outcome?.yes);
+	};
+
+	// 點擊 Buy Sell 按鈕時，將值恢復為預設值
+	const setValueUserClickBuyOrSell = () => {
+		setShareInputValue(0);
+
+		if (isYes) {
+			setLimitInputValue(marketDetailData?.outcome?.yes);
+		} else {
+			setLimitInputValue(marketDetailData?.outcome?.no);
+		}
+	};
+
+	// 點擊 Yes No 時，將值恢復為預設值
+	// 交易成功時，欄位的值也針對當下狀態恢復為預設值，按鈕狀態不變
+	const setValueUserClickYesOrNo = (isClickYes: boolean) => {
+		// 不管是 Market 或 Limit，該值恢復為預設值
+		setShareInputValue(0);
+
+		if (selectedType === 'LIMIT') {
+			if (isClickYes) {
+				setLimitInputValue(marketDetailData?.outcome?.yes);
+			} else {
+				setLimitInputValue(marketDetailData?.outcome?.no);
+			}
+		}
+	};
+
 	useEffect(() => {
 		dispatch(getUserPortfolioPositionsForHold({ marketId: marketDetailData.id }));
 	}, [dispatch, marketDetailData.id]);
@@ -128,8 +163,8 @@ function BuyOrSellContent(props?: Props) {
 				dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
 			}
 
-			setShareInputValue(0);
 			dispatch(resetTradeOrdersStatus());
+			setValueUserClickYesOrNo(isYes);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch, isTradeSuccess, marketDetailData.slug]);
@@ -453,8 +488,7 @@ function BuyOrSellContent(props?: Props) {
 						size="md"
 						defaultValue={selectedType}
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-							setShareInputValue(0);
-							setLimitInputValue(inputLimitPrice.value);
+							setAllValueToDefault();
 							setSelectedType(e.target.value as SelectedType);
 						}}
 					>
@@ -488,30 +522,16 @@ function BuyOrSellContent(props?: Props) {
 				<Stack mt={'16px'} position="relative" spacing={1.5} direction="row">
 					<BuyOrSellButton
 						onClick={() => {
-							setShareInputValue(0);
 							setIsBuy(true);
-
-							if (isYes) {
-								setLimitInputValue(marketDetailData?.outcome?.yes);
-							} else {
-								setLimitInputValue(marketDetailData?.outcome?.no);
-							}
+							setValueUserClickBuyOrSell();
 						}}
 						text="Buy"
 						selected={isBuy}
 					/>
 					<BuyOrSellButton
 						onClick={() => {
-							setShareInputValue(0);
 							setIsBuy(false);
-							// if (shareInputValue > userMarketHold) {
-							// 	setShareInputValue(userMarketHold);
-							// }
-							if (isYes) {
-								setLimitInputValue(marketDetailData?.outcome?.yes);
-							} else {
-								setLimitInputValue(marketDetailData?.outcome?.no);
-							}
+							setValueUserClickBuyOrSell();
 						}}
 						text="Sell"
 						selected={!isBuy}
@@ -533,9 +553,8 @@ function BuyOrSellContent(props?: Props) {
 							// dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
 							// 一併去改變 LineChartCard 要顯示 Buy or Sell
 							dispatch(userClickYesOrNoButton(true));
-							setShareInputValue(0);
-							setLimitInputValue(marketDetailData?.outcome?.yes);
 							setIsYes(true);
+							setValueUserClickYesOrNo(true);
 						}}
 						selected={isYes}
 						leftText="Yes"
@@ -545,9 +564,8 @@ function BuyOrSellContent(props?: Props) {
 						onClick={() => {
 							// dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
 							dispatch(userClickYesOrNoButton(false));
-							setShareInputValue(0);
-							setLimitInputValue(marketDetailData?.outcome?.no);
 							setIsYes(false);
+							setValueUserClickYesOrNo(false);
 						}}
 						selected={!isYes}
 						leftText="No"
