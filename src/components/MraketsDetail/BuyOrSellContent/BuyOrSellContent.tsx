@@ -87,7 +87,9 @@ function BuyOrSellContent(props?: Props) {
 	} = useLoginModal();
 
 	// Limit Price
-	const [limiInputValue, setLimitInputValue] = useState(0);
+	const [limiInputValue, setLimitInputValue] = useState<number | string>(
+		marketDetailData?.outcome?.yes
+	);
 
 	const {
 		getInputProps: getLimitInputProps,
@@ -95,14 +97,16 @@ function BuyOrSellContent(props?: Props) {
 		getDecrementButtonProps: getDescBtnProps,
 	} = useNumberInput({
 		step: 0.1,
-		defaultValue: limiInputValue,
+		// defaultValue: limiInputValue,
 		min: 0.01,
 		max: 1.0,
 		precision: 2,
+		value: limiInputValue,
 		onChange: value => {
 			// 禁止使用者輸入負號
-			const newValue = value.replace('-', '');
-			setLimitInputValue(Number(newValue));
+			// const newValue = value.replace('-', '');
+			// setLimitInputValue(Number(newValue));
+			setLimitInputValue(value);
 		},
 	});
 
@@ -340,7 +344,7 @@ function BuyOrSellContent(props?: Props) {
 			if (isBuy) {
 				return shareInputValue > sharesMax || shareInputValue === 0;
 			} else {
-				return shareInputValue > userMarketHold || userMarketHold === 0;
+				return shareInputValue > userMarketHold || userMarketHold === 0 || shareInputValue === 0;
 			}
 		}
 
@@ -394,7 +398,9 @@ function BuyOrSellContent(props?: Props) {
 			if (selectedType === 'MARKET' && !isBuy) {
 				if (isUserClickYesOrNo) {
 					const afterFeeCost = marketDetailData.outcome.yes * shareInputValue * 0.05;
-					const result = marketDetailData?.outcome?.yes * shareInputValue - afterFeeCost;
+					const result = (marketDetailData?.outcome?.yes * shareInputValue - afterFeeCost).toFixed(
+						2
+					);
 
 					return `${result} USDT`;
 				} else {
@@ -481,12 +487,31 @@ function BuyOrSellContent(props?: Props) {
 			</Box>
 			<Stack>
 				<Stack mt={'16px'} position="relative" spacing={1.5} direction="row">
-					<BuyOrSellButton onClick={() => setIsBuy(true)} text="Buy" selected={isBuy} />
 					<BuyOrSellButton
 						onClick={() => {
+							setShareInputValue(0);
+							setIsBuy(true);
+
+							if (isYes) {
+								setLimitInputValue(marketDetailData?.outcome?.yes);
+							} else {
+								setLimitInputValue(marketDetailData?.outcome?.no);
+							}
+						}}
+						text="Buy"
+						selected={isBuy}
+					/>
+					<BuyOrSellButton
+						onClick={() => {
+							setShareInputValue(0);
 							setIsBuy(false);
-							if (shareInputValue > userMarketHold) {
-								setShareInputValue(userMarketHold);
+							// if (shareInputValue > userMarketHold) {
+							// 	setShareInputValue(userMarketHold);
+							// }
+							if (isYes) {
+								setLimitInputValue(marketDetailData?.outcome?.yes);
+							} else {
+								setLimitInputValue(marketDetailData?.outcome?.no);
 							}
 						}}
 						text="Sell"
@@ -510,6 +535,7 @@ function BuyOrSellContent(props?: Props) {
 							// 一併去改變 LineChartCard 要顯示 Buy or Sell
 							dispatch(userClickYesOrNoButton(true));
 							setShareInputValue(0);
+							setLimitInputValue(marketDetailData?.outcome?.yes);
 							setIsYes(true);
 						}}
 						selected={isYes}
@@ -521,6 +547,7 @@ function BuyOrSellContent(props?: Props) {
 							// dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
 							dispatch(userClickYesOrNoButton(false));
 							setShareInputValue(0);
+							setLimitInputValue(marketDetailData?.outcome?.no);
 							setIsYes(false);
 						}}
 						selected={!isYes}
