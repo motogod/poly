@@ -213,9 +213,15 @@ const portfolioSlice = createSlice({
 		});
 		builder.addCase(tradeOrders.fulfilled, (state, action) => {
 			console.log('tradeOrders fulfilled', action);
-			// const { statusCode, data } = action.payload;
+			const { statusCode } = action.payload;
+
 			state.isTradeOrdersLoading = false;
-			state.isTradeSuccess = true;
+
+			if (statusCode === 400) {
+				state.isTradeSuccess = false;
+			} else {
+				state.isTradeSuccess = true;
+			}
 		});
 		builder.addCase(tradeOrders.rejected, (state, action) => {
 			console.log('tradeOrders rejected', action);

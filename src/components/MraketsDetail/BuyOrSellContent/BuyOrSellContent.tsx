@@ -346,9 +346,9 @@ function BuyOrSellContent(props?: Props) {
 
 		if (selectedType === 'LIMIT') {
 			if (isBuy) {
-				// 限制低於 15 不能掛單
-				if (shareInputValue > 0 && shareInputValue < 15) {
-					return 'Minimum 15 shares for limit orders';
+				// 限制低於 30 不能掛單
+				if (shareInputValue > 0 && shareInputValue < 30) {
+					return 'Minimum 30 shares for limit orders';
 				}
 
 				// 輸入的 Share 不得大於 所能掛單的 Share 最大量
@@ -384,7 +384,7 @@ function BuyOrSellContent(props?: Props) {
 
 		if (selectedType === 'LIMIT') {
 			if (isBuy) {
-				return shareInputValue > sharesMax || shareInputValue === 0;
+				return shareInputValue > sharesMax || shareInputValue === 0 || shareInputValue < 30;
 			} else {
 				return (
 					((limiInputValue as number) < 0.01 && (limiInputValue as number) > 1) ||
@@ -586,6 +586,7 @@ function BuyOrSellContent(props?: Props) {
 							<Input
 								focusBorderColor="gray.100"
 								type="number"
+								pattern="[0-9]*"
 								// value={limiInputValue}
 								textAlign={'center'}
 								borderRadius={0}
@@ -681,7 +682,7 @@ function BuyOrSellContent(props?: Props) {
 											? isUserClickYesOrNo
 												? marketDetailData?.outcome?.yes
 												: marketDetailData?.outcome?.no
-											: (limiInputValue as number),
+											: Number(limiInputValue),
 									quantity: isUserClickYesOrNo
 										? Number(shareInputValue.toFixed(2))
 										: Number(shareInputValue.toFixed(2)),
