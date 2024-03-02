@@ -78,7 +78,7 @@ function BuyOrSellContent(props?: Props) {
 		(state: RootState) => state.portfolioReducer
 	);
 
-	// 這邊的 hook 會導致觸發 disconnect 如果要導入 待處理
+	// 這邊的 hook 會導致觸發 disconnect 如果要導入 (已處理)
 	const {
 		ModalDom,
 		isOpen: modalIsOpen,
@@ -125,6 +125,7 @@ function BuyOrSellContent(props?: Props) {
 				dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
 			}
 
+			setShareInputValue(0);
 			dispatch(resetTradeOrdersStatus());
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
