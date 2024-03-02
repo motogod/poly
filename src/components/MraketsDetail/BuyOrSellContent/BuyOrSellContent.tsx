@@ -345,12 +345,12 @@ function BuyOrSellContent(props?: Props) {
 		}
 
 		if (selectedType === 'LIMIT') {
-			if (isBuy) {
-				// 限制低於 30 不能掛單
-				if (shareInputValue > 0 && shareInputValue < 30) {
-					return 'Minimum 30 shares for limit orders';
-				}
+			// 限制低於 30 不能掛單
+			if (shareInputValue > 0 && shareInputValue < 30) {
+				return 'Minimum 30 shares for limit orders';
+			}
 
+			if (isBuy) {
 				// 輸入的 Share 不得大於 所能掛單的 Share 最大量
 				if (shareInputValue > sharesMax) {
 					return 'Insufficient balance';
@@ -383,14 +383,16 @@ function BuyOrSellContent(props?: Props) {
 		}
 
 		if (selectedType === 'LIMIT') {
-			if (isBuy) {
-				return shareInputValue > sharesMax || shareInputValue === 0 || shareInputValue < 30;
-			} else {
-				return (
-					((limiInputValue as number) < 0.01 && (limiInputValue as number) > 1) ||
-					shareInputValue > userMarketHold ||
-					shareInputValue === 0
-				);
+			if (shareInputValue > sharesMax || shareInputValue === 0 || shareInputValue < 30) {
+				return true;
+			}
+
+			if (
+				((limiInputValue as number) < 0.01 && (limiInputValue as number) > 1) ||
+				shareInputValue > userMarketHold ||
+				shareInputValue === 0
+			) {
+				return true;
 			}
 		}
 
