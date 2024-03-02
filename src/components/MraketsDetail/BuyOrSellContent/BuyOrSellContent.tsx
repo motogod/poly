@@ -389,7 +389,7 @@ function BuyOrSellContent(props?: Props) {
 				return (
 					((limiInputValue as number) < 0.01 && (limiInputValue as number) > 1) ||
 					shareInputValue > userMarketHold ||
-					userMarketHold === 0
+					shareInputValue === 0
 				);
 			}
 		}
