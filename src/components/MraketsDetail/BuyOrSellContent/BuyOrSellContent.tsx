@@ -76,7 +76,7 @@ function BuyOrSellContent(props?: Props) {
 	const { isUserClickYesOrNo, marketDetailData } = useSelector(
 		(state: RootState) => state.homeReducer
 	);
-	const { isTradeOrdersLoading, isTradeSuccess, userMarketHold } = useSelector(
+	const { isTradeOrdersLoading, isTradeSuccess, userMarketYesHold, userMarketNoHold } = useSelector(
 		(state: RootState) => state.portfolioReducer
 	);
 
@@ -345,8 +345,14 @@ function BuyOrSellContent(props?: Props) {
 				}
 			} else {
 				// 輸入的 Share 不得大於 使用者擁有的 Share 最大量
-				if (shareInputValue > userMarketHold) {
-					return 'Insufficient balance';
+				if (isYes) {
+					if (shareInputValue > userMarketYesHold) {
+						return 'Insufficient balance';
+					}
+				} else {
+					if (shareInputValue > userMarketNoHold) {
+						return 'Insufficient balance';
+					}
 				}
 			}
 
@@ -366,8 +372,14 @@ function BuyOrSellContent(props?: Props) {
 				}
 			} else {
 				// 掛單的 Share 不得大於 所擁有的最大量
-				if (shareInputValue > userMarketHold) {
-					return `You Own ${userMarketHold} Shares`;
+				if (isYes) {
+					if (shareInputValue > userMarketYesHold) {
+						return `You Own ${userMarketYesHold} Shares`;
+					}
+				} else {
+					if (shareInputValue > userMarketNoHold) {
+						return `You Own ${userMarketNoHold} Shares`;
+					}
 				}
 			}
 
@@ -387,7 +399,15 @@ function BuyOrSellContent(props?: Props) {
 			if (isBuy) {
 				return shareInputValue > sharesMax || shareInputValue === 0;
 			} else {
-				return shareInputValue > userMarketHold || userMarketHold === 0 || shareInputValue === 0;
+				if (shareInputValue === 0) {
+					return true;
+				}
+
+				if (isYes) {
+					return shareInputValue > userMarketYesHold || userMarketYesHold === 0;
+				} else {
+					return shareInputValue > userMarketNoHold || userMarketNoHold === 0;
+				}
 			}
 		}
 
@@ -398,10 +418,18 @@ function BuyOrSellContent(props?: Props) {
 
 			if (
 				((limiInputValue as number) < 0.01 && (limiInputValue as number) > 1) ||
-				shareInputValue > userMarketHold ||
 				shareInputValue === 0
 			) {
 				return true;
+			}
+
+			// Sell 的狀態下要觀察持有的 Share
+			if (!isBuy) {
+				if (isYes) {
+					return shareInputValue > userMarketYesHold;
+				} else {
+					return shareInputValue > userMarketNoHold;
+				}
 			}
 		}
 
@@ -635,12 +663,20 @@ function BuyOrSellContent(props?: Props) {
 						<Stack direction={'row'}>
 							<Tag bg={'gray.100'} color={'gray.800'} borderRadius={20} pl={'16px'} pr={'16px'}>
 								<TagLabel>
-									{isBuy ? `Balance: ${hold} USDT` : `You Own ${userMarketHold} Shares`}
+									{isBuy
+										? `Balance: ${hold} USDT`
+										: `You Own ${isYes ? userMarketYesHold : userMarketNoHold} Shares`}
 								</TagLabel>
 							</Tag>
 							<Button
 								onClick={() => {
-									isBuy ? setShareInputValue(sharesMax) : setShareInputValue(userMarketHold);
+									if (isBuy) {
+										setShareInputValue(sharesMax);
+									} else {
+										isYes
+											? setShareInputValue(userMarketYesHold)
+											: setShareInputValue(userMarketNoHold);
+									}
 								}}
 								w={'57px'}
 								h={'28px'}

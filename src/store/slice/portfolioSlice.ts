@@ -31,7 +31,8 @@ type IpState = {
 	portfolioPositionsListData: PositionsDataType[]; // call API 得到的初始資料
 	filterPortfolioPositionsListData: PositionsDataType[]; // 後續過濾條件要呈現的資料
 	portfolioPositionsSelectorStatus: 'all' | 'active' | 'reedeem' | 'claim';
-	userMarketHold: number; // 使用者在該市場擁有多少 Shares
+	userMarketYesHold: number; // 使用者在該市場擁有多少 Yes Shares
+	userMarketNoHold: number; // 使用者在該市場擁有多少 No Shares
 	portfolioHistoryListData: ProtfolioHistoryDataType[]; // Portfolio History 的資料
 	filterPortfolioHistoryListData: ProtfolioHistoryDataType[]; // 後續過濾條件要呈現的資料
 	portfolioHistorySelectorStatus: PortfolioHistorySelectorType;
@@ -49,7 +50,8 @@ const initialState: IpState = {
 	portfolioPositionsListData: [],
 	filterPortfolioPositionsListData: [],
 	portfolioPositionsSelectorStatus: 'all',
-	userMarketHold: 0,
+	userMarketYesHold: 0,
+	userMarketNoHold: 0,
 	portfolioHistoryListData: [],
 	filterPortfolioHistoryListData: [],
 	portfolioHistorySelectorStatus: 'all',
@@ -282,9 +284,24 @@ const portfolioSlice = createSlice({
 			const { data } = action.payload;
 
 			if (data?.positions.length > 0) {
-				state.userMarketHold = data.positions[0].hold;
+				const filterYesData = data.positions.filter(value => value.outcome === 'YES');
+
+				if (filterYesData.length > 0) {
+					state.userMarketYesHold = filterYesData[0].total;
+				} else {
+					state.userMarketYesHold = 0;
+				}
+
+				const filterNoData = data.positions.filter(value => value.outcome === 'NO');
+
+				if (filterNoData.length > 0) {
+					state.userMarketNoHold = filterNoData[0].total;
+				} else {
+					state.userMarketNoHold = 0;
+				}
 			} else {
-				state.userMarketHold = 0;
+				state.userMarketYesHold = 0;
+				state.userMarketNoHold = 0;
 			}
 		});
 		builder.addCase(getUserPortfolioPositionsForHold.rejected, (state, action) => {
