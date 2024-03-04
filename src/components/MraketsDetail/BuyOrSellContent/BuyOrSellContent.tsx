@@ -33,6 +33,8 @@ import {
 	showToast,
 	resetTradeOrdersStatus,
 	getUserPortfolioPositionsForHold,
+	getUserFunds,
+	getPortfolioValue,
 } from '@/store';
 import { useLoginModal } from '@/hooks';
 import BuyOrSellButton from '../Buttons/BuyOrSellButton';
@@ -149,6 +151,7 @@ function BuyOrSellContent(props?: Props) {
 	};
 
 	useEffect(() => {
+		// 使用者在該市場擁有多少 Shares
 		dispatch(getUserPortfolioPositionsForHold({ marketId: marketDetailData.id }));
 	}, [dispatch, marketDetailData.id]);
 
@@ -156,6 +159,12 @@ function BuyOrSellContent(props?: Props) {
 		if (isTradeSuccess !== null) {
 			const tradeResultTitle = isTradeSuccess ? 'Trade success' : 'Trade fail';
 			dispatch(showToast({ title: tradeResultTitle, isSuccess: isTradeSuccess }));
+
+			// 交易成功，更新資料
+			dispatch(getUserPortfolioPositionsForHold({ marketId: marketDetailData.id }));
+			dispatch(getUserFunds({}));
+			// User 的 Portfolio Value
+			dispatch(getPortfolioValue({ marketId: '' }));
 			// 交易成功，更新 Order Book 資料
 			if (isYes) {
 				dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
