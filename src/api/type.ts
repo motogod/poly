@@ -295,7 +295,7 @@ export type PositionsDataType = {
 	outcome: string;
 	total: number; // Shares
 	price: number; // Price
-	value: number;
+	value: number; // Value
 	last24HrPrice: number;
 	status: PortfoioPostionTableStatus;
 };
