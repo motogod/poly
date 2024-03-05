@@ -122,7 +122,7 @@ function OrdersTableCard() {
 
 	const renderTableRow = () => {
 		return filteredPortfolioOrdersData.map((value, index) => {
-			if (value.status === 'CANCELED') {
+			if (value.status === 'CANCELED' || value.status === 'FILLED') {
 				return null;
 			}
 
