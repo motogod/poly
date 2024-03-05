@@ -30,7 +30,6 @@ import {
 	PositionsDataType,
 	PortfoioPostionTableStatus,
 	PortfoioPostionTableStatusEnum,
-	PortfoioPostionTableStatus,
 } from '@/api/type';
 
 const selectorOptions = Object.entries(PortfoioPostionTableStatusEnum).map(([value, label]) => ({
