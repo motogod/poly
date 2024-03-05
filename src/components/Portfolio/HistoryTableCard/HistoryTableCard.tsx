@@ -109,9 +109,9 @@ function HistoryTableCard() {
 	const renderActionText = (action: PortfoioHistoryActionType) => {
 		switch (action) {
 			case 'BUY':
-				return 'Bought';
+				return 'Buy';
 			case 'SELL':
-				return 'Sold';
+				return 'Sell';
 			case 'REDEEM':
 				return 'Redeem';
 			default:

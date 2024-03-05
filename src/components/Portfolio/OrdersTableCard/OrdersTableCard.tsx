@@ -122,6 +122,10 @@ function OrdersTableCard() {
 
 	const renderTableRow = () => {
 		return filteredPortfolioOrdersData.map((value, index) => {
+			if (value.status === 'CANCELED') {
+				return null;
+			}
+
 			const totalPrice = (Number(value.price) * Number(value.quantity)).toFixed(2);
 
 			return (
