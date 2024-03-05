@@ -30,7 +30,7 @@ type IpState = {
 	portfolioSelectorStatus: 'all' | 'active' | 'cancelled'; // Portfolio 的 selector 最後選擇狀態
 	portfolioPositionsListData: PositionsDataType[]; // call API 得到的初始資料
 	filterPortfolioPositionsListData: PositionsDataType[]; // 後續過濾條件要呈現的資料
-	portfolioPositionsSelectorStatus: 'all' | 'active' | 'reedeem' | 'claim';
+	portfolioPositionsSelectorStatus: 'all' | 'active' | 'claim';
 	userMarketYesHold: number; // 使用者在該市場擁有多少 Yes Shares
 	userMarketNoHold: number; // 使用者在該市場擁有多少 No Shares
 	portfolioHistoryListData: ProtfolioHistoryDataType[]; // Portfolio History 的資料
@@ -99,11 +99,11 @@ const filetrPositionsData = (state: IpState, selectorStatus: string) => {
 		});
 	}
 
-	if (selectorStatus === 'reedeem') {
+	if (selectorStatus === 'claim') {
 		state.filterPortfolioPositionsListData = state.portfolioPositionsListData.filter(value => {
 			const { status } = value;
-
-			if (status === 'RESOLVED') {
+			// 呈現 Pending 或者 Claim 的文字狀態
+			if (status === 'CLOSED' || status === 'RESOLVED') {
 				return value;
 			}
 		});

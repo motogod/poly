@@ -279,7 +279,6 @@ export type PortfoioPostionTableStatus = 'OPEN' | 'CLOSED' | 'RESOLVED';
 export enum PortfoioPostionTableStatusEnum {
 	all = 'All',
 	active = 'Active',
-	reedeem = 'Redeem',
 	claim = 'Claim',
 }
 

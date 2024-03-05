@@ -30,6 +30,7 @@ import {
 	PositionsDataType,
 	PortfoioPostionTableStatus,
 	PortfoioPostionTableStatusEnum,
+	PortfoioPostionTableStatus,
 } from '@/api/type';
 
 const selectorOptions = Object.entries(PortfoioPostionTableStatusEnum).map(([value, label]) => ({
@@ -54,10 +55,6 @@ function PositionsTableCard() {
 		dispatch(getUserPortfolioPositions({ marketId: '' }));
 	}, [dispatch]);
 
-	const getTotalValue = (currentValue: number, totalShares: number) => {
-		return (currentValue * totalShares).toFixed(2);
-	};
-
 	const checkColorStyle = (currentValue: number, holdValue: number) => {
 		if (currentValue > holdValue) {
 			return 'red.500';
@@ -70,7 +67,11 @@ function PositionsTableCard() {
 		return 'gray.500';
 	};
 
-	const getProfieOrLoasePercent = (currentValue: number, holdValue: number) => {
+	const getProfieOrLoasePercent = (
+		currentValue: number,
+		holdValue: number,
+		status: PortfoioPostionTableStatus
+	) => {
 		let percentValueString = '';
 
 		const profitRate = Number(((currentValue - holdValue) / holdValue).toFixed(2)) * 100;
@@ -85,6 +86,10 @@ function PositionsTableCard() {
 		}
 
 		if (profitRate < 0) {
+			// 顯示狀態為 Pending 或 Claim 的時候，輸錢一率顯示為 -100.00%
+			if (status === 'CLOSED' || status === 'RESOLVED') {
+				percentValueString = '-100.00%';
+			}
 			percentValueString = String(profitRate) + '%';
 		}
 
@@ -98,31 +103,47 @@ function PositionsTableCard() {
 	const renderActionButton = (status: PortfoioPostionTableStatus) => {
 		let color = '';
 		let buttonText = '';
+		let isDisabled = false;
 
 		if (status === 'OPEN') {
 			color = 'teal.500';
 			buttonText = 'Trade';
+			isDisabled = false;
 		}
 
 		if (status === 'CLOSED') {
-			color = 'teal.500';
-			buttonText = '';
+			color = 'gray.800';
+			buttonText = 'Pending';
+			isDisabled = true;
 		}
 
 		if (status === 'RESOLVED') {
 			color = 'red.500';
 			buttonText = 'Redeem';
+			isDisabled = false;
 		}
 
-		if (status === 'OPEN' || status === 'RESOLVED') {
-			return (
-				<Button top={'26%'} size="sm" bg="#fff" border={'1px'} borderColor={color} color={color}>
-					{buttonText}
-				</Button>
-			);
+		return (
+			<Button
+				isDisabled={isDisabled}
+				top={'26%'}
+				size="sm"
+				bg="#fff"
+				border={'1px'}
+				borderColor={color}
+				color={color}
+			>
+				{buttonText}
+			</Button>
+		);
+	};
+
+	const render24HourPrice = (last24HrPrice: number, status: PortfoioPostionTableStatus) => {
+		if (status === 'CLOSED' || status === 'RESOLVED') {
+			return '-';
 		}
 
-		return '';
+		return last24HrPrice.toFixed(2);
 	};
 
 	const renderTableRow = () => {
@@ -177,7 +198,7 @@ function PositionsTableCard() {
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text>{value.last24HrPrice.toFixed(2)}</Text>
+							<Text>{render24HourPrice(value.last24HrPrice, value.status)}</Text>
 						</Td>
 						<Td
 							textAlign={'center'}
@@ -198,9 +219,9 @@ function PositionsTableCard() {
 							lineHeight={'20px'}
 						>
 							<Stack justify={'center'} direction={'row'}>
-								<Text>{getTotalValue(value.last24HrPrice, value.total)}</Text>
+								<Text>{value.value}</Text>
 								<Text color={checkColorStyle(value.last24HrPrice, value.price)}>
-									{getProfieOrLoasePercent(value.last24HrPrice, value.price)}
+									{getProfieOrLoasePercent(value.last24HrPrice, value.price, value.status)}
 								</Text>
 							</Stack>
 						</Td>
