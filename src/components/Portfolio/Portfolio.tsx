@@ -12,7 +12,14 @@ import {
 	TabPanel,
 } from '@chakra-ui/react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, selectedTabsIndex, AppDispatch } from '@/store';
+import {
+	RootState,
+	selectedTabsIndex,
+	AppDispatch,
+	getUserPortfolioPositions,
+	getPortfolioOrders,
+	getPortfolioHistory,
+} from '@/store';
 import AppContainer from '@/components/common/Container';
 import PositionsTableCard from './PositionsTableCard';
 import OrdersTableCard from './OrdersTableCard';
@@ -32,6 +39,21 @@ function Portfolio() {
 
 	const handleTabsChange = (index: number) => {
 		dispatch(selectedTabsIndex(index));
+	};
+
+	const handleTabsClick = () => {
+		console.log('selectedTabsIndex', portfolioTabsIndex);
+		if (portfolioTabsIndex === 0) {
+			dispatch(getUserPortfolioPositions({ marketId: '' }));
+		}
+
+		if (portfolioTabsIndex === 1) {
+			dispatch(getPortfolioOrders());
+		}
+
+		if (portfolioTabsIndex === 2) {
+			dispatch(getPortfolioHistory());
+		}
 	};
 
 	return (
@@ -89,7 +111,12 @@ function Portfolio() {
 					</Container>
 				</Grid>
 			</HStack>
-			<Tabs mt={'68px'} index={portfolioTabsIndex} onChange={handleTabsChange}>
+			<Tabs
+				mt={'68px'}
+				index={portfolioTabsIndex}
+				onChange={handleTabsChange}
+				onClick={handleTabsClick}
+			>
 				<TabList borderBottomColor={'gray.200'} borderBottomWidth={'2px'}>
 					<Tab
 						fontSize={'16px'}

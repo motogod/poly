@@ -73,7 +73,7 @@ function PositionsTableCard() {
 	) => {
 		let percentValueString = '';
 
-		const profitRate = Number(((currentValue - holdValue) / holdValue).toFixed(2)) * 100;
+		const profitRate = Number((((currentValue - holdValue) / holdValue) * 100).toFixed(2));
 
 		if (holdValue === 0) {
 			percentValueString = '+' + String(Number(currentValue.toFixed(2)) * 100) + '%';
