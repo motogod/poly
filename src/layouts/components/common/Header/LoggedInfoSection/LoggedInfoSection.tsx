@@ -48,7 +48,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 		if (isFetching) return <Spinner />;
 		// if (isLoading) return <div>Fetching balance…</div>;
 		// if (isError) return <div>Error fetching balance</div>;
-		return portfolioValue;
+		return portfolioValue.toFixed(2);
 		// return `Balance: ${ethValue} USDT`;
 	};
 

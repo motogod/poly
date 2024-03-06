@@ -108,7 +108,7 @@ function HeaderRightSideSection() {
 			);
 
 		// return `$${ethValue.toLocaleString()} USDT`;
-		return portfolioValue;
+		return portfolioValue.toFixed(2);
 	};
 
 	const renderModalContent = () => {

@@ -283,10 +283,12 @@ const authSlice = createSlice({
 		builder.addCase(getPortfolioValue.fulfilled, (state, action) => {
 			console.log('getPortfolioValue fulfilled', action);
 			const { data } = action.payload;
+
 			state.portfolioValue = data?.totalValue;
 		});
 		builder.addCase(getPortfolioValue.rejected, (state, action) => {
 			console.log('getPortfolioValue rejected', action);
+			state.portfolioValue = 0;
 		});
 
 		builder.addCase(postWithdraw.pending, state => {
