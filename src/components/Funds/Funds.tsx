@@ -63,7 +63,7 @@ function Funds() {
 							color={'gray.800'}
 							lineHeight={{ lg: 10, md: 1, sm: 1 }}
 						>
-							{`$ ${userFunds.hold} USDT`}
+							{`$ ${userFunds?.hold?.toFixed(2)} USDT`}
 						</Text>
 						<Stack direction={'row'} mt={{ lg: '36px', md: '16px', sm: '16px' }}>
 							<Button

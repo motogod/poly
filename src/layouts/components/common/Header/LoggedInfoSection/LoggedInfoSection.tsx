@@ -140,7 +140,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 					</Stack>
 					<Stack>
 						<Text size={'md'} color={'gray.800'} fontWeight={'800'}>
-							{`$${userFunds.hold}`}
+							{`$${userFunds?.hold?.toFixed(2)}`}
 						</Text>
 					</Stack>
 				</Stack>

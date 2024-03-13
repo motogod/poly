@@ -161,7 +161,7 @@ function PositionsTableCard() {
 									height="48px"
 									width="48px"
 									src={value?.market?.image || ''}
-									alt="Green double couch with wooden legs"
+									alt={value?.market?.title}
 									borderRadius="lg"
 								/>
 								<Text fontSize={'14px'} color={'gray.700'} mr={'16px'}>

@@ -264,7 +264,7 @@ function HeaderRightSideSection() {
 							cursor={'pointer'}
 						>
 							<Text fontSize={'16px'} color={'gray.800'} lineHeight={'12px'}>
-								{`$${userFunds.hold}`}
+								{`$${userFunds?.hold?.toFixed(2)}`}
 							</Text>
 							<Heading size={'xs'} color={'gray.800'}>
 								Funds
