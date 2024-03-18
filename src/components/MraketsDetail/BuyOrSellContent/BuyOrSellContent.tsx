@@ -157,7 +157,7 @@ function BuyOrSellContent(props?: Props) {
 
 	useEffect(() => {
 		if (isTradeSuccess !== null) {
-			const tradeResultTitle = isTradeSuccess ? 'Trade success' : 'Trade fail';
+			const tradeResultTitle = isTradeSuccess ? 'Order Created' : 'Order creation failed';
 			dispatch(showToast({ title: tradeResultTitle, isSuccess: isTradeSuccess }));
 
 			// 交易成功，更新資料
