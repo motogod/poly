@@ -285,6 +285,7 @@ export enum PortfoioPostionTableStatusEnum {
 export type PositionsDataType = {
 	hold: number; // 總共的 Share
 	load: number; // 被圈存無法交易的 Share
+	avgBuyPrice: number; // 平均買入價
 	market: {
 		id: string;
 		slug: string;
@@ -295,7 +296,6 @@ export type PositionsDataType = {
 	total: number; // 所擁有能動用的 Share
 	price: number; // Price
 	value: number; // Value
-	last24HrPrice: number;
 	status: PortfoioPostionTableStatus;
 };
 

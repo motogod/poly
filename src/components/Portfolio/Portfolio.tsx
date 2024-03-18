@@ -42,7 +42,6 @@ function Portfolio() {
 	};
 
 	const handleTabsClick = () => {
-		console.log('selectedTabsIndex', portfolioTabsIndex);
 		if (portfolioTabsIndex === 0) {
 			dispatch(getUserPortfolioPositions({ marketId: '' }));
 		}

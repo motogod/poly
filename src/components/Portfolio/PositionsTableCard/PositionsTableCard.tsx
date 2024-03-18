@@ -51,7 +51,11 @@ function PositionsTableCard() {
 	);
 
 	useEffect(() => {
-		dispatch(getUserPortfolioPositions({ marketId: '' }));
+		try {
+			dispatch(getUserPortfolioPositions({ marketId: '' }));
+		} catch (error) {
+			console.log('catch error');
+		}
 	}, [dispatch]);
 
 	const checkColorStyle = (currentValue: number, holdValue: number) => {
@@ -137,12 +141,12 @@ function PositionsTableCard() {
 		);
 	};
 
-	const render24HourPrice = (last24HrPrice: number, status: PortfoioPostionTableStatus) => {
+	const renderPrice = (price: number, status: PortfoioPostionTableStatus) => {
 		if (status === 'CLOSED' || status === 'RESOLVED') {
 			return '-';
 		}
 
-		return last24HrPrice.toFixed(2);
+		return price.toFixed(2);
 	};
 
 	const renderTableRow = () => {
@@ -164,12 +168,12 @@ function PositionsTableCard() {
 									alt={value?.market?.title}
 									borderRadius="lg"
 								/>
-								<Text fontSize={'14px'} color={'gray.700'} mr={'16px'}>
+								<Text minW={30} fontSize={'14px'} color={'gray.700'} mr={'16px'}>
 									{value?.market?.title}
 								</Text>
 							</Stack>
 						</Td>
-						<Td verticalAlign={'middle'}>
+						<Td w={'0px'} verticalAlign={'middle'}>
 							<Badge
 								px={'14px'}
 								py={'4px'}
@@ -187,7 +191,7 @@ function PositionsTableCard() {
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text>{value.price}</Text>
+							<Text>{value?.avgBuyPrice}</Text>
 						</Td>
 						<Td
 							textAlign={'center'}
@@ -197,7 +201,7 @@ function PositionsTableCard() {
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text>{render24HourPrice(value.last24HrPrice, value.status)}</Text>
+							<Text>{renderPrice(value?.price, value.status)}</Text>
 						</Td>
 						<Td
 							textAlign={'center'}
@@ -219,8 +223,8 @@ function PositionsTableCard() {
 						>
 							<Stack justify={'center'} direction={'row'}>
 								<Text>{value.value}</Text>
-								<Text color={checkColorStyle(value.last24HrPrice, value.price)}>
-									{getProfieOrLoasePercent(value.last24HrPrice, value.price, value.status)}
+								<Text color={checkColorStyle(value?.price, value?.avgBuyPrice)}>
+									{getProfieOrLoasePercent(value?.price, value?.avgBuyPrice, value.status)}
 								</Text>
 							</Stack>
 						</Td>
@@ -300,7 +304,7 @@ function PositionsTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Share Price
+								Avg.Price
 							</Th>
 							<Th
 								textAlign={'center'}

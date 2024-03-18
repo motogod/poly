@@ -145,7 +145,7 @@ function OrdersTableCard() {
 									alt={value?.market?.title}
 									borderRadius="lg"
 								/>
-								<Text fontSize={'14px'} color={'gray.700'} mr={'16px'}>
+								<Text minWidth={30} fontSize={'14px'} color={'gray.700'} mr={'16px'}>
 									{value?.market?.title}
 								</Text>
 							</Stack>

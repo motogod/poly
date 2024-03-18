@@ -265,11 +265,14 @@ const portfolioSlice = createSlice({
 		});
 		builder.addCase(getUserPortfolioPositions.fulfilled, (state, action) => {
 			console.log('getUserPortfolioPositions fulfilled', action);
-			const { data } = action.payload;
-			state.portfolioPositionsListData = data?.positions || [];
+			const { data, statusCode } = action.payload;
 
-			// 根據原本選擇狀態去 filter 正確的資料
-			filetrPositionsData(state, state.portfolioPositionsSelectorStatus);
+			if (statusCode === 200) {
+				state.portfolioPositionsListData = data?.positions || [];
+
+				// 根據原本選擇狀態去 filter 正確的資料
+				filetrPositionsData(state, state.portfolioPositionsSelectorStatus);
+			}
 		});
 		builder.addCase(getUserPortfolioPositions.rejected, (state, action) => {
 			console.log('getUserPortfolioPositions rejected', action);
