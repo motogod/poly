@@ -78,7 +78,7 @@ function PositionsTableCard() {
 		let percentValueString = '';
 
 		const profitRate = Number((((currentValue - holdValue) / holdValue) * 100).toFixed(2));
-
+		console.log('holdValue', holdValue);
 		if (holdValue === 0) {
 			percentValueString = '+' + String(Number(currentValue.toFixed(2)) * 100) + '%';
 			return `(${percentValueString})`;
@@ -211,7 +211,7 @@ function PositionsTableCard() {
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							<Text>{value.total}</Text>
+							<Text>{value?.hold}</Text>
 						</Td>
 						<Td
 							textAlign={'center'}

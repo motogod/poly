@@ -73,7 +73,7 @@ function Portfolio() {
 							Portfolio Value
 						</Heading>
 						<Text fontSize={'24px'} color={'#fff'}>
-							{`${portfolioValue.toFixed(2)} USDT`}
+							{`${portfolioValue?.toFixed(2)} USDT`}
 						</Text>
 					</Container>
 					<Container
