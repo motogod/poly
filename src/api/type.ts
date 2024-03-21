@@ -214,8 +214,8 @@ export enum PortfolioOrderSelectorStatus {
 export type PortfolioHistorySelectorType = 'all' | 'bought' | 'sold' | 'redeem';
 export enum PortfolioHistorySelectorStatus {
 	all = 'All',
-	bought = 'Bought',
-	sold = 'Sold',
+	bought = 'Buy',
+	sold = 'Sell',
 	redeem = 'Redeem',
 }
 
