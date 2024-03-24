@@ -16,7 +16,12 @@ import {
 } from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, getMarkets, getSpotlightMarkets } from '@/store';
+import {
+	AppDispatch,
+	getMarkets,
+	getSpotlightMarkets,
+	getHomeCategorySectionMarkets,
+} from '@/store';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { PrimaryPink } from '@/utils/color';
 import { CommunityIcon } from '../../../../../public/assets/svg';
@@ -68,6 +73,7 @@ export default function LargeWithAppLinksAndSocial() {
 		// 一些透過 API 抓到的內容有區分語系 更新，必須設置點延遲才能使用到正確 seted language 的 API
 		setTimeout(() => {
 			dispatch(getSpotlightMarkets());
+			dispatch(getHomeCategorySectionMarkets({ childrenCategories: [] }));
 			dispatch(
 				getMarkets({
 					categories: '',

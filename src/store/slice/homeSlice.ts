@@ -26,6 +26,7 @@ type HomeState = {
 	markets: MarketsItemType[];
 	spotlightMarkets: MarketsItemType[];
 	isSpotlightMarketsLoading: boolean;
+	resetCategorySectionTabsIndex: boolean;
 	homeCategorySectionMarkets: MarketsItemType[];
 	isHomeCategorySectionMarketsLoading: boolean;
 	isMarketDetailLoading: boolean;
@@ -43,6 +44,7 @@ const initialState: HomeState = {
 	markets: [],
 	spotlightMarkets: [],
 	isSpotlightMarketsLoading: false,
+	resetCategorySectionTabsIndex: true,
 	homeCategorySectionMarkets: [],
 	isHomeCategorySectionMarketsLoading: false,
 	isMarketDetailLoading: true,
@@ -107,8 +109,13 @@ const homeSlice = createSlice({
 			console.log('getHomeCategorySectionMarkets fulfilled', action);
 			state.isHomeCategorySectionMarketsLoading = false;
 			// 後台設置 title 為空的議題不顯示
-			const filteredData = action.payload.data.filter(value => value.title !== '');
+			const filteredData = action?.payload?.resp?.data.filter(value => value.title !== '');
 
+			if (action?.payload?.resetTabsIndex) {
+				state.resetCategorySectionTabsIndex = true;
+			} else {
+				state.resetCategorySectionTabsIndex = false;
+			}
 			state.homeCategorySectionMarkets = filteredData;
 		});
 		builder.addCase(getHomeCategorySectionMarkets.rejected, state => {

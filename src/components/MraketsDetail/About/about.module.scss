@@ -1,6 +1,16 @@
 .htmlContent {
+	> p {
+		> a {
+			color: #3182ce;
+			text-decoration: underline;
+			&:hover {
+				cursor: pointer;
+				text-decoration: underline;
+			}
+		}
+	}
 	> a {
-		color: #007bff;
+		color: #3182ce;
 		text-decoration: underline;
 		&:hover {
 			cursor: pointer;

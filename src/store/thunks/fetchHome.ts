@@ -137,14 +137,18 @@ const getHomeCategorySectionMarkets = createAsyncThunk(
 		const { childrenCategories } = params;
 
 		let childrenSlug = '';
+		let resetTabsIndex = true;
 
 		if (childrenCategories.length > 0) {
 			childrenSlug = childrenCategories.map(value => value.slug).join(',');
+			resetTabsIndex = false;
+		} else {
+			resetTabsIndex = true;
 		}
-
+		console.log('children slug', childrenSlug);
 		const resp = await GetHomeCategorySectionMarkets<GetMarketsType>({ categories: childrenSlug });
 		console.log('getHomeCategorySectionMarkets resp', resp);
-		return resp;
+		return { resp, resetTabsIndex };
 	}
 );
 
