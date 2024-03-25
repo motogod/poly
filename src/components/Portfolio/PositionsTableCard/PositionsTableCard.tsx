@@ -78,7 +78,7 @@ function PositionsTableCard() {
 		let percentValueString = '';
 
 		const profitRate = Number((((currentValue - holdValue) / holdValue) * 100).toFixed(2));
-		console.log('holdValue', holdValue);
+
 		if (holdValue === 0) {
 			percentValueString = '+' + String(Number(currentValue.toFixed(2)) * 100) + '%';
 			return `(${percentValueString})`;
@@ -252,6 +252,23 @@ function PositionsTableCard() {
 				mb={'-10px'}
 				as={Stack}
 			>
+				<Tag
+					alignItems={'center'}
+					justifyContent={'center'}
+					w={'100%'}
+					h={'56px'}
+					flexWrap={'nowrap'}
+					border="1px"
+					backgroundColor="gray.50"
+					borderColor="gray.50"
+					size="lg"
+					colorScheme="undefined"
+					borderRadius={'md'}
+				>
+					<Text fontWeight={'400'} color={'gray.800'}>
+						Once your order is created, it will appear after a 30-60 second delay.
+					</Text>
+				</Tag>
 				<Select
 					onChange={event => dispatch(selectPortfolioPositions(event.target.value))}
 					_hover={{ bg: 'gray.100' }}

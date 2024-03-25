@@ -39,6 +39,18 @@ function Portfolio() {
 
 	const handleTabsChange = (index: number) => {
 		dispatch(selectedTabsIndex(index));
+
+		if (index === 0) {
+			dispatch(getUserPortfolioPositions({ marketId: '' }));
+		}
+
+		if (index === 1) {
+			dispatch(getPortfolioOrders());
+		}
+
+		if (index === 2) {
+			dispatch(getPortfolioHistory());
+		}
 	};
 
 	const handleTabsClick = () => {
@@ -114,7 +126,7 @@ function Portfolio() {
 				mt={'68px'}
 				index={portfolioTabsIndex}
 				onChange={handleTabsChange}
-				onClick={handleTabsClick}
+				// onClick={handleTabsClick}
 			>
 				<TabList borderBottomColor={'gray.200'} borderBottomWidth={'2px'}>
 					<Tab
