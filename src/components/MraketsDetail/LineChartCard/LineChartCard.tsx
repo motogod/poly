@@ -297,6 +297,7 @@ function LineChartCard() {
 								src={marketDetailData?.image ? marketDetailData?.image : ''}
 								alt="Green double couch with wooden legs"
 								borderRadius="lg"
+								objectFit={'cover'}
 							/>
 							<Stack
 								pl={4}
