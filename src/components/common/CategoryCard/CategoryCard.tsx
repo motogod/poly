@@ -58,6 +58,7 @@ function CategoryCard({ data, isLoading }: { data: MarketsItemType; isLoading?: 
 							src={image ? image : ''}
 							alt={title}
 							borderRadius="lg"
+							objectFit={'cover'}
 						/>
 						<Stack pl={1}>
 							<Heading

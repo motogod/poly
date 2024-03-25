@@ -49,7 +49,7 @@ function TopicCard({ data, index }: { data: MarketsItemType; index: number }) {
 					height="240px"
 					w={'100%'}
 					src={image}
-					alt="Green double couch with wooden legs"
+					alt={category.name}
 					borderRadius="3xl"
 					objectFit={'cover'}
 				/>
