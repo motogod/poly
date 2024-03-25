@@ -65,6 +65,7 @@ serviceWithSessing.interceptors.response.use(
 
 // Function to set the language header
 const setLanguageHeader = (language: LocalesType) => {
+	console.log('setLanguageHeader', language);
 	serviceWithSessing.defaults.headers.common['Accept-Language'] = language;
 };
 

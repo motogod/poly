@@ -81,7 +81,7 @@ export default function LargeWithAppLinksAndSocial() {
 					dateValue: 'date-default',
 				})
 			);
-		}, 100);
+		}, 300);
 	};
 
 	return (
