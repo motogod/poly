@@ -8,6 +8,7 @@ import MetaMaskIcon from './metamask.svg';
 import WalletConnectIcon from './walletconnect.svg';
 import UsdtIcon from './usdt.svg';
 import HiRefresh from './hiRefresh.svg';
+import FundsBackground from './fundsBackground.svg';
 
 export {
 	HiCreditCard,
@@ -20,4 +21,5 @@ export {
 	WalletConnectIcon,
 	UsdtIcon,
 	HiRefresh,
+	FundsBackground,
 };

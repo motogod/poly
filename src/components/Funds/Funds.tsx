@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Stack, Button, Card, CardBody, Heading, Text, Icon } from '@chakra-ui/react';
+import { Stack, Button, Card, CardBody, Heading, Text, Icon, Box } from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
 import { HiCreditCard } from 'react-icons/hi';
+import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { useContractForRead, useDepositUsdtModal, useWithdrawUsdtModal } from '@/hooks';
-import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
+import {
+	headerHeight,
+	paddingMainHorizontal,
+	paddingMainVertical,
+	paddingFundsContainerCardVertical,
+} from '@/utils/screen';
+import fundsBackroundImg from '@/../public/fundsBackground.png';
 
 function Funds() {
 	const { t } = useTranslation();
@@ -33,13 +40,27 @@ function Funds() {
 				mt={paddingMainVertical}
 				ml={paddingMainHorizontal}
 				mr={paddingMainHorizontal}
-				minH={'434px'}
+				borderRadius="3xl"
+			>
+				<Image
+					width={0}
+					height={0}
+					style={{ width: '100%', height: 'auto' }}
+					src={fundsBackroundImg}
+					alt="Dan Abramov"
+				/>
+			</Card>
+			<Card
+				mt={paddingFundsContainerCardVertical}
+				ml={paddingMainHorizontal}
+				mr={paddingMainHorizontal}
+				minH={'0px'}
 				shadow="lg"
 				border="1px solid #E2E8F0;"
 				borderRadius="3xl"
 			>
 				<CardBody p={0}>
-					<Stack
+					{/* <Stack
 						w={'100%'}
 						h={'243px'}
 						borderRadius={'3xl'}
@@ -50,12 +71,12 @@ function Funds() {
 						<Heading fontSize={'x-large'} ml={'70px'} size={'lg'} color={'#fff'}>
 							Wallet
 						</Heading>
-					</Stack>
-					<Stack mt={{ lg: '73px', md: '16px', sm: '16px' }} ml={'35px'} mb={'32px'}>
+					</Stack> */}
+					<Stack mt={{ lg: '33px', md: '16px', sm: '16px' }} ml={'32px'} mb={'32px'}>
 						<Stack direction={'row'} alignItems={'center'}>
 							<Icon as={HiCreditCard} w={'25px'} h={'25px'} />
 							<Text fontSize={'xl'} color={'gray.800'}>
-								Funds
+								Balance
 							</Text>
 						</Stack>
 						<Text
