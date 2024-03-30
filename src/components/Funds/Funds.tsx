@@ -1,11 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { Stack, Button, Card, CardBody, Heading, Text, Icon } from '@chakra-ui/react';
+import {
+	Stack,
+	Button,
+	Card,
+	CardBody,
+	Heading,
+	Text,
+	Icon,
+	Box,
+	FormLabel,
+} from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
 import { HiCreditCard } from 'react-icons/hi';
+import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { useContractForRead, useDepositUsdtModal, useWithdrawUsdtModal } from '@/hooks';
-import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
+import {
+	headerHeight,
+	paddingMainHorizontal,
+	paddingMainVertical,
+	paddingFundsContainerCardVertical,
+} from '@/utils/screen';
+import fundsBackroundImg from '@/../public/fundsBackground.png';
 
 function Funds() {
 	const { t } = useTranslation();
@@ -30,16 +47,42 @@ function Funds() {
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
 			<Card
+				position={'relative'}
 				mt={paddingMainVertical}
 				ml={paddingMainHorizontal}
 				mr={paddingMainHorizontal}
-				minH={'434px'}
+				borderRadius="3xl"
+			>
+				<Stack
+					position="absolute"
+					justify="space-between"
+					direction="row"
+					top={{ lg: '36%', md: '36%', sm: '30%' }}
+					left={34}
+				>
+					<FormLabel color={'white'} fontSize={{ lg: '36', md: '36', sm: '24' }} fontWeight={900}>
+						Funds
+					</FormLabel>
+				</Stack>
+				<Image
+					width={0}
+					height={0}
+					style={{ width: '100%', height: 'auto' }}
+					src={fundsBackroundImg}
+					alt="funds_background"
+				/>
+			</Card>
+			<Card
+				mt={paddingFundsContainerCardVertical}
+				ml={paddingMainHorizontal}
+				mr={paddingMainHorizontal}
+				minH={'0px'}
 				shadow="lg"
 				border="1px solid #E2E8F0;"
 				borderRadius="3xl"
 			>
 				<CardBody p={0}>
-					<Stack
+					{/* <Stack
 						w={'100%'}
 						h={'243px'}
 						borderRadius={'3xl'}
@@ -50,12 +93,12 @@ function Funds() {
 						<Heading fontSize={'x-large'} ml={'70px'} size={'lg'} color={'#fff'}>
 							Wallet
 						</Heading>
-					</Stack>
-					<Stack mt={{ lg: '73px', md: '16px', sm: '16px' }} ml={'35px'} mb={'32px'}>
+					</Stack> */}
+					<Stack mt={{ lg: '33px', md: '16px', sm: '16px' }} ml={'32px'} mb={'32px'}>
 						<Stack direction={'row'} alignItems={'center'}>
 							<Icon as={HiCreditCard} w={'25px'} h={'25px'} />
 							<Text fontSize={'xl'} color={'gray.800'}>
-								Funds
+								Balance
 							</Text>
 						</Stack>
 						<Text
