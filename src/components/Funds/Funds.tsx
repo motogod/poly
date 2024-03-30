@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Stack, Button, Card, CardBody, Heading, Text, Icon, Box } from '@chakra-ui/react';
+import {
+	Stack,
+	Button,
+	Card,
+	CardBody,
+	Heading,
+	Text,
+	Icon,
+	Box,
+	FormLabel,
+} from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
 import { HiCreditCard } from 'react-icons/hi';
 import Image from 'next/image';
@@ -37,17 +47,29 @@ function Funds() {
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
 			<Card
+				position={'relative'}
 				mt={paddingMainVertical}
 				ml={paddingMainHorizontal}
 				mr={paddingMainHorizontal}
 				borderRadius="3xl"
 			>
+				<Stack
+					position="absolute"
+					justify="space-between"
+					direction="row"
+					top={{ lg: '36%', md: '36%', sm: '30%' }}
+					left={34}
+				>
+					<FormLabel color={'white'} fontSize={{ lg: '36', md: '36', sm: '24' }} fontWeight={900}>
+						Funds
+					</FormLabel>
+				</Stack>
 				<Image
 					width={0}
 					height={0}
 					style={{ width: '100%', height: 'auto' }}
 					src={fundsBackroundImg}
-					alt="Dan Abramov"
+					alt="funds_background"
 				/>
 			</Card>
 			<Card

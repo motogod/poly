@@ -100,7 +100,13 @@ function useWithdrawUsdtModal() {
 	useEffect(() => {
 		if (isWithdrawSuccess !== null) {
 			if (isWithdrawSuccess) {
-				disaptch(showToast({ isSuccess: true, title: 'Withdrawal successful' }));
+				disaptch(
+					showToast({
+						isSuccess: true,
+						title:
+							'The withdrawal is currently under review. We will credit the amount to your account within 24 hours.',
+					})
+				);
 				onClose();
 			} else {
 				disaptch(showToast({ isSuccess: false, title: 'Withdrawal failed' }));
