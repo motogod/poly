@@ -13,6 +13,7 @@ import {
 	Button,
 	Icon,
 } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Radio, RadioGroup, Stack } from '@chakra-ui/react';
 import { useMediaQuery } from 'react-responsive';
@@ -40,6 +41,8 @@ const dummyCategories = [
 
 function CategorySection() {
 	const router = useRouter();
+
+	const { t } = useTranslation();
 
 	const [isShowLeftArrow, setIsShowLeftArrow] = useState(true);
 	const [isShowRightArrow, setIsShowRightArrow] = useState(false);
@@ -143,7 +146,7 @@ function CategorySection() {
 		<Stack>
 			<Center mt={{ sm: '90px', md: '90px', lg: '240px' }} color="white">
 				<Heading size="xl" color="gray.700">
-					{'Markets'}
+					{t('markets')}
 				</Heading>
 			</Center>
 			<Tabs variant="soft-rounded" colorScheme="purple">
@@ -226,7 +229,7 @@ function CategorySection() {
 						borderRadius="3xl"
 						colorScheme="teal"
 					>
-						View More
+						{t('view_more')}
 					</Button>
 				</Center>
 			</Tabs>

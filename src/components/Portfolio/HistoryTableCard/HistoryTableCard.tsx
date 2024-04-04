@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import {
 	Box,
 	Select,
@@ -87,12 +88,16 @@ const selectorOptions = Object.entries(PortfolioHistorySelectorStatus).map(([val
 	label,
 }));
 
+type selectorValueType = keyof PortfolioHistorySelectorStatus;
+
 function HistoryTableCard() {
 	// 使用者當下點選刪除的 order id
 	const [userClickDeleteOrderId, setUserClickDeleteOrderId] = useState('');
 	const dispatch = useDispatch<AppDispatch>();
 
 	const router = useRouter();
+
+	const { t } = useTranslation();
 
 	const { portfolioHistorySelectorStatus, filterPortfolioHistoryListData } = useSelector(
 		(state: RootState) => state.portfolioReducer
@@ -109,11 +114,11 @@ function HistoryTableCard() {
 	const renderActionText = (action: PortfoioHistoryActionType) => {
 		switch (action) {
 			case 'BUY':
-				return 'Buy';
+				return t('buy');
 			case 'SELL':
-				return 'Sell';
+				return t('sell');
 			case 'REDEEM':
-				return 'Redeem';
+				return t('redeem');
 			default:
 				return '';
 		}
@@ -127,30 +132,30 @@ function HistoryTableCard() {
 		const minutes = currentTime.diff(givenTime, 'minutes');
 
 		if (minutes < 60) {
-			return `${minutes} ${minutes === 1 ? 'min' : 'mins'} ago`;
+			return `${minutes} ${minutes === 1 ? t('min_ago') : t('mins_ago')}`;
 		}
 
 		const hours = currentTime.diff(givenTime, 'hours');
 
 		if (hours < 24) {
-			return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+			return `${hours} ${hours === 1 ? t('hour_ago') : t('hours_ago')}`;
 		}
 
 		const days = currentTime.diff(givenTime, 'days');
 
 		if (days < 32) {
-			return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+			return `${days} ${days === 1 ? t('day_ago') : t('days_ago')}`;
 		}
 
 		const months = currentTime.diff(givenTime, 'months');
 
 		if (months < 12) {
-			return `${months} ${months === 1 ? 'month' : 'months'} ago`;
+			return `${months} ${months === 1 ? t('month_ago') : t('months_ago')}`;
 		}
 
 		const years = currentTime.diff(givenTime, 'years');
 
-		return `${years} ${years === 1 ? 'year' : 'years'} ago`;
+		return `${years} ${years === 1 ? t('year_ago') : t('years_ago')}`;
 	};
 
 	const renderTableRow = () => {
@@ -268,7 +273,9 @@ function HistoryTableCard() {
 				>
 					{selectorOptions.map(value => (
 						<>
-							<option value={value.value}>{value.label}</option>
+							<option value={value.value}>
+								{t(value.label.toLowerCase() as unknown as 'all' | 'buy' | 'sell' | 'redeem')}
+							</option>
 						</>
 					))}
 				</Select>
@@ -284,7 +291,7 @@ function HistoryTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Action
+								{t('action')}
 							</Th>
 							<Th
 								textTransform={'none'}
@@ -293,7 +300,7 @@ function HistoryTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Market
+								{t('markets')}
 							</Th>
 							<Th
 								textTransform={'none'}
@@ -302,7 +309,7 @@ function HistoryTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Outcome
+								{t('outcome')}
 							</Th>
 							<Th
 								textTransform={'none'}
@@ -311,7 +318,7 @@ function HistoryTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Price
+								{t('prices')}
 							</Th>
 							<Th
 								textTransform={'none'}
@@ -320,7 +327,7 @@ function HistoryTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Shares
+								{t('shares')}
 							</Th>
 							<Th
 								textTransform={'none'}
@@ -329,7 +336,7 @@ function HistoryTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Value
+								{t('value')}
 							</Th>
 							<Th
 								textAlign={'end'}
@@ -339,7 +346,7 @@ function HistoryTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Date
+								{t('date')}
 							</Th>
 						</Tr>
 					</Thead>

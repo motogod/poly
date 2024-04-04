@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'next-i18next';
 import {
 	getUserPortfolioPositions,
 	AppDispatch,
@@ -36,11 +37,13 @@ const selectorOptions = Object.entries(PortfoioPostionTableStatusEnum).map(([val
 	value,
 	label,
 }));
-
+console.log('selectorOptions', selectorOptions);
 function PositionsTableCard() {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const router = useRouter();
+
+	const { t } = useTranslation();
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 960px)',
@@ -266,7 +269,7 @@ function PositionsTableCard() {
 					borderRadius={'md'}
 				>
 					<Text fontWeight={'400'} color={'gray.800'}>
-						Once your order is created, it will appear after a 30-60 second delay.
+						{t('portfolio_table_title_msg')}
 					</Text>
 				</Tag>
 				<Select
@@ -286,7 +289,9 @@ function PositionsTableCard() {
 				>
 					{selectorOptions.map(value => (
 						<>
-							<option value={value.value}>{value.label}</option>
+							<option value={value.value}>
+								{t(value.label.toLowerCase() as unknown as 'all' | 'active' | 'claim')}
+							</option>
 						</>
 					))}
 				</Select>
@@ -302,7 +307,7 @@ function PositionsTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Market
+								{t('markets')}
 							</Th>
 							<Th
 								textTransform={'none'}
@@ -311,17 +316,7 @@ function PositionsTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Outcome
-							</Th>
-							<Th
-								textAlign={'center'}
-								textTransform={'none'}
-								fontSize={'xs'}
-								color={'gray.700'}
-								fontWeight={'700'}
-								lineHeight={'16px'}
-							>
-								Avg.Price
+								{t('outcome')}
 							</Th>
 							<Th
 								textAlign={'center'}
@@ -331,7 +326,7 @@ function PositionsTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								{`Price(24H)`}
+								{t('avg_price')}
 							</Th>
 							<Th
 								textAlign={'center'}
@@ -341,7 +336,7 @@ function PositionsTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Shares
+								{t('price_twenty_four')}
 							</Th>
 							<Th
 								textAlign={'center'}
@@ -351,7 +346,17 @@ function PositionsTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Value
+								{t('shares')}
+							</Th>
+							<Th
+								textAlign={'center'}
+								textTransform={'none'}
+								fontSize={'xs'}
+								color={'gray.700'}
+								fontWeight={'700'}
+								lineHeight={'16px'}
+							>
+								{t('value')}
 							</Th>
 							<Th
 								textAlign={'end'}
@@ -361,7 +366,7 @@ function PositionsTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Action
+								{t('action')}
 							</Th>
 						</Tr>
 					</Thead>

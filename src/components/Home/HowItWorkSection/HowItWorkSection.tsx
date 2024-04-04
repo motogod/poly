@@ -1,12 +1,15 @@
 import { Center, Heading, Stack, Text, Grid, GridItem, Button, Icon, Box } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
+import { useTranslation } from 'next-i18next';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { HiCreditCard, PlaceIcon, ChooseMarketIcon, EarnIcon } from '../../../../public/assets/svg';
 import styles from './howItWork.module.scss';
 import Next from '../../../../public/next.svg';
 
 function HowItWorkSection() {
+	const { t } = useTranslation();
+
 	return (
 		<>
 			{/* <Image
@@ -22,7 +25,7 @@ function HowItWorkSection() {
 				<Stack px={paddingMainHorizontal}>
 					<Center>
 						<Heading mt="20" color="gray.50" size="xl">
-							How It Works
+							{t('how_it_works')}
 						</Heading>
 					</Center>
 					<Stack mt={{ md: '20', sm: '10' }} mb={{ md: '20', sm: '10' }} px={{ md: '40', sm: '6' }}>
@@ -30,23 +33,19 @@ function HowItWorkSection() {
 							<GridItem>
 								<Icon as={HiCreditCard} w={'48px'} h={'48px'} ml={'-4px'} />
 								<Heading mt="20px" color="teal.200" size="md">
-									Connect Wallet
+									{t('connect_wallet')}
 								</Heading>
 								<Text mt="2" color="gray.50" size="md">
-									{
-										"To trade, you'll need to fund your account, If you already own crypto, you can deposit funds directly fro a wallet or exchange."
-									}
+									{t('how_it_works_desc')}
 								</Text>
 							</GridItem>
 							<GridItem>
 								<Icon as={ChooseMarketIcon} w={'48px'} h={'48px'} ml={'-4px'} />
 								<Heading mt="20px" color="teal.200" size="md">
-									Choose a Market
+									{t('choose_a_market')}
 								</Heading>
 								<Text mt="2" color="gray.50" size="md">
-									{
-										"To trade, you'll need to fund your account, If you already own crypto, you can deposit funds directly fro a wallet or exchange."
-									}
+									{t('how_it_works_desc')}
 								</Text>
 							</GridItem>
 						</Grid>
@@ -58,23 +57,19 @@ function HowItWorkSection() {
 							<GridItem>
 								<Icon as={PlaceIcon} w={'48px'} h={'48px'} ml={'-4px'} />
 								<Heading mt="20px" color="teal.200" size="md">
-									Place a Bet
+									{t('place_a_bet')}
 								</Heading>
 								<Text mt="2" color="gray.50" size="md">
-									{
-										"To trade, you'll need to fund your account, If you already own crypto, you can deposit funds directly fro a wallet or exchange."
-									}
+									{t('how_it_works_desc')}
 								</Text>
 							</GridItem>
 							<GridItem>
 								<Icon as={EarnIcon} w={'48px'} h={'48px'} ml={'-4px'} />
 								<Heading mt="20px" color="teal.200" size="md">
-									{"Earn if You're Right"}
+									{t('earn_if_you_are_right')}
 								</Heading>
 								<Text mt="2" color="gray.50" size="md">
-									{
-										"To trade, you'll need to fund your account, If you already own crypto, you can deposit funds directly fro a wallet or exchange."
-									}
+									{t('how_it_works_desc')}
 								</Text>
 							</GridItem>
 						</Grid>
@@ -87,7 +82,7 @@ function HowItWorkSection() {
 							borderRadius="3xl"
 							colorScheme="teal"
 						>
-							Learn More
+							{t('learn_more')}
 						</Button>
 					</Center>
 				</Stack>

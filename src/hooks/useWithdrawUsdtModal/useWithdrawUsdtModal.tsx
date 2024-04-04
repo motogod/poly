@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 import { useAccount } from 'wagmi';
 import { useMediaQuery } from 'react-responsive';
 import {
@@ -32,6 +33,8 @@ import { resetWithdrawStatus } from '@/store/actions';
 function useWithdrawUsdtModal() {
 	const disaptch = useDispatch<AppDispatch>();
 
+	const { t } = useTranslation();
+
 	const [inputAddressValue, setInputAddressValue] = useState('');
 	const [isAddressEmpty, setIsAddressEmpty] = useState(false);
 	const [amountValue, setAmountValue] = useState<string>('');
@@ -42,7 +45,7 @@ function useWithdrawUsdtModal() {
 	);
 
 	const { address } = useAccount();
-	console.log('useWithdrawUsdtModal address =>', address);
+
 	const { ethValue } = useContractForRead();
 
 	const { inputValueAndEthValueMsg, initInputAmountValue, inputAddressValueMsg } = useUtility();
@@ -90,7 +93,6 @@ function useWithdrawUsdtModal() {
 
 	useEffect(() => {
 		// 開啟 Modal 資料恢復為預設
-		console.log('useWithdrawUsdtModal useEffect');
 		setInputAddressValue('');
 		setIsAddressEmpty(false);
 		setAmountValue('');
@@ -103,18 +105,17 @@ function useWithdrawUsdtModal() {
 				disaptch(
 					showToast({
 						isSuccess: true,
-						title:
-							'The withdrawal is currently under review. We will credit the amount to your account within 24 hours.',
+						title: t('the_withdrawal_is_currently_under_review'),
 					})
 				);
 				onClose();
 			} else {
-				disaptch(showToast({ isSuccess: false, title: 'Withdrawal failed' }));
+				disaptch(showToast({ isSuccess: false, title: t('withdrawal_failed') }));
 			}
 		}
 
 		disaptch(resetWithdrawStatus());
-	}, [onClose, isWithdrawSuccess, disaptch]);
+	}, [onClose, isWithdrawSuccess, disaptch, t]);
 
 	const ModalDom = useMemo(
 		() => (
@@ -134,7 +135,7 @@ function useWithdrawUsdtModal() {
 						<Stack direction={'row'} align={'center'}>
 							<Icon as={UsdtIcon} boxSize={8} />
 							<Heading size="md" color="gray.700" mr={5}>
-								Withdraw USDT
+								{`${t('withdraw')} USDT`}
 							</Heading>
 						</Stack>
 					</ModalHeader>
@@ -146,7 +147,7 @@ function useWithdrawUsdtModal() {
 							</Stack>
 							<Stack>
 								<Text fontSize="sm" color="gray.800">
-									Only send to a USDT address on the Mainnet and Arbitrum network.
+									{t('only_send_to_a_usdt_address')}
 								</Text>
 							</Stack>
 						</Stack>
@@ -164,7 +165,7 @@ function useWithdrawUsdtModal() {
 										fontSize={'small'}
 										color={'gray.500'}
 									>
-										{`Use connected`}
+										{t('use_connected')}
 									</Text>
 								)}
 							</Stack>
@@ -189,14 +190,14 @@ function useWithdrawUsdtModal() {
 							>
 								<Text fontSize={'sm'} mt={1} color={'red.500'}>
 									{isAddressEmpty
-										? 'Please enter a avlid address that starts with "0x"'
+										? t('please_enter_a_avlid_address')
 										: inputAddressValueMsg(inputAddressValue)}
 								</Text>
 							</Collapse>
 						</FormControl>
 						<FormControl mt={'10px'}>
 							<Stack direction={'row'} justify={'space-between'} alignItems={'center'}>
-								<FormLabel fontWeight={'800'}>Amount</FormLabel>
+								<FormLabel fontWeight={'800'}>{t('amount')}</FormLabel>
 								<Text
 									cursor={'pointer'}
 									onClick={() => {
@@ -206,7 +207,7 @@ function useWithdrawUsdtModal() {
 									fontSize={'small'}
 									color={'gray.500'}
 								>
-									{`$${userFunds.hold} available Max`}
+									{`$${userFunds.hold} ${t('available_max')}`}
 								</Text>
 							</Stack>
 							<Input
@@ -279,6 +280,7 @@ function useWithdrawUsdtModal() {
 			isWithdrawLoading,
 			address,
 			confirm,
+			t,
 		]
 	);
 

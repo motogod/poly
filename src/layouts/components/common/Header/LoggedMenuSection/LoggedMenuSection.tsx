@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import { useDisconnect } from 'wagmi';
 import { useSession, signOut } from 'next-auth/react';
 import { Stack, Text } from '@chakra-ui/react';
@@ -14,6 +15,8 @@ type LoggedMenuSectionType = {
 
 function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 	const router = useRouter();
+
+	const { t } = useTranslation();
 
 	const { disconnect } = useDisconnect();
 	const { data: session } = useSession();
@@ -44,7 +47,7 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 				size={'md'}
 				color={'gray.800'}
 			>
-				Profile
+				{t('profile_settings')}
 			</Text>
 			<Text
 				onClick={() => {
@@ -55,16 +58,16 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 				size={'md'}
 				color={'gray.800'}
 			>
-				Markets
+				{t('markets')}
 			</Text>
 			<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
-				Leaderboard
+				{t('leaderboard')}
 			</Text>
 			<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
-				How it works
+				{t('how_it_works')}
 			</Text>
 			<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
-				Affiliate
+				{t('affiliate')}
 			</Text>
 			<Text
 				cursor={'pointer'}
@@ -84,7 +87,7 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 				size={'md'}
 				color={'gray.800'}
 			>
-				Disconnect
+				{t('logout')}
 			</Text>
 		</Stack>
 	);

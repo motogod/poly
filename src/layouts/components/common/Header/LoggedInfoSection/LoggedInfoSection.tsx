@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import { useAccount, useBalance, useContractRead } from 'wagmi';
 import { Stack, Text, Button, Icon, useToast, Spinner } from '@chakra-ui/react';
 import {
@@ -19,6 +20,8 @@ type LoggedInfoSectionType = {
 
 function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 	const router = useRouter();
+
+	const { t } = useTranslation();
 
 	const { proxyWallet } = useSelector((state: RootState) => state.authReducer.userProfile);
 	const { userFunds, portfolioValue } = useSelector((state: RootState) => state.authReducer);
@@ -41,9 +44,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 
 		return '';
 	};
-	console.log('address', address);
-	console.log('useBalance data', data);
-	console.log('isLoading', isLoading);
+
 	const checkBalance = () => {
 		if (isFetching) return <Spinner />;
 		// if (isLoading) return <div>Fetching balance…</div>;
@@ -98,8 +99,8 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 						<Stack w={'100%'} align={'center'} direction={'row'} justify={'space-between'}>
 							<Stack align={'center'} direction={'row'}>
 								<Icon as={HiCollection} w={'20px'} h={'20px'} />
-								<Text size={'sm'} color={'gray.800'}>
-									Portfolio
+								<Text fontSize={'sm'} color={'gray.800'}>
+									{t('portfolio')}
 								</Text>
 							</Stack>
 							<Stack>
@@ -108,7 +109,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 						</Stack>
 					</Stack>
 					<Stack>
-						<Text size={'md'} color={'gray.800'} fontWeight={'800'}>
+						<Text fontSize={'md'} color={'gray.800'} fontWeight={'800'}>
 							{checkBalance()}
 						</Text>
 					</Stack>
@@ -129,8 +130,8 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 						<Stack w={'100%'} align={'center'} direction={'row'} justify={'space-between'}>
 							<Stack align={'center'} direction={'row'}>
 								<Icon as={HiCreditCard} w={'20px'} h={'20px'} />
-								<Text size={'sm'} color={'gray.800'}>
-									Funds
+								<Text fontSize={'sm'} color={'gray.800'}>
+									{t('funds')}
 								</Text>
 							</Stack>
 							<Stack>
@@ -139,7 +140,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 						</Stack>
 					</Stack>
 					<Stack>
-						<Text size={'md'} color={'gray.800'} fontWeight={'800'}>
+						<Text fontSize={'md'} color={'gray.800'} fontWeight={'800'}>
 							{`$${userFunds?.hold?.toFixed(2)}`}
 						</Text>
 					</Stack>

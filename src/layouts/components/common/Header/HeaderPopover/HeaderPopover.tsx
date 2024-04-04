@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import { useMediaQuery } from 'react-responsive';
 import { useDisconnect } from 'wagmi';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
@@ -35,6 +36,8 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 
 	const router = useRouter();
 
+	const { t } = useTranslation();
+
 	// const { open } = useWeb3Modal();
 
 	const isMini = useMediaQuery({
@@ -69,7 +72,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 					<LoggedMenuSection close={onPopClose} type="pop" isMini={isMini} />
 					<PopoverFooter>
 						<Heading size={'sx'} color={'gray.800'} fontWeight={'800'}>
-							Community
+							{t('community')}
 						</Heading>
 						<Icon mt={'16px'} cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} />
 					</PopoverFooter>
@@ -99,13 +102,13 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 					fontSize="md"
 					color="gray.800"
 				>
-					Markets
+					{t('markets')}
 				</Text>
 				<Text onClick={() => alert('Leaderboard')} cursor="pointer" size={'md'} color={'gray.800'}>
-					Leaderboard
+					{t('leaderboard')}
 				</Text>
 				<Text onClick={() => alert('How it works')} cursor="pointer" fontSize="md" color="gray.800">
-					How it works
+					{t('how_it_works')}
 				</Text>
 				<Text
 					onClick={() => alert('Affilate')}
@@ -114,10 +117,10 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 					color="gray.800"
 					fontWeight={'400'}
 				>
-					Affilate
+					{t('affiliate')}
 				</Text>
 				<Heading mt={'60px'} size={'md'} color={'gray.800'}>
-					Community
+					{t('community')}
 				</Heading>
 				<Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} mt={'16px'} />
 			</Stack>

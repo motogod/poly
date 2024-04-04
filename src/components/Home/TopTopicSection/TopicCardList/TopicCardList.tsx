@@ -39,8 +39,6 @@ function TopicCardList() {
 		(state: RootState) => state.homeReducer
 	);
 
-	// const sliceData = markets?.length > 10 ? markets?.slice(0, 10) : markets;
-	// console.log('sliceData', sliceData);
 	const [TabDom, selectedTab] = useCategoryTabsList();
 
 	// for 點擊滑動
@@ -49,8 +47,6 @@ function TopicCardList() {
 
 	const [isShowLeftArrow, setIsShowLeftArrow] = useState(true);
 	const [isShowRightArrow, setIsShowRightArrow] = useState(false);
-
-	console.log('spotlightMarkets', JSON.stringify(spotlightMarkets));
 
 	useEffect(() => {
 		const checkIsShow = () => {

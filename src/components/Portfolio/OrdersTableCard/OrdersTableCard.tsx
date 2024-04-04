@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import {
 	Box,
 	Select,
@@ -29,25 +30,6 @@ import {
 import { useMediaQuery } from 'react-responsive';
 import { OrderStatusType, PortfolioOrderSelectorStatus } from '@/api';
 
-const dummyOrdersData = [
-	{
-		id: 'cc8efed9-5cc6-4f75-911f-47f1f3d688b5',
-		status: 'PENDING',
-		type: 'LIMIT',
-		direction: 'SELL',
-		outcome: 'NO',
-		market: {
-			id: '09aac6be-1067-4db2-8dd9-ac86a2eabc0a',
-			slug: 'test',
-			title: 'Test',
-		},
-		price: 0.7,
-		closingPrice: 0,
-		closedAmount: 0,
-		totalAmount: 100,
-	},
-];
-
 const selectorOptions = Object.entries(PortfolioOrderSelectorStatus).map(([value, label]) => ({
 	value,
 	label,
@@ -57,6 +39,8 @@ function OrdersTableCard() {
 	// 使用者當下點選刪除的 order id
 	const [userClickDeleteOrderId, setUserClickDeleteOrderId] = useState('');
 	const dispatch = useDispatch<AppDispatch>();
+
+	const { t } = useTranslation();
 
 	const router = useRouter();
 
@@ -82,15 +66,15 @@ function OrdersTableCard() {
 	const renderActionButton = (status: OrderStatusType, orderId: string) => {
 		const buttonText = () => {
 			if (status === 'PENDING' || status === 'PARTIALLY_FILLED') {
-				return 'Cancel';
+				return t('cancel');
 			}
 
 			if (status === 'CANCELED') {
-				return 'Cancelled';
+				return t('cancel');
 			}
 
 			if (status === 'FILLED') {
-				return 'Filled';
+				return t('filled');
 			}
 
 			return '';
@@ -247,7 +231,9 @@ function OrdersTableCard() {
 				>
 					{selectorOptions.map(value => (
 						<>
-							<option value={value.value}>{value.label}</option>
+							<option value={value.value}>
+								{t(value.label.toLowerCase() as unknown as 'all' | 'active')}
+							</option>
 						</>
 					))}
 				</Select>
@@ -263,7 +249,7 @@ function OrdersTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Market
+								{t('markets')}
 							</Th>
 							<Th
 								textTransform={'none'}
@@ -272,7 +258,7 @@ function OrdersTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Side
+								{t('side')}
 							</Th>
 							<Th
 								textTransform={'none'}
@@ -281,7 +267,7 @@ function OrdersTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Outcome
+								{t('outcome')}
 							</Th>
 							<Th
 								textTransform={'none'}
@@ -290,7 +276,7 @@ function OrdersTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Price
+								{t('prices')}
 							</Th>
 							<Th
 								textTransform={'none'}
@@ -299,7 +285,7 @@ function OrdersTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Filled
+								{t('filled')}
 							</Th>
 							<Th
 								textTransform={'none'}
@@ -308,17 +294,7 @@ function OrdersTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Total
-							</Th>
-							<Th
-								textAlign={'center'}
-								textTransform={'none'}
-								fontSize={'xs'}
-								color={'gray.700'}
-								fontWeight={'700'}
-								lineHeight={'16px'}
-							>
-								Expiration
+								{t('total')}
 							</Th>
 							<Th
 								textAlign={'center'}
@@ -328,7 +304,17 @@ function OrdersTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Action
+								{t('expiration')}
+							</Th>
+							<Th
+								textAlign={'center'}
+								textTransform={'none'}
+								fontSize={'xs'}
+								color={'gray.700'}
+								fontWeight={'700'}
+								lineHeight={'16px'}
+							>
+								{t('action')}
 							</Th>
 						</Tr>
 					</Thead>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import { useAccount, useDisconnect } from 'wagmi';
 import {
 	Heading,
@@ -34,6 +35,8 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 	const router = useRouter();
 	const { disconnect } = useDisconnect();
 
+	const { t } = useTranslation();
+
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	return (
@@ -53,7 +56,7 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 							fontSize="2xl"
 							color="gray.800"
 						>
-							Markets
+							{t('markets')}
 						</Text>
 						<Text
 							onClick={() => alert('Leaderboard')}
@@ -61,7 +64,7 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 							fontSize="2xl"
 							color="gray.800"
 						>
-							Leaderboard
+							{t('leaderboard')}
 						</Text>
 						<Text
 							onClick={() => alert('How it works')}
@@ -69,7 +72,7 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 							fontSize="2xl"
 							color="gray.800"
 						>
-							How it works
+							{t('how_it_works')}
 						</Text>
 						<Text
 							onClick={() => alert('Affilate')}
@@ -78,10 +81,10 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 							color="gray.800"
 							fontWeight={'400'}
 						>
-							Affilate
+							{t('affiliate')}
 						</Text>
 						<Heading mt={'60px'} size={'md'} color={'gray.800'}>
-							Community
+							{t('community')}
 						</Heading>
 						<Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} mt={'16px'} />
 					</Stack>
@@ -111,7 +114,7 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 						bg="teal.500"
 						color="#fff"
 					>
-						{isLogin ? 'Disconnect' : 'Connect Wallet'}
+						{isLogin ? t('logout') : t('connect_wallet')}
 					</Button>
 				</Stack>
 			</ModalContent>

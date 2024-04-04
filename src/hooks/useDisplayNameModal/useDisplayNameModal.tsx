@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { useTranslation } from 'next-i18next';
 import {
 	useDisclosure,
 	Modal,
@@ -28,6 +29,8 @@ function useDisplayNameModal() {
 
 	const disaptch = useDispatch<AppDispatch>();
 
+	const { t } = useTranslation();
+
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const { checkEngAndNumberName, inputNameErrMsg } = useUtility();
@@ -35,8 +38,7 @@ function useDisplayNameModal() {
 	const { putUsrProfileIsLoading, putUsrProfileErrMsg } = useSelector(
 		(state: RootState) => state.authReducer
 	);
-	console.log('inputNameErrMsg', inputNameErrMsg);
-	console.log('putUsrProfileErrMsg', putUsrProfileErrMsg);
+
 	useEffect(() => {
 		// 創建名字成功 關閉創建名字視窗
 		if (putUsrProfileIsLoading === false) {
@@ -47,7 +49,7 @@ function useDisplayNameModal() {
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
 	});
-	console.log('putUsrProfileIsLoading =>', putUsrProfileIsLoading);
+
 	const ModalDom = useMemo(
 		() => (
 			<Modal size={isDesktop ? 'lg' : 'full'} isOpen={isOpen} onClose={onOpen}>
@@ -57,10 +59,10 @@ function useDisplayNameModal() {
 					borderRadius={20}
 					borderBottomRadius={isDesktop ? 20 : 0}
 				>
-					<ModalHeader alignSelf={'center'}>Create Account</ModalHeader>
+					<ModalHeader alignSelf={'center'}>{t('create_account')}</ModalHeader>
 					<ModalBody>
 						<FormControl isRequired isInvalid={inputNameErrMsg !== ''}>
-							<FormLabel fontWeight={'800'}>Username</FormLabel>
+							<FormLabel fontWeight={'800'}>{t('username')}</FormLabel>
 							<Input
 								minLength={6}
 								maxLength={16}
@@ -72,7 +74,7 @@ function useDisplayNameModal() {
 									// 輸入資料時清空 API 返回時顯示的 error msg
 									disaptch(resetPutUserProfileErrMsg());
 								}}
-								placeholder={'Please enter your preferred username'}
+								placeholder={t('please_enter_your_preferred_username')}
 								border="2px solid #E2E8F0;"
 							/>
 							{inputNameErrMsg !== '' && <FormErrorMessage>{inputNameErrMsg}</FormErrorMessage>}
@@ -80,7 +82,7 @@ function useDisplayNameModal() {
 						<FormErrorMessage>Email is required.</FormErrorMessage>
 						{putUsrProfileErrMsg === '' ? (
 							<Text fontWeight={'500'} fontSize={'sm'} mt={'14px'} color={'#7C7C7C'}>
-								This is publicly visible
+								{t('this_is_policy_visible')}
 							</Text>
 						) : (
 							<Text fontWeight={'500'} fontSize={'sm'} mt={'14px'} color={'red.500'}>
@@ -99,13 +101,13 @@ function useDisplayNameModal() {
 								direction={'row'}
 								align={'center'}
 							>
-								<Text>I agree to the </Text>
-								<Text onClick={() => alert('Terms of Use')} cursor={'pointer'} color={'blue.500'}>
+								<Text>{t('i_agree_the_terms')}</Text>
+								{/* <Text onClick={() => alert('Terms of Use')} cursor={'pointer'} color={'blue.500'}>
 									Terms of Use
 								</Text>
-								<Text>and </Text>
+								<Text>and </Text> */}
 								<Text onClick={() => alert('Privacy Policy')} cursor={'pointer'} color={'blue.500'}>
-									Privacy Policy
+									{t('privacy_policy')}
 								</Text>
 								<Text fontWeight={'500'} fontSize={'md'} color={'red'}>
 									*
@@ -125,7 +127,7 @@ function useDisplayNameModal() {
 								disaptch(putUserProfile({ username: name }));
 							}}
 						>
-							Continue
+							{t('continue')}
 						</Button>
 					</ModalFooter>
 				</ModalContent>
@@ -142,6 +144,7 @@ function useDisplayNameModal() {
 			inputNameErrMsg,
 			putUsrProfileIsLoading,
 			putUsrProfileErrMsg,
+			t,
 		]
 	);
 

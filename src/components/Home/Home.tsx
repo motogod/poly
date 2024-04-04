@@ -32,16 +32,14 @@ interface loginTypes {
 }
 
 function Home({ homePage = true }) {
-	// const { open } = useWeb3Modal();
 	const { address, status, isConnected, isConnecting } = useAccount();
 	const { signInWithEthereum, connectWallet } = useSiwe();
-	console.log('status', status);
+
 	const { isAuthenticated, user } = useSelector((state: RootState) => state.authReducer);
 	const { markets } = useSelector((state: RootState) => state.homeReducer);
 	const { chain, chains } = useNetwork();
 	const { categoriesData } = useSelector((state: RootState) => state.dataReducer);
-	console.log('categoriesData home', categoriesData);
-	// Test -2
+
 	const {
 		ModalDom,
 		isOpen: modalIsOpen,

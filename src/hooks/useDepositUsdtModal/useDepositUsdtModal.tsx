@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
 import { useDebounce } from 'use-debounce';
 import { useMediaQuery } from 'react-responsive';
@@ -44,6 +45,8 @@ type etherType = 'ethereum' | 'arbitrum' | '';
 
 function useDepositUsdtModal() {
 	const disaptch = useDispatch<AppDispatch>();
+
+	const { t } = useTranslation();
 
 	const [seleectedAsset, setSelectedAsset] = useState<assetType>('');
 	const [selectedEther, setSelectedEther] = useState<etherType>('');
@@ -165,11 +168,11 @@ function useDepositUsdtModal() {
 
 	const renderTitleMsg = useCallback(() => {
 		if (selectedEther === 'ethereum') {
-			return 'Send USDT (on Ethereum) and receive the equivalent value in your wallet in ~7 minutes.';
+			return t('send_usdt_ethereum_msg');
 		}
 
-		return 'Send USDT (on Arbitrum) and receive the equivalent value in your wallet in <1 minute.';
-	}, [selectedEther]);
+		return t('send_usdt_arbitrum_msg');
+	}, [selectedEther, t]);
 
 	// 顯示 Select 第二個選項要顯示 Arbitrum Sepolia or Arbitrum One
 	const renderArbitrumName = useCallback(() => {
@@ -213,25 +216,25 @@ function useDepositUsdtModal() {
 
 	const renderConfirmText = useCallback(() => {
 		if (!isChainOnEtherOrArbitrum()) {
-			return 'Switch to Arbitrum';
+			return t('switch_to_arbitrum');
 		}
 
-		return 'Confirm';
-	}, [isChainOnEtherOrArbitrum]);
+		return t('confirm');
+	}, [isChainOnEtherOrArbitrum, t]);
 
 	const renderInputLayoutSection = useCallback(() => {
 		if (isShowInputLayout) {
 			return (
 				<>
 					<Stack direction={'row'} justify={'space-between'} alignItems={'center'}>
-						<FormLabel fontWeight={'800'}>Amount</FormLabel>
+						<FormLabel fontWeight={'800'}>{t('amount')}</FormLabel>
 						<Text
 							cursor={'pointer'}
 							onClick={() => setInputValue(String(ethValue))}
 							fontSize={'small'}
 							color={'gray.500'}
 						>
-							{`$${ethValue} available Max`}
+							{`$${ethValue} ${t('available_max')}`}
 						</Text>
 					</Stack>
 					<Input
@@ -323,6 +326,7 @@ function useDepositUsdtModal() {
 		msgModalOnOpen,
 		inputValueAndEthValueMsg,
 		initInputAmountValue,
+		t,
 	]);
 
 	const confirm = useCallback(() => {
@@ -371,7 +375,7 @@ function useDepositUsdtModal() {
 						<Stack direction={'row'} align={'center'}>
 							<Icon as={UsdtIcon} boxSize={8} />
 							<Heading size="md" color="gray.700" mr={5}>
-								Deposit USDT
+								{`${t('deposit')} USDT`}
 							</Heading>
 						</Stack>
 					</ModalHeader>
@@ -391,7 +395,7 @@ function useDepositUsdtModal() {
 						>
 							<Stack>
 								<FormControl>
-									<FormLabel fontWeight={'800'}>Asset</FormLabel>
+									<FormLabel fontWeight={'800'}>{t('asset')}</FormLabel>
 									<Select
 										cursor={'pointer'}
 										_focusVisible={{
@@ -413,7 +417,7 @@ function useDepositUsdtModal() {
 							</Stack>
 							<Stack>
 								<FormControl>
-									<FormLabel fontWeight={'800'}>Network</FormLabel>
+									<FormLabel fontWeight={'800'}>{t('network')}</FormLabel>
 									<Select
 										_hover={{ bg: 'gray.100' }}
 										cursor={'pointer'}
@@ -461,7 +465,9 @@ function useDepositUsdtModal() {
 								fontWeight={'bold'}
 								color={'teal.500'}
 							>
-								{isShowInputLayout ? 'Send from exchange instead' : 'Deposit from wallet instead'}
+								{isShowInputLayout
+									? t('send_from_exchange_instead')
+									: t('deposit_from_wallet_instead')}
 							</Text>
 						</Stack>
 					</ModalFooter>
@@ -490,6 +496,7 @@ function useDepositUsdtModal() {
 			qrcodeModalDom,
 			msgModalIsOpen,
 			msgModalDom,
+			t,
 		]
 	);
 

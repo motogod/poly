@@ -1,9 +1,12 @@
 import { useState, ChangeEvent } from 'react';
+import { useTranslation } from 'next-i18next';
 import { Text, Stack, Switch } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 
 const useFilter = () => {
 	const [isOpen, setIsOpen] = useState(true);
+
+	const { t } = useTranslation();
 
 	const Filter = () => {
 		return (
@@ -12,7 +15,7 @@ const useFilter = () => {
 					<Stack direction="row" align="center">
 						<HamburgerIcon />
 						<Text color="teal.500" size="md" fontWeight="600">
-							Filter
+							{t('filter')}
 						</Text>
 					</Stack>
 					<Switch

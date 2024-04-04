@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 import QRCode from 'react-qr-code';
 import { useMediaQuery } from 'react-responsive';
 import {
@@ -29,6 +30,8 @@ function useQRCodeModal({ contractAddress, receiverAddress, decimals, chainId }:
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
+	const { t } = useTranslation();
+
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
 	});
@@ -56,7 +59,7 @@ function useQRCodeModal({ contractAddress, receiverAddress, decimals, chainId }:
 					>
 						<ModalHeader>
 							<Heading textAlign={'center'} size="md" color="gray.700" mr={0}>
-								Send USDT
+								{`${t('send')} USDT`}
 							</Heading>
 						</ModalHeader>
 						<ModalCloseButton _focus={{ boxShadow: 'none' }} size={'lg'} m={'16px'} />
@@ -72,7 +75,7 @@ function useQRCodeModal({ contractAddress, receiverAddress, decimals, chainId }:
 				</Modal>
 			</>
 		),
-		[isOpen, onClose, isDesktop, receiverAddress]
+		[isOpen, onClose, isDesktop, receiverAddress, t]
 	);
 
 	return { ModalDom, isOpen, onOpen, onClose };

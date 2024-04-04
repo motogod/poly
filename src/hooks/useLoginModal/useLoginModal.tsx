@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { useTranslation } from 'next-i18next';
 import NewWindow from 'react-new-window';
 import {
 	Stack,
@@ -38,6 +39,8 @@ let hasDispatch = false;
 function useLoginModal() {
 	const [popupGoogle, setPopupGoogle] = useState<boolean | null>(null);
 	const [errorMsg, setErrorMsg] = useState('');
+
+	const { t } = useTranslation();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -166,7 +169,7 @@ function useLoginModal() {
 					>
 						<ModalHeader>
 							<Heading size="md" color="gray.700" mr={5}>
-								Connect
+								{t('connect')}
 							</Heading>
 						</ModalHeader>
 						<ModalCloseButton _focus={{ boxShadow: 'none' }} size={'lg'} m={'16px'} />
@@ -175,7 +178,7 @@ function useLoginModal() {
 								{isSignInLoading ? (
 									<ScaleFade initialScale={0.9} in={true}>
 										<Heading size={'md'} color={'gray.500'}>
-											Please sign the message in your compatible wallet to connect to market.
+											{t('please_sign_the_message')}
 										</Heading>
 									</ScaleFade>
 								) : (
@@ -192,7 +195,7 @@ function useLoginModal() {
 										border="2px solid #E2E8F0;"
 										color="black"
 									>
-										Sign in with Google
+										{t('sign_in_with_google')}
 									</Button>
 								)}
 
@@ -210,7 +213,7 @@ function useLoginModal() {
 										<>
 											<Divider color={'gray.500'} />
 											<AbsoluteCenter color={'gray.500'} bg="white" px="4">
-												OR
+												{t('or')}
 											</AbsoluteCenter>
 										</>
 									)}

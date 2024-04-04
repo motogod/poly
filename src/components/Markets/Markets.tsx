@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import {
 	Stack,
 	Divider,
@@ -62,10 +63,12 @@ function Markets() {
 
 	const router = useRouter();
 
+	const { t } = useTranslation();
+
 	const dispatch = useDispatch<AppDispatch>();
 	const { markets, isMarketsLoading } = useSelector((state: RootState) => state.homeReducer);
 	const { categoriesData, routerPath } = useSelector((state: RootState) => state.dataReducer);
-	console.log('markets =>', markets);
+
 	// 過濾 url stirng 去 call API
 	// 預設網址 /markets
 	// 有參數條件 /markets?categories=分類,分類,sort排序,volume,&startDate=timeStamp&endDate=timeStamp
@@ -166,7 +169,6 @@ function Markets() {
 				isAtLeastOneItemClicked = true;
 			}
 			// 如果任一個分選選單有被勾選
-			console.log('menuValue', menuValue);
 			menuValue?.menuData[2].subMenuData?.forEach(subMenuValue => {
 				subMenuValue?.childrenCategories?.forEach(childrenMenuValue => {
 					if (childrenMenuValue.itemSelected) {
@@ -182,7 +184,6 @@ function Markets() {
 	// 使用者每次點擊 Filter 相關選單去更新 url 時，觸發該區段 call API
 	useEffect(() => {
 		if (router.isReady) {
-			console.log('Markets useEffect 1');
 			// let queryString = '';
 			const { categories, startDate, endDate } = router.query;
 
@@ -196,7 +197,6 @@ function Markets() {
 
 			// routerPath 為空表示第一次進入 Markets 網頁 或 使用者有點擊選單更新過 url
 			if (routerPath === '') {
-				console.log('Markets useEffect CALL API old');
 				dispatch(
 					getMarkets({
 						categories: queryString,
@@ -284,10 +284,10 @@ function Markets() {
 						);
 					}}
 				>
-					<option value={sortSelectorArray[0]}>Trending</option>
-					<option value={sortSelectorArray[1]}>Volume</option>
-					<option value={sortSelectorArray[2]}>Newest</option>
-					<option value={sortSelectorArray[3]}>Ending Soonest</option>
+					<option value={sortSelectorArray[0]}>{t('trending')}</option>
+					<option value={sortSelectorArray[1]}>{t('volume')}</option>
+					<option value={sortSelectorArray[2]}>{t('newest')}</option>
+					<option value={sortSelectorArray[3]}>{t('ending_soonest')}</option>
 				</Select>
 			</Stack>
 		);
@@ -351,7 +351,7 @@ function Markets() {
 					colorScheme="teal"
 					variant="solid"
 				>
-					Filter
+					{t('filter')}
 				</Button>
 				{renderSelector()}
 			</Stack>
@@ -394,7 +394,7 @@ function Markets() {
 					) : markets?.length === 0 ? (
 						<ScaleFade initialScale={0.9} in={true}>
 							<Text textAlign={'center'} color={'gray.500'} fontSize={'md'}>
-								No results found
+								{t('no_results_found')}
 							</Text>
 						</ScaleFade>
 					) : (
@@ -409,7 +409,7 @@ function Markets() {
 				<ModalOverlay />
 				<ModalContent maxHeight="100vh" borderRadius={20}>
 					<ModalHeader fontWeight="700" color="gray.800">
-						Filter
+						{t('filter')}
 					</ModalHeader>
 					<ModalCloseButton size="lg" mt={1} mr={2} />
 					<ModalBody overflowY={'scroll'}>
@@ -442,10 +442,10 @@ function Markets() {
 							color="teal.500"
 							border="1px"
 						>
-							Clear All
+							{t('clear_all')}
 						</Button>
 						<Button w={'100%'} onClick={onClose} colorScheme="teal" variant="solid">
-							Done
+							{t('done')}
 						</Button>
 					</Stack>
 				</ModalContent>

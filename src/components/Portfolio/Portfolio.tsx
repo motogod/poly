@@ -11,6 +11,7 @@ import {
 	TabPanels,
 	TabPanel,
 } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import {
 	RootState,
@@ -27,6 +28,8 @@ import HistoryTableCard from './HistoryTableCard';
 
 function Portfolio() {
 	const dispatch = useDispatch<AppDispatch>();
+
+	const { t } = useTranslation();
 
 	const { portfolioValue } = useSelector((state: RootState) => state.authReducer);
 	const { portfolioOrdersData, portfolioTabsIndex, portfolioPositionsListData } = useSelector(
@@ -82,7 +85,7 @@ function Portfolio() {
 						color="white"
 					>
 						<Heading size={'xs'} color={'#fff'}>
-							Portfolio Value
+							{t('portfolio_value')}
 						</Heading>
 						<Text fontSize={'24px'} color={'#fff'}>
 							{`${portfolioValue?.toFixed(2)} USDT`}
@@ -95,7 +98,7 @@ function Portfolio() {
 						color="white"
 					>
 						<Heading size={'xs'} color={'#fff'}>
-							Active Positions
+							{t('active_positions')}
 						</Heading>
 						<Text fontSize={'24px'} color={'#fff'}>
 							{activePostionsCount}
@@ -108,7 +111,7 @@ function Portfolio() {
 						color="white"
 					>
 						<Heading size={'xs'} color={'#fff'}>
-							Orders
+							{t('orders')}
 						</Heading>
 						<Text fontSize={'24px'} color={'#fff'}>
 							{
@@ -136,7 +139,7 @@ function Portfolio() {
 						lineHeight={'20px'}
 						_hover={{ color: 'blue.600' }}
 					>
-						Positions
+						{t('positions')}
 					</Tab>
 					<Tab
 						fontSize={'16px'}
@@ -145,7 +148,7 @@ function Portfolio() {
 						lineHeight={'20px'}
 						_hover={{ color: 'blue.600' }}
 					>
-						Orders
+						{t('orders')}
 					</Tab>
 					<Tab
 						fontSize={'16px'}
@@ -154,7 +157,7 @@ function Portfolio() {
 						lineHeight={'20px'}
 						_hover={{ color: 'blue.600' }}
 					>
-						History
+						{t('history')}
 					</Tab>
 				</TabList>
 				<TabPanels>

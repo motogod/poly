@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { useMediaQuery } from 'react-responsive';
@@ -48,6 +49,8 @@ import { zIndexHeader } from '@/utils/zIndex';
 
 function HeaderRightSideSection() {
 	const router = useRouter();
+
+	const { t } = useTranslation();
 	// const { open } = useWeb3Modal();
 	const { status } = useAccount();
 	const { disconnect } = useDisconnect();
@@ -123,7 +126,7 @@ function HeaderRightSideSection() {
 						<Stack align={'center'}>
 							<LoggedMenuSection close={onClose} type="modal" isMini={isMini} />
 							<Heading mt={'0px'} mb={'16px'} size={'xs'} color={'gray.800'}>
-								Community
+								{t('community')}
 							</Heading>
 							<Image src={SocialPng} width={36} height={36} alt="socialPng" />
 						</Stack>
@@ -148,7 +151,7 @@ function HeaderRightSideSection() {
 						borderTop="1px solid #E2E8F0;"
 					>
 						<Button w={'100%'} size="lg" colorScheme="teal">
-							Deposit
+							{t('deposit')}
 						</Button>
 					</Stack>
 				</>
@@ -168,7 +171,7 @@ function HeaderRightSideSection() {
 							fontSize="2xl"
 							color="gray.800"
 						>
-							Markets
+							{t('markets')}
 						</Text>
 						<Text
 							onClick={() => alert('Leaderboard')}
@@ -176,7 +179,7 @@ function HeaderRightSideSection() {
 							fontSize="2xl"
 							color="gray.800"
 						>
-							Leaderboard
+							{t('leaderboard')}
 						</Text>
 						<Text
 							onClick={() => alert('How it works')}
@@ -184,7 +187,7 @@ function HeaderRightSideSection() {
 							fontSize="2xl"
 							color="gray.800"
 						>
-							How it works
+							{t('how_it_works')}
 						</Text>
 						<Text
 							onClick={() => alert('Affilate')}
@@ -193,10 +196,10 @@ function HeaderRightSideSection() {
 							color="gray.800"
 							fontWeight={'400'}
 						>
-							Affilate
+							{t('affiliate')}
 						</Text>
 						<Heading mt={'60px'} size={'md'} color={'gray.800'} mb={'16px'}>
-							Community
+							{t('community')}
 						</Heading>
 						<Image src={SocialPng} width={36} height={36} alt="socialPng" />
 						{/* <Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} mt={'16px'} /> */}
@@ -254,7 +257,7 @@ function HeaderRightSideSection() {
 								{checkBalance()}
 							</Text>
 							<Heading size={'xs'} color={'gray.800'}>
-								Portfolio
+								{t('portfolio')}
 							</Heading>
 						</Stack>
 						<Stack
@@ -267,18 +270,18 @@ function HeaderRightSideSection() {
 								{`$${userFunds?.hold?.toFixed(2)}`}
 							</Text>
 							<Heading size={'xs'} color={'gray.800'}>
-								Funds
+								{t('funds')}
 							</Heading>
 						</Stack>
 						<Button
 							// isLoading={contractIsLoading}
 							onClick={() => depositModalOnOpen()}
-							w={'108px'}
+							// w={'108px'}
 							h={'40px'}
 							size="md"
 							colorScheme="teal"
 						>
-							Deposit
+							{t('deposit')}
 						</Button>
 					</Stack>
 				) : (
@@ -291,7 +294,7 @@ function HeaderRightSideSection() {
 							size="sm"
 							color="gray.800"
 						>
-							Connect
+							{t('connect')}
 						</Heading>
 						<Heading
 							display={{ lg: 'inline', md: 'none', sm: 'none' }}
@@ -299,7 +302,7 @@ function HeaderRightSideSection() {
 							size="sm"
 							color="gray.800"
 						>
-							Leaderboard
+							{t('leaderboard')}
 						</Heading>
 					</>
 				)}

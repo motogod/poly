@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import { Heading, Stack } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,6 +19,8 @@ const CircleIcon = (props: any) => (
 
 function Header() {
 	const router = useRouter();
+
+	const { t } = useTranslation();
 
 	const dispatch = useDispatch<AppDispatch>();
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
@@ -68,7 +71,7 @@ function Header() {
 					color="gray.800"
 					mr={5}
 				>
-					Markets
+					{t('markets')}
 				</Heading>
 				<Heading
 					_hover={{ color: 'gray.600' }}
@@ -77,7 +80,7 @@ function Header() {
 					size="sm"
 					color="gray.800"
 				>
-					How it works
+					{t('how_it_works')}
 				</Heading>
 			</Stack>
 			<HeaderRightSideSection />

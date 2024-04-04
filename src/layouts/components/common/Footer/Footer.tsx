@@ -3,6 +3,7 @@
 import { ReactNode } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import {
 	Box,
 	Container,
@@ -14,7 +15,6 @@ import {
 	Select,
 	Icon,
 } from '@chakra-ui/react';
-import { useTranslation } from 'next-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	AppDispatch,
@@ -133,12 +133,12 @@ export default function LargeWithAppLinksAndSocial() {
 					<Stack align={'flex-start'} />
 
 					<Stack align={'flex-start'}>
-						<ListHeader>Markets</ListHeader>
+						<ListHeader>{t('markets')}</ListHeader>
 						<Box as="a" href={'#'} _hover={{ color: 'gray.600' }}>
-							How it works
+							{t('how_it_works')}
 						</Box>
 						<Box as="a" href={'#'} _hover={{ color: 'gray.600' }}>
-							FAQ
+							{t('faq')}
 						</Box>
 						<Box as="a" href={'#'} _hover={{ color: 'gray.600' }}>
 							{t('privacy_policy')}

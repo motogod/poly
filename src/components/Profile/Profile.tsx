@@ -39,7 +39,6 @@ function Profile() {
 
 	const dispatch = useDispatch<AppDispatch>();
 
-	console.log('user', user);
 	const { username, email, origin } = user;
 
 	useEffect(() => {
@@ -88,7 +87,7 @@ function Profile() {
 								color="#FFF"
 								mr={5}
 							>
-								Profile Settings
+								{t('profile_settings')}
 							</Heading>
 
 							<Text fontWeight={'800'} fontSize={'lg'}>
@@ -96,7 +95,7 @@ function Profile() {
 							</Text>
 							<Stack direction={'row'} mt={'32px'}>
 								<Text fontWeight={'500'} fontSize={'md'}>
-									Email
+									{t('email')}
 								</Text>
 							</Stack>
 							<Grid
@@ -137,14 +136,14 @@ function Profile() {
 											// bg="#0034EB"
 											// color="#fff"
 										>
-											Save
+											{t('save')}
 										</Button>
 									</Stack>
 								) : null}
 							</Grid>
 							<Stack direction={'row'} mt={'32px'}>
 								<Text fontWeight={'500'} fontSize={'md'}>
-									Username
+									{t('username')}
 								</Text>
 								<Text fontWeight={'500'} fontSize={'md'} color={'red'}>
 									*
@@ -164,7 +163,7 @@ function Profile() {
 								</Button> */}
 							</Stack>
 							<Text fontWeight={'500'} fontSize={'sm'} mt={'10px'} color={'#7C7C7C'}>
-								This is publicly visible
+								{t('this_is_policy_visible')}
 							</Text>
 						</CardBody>
 					</Card>

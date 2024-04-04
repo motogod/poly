@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
 import { isAddress } from 'web3-validator';
 import { useBaseUrl } from '@/hooks';
 
@@ -6,11 +7,13 @@ function useUtility() {
 	const [inputNameErrMsg, setInputNameErrMsg] = useState<string>('');
 	const baseUrl = useBaseUrl();
 
+	const { t } = useTranslation();
+
 	// 輸入名稱規則判斷
 	const checkEngAndNumberName = (value: string) => {
 		// 至少六個字
 		if (value.length < 6) {
-			setInputNameErrMsg('At least six characters');
+			setInputNameErrMsg(t('at_least_six_characters'));
 			return;
 		}
 
@@ -20,7 +23,7 @@ function useUtility() {
 
 		// 必須為小寫
 		if (engCapital.test(value)) {
-			setInputNameErrMsg('Name must be lowercase');
+			setInputNameErrMsg(t('name_must_be_lowercase'));
 			return;
 		}
 
@@ -28,7 +31,7 @@ function useUtility() {
 		if (eng.test(value) && num.test(value)) {
 			setInputNameErrMsg('');
 		} else {
-			setInputNameErrMsg('Must be in English plus numbers');
+			setInputNameErrMsg(t('must_be_in_english_plus_numbers'));
 		}
 	};
 
@@ -64,9 +67,8 @@ function useUtility() {
 	// 使用者輸入的錢包地址是否符合格式
 	const inputAddressValueMsg = (inputValue: string, type?: 'deposit' | 'withdraw') => {
 		if (inputValue) {
-			console.log('inputValue=>', inputValue);
 			if (!isAddress(inputValue)) {
-				return 'Please enter a avlid address that starts with "0x"';
+				return t('please_enter_a_avlid_address');
 			}
 		}
 
@@ -79,26 +81,25 @@ function useUtility() {
 		ethValue: number,
 		type: 'deposit' | 'withdraw'
 	) => {
-		console.log('inputValueAndEthValueMsg');
 		if (inputValue) {
 			if (Number(inputValue) === 0 && !inputValue.includes('.')) {
-				return "Amount must can't be 0";
+				return t('the_amountcan_not_be_zero');
 			}
 
 			if (inputValue.includes('.')) {
 				// 不得大於小數點後第 6 位
 				if (inputValue.substring(inputValue.indexOf('.') + 1).length >= 7) {
-					return 'There was an error with your amount. Please try again.';
+					return t('there_was_an_error_with_your_amount');
 				}
 			}
 
 			if (Number(inputValue) > ethValue) {
-				return 'Insufficient funds. You cannot deposit more than your available balance.';
+				return t('insufficient_funds_msg');
 			}
 
 			// 提款金額最少要大於 5
 			if (type === 'withdraw' && Number(inputValue) < 5) {
-				return 'Withdrawal amount is at least $5';
+				return t('withdrawal_amount_is_at_least_five');
 			}
 
 			return '';
