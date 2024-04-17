@@ -1,10 +1,13 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { Card, CardBody, Heading, Text, SkeletonText } from '@chakra-ui/react';
 import styles from './about.module.scss';
 
 function About() {
+	const { t } = useTranslation();
+
 	const { isMarketDetailLoading, marketDetailData } = useSelector(
 		(state: RootState) => state.homeReducer
 	);
@@ -18,7 +21,7 @@ function About() {
 		>
 			<CardBody>
 				<Heading size={'md'} color={'gray.800'}>
-					About
+					{t('about')}
 				</Heading>
 				{isMarketDetailLoading ? (
 					<>

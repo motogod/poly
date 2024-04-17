@@ -61,7 +61,7 @@ function Funds() {
 					left={34}
 				>
 					<FormLabel color={'white'} fontSize={{ lg: '36', md: '36', sm: '24' }} fontWeight={900}>
-						Funds
+						{t('funds')}
 					</FormLabel>
 				</Stack>
 				<Image
@@ -98,7 +98,7 @@ function Funds() {
 						<Stack direction={'row'} alignItems={'center'}>
 							<Icon as={HiCreditCard} w={'25px'} h={'25px'} />
 							<Text fontSize={'xl'} color={'gray.800'}>
-								Balance
+								{t('balance')}
 							</Text>
 						</Stack>
 						<Text
@@ -115,7 +115,7 @@ function Funds() {
 								h={{ lg: '48px', md: '40px', sm: '40px' }}
 								colorScheme="teal"
 							>
-								Deposit
+								{t('deposit')}
 							</Button>
 							<Button
 								onClick={() => withdrawModalOnOpen()}
@@ -123,7 +123,7 @@ function Funds() {
 								h={{ lg: '48px', md: '40px', sm: '40px' }}
 								colorScheme="gray"
 							>
-								Withdraw
+								{t('withdraw')}
 							</Button>
 						</Stack>
 					</Stack>

@@ -113,19 +113,19 @@ function PositionsTableCard() {
 
 		if (status === 'OPEN') {
 			color = 'teal.500';
-			buttonText = 'Trade';
+			buttonText = t('trade');
 			isDisabled = false;
 		}
 
 		if (status === 'CLOSED') {
 			color = 'gray.800';
-			buttonText = 'Pending';
+			buttonText = t('pending');
 			isDisabled = true;
 		}
 
 		if (status === 'RESOLVED') {
 			color = 'red.500';
-			buttonText = 'Redeem';
+			buttonText = t('redeem');
 			isDisabled = false;
 		}
 

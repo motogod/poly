@@ -17,6 +17,7 @@ import {
 	Text,
 	Icon,
 } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 import { HiChartBar } from 'react-icons/hi';
 import { PhoneIcon, AddIcon, WarningIcon, SpinnerIcon } from '@chakra-ui/icons';
 import { BiWalletAlt, BiLoaderAlt } from 'react-icons/bi';
@@ -50,6 +51,8 @@ type Props = {
 
 function BuyOrSellContent(props?: Props) {
 	const router = useRouter();
+
+	const { t } = useTranslation();
 
 	const { transactionType } = {
 		transactionType: 'Buy', // default value
@@ -221,13 +224,13 @@ function BuyOrSellContent(props?: Props) {
 	const renderConfirmButtonText = () => {
 		if (isAuthenticated) {
 			if (isBuy) {
-				return 'Buy';
+				return t('buy');
 			} else {
-				return 'Sell';
+				return t('sell');
 			}
 		}
 
-		return 'Connect';
+		return t('connect');
 	};
 
 	const renderSharePrice = () => {
@@ -341,17 +344,17 @@ function BuyOrSellContent(props?: Props) {
 			if (isBuy) {
 				// 輸入的 Share 不得大於 所能購買的 Share 最大量
 				if (shareInputValue > sharesMax) {
-					return 'Insufficient balance';
+					return t('insufficient_balance');
 				}
 			} else {
 				// 輸入的 Share 不得大於 使用者擁有的 Share 最大量
 				if (isYes) {
 					if (shareInputValue > userMarketYesHold) {
-						return 'Insufficient balance';
+						return t('insufficient_balance');
 					}
 				} else {
 					if (shareInputValue > userMarketNoHold) {
-						return 'Insufficient balance';
+						return t('insufficient_balance');
 					}
 				}
 			}
@@ -362,23 +365,23 @@ function BuyOrSellContent(props?: Props) {
 		if (selectedType === 'LIMIT') {
 			// 限制低於 30 不能掛單
 			if (shareInputValue > 0 && shareInputValue < 30) {
-				return 'Minimum 30 shares for limit orders';
+				return t('minimum_thirty_shares_for_limit_orders');
 			}
 
 			if (isBuy) {
 				// 輸入的 Share 不得大於 所能掛單的 Share 最大量
 				if (shareInputValue > sharesMax) {
-					return 'Insufficient balance';
+					return t('insufficient_balance');
 				}
 			} else {
 				// 掛單的 Share 不得大於 所擁有的最大量
 				if (isYes) {
 					if (shareInputValue > userMarketYesHold) {
-						return `You Own ${userMarketYesHold} Shares`;
+						return `${t('you')} ${t('own')} ${userMarketYesHold} ${t('shares')}`;
 					}
 				} else {
 					if (shareInputValue > userMarketNoHold) {
-						return `You Own ${userMarketNoHold} Shares`;
+						return `${t('you')} ${t('own')} ${userMarketNoHold} ${t('shares')}`;
 					}
 				}
 			}
@@ -531,8 +534,8 @@ function BuyOrSellContent(props?: Props) {
 							setSelectedType(e.target.value as SelectedType);
 						}}
 					>
-						<option value="MARKET">Market</option>
-						<option value="LIMIT">Limit</option>
+						<option value="MARKET">{t('markets')}</option>
+						<option value="LIMIT">{t('limit')}</option>
 					</Select>
 					<Box
 						as={motion.div}
@@ -564,7 +567,7 @@ function BuyOrSellContent(props?: Props) {
 							setIsBuy(true);
 							setValueUserClickBuyOrSell();
 						}}
-						text="Buy"
+						text={t('buy')}
 						selected={isBuy}
 					/>
 					<BuyOrSellButton
@@ -572,7 +575,7 @@ function BuyOrSellContent(props?: Props) {
 							setIsBuy(false);
 							setValueUserClickBuyOrSell();
 						}}
-						text="Sell"
+						text={t('sell')}
 						selected={!isBuy}
 					/>
 				</Stack>
@@ -585,7 +588,7 @@ function BuyOrSellContent(props?: Props) {
 						fontWeight={'700'}
 						lineHeight={'17px'}
 					>
-						Select Outcome
+						{t('select_outcome')}
 					</Heading>
 					<YesOrNoButton
 						onClick={() => {
@@ -615,7 +618,7 @@ function BuyOrSellContent(props?: Props) {
 					<Stack mt={'24px'}>
 						<Stack align={'center'} direction={'row'} justify={'space-between'}>
 							<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'} lineHeight={'17px'}>
-								Limit Price
+								{t('limit_price')}
 							</Heading>
 						</Stack>
 						<HStack mt={'16px'} gap={0} maxW="100%">
@@ -658,14 +661,16 @@ function BuyOrSellContent(props?: Props) {
 				<Stack mt={'24px'}>
 					<Stack align={'center'} direction={'row'} justify={'space-between'}>
 						<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'} lineHeight={'17px'}>
-							Shares
+							{t('shares')}
 						</Heading>
 						<Stack direction={'row'}>
 							<Tag bg={'gray.100'} color={'gray.800'} borderRadius={20} pl={'16px'} pr={'16px'}>
 								<TagLabel>
 									{isBuy
-										? `Balance: ${hold} USDT`
-										: `You Own ${isYes ? userMarketYesHold : userMarketNoHold} Shares`}
+										? `${t('balance')}: ${hold} USDT`
+										: `${t('you')} ${t('own')} ${isYes ? userMarketYesHold : userMarketNoHold} ${t(
+												'shares'
+										  )}`}
 								</TagLabel>
 							</Tag>
 							<Button
@@ -685,7 +690,7 @@ function BuyOrSellContent(props?: Props) {
 								_hover={{ bg: 'gray.700' }}
 								color="#fff"
 							>
-								Max
+								{t('max')}
 							</Button>
 						</Stack>
 					</Stack>
@@ -752,7 +757,7 @@ function BuyOrSellContent(props?: Props) {
 				<Stack mt={'14px'} mb={'4px'}>
 					<Stack direction={'row'} justify={'space-between'}>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
-							{selectedType === 'MARKET' ? 'Share Price' : 'Limit Price'}
+							{selectedType === 'MARKET' ? t('share_price') : t('limit_price')}
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
 							{renderSharePrice()}
@@ -760,7 +765,7 @@ function BuyOrSellContent(props?: Props) {
 					</Stack>
 					<Stack direction={'row'} justify={'space-between'}>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
-							Shares
+							{t('shares')}
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
 							{shareInputValue.toFixed(2)}
@@ -768,7 +773,7 @@ function BuyOrSellContent(props?: Props) {
 					</Stack>
 					<Stack direction={'row'} justify={'space-between'}>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
-							{!isBuy ? 'Fee(5%)' : 'Potential Return'}
+							{!isBuy ? `${t('fee')}(5%)` : t('potential_return')}
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'500'} lineHeight={'20px'}>
 							{renderFeeOrPotentialReturn()}
@@ -776,7 +781,7 @@ function BuyOrSellContent(props?: Props) {
 					</Stack>
 					<Stack direction={'row'} justify={'space-between'}>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'700'} lineHeight={'17px'}>
-							{!isBuy ? 'Est.amount received' : 'Total'}
+							{!isBuy ? t('est_amount_received') : t('total')}
 						</Heading>
 						<Heading fontSize={'14px'} color={'gray.800'} fontWeight={'700'} lineHeight={'17px'}>
 							{renderTotal()}

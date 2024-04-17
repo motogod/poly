@@ -146,7 +146,7 @@ export default function LargeWithAppLinksAndSocial() {
 					</Stack>
 
 					<Stack align={'flex-start'}>
-						<ListHeader>Support</ListHeader>
+						<ListHeader>{t('support')}</ListHeader>
 						{/* <Icon cursor={'pointer'} as={SocialIcon} w={'36px'} h={'36px'} /> */}
 						<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
 						{/* <AppStoreBadge />

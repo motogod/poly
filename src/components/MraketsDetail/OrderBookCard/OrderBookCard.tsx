@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from 'react-responsive';
 import {
 	Stack,
@@ -73,6 +74,8 @@ function OrderBookCard() {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const router = useRouter();
+
+	const { t } = useTranslation();
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
@@ -223,7 +226,7 @@ function OrderBookCard() {
 					);
 				})}
 				<Tr>
-					<Td h={50} bg={'gray.100'} letterSpacing={1}>{`Last:$${orderData.last}`}</Td>
+					<Td h={50} bg={'gray.100'} letterSpacing={1}>{`${t('last')}:$${orderData.last}`}</Td>
 					<Td bg={'gray.100'} letterSpacing={1}>{`Spread:$${getSpreadPrice(
 						orderData.asks,
 						orderData.bids
@@ -339,7 +342,7 @@ function OrderBookCard() {
 													fontWeight={'700'}
 													lineHeight={'16px'}
 												>
-													Price
+													{t('prices')}
 												</Th>
 												<Th
 													fontSize={'xs'}
@@ -347,7 +350,7 @@ function OrderBookCard() {
 													fontWeight={'700'}
 													lineHeight={'16px'}
 												>
-													Shares
+													{t('shares')}
 												</Th>
 												<Th
 													fontSize={'xs'}
@@ -356,7 +359,7 @@ function OrderBookCard() {
 													lineHeight={'16px'}
 													isNumeric
 												>
-													Total
+													{t('total')}
 												</Th>
 											</Tr>
 										</Thead>
@@ -365,7 +368,7 @@ function OrderBookCard() {
 								</TableContainer>
 							) : (
 								<Text pt={34} textAlign={'center'} color={'gray.500'} fontSize={'md'}>
-									No orders found
+									{t('no_orders_found')}
 								</Text>
 							)}
 						</TabPanel>
@@ -398,7 +401,7 @@ function OrderBookCard() {
 													fontWeight={'700'}
 													lineHeight={'16px'}
 												>
-													Price
+													{t('prices')}
 												</Th>
 												<Th
 													fontSize={'xs'}
@@ -406,7 +409,7 @@ function OrderBookCard() {
 													fontWeight={'700'}
 													lineHeight={'16px'}
 												>
-													Shares
+													{t('shares')}
 												</Th>
 												<Th
 													fontSize={'xs'}
@@ -415,7 +418,7 @@ function OrderBookCard() {
 													lineHeight={'16px'}
 													isNumeric
 												>
-													Total
+													{t('total')}
 												</Th>
 											</Tr>
 										</Thead>
@@ -424,7 +427,7 @@ function OrderBookCard() {
 								</TableContainer>
 							) : (
 								<Text pt={34} textAlign={'center'} color={'gray.500'} fontSize={'md'}>
-									No orders found
+									{t('no_orders_found')}
 								</Text>
 							)}
 						</TabPanel>

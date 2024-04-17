@@ -132,10 +132,10 @@ function useDepositUsdtModal() {
 
 	useEffect(() => {
 		if (isDepositSuccess) {
-			disaptch(showToast({ isSuccess: true, title: 'Deposit suceesfully' }));
+			disaptch(showToast({ isSuccess: true, title: t('deposit_suceesfully') }));
 			onClose();
 		}
-	}, [isDepositSuccess, onClose, disaptch]);
+	}, [isDepositSuccess, onClose, disaptch, t]);
 
 	// 測試 Error
 	// useEffect(() => {
@@ -312,7 +312,7 @@ function useDepositUsdtModal() {
 						navigator.clipboard.writeText(proxyWallet);
 					}}
 				>
-					{isCopied ? 'Copied' : 'Copy'}
+					{isCopied ? t('copied') : t('copy')}
 				</Button>
 			</Grid>
 		);

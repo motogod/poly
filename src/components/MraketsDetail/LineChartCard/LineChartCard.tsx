@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 import ScrollContainer from 'react-indiana-drag-scroll';
 import {
 	Stack,
@@ -128,6 +129,8 @@ const data = [
 
 function LineChartCard() {
 	const [selectedTab, setSelectedTab] = useState<LineChartTabsIntervalType>('6h');
+
+	const { t } = useTranslation();
 
 	const {
 		isMarketDetailLoading,
@@ -341,7 +344,7 @@ function LineChartCard() {
 												const URL = `${origin}${router.asPath}`;
 												navigator.clipboard.writeText(URL);
 												toast({
-													title: 'Copied',
+													title: t('copied'),
 													position: 'top',
 													status: 'success',
 													duration: 1000,
@@ -367,13 +370,13 @@ function LineChartCard() {
 							<Stack align={'center'} direction={'row'}>
 								<Icon as={HiChartBar} w={'16px'} h={'14px'} />
 								<Text fontSize="sm" color="gray.800" fontWeight={'400'} lineHeight={'18px'}>
-									{`Volume: $${marketDetailData?.volume.toLocaleString()} USDT`}
+									{`${t('volume')}: $${marketDetailData?.volume.toLocaleString()} USDT`}
 								</Text>
 							</Stack>
 							<Stack align={'center'} direction={'row'}>
 								<Icon as={HiClock} w={'16px'} h={'16px'} />
 								<Text fontSize="sm" color="gray.800" fontWeight={'400'} lineHeight={'18px'}>
-									{`Expires: ${moment(marketDetailData?.endDate).format('MMM Do YYYY')}`}
+									{`${t('expires')}: ${moment(marketDetailData?.endDate).format('MMM Do YYYY')}`}
 								</Text>
 							</Stack>
 						</Stack>
@@ -383,7 +386,7 @@ function LineChartCard() {
 						<Stack align="start" direction={'row'} mt={'32px'}>
 							{renderPercent()}
 							<Heading fontSize={'14px'} color={'gray.500'} fontWeight={'700'}>
-								Since Market Creation
+								{t('since_market_creation')}
 							</Heading>
 						</Stack>
 					</>
@@ -426,7 +429,7 @@ function LineChartCard() {
 							1M
 						</Tab>
 						<Tab fontSize={'16px'} color={'blue.400'} fontWeight={'500'} lineHeight={'20px'}>
-							All
+							{t('all')}
 						</Tab>
 					</TabList>
 					{/* <TabIndicator mt="-1.5px" height="0px" bg="pink" borderRadius="1px" /> */}

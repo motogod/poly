@@ -57,7 +57,7 @@ function CategorySection() {
 		{
 			id: '',
 			slug: '',
-			name: 'All',
+			name: t('all'),
 			parentCategory: '',
 			subMenuSelected: false,
 			childrenCategories: [],

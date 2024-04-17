@@ -45,9 +45,11 @@ let firstRender = true;
 
 const LeftMenu = () => {
 	const { t } = useTranslation();
-	const router = useRouter();
-	const { categoriesData, routerPath } = useSelector((state: RootState) => state.dataReducer);
 
+	const router = useRouter();
+
+	const { categoriesData, routerPath } = useSelector((state: RootState) => state.dataReducer);
+	console.log('categoriesData =>', categoriesData);
 	const toast = useToast();
 
 	const [startDate, setStartDate] = useState<Date | null>(null);
@@ -337,11 +339,11 @@ const LeftMenu = () => {
 											}
 										}}
 										disabledKeyboardNavigation
-										placeholderText="Start Date"
+										placeholderText={t('start_date')}
 									/>
 								</Stack>
 								<Text fontSize={'md'} color={'gray.500'}>
-									to
+									{t('to')}
 								</Text>
 								<Stack w={'100%'} h={'100%'}>
 									<DatePicker
@@ -376,7 +378,7 @@ const LeftMenu = () => {
 											}
 										}}
 										disabledKeyboardNavigation
-										placeholderText="End Date"
+										placeholderText={t('end_date')}
 									/>
 								</Stack>
 							</Stack>
@@ -571,7 +573,7 @@ const LeftMenu = () => {
 							mr={{ base: '1', sm: '1', md: '5' }}
 						>
 							<Text color="gray.800" size="md" fontWeight="500" lineHeight="24px">
-								{value.menu}
+								{t(value.menu as 'volume' | 'end_date' | 'markets')}
 							</Text>
 							{value.menuSelected ? <ChevronDownIcon boxSize={6} /> : <ChevronUpIcon boxSize={6} />}
 						</Stack>

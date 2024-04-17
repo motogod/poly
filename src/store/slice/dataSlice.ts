@@ -110,21 +110,21 @@ const initialState: CategoriesState = {
 			menuData: [
 				{
 					menuId: '0',
-					menu: 'Volume',
+					menu: 'volume', // for i18n
 					menuSelected: false,
 					selectedValue: 'volume-default',
 					subMenuData: [] as any,
 				},
 				{
 					menuId: '1',
-					menu: 'End Date',
+					menu: 'end_date', // for i18n
 					menuSelected: false,
 					selectedValue: 'date-default',
 					subMenuData: [] as any,
 				},
 				{
 					menuId: '2',
-					menu: 'Markets',
+					menu: 'markets', // for i18n
 					menuSelected: true,
 					selectedValue: '',
 					subMenuData: [] as any,

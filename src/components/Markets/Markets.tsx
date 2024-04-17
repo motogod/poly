@@ -329,7 +329,7 @@ function Markets() {
 								color={'gray.500'}
 								variant="outline"
 							>
-								Clear All
+								{t('clear_all')}
 							</Button>
 						</ScaleFade>
 					) : null}

@@ -70,7 +70,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 						if (proxyWallet) {
 							navigator.clipboard.writeText(proxyWallet);
 							toast({
-								title: 'Copied',
+								title: t('copied'),
 								position: 'top',
 								status: 'success',
 								duration: 1000,

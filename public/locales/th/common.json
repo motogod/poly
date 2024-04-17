@@ -165,5 +165,12 @@
 	"withdrawal_failed": "Withdrawal failed",
 	"please_enter_a_avlid_address": "Please enter a avlid address that starts with '0x'",
 	"name_must_be_lowercase": "Name must be lowercase",
-	"there_was_an_error_with_your_amount": "There was an error with your amount. Please try again."
+	"there_was_an_error_with_your_amount": "There was an error with your amount. Please try again.",
+	"you": "You",
+	"own": "own",
+	"copied": "Copied",
+	"no_orders_found": "No orders found",
+	"to": "to",
+	"deposit_suceesfully": "Deposit suceesfully",
+	"copy": "Copy"
 }

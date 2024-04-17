@@ -153,7 +153,7 @@ function useWithdrawUsdtModal() {
 						</Stack>
 						<FormControl mt={'10px'}>
 							<Stack direction={'row'} justify={'space-between'} alignItems={'center'}>
-								<FormLabel fontWeight={'800'}>Address</FormLabel>
+								<FormLabel fontWeight={'800'}>{t('address')}</FormLabel>
 								{address && (
 									<Text
 										textDecoration={'underline'}
@@ -258,7 +258,7 @@ function useWithdrawUsdtModal() {
 								color="#fff"
 								onClick={() => confirm()}
 							>
-								Withdraw
+								{t('withdraw')}
 							</Button>
 						</Stack>
 					</ModalFooter>

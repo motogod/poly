@@ -37,7 +37,7 @@
 	"custom": "定制",
 	"start_date": "开始日期",
 	"apply": "申请",
-	"clear_all ": "清除全部",
+	"clear_all": "清除全部",
 	"done": "完成",
 	"trending": "热门",
 	"newest": "最新",
@@ -100,7 +100,7 @@
 	"days_ago": "几天前",
 	"week_ago": "一周前",
 	"weeks_ago": "几周前",
-	"month_ago": "一个月前",
+	"month_ago": "个月前",
 	"months_ago": "几个月前",
 	"year_ago": "一年前",
 	"years_ago": "几年前",
@@ -165,5 +165,12 @@
 	"withdrawal_failed": "Withdrawal failed",
 	"please_enter_a_avlid_address": "Please enter a avlid address that starts with '0x'",
 	"name_must_be_lowercase": "Name must be lowercase",
-	"there_was_an_error_with_your_amount": "There was an error with your amount. Please try again."
+	"there_was_an_error_with_your_amount": "There was an error with your amount. Please try again.",
+	"you": "You",
+	"own": "own",
+	"copied": "Copied",
+	"no_orders_found": "No orders found",
+	"to": "to",
+	"deposit_suceesfully": "Deposit suceesfully",
+	"copy": "Copy"
 }
