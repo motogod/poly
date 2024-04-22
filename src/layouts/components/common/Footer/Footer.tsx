@@ -28,17 +28,12 @@ import { CommunityIcon } from '../../../../../public/assets/svg';
 import SocialIcon from '../../../../../public/assets/svg/socialIcons.png';
 import NextIcon from '../../../../../public/next.svg';
 import { LocalesEnum } from '@/../public/locales/type';
+import logoImg from '@/../public/logo.png';
 
 const selectorOptions = Object.entries(LocalesEnum).map(([value, label]) => ({
 	value,
 	label,
 }));
-
-const CircleIcon = (props: any) => (
-	<Icon viewBox="0 0 200 200" {...props}>
-		<path fill="currentColor" d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0" />
-	</Icon>
-);
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
 	return (
@@ -95,9 +90,9 @@ export default function LargeWithAppLinksAndSocial() {
 				<SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={6}>
 					<Stack align={'flex-start'}>
 						<Stack direction="row" alignItems="center" spacing={1}>
-							<CircleIcon cursor="pointer" boxSize={12} color={PrimaryPink} />
+							<Image src={logoImg} alt="logoImg" />
 							<Heading cursor="pointer" size="md" color={PrimaryPink} mr={5}>
-								Gomarket
+								ox.market
 							</Heading>
 						</Stack>
 						<Box mt="2" as={Stack}>

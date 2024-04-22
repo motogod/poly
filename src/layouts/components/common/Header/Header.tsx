@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { Heading, Stack } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, getUserFunds, RootState, getPortfolioValue } from '@/store';
 import HeaderRightSideSection from './HeaderRightSideSection';
+import logoImg from '@/../public/logo.png';
 
 import { PrimaryPink } from '@/utils/color';
 import { headerHeight, paddingMainHorizontal } from '@/utils/screen';
@@ -51,7 +53,8 @@ function Header() {
 			shadow={'md'}
 		>
 			<Stack direction="row" alignItems="center" spacing={1}>
-				<CircleIcon cursor="pointer" boxSize={12} color={PrimaryPink} />
+				{/* <CircleIcon cursor="pointer" boxSize={12} color={PrimaryPink} /> */}
+				<Image src={logoImg} alt="logoImg" />
 				<Heading
 					_hover={{ color: 'gray.600' }}
 					onClick={() => router.push('/')}
@@ -60,7 +63,7 @@ function Header() {
 					color="gray.700"
 					mr={5}
 				>
-					Gomarket
+					ox.market
 				</Heading>
 				<Heading
 					_hover={{ color: 'gray.600' }}

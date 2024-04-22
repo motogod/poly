@@ -132,9 +132,9 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 					<WagmiConfig config={config}>
 						<ChakraProvider theme={theme}>
 							<Head>
-								<title>{`Poly`}</title>
-								<meta name="description" content={`poly`} />
-								<meta name="keywords" content="poly" />
+								<title>{`ox.market`}</title>
+								<meta name="description" content={`ox.market`} />
+								<meta name="keywords" content="ox.market" />
 								<meta name="viewport" content="initial-scale=1, width=device-width" />
 							</Head>
 							{/* <Header /> */}
