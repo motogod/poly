@@ -12,6 +12,7 @@ import useBaseUrl from './useBaseUrl/useBaseUrl';
 import useQRCodeModal from './useQRCodeModal';
 import useMsgModal from './useMsgModal';
 import useWithdrawUsdtModal from './useWithdrawUsdtModal';
+import useRedeemModal from './useRedeemModal';
 
 export {
 	useCategoryTabsList,
@@ -28,4 +29,5 @@ export {
 	useQRCodeModal,
 	useMsgModal,
 	useWithdrawUsdtModal,
+	useRedeemModal,
 };

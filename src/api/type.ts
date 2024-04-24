@@ -275,7 +275,7 @@ export type GetPortfolioHistoryType = {
 };
 
 // 可以交易的倉位、無法交易也無法Redeem的倉位、可以Redeem或Claim的倉位
-export type PortfoioPostionTableStatus = 'OPEN' | 'CLOSED' | 'RESOLVED';
+export type PortfoioPostionTableStatus = 'OPEN' | 'CLOSED' | 'RESOLVED' | 'CLAIM';
 export enum PortfoioPostionTableStatusEnum {
 	all = 'All',
 	active = 'Active',
@@ -292,7 +292,7 @@ export type PositionsDataType = {
 		title: string;
 		image: string;
 	};
-	outcome: string;
+	outcome: 'YES' | 'NO';
 	total: number; // 所擁有能動用的 Share
 	price: number; // Price
 	value: number; // Value

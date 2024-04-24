@@ -7,6 +7,7 @@ import {
 	AppDispatch,
 	RootState,
 	selectPortfolioPositions,
+	postRedeemClaim,
 } from '@/store';
 import {
 	Box,
@@ -27,6 +28,7 @@ import {
 	Stack,
 } from '@chakra-ui/react';
 import { useMediaQuery } from 'react-responsive';
+import { useRedeemModal } from '@/hooks';
 import {
 	PositionsDataType,
 	PortfoioPostionTableStatus,
@@ -37,7 +39,7 @@ const selectorOptions = Object.entries(PortfoioPostionTableStatusEnum).map(([val
 	value,
 	label,
 }));
-console.log('selectorOptions', selectorOptions);
+
 function PositionsTableCard() {
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -52,6 +54,14 @@ function PositionsTableCard() {
 	const { filterPortfolioPositionsListData, portfolioPositionsSelectorStatus } = useSelector(
 		(state: RootState) => state.portfolioReducer
 	);
+
+	const {
+		ModalDom: msgModalDom,
+		isOpen: msgModalIsOpen,
+		onOpen: msgModalOnOpen,
+		onClose: msgModalOnClose,
+		setModalData,
+	} = useRedeemModal();
 
 	useEffect(() => {
 		try {
@@ -106,7 +116,9 @@ function PositionsTableCard() {
 		return `(${percentValueString})`;
 	};
 
-	const renderActionButton = (status: PortfoioPostionTableStatus) => {
+	const renderActionButton = (value: PositionsDataType) => {
+		const { status, outcome, market, hold, price, avgBuyPrice } = value;
+
 		let color = '';
 		let buttonText = '';
 		let isDisabled = false;
@@ -124,13 +136,54 @@ function PositionsTableCard() {
 		}
 
 		if (status === 'RESOLVED') {
-			color = 'red.500';
-			buttonText = t('redeem');
+			color = 'gray.800';
+			buttonText = t('pending');
+			isDisabled = true;
+		}
+
+		if (status === 'CLAIM') {
+			color = '#D53F8C';
+			buttonText = t('claim');
 			isDisabled = false;
 		}
 
+		let winnerType = outcome;
+		let isUserWin = true;
+
+		if (price < avgBuyPrice) {
+			isUserWin = false;
+
+			if (outcome === 'YES') {
+				winnerType = 'NO';
+			} else {
+				winnerType = 'YES';
+			}
+		}
+
+		const clickActionButton = () => {
+			switch (status) {
+				case 'OPEN':
+					router.push(`/marketsDetail?marketSlug=${market.slug}`);
+					break;
+				case 'CLOSED':
+					break;
+				case 'RESOLVED':
+					break;
+				case 'CLAIM':
+					setModalData({ winnerType, shares: hold, outcome, isUserWin, marketId: market.id });
+					msgModalOnOpen();
+					break;
+				default:
+					break;
+			}
+		};
+
 		return (
 			<Button
+				onClick={e => {
+					e.stopPropagation();
+					clickActionButton();
+				}}
 				isDisabled={isDisabled}
 				top={'26%'}
 				size="sm"
@@ -158,7 +211,7 @@ function PositionsTableCard() {
 				<>
 					<Tr
 						key={index}
-						onClick={() => router.push(`/marketsDetail?marketSlug=${value?.market?.slug}`)}
+						onClick={e => router.push(`/marketsDetail?marketSlug=${value?.market?.slug}`)}
 						cursor={'pointer'}
 						_hover={{ bg: 'gray.100', borderRadius: 18 }}
 					>
@@ -239,7 +292,7 @@ function PositionsTableCard() {
 							fontWeight={'500'}
 							lineHeight={'20px'}
 						>
-							{renderActionButton(value.status)}
+							{renderActionButton(value)}
 						</Td>
 					</Tr>
 				</>
@@ -373,6 +426,7 @@ function PositionsTableCard() {
 					<Tbody>{renderTableRow()}</Tbody>
 				</Table>
 			</TableContainer>
+			{msgModalIsOpen && msgModalDom}
 		</>
 	);
 }

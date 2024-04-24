@@ -116,4 +116,8 @@ export const PostTradeOrders = <T>(params: any) =>
 export const DeletePortfolioOrder = <T>(params: { id: string }) =>
 	requestWithSession.delete<T>(`/orders/${params.id}`, {}, { timeout: 15000 });
 
+// Redeem claim
+export const PostRedeemClaim = <T>(params: { marketId: string; outcome: 'YES' | 'NO' }) =>
+	requestWithSession.post<T>('/accounts/portfolio/claim', params, { timeout: 15000 });
+
 export * from './type';

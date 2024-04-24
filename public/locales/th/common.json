@@ -172,5 +172,9 @@
 	"no_orders_found": "No orders found",
 	"to": "to",
 	"deposit_suceesfully": "Deposit suceesfully",
-	"copy": "Copy"
+	"copy": "Copy",
+	"order_creation_failed": "Order creation failed",
+	"withdrawal_suceesfully": "Withdrawal suceesfully",
+	"withdrawl_failed": "Withdrawl failed",
+	"value_per_share": "Value per Share"
 }

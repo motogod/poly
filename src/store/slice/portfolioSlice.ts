@@ -6,6 +6,7 @@ import {
 	getUserPortfolioPositions,
 	getUserPortfolioPositionsForHold,
 	getPortfolioHistory,
+	postRedeemClaim,
 } from '../thunks/fetchPortfolio';
 import {
 	GetPortfolioType,
@@ -36,6 +37,8 @@ type IpState = {
 	portfolioHistoryListData: ProtfolioHistoryDataType[]; // Portfolio History 的資料
 	filterPortfolioHistoryListData: ProtfolioHistoryDataType[]; // 後續過濾條件要呈現的資料
 	portfolioHistorySelectorStatus: PortfolioHistorySelectorType;
+	isPostRedeemClaimLoading: boolean;
+	isPostRedeemClaimSuccess: boolean | null;
 };
 
 const initialState: IpState = {
@@ -55,6 +58,8 @@ const initialState: IpState = {
 	portfolioHistoryListData: [],
 	filterPortfolioHistoryListData: [],
 	portfolioHistorySelectorStatus: 'all',
+	isPostRedeemClaimLoading: false,
+	isPostRedeemClaimSuccess: null,
 };
 
 // 根據狀態 filter 正確的資料
@@ -102,18 +107,8 @@ const filetrPositionsData = (state: IpState, selectorStatus: string) => {
 	if (selectorStatus === 'claim') {
 		state.filterPortfolioPositionsListData = state.portfolioPositionsListData.filter(value => {
 			const { status } = value;
-			// 呈現 Pending 或者 Claim 的文字狀態
-			if (status === 'CLOSED' || status === 'RESOLVED') {
-				return value;
-			}
-		});
-	}
-
-	if (selectorStatus === 'claim') {
-		state.filterPortfolioPositionsListData = state.portfolioPositionsListData.filter(value => {
-			const { status } = value;
-
-			if (status === 'CLOSED') {
+			// 呈現  Claim 的文字狀態
+			if (status === 'CLAIM') {
 				return value;
 			}
 		});
@@ -325,6 +320,36 @@ const portfolioSlice = createSlice({
 		});
 		builder.addCase(getPortfolioHistory.rejected, (state, action) => {
 			console.log('getPortfolioHistory rejected', action);
+		});
+
+		// Redeem
+		builder.addCase(postRedeemClaim.pending, (state, action) => {
+			console.log('postRedeemClaim pending');
+			state.isPostRedeemClaimLoading = true;
+			state.isPostRedeemClaimSuccess = null;
+		});
+		builder.addCase(postRedeemClaim.fulfilled, (state, action) => {
+			console.log('postRedeemClaim fulfilled', action);
+			const { statusCode } = action.payload.resp;
+			const marketId = action.payload.marketId;
+			const outcome = action.payload.outcome;
+
+			if (statusCode === 201) {
+				state.isPostRedeemClaimSuccess = true;
+				// Withdrawal 成功後，清單上刪除掉該筆資料 (會有同樣的 marketId 有 YES 跟 NO 不同欄位資料的狀況)
+				state.filterPortfolioPositionsListData = state.filterPortfolioPositionsListData.filter(
+					value => value.market.id !== marketId || value.outcome !== outcome
+				);
+			} else {
+				state.isPostRedeemClaimSuccess = false;
+			}
+
+			state.isPostRedeemClaimLoading = false;
+		});
+		builder.addCase(postRedeemClaim.rejected, (state, action) => {
+			console.log('postRedeemClaim rejected', action);
+			state.isPostRedeemClaimLoading = false;
+			state.isPostRedeemClaimSuccess = false;
 		});
 	},
 });

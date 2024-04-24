@@ -306,6 +306,7 @@ function useLoginModal() {
 			disconnect,
 			resetSignIn,
 			errorMsg,
+			t,
 		]
 	);
 

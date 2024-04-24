@@ -1,1 +1,1 @@
-export { default } from './useMegModal';
+export { default } from './useMsgModal';

@@ -11,6 +11,7 @@ import {
 	GetUserPortfolioType,
 	GetPortfolioHistory,
 	GetPortfolioHistoryType,
+	PostRedeemClaim,
 } from '@/api';
 
 // Orders
@@ -63,6 +64,16 @@ const getUserPortfolioPositionsForHold = createAsyncThunk(
 	}
 );
 
+// for Positions redeem claim action
+const postRedeemClaim = createAsyncThunk(
+	'api/postRedeemClaim',
+	async (params: { marketId: string; outcome: 'YES' | 'NO' }) => {
+		const resp = await PostRedeemClaim<any>(params);
+		console.log('postRedeemClaim resp is', resp);
+		return { resp, marketId: params.marketId, outcome: params.outcome };
+	}
+);
+
 export {
 	getPortfolioOrders,
 	tradeOrders,
@@ -70,4 +81,5 @@ export {
 	getUserPortfolioPositions,
 	getUserPortfolioPositionsForHold,
 	getPortfolioHistory,
+	postRedeemClaim,
 };
