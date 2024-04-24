@@ -251,7 +251,7 @@ export type GetPortfolioType = {
 	statusCode: number;
 };
 
-export type PortfoioHistoryActionType = 'BUY' | 'SELL' | 'REDEEM';
+export type PortfoioHistoryActionType = 'BUY' | 'SELL' | 'REDEEM' | 'CLAIM';
 
 export type ProtfolioHistoryDataType = {
 	action: PortfoioHistoryActionType;

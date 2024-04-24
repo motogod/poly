@@ -130,11 +130,21 @@ const filterHistoryData = (state: IpState, selectorStatus: PortfolioHistorySelec
 		});
 	}
 
-	if (selectorStatus === 'sold' || selectorStatus === 'redeem') {
+	if (selectorStatus === 'sold') {
 		state.filterPortfolioHistoryListData = state.portfolioHistoryListData.filter(value => {
 			const { action } = value;
 
 			if (action === 'SELL') {
+				return value;
+			}
+		});
+	}
+
+	if (selectorStatus === 'redeem') {
+		state.filterPortfolioHistoryListData = state.portfolioHistoryListData.filter(value => {
+			const { action } = value;
+
+			if (action === 'CLAIM') {
 				return value;
 			}
 		});

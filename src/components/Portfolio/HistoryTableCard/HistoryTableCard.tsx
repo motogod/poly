@@ -102,7 +102,7 @@ function HistoryTableCard() {
 	const { portfolioHistorySelectorStatus, filterPortfolioHistoryListData } = useSelector(
 		(state: RootState) => state.portfolioReducer
 	);
-
+	console.log('filterPortfolioHistoryListData', filterPortfolioHistoryListData);
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 960px)',
 	});
@@ -112,13 +112,14 @@ function HistoryTableCard() {
 	}, [dispatch]);
 
 	const renderActionText = (action: PortfoioHistoryActionType) => {
+		console.log('action', action);
 		switch (action) {
 			case 'BUY':
 				return t('buy');
 			case 'SELL':
 				return t('sell');
-			case 'REDEEM':
-				return t('redeem');
+			case 'CLAIM':
+				return t('claim');
 			default:
 				return '';
 		}
