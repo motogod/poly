@@ -70,7 +70,7 @@ function useRedeemModal() {
 
 	const getTotalClaim = useCallback(() => {
 		if (modalData?.isUserWin) {
-			return modalData?.shares - getFeeResult();
+			return `$${(modalData?.shares - getFeeResult()).toFixed(2)}`;
 		} else {
 			return '$0.00';
 		}
