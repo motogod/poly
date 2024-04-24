@@ -71,18 +71,6 @@ function PositionsTableCard() {
 		}
 	}, [dispatch]);
 
-	const checkColorStyle = (currentValue: number, holdValue: number) => {
-		if (currentValue > holdValue) {
-			return 'green.500';
-		}
-
-		if (currentValue < holdValue) {
-			return 'red.500';
-		}
-
-		return 'gray.500';
-	};
-
 	const getProfieOrLoasePercent = (
 		currentValue: number,
 		holdValue: number,
@@ -90,6 +78,7 @@ function PositionsTableCard() {
 		value: number // 價值
 	) => {
 		let percentValueString = '';
+		let color = 'gray.500';
 
 		const profitRate = Number((((currentValue - holdValue) / holdValue) * 100).toFixed(2));
 
@@ -98,21 +87,29 @@ function PositionsTableCard() {
 			// hold = 0 輸錢 ; hold > 0 贏錢
 			if (value === 0) {
 				percentValueString = '-100.00%';
+				color = 'red.500';
 			}
 
 			if (value > 0) {
 				const winnerProfileRate = Number(((1 / holdValue - 1) * 100).toFixed(2));
 				percentValueString = '+' + String(winnerProfileRate) + '%';
+				color = 'green.500';
 			}
 		} else {
 			if (profitRate === 0) {
 				percentValueString = '0%';
-			} else {
+			}
+			if (profitRate > 0) {
 				percentValueString = '+' + String(profitRate) + '%';
+				color = 'green.500';
+			}
+			if (profitRate < 0) {
+				percentValueString = String(profitRate) + '%';
+				color = 'red.500';
 			}
 		}
 
-		return `(${percentValueString})`;
+		return { percentValue: `(${percentValueString})`, color };
 	};
 
 	const renderActionButton = (value: PositionsDataType) => {
@@ -279,13 +276,24 @@ function PositionsTableCard() {
 						>
 							<Stack justify={'center'} direction={'row'}>
 								<Text>{value.value}</Text>
-								<Text color={checkColorStyle(value?.price, value?.avgBuyPrice)}>
-									{getProfieOrLoasePercent(
-										value?.price,
-										value?.avgBuyPrice,
-										value.status,
-										value?.value
-									)}
+								<Text
+									color={
+										getProfieOrLoasePercent(
+											value?.price,
+											value?.avgBuyPrice,
+											value.status,
+											value?.value
+										).color
+									}
+								>
+									{
+										getProfieOrLoasePercent(
+											value?.price,
+											value?.avgBuyPrice,
+											value.status,
+											value?.value
+										).percentValue
+									}
 								</Text>
 							</Stack>
 						</Td>
