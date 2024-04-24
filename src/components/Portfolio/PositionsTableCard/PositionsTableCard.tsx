@@ -73,11 +73,11 @@ function PositionsTableCard() {
 
 	const checkColorStyle = (currentValue: number, holdValue: number) => {
 		if (currentValue > holdValue) {
-			return 'red.500';
+			return 'green.500';
 		}
 
 		if (currentValue < holdValue) {
-			return 'green.500';
+			return 'red.500';
 		}
 
 		return 'gray.500';
@@ -98,15 +98,21 @@ function PositionsTableCard() {
 		}
 
 		if (profitRate > 0) {
-			percentValueString = '+' + String(profitRate) + '%';
+			if (status === 'CLOSED' || status === 'RESOLVED' || status === 'CLAIM') {
+				const winnerProfileRate = Number(((1 / holdValue - 1) * 100).toFixed(2));
+				percentValueString = '+' + String(winnerProfileRate) + '%';
+			} else {
+				percentValueString = '+' + String(profitRate) + '%';
+			}
 		}
 
 		if (profitRate < 0) {
 			// 顯示狀態為 Pending 或 Claim 的時候，輸錢一率顯示為 -100.00%
-			if (status === 'CLOSED' || status === 'RESOLVED') {
+			if (status === 'CLOSED' || status === 'RESOLVED' || status === 'CLAIM') {
 				percentValueString = '-100.00%';
+			} else {
+				percentValueString = String(profitRate) + '%';
 			}
-			percentValueString = String(profitRate) + '%';
 		}
 
 		if (profitRate === 0) {
@@ -198,7 +204,7 @@ function PositionsTableCard() {
 	};
 
 	const renderPrice = (price: number, status: PortfoioPostionTableStatus) => {
-		if (status === 'CLOSED' || status === 'RESOLVED') {
+		if (status === 'CLOSED' || status === 'RESOLVED' || status === 'CLAIM') {
 			return '-';
 		}
 
