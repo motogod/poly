@@ -86,44 +86,37 @@ function PositionsTableCard() {
 	const getProfieOrLoasePercent = (
 		currentValue: number,
 		holdValue: number,
-		status: PortfoioPostionTableStatus
+		status: PortfoioPostionTableStatus,
+		value: number // 價值
 	) => {
 		let percentValueString = '';
 
 		const profitRate = Number((((currentValue - holdValue) / holdValue) * 100).toFixed(2));
 
-		if (holdValue === 0) {
-			percentValueString = '+' + String(Number(currentValue.toFixed(2)) * 100) + '%';
-			return `(${percentValueString})`;
-		}
+		// 議題是否已結束
+		if (status === 'CLOSED' || status === 'RESOLVED' || status === 'CLAIM') {
+			// hold = 0 輸錢 ; hold > 0 贏錢
+			if (value === 0) {
+				percentValueString = '-100.00%';
+			}
 
-		if (profitRate > 0) {
-			if (status === 'CLOSED' || status === 'RESOLVED' || status === 'CLAIM') {
+			if (value > 0) {
 				const winnerProfileRate = Number(((1 / holdValue - 1) * 100).toFixed(2));
 				percentValueString = '+' + String(winnerProfileRate) + '%';
+			}
+		} else {
+			if (profitRate === 0) {
+				percentValueString = '0%';
 			} else {
 				percentValueString = '+' + String(profitRate) + '%';
 			}
-		}
-
-		if (profitRate < 0) {
-			// 顯示狀態為 Pending 或 Claim 的時候，輸錢一率顯示為 -100.00%
-			if (status === 'CLOSED' || status === 'RESOLVED' || status === 'CLAIM') {
-				percentValueString = '-100.00%';
-			} else {
-				percentValueString = String(profitRate) + '%';
-			}
-		}
-
-		if (profitRate === 0) {
-			percentValueString = '0%';
 		}
 
 		return `(${percentValueString})`;
 	};
 
 	const renderActionButton = (value: PositionsDataType) => {
-		const { status, outcome, market, hold, price, avgBuyPrice } = value;
+		const { status, outcome, market, hold, price, avgBuyPrice, value: marketValue } = value;
 
 		let color = '';
 		let buttonText = '';
@@ -156,7 +149,8 @@ function PositionsTableCard() {
 		let winnerType = outcome;
 		let isUserWin = true;
 
-		if (price < avgBuyPrice) {
+		// 價值為 0 代表輸錢 ; 價值 > 0 代表贏錢
+		if (marketValue === 0) {
 			isUserWin = false;
 
 			if (outcome === 'YES') {
@@ -286,7 +280,12 @@ function PositionsTableCard() {
 							<Stack justify={'center'} direction={'row'}>
 								<Text>{value.value}</Text>
 								<Text color={checkColorStyle(value?.price, value?.avgBuyPrice)}>
-									{getProfieOrLoasePercent(value?.price, value?.avgBuyPrice, value.status)}
+									{getProfieOrLoasePercent(
+										value?.price,
+										value?.avgBuyPrice,
+										value.status,
+										value?.value
+									)}
 								</Text>
 							</Stack>
 						</Td>
