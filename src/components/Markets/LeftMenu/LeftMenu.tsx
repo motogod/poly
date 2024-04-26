@@ -312,30 +312,34 @@ const LeftMenu = () => {
 										selected={startDate}
 										locale={router.locale}
 										onChange={(date: any) => {
-											setStartDate(date);
+											if (date !== null) {
+												setStartDate(date);
 
-											if (moment(endDate).isBefore(date) || moment(endDate).isSame(date)) {
-												setDateErrorMsg('Start must be before end');
-												return;
-											}
+												if (moment(endDate).isBefore(date) || moment(endDate).isSame(date)) {
+													setDateErrorMsg('Start must be before end');
+													return;
+												}
 
-											if (endDate && date) {
-												setDateErrorMsg('');
-												dispatch(
-													handleDateRadio({
-														dateRadioValue: `date-custom`,
-														routerAsPath: router.asPath,
-														startDate,
-														endDate,
-													})
-												);
-												dispatch(
-													filterStartDateAndEndDateMarket({
-														startDate: date,
-														endDate,
-														routerAsPath: router.asPath,
-													})
-												);
+												if (endDate && date) {
+													setDateErrorMsg('');
+													dispatch(
+														handleDateRadio({
+															dateRadioValue: `date-custom`,
+															routerAsPath: router.asPath,
+															startDate,
+															endDate,
+														})
+													);
+													dispatch(
+														filterStartDateAndEndDateMarket({
+															startDate: date,
+															endDate,
+															routerAsPath: router.asPath,
+														})
+													);
+												}
+											} else {
+												setStartDate(null);
 											}
 										}}
 										disabledKeyboardNavigation
@@ -351,30 +355,34 @@ const LeftMenu = () => {
 										selected={endDate}
 										locale={router.locale}
 										onChange={(date: any) => {
-											setEndDate(date.setHours(23, 59, 59, 999));
+											if (date !== null) {
+												setEndDate(date.setHours(23, 59, 59, 999));
 
-											if (moment(startDate).isAfter(date) || moment(startDate).isSame(date)) {
-												setDateErrorMsg('Start must be before end');
-												return;
-											}
+												if (moment(startDate).isAfter(date) || moment(startDate).isSame(date)) {
+													setDateErrorMsg('Start must be before end');
+													return;
+												}
 
-											if (startDate && date) {
-												setDateErrorMsg('');
-												dispatch(
-													handleDateRadio({
-														dateRadioValue: `date-custom`,
-														routerAsPath: router.asPath,
-														startDate,
-														endDate,
-													})
-												);
-												dispatch(
-													filterStartDateAndEndDateMarket({
-														startDate,
-														endDate: date,
-														routerAsPath: router.asPath,
-													})
-												);
+												if (startDate && date) {
+													setDateErrorMsg('');
+													dispatch(
+														handleDateRadio({
+															dateRadioValue: `date-custom`,
+															routerAsPath: router.asPath,
+															startDate,
+															endDate,
+														})
+													);
+													dispatch(
+														filterStartDateAndEndDateMarket({
+															startDate,
+															endDate: date,
+															routerAsPath: router.asPath,
+														})
+													);
+												}
+											} else {
+												setEndDate(null);
 											}
 										}}
 										disabledKeyboardNavigation

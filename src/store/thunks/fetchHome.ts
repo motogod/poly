@@ -44,9 +44,9 @@ const getMarkets = createAsyncThunk(
 		console.log('getMarkets resp', resp);
 		let filteredVolumeData: MarketsItemType[] = [];
 
-		const today = moment();
-		const endOfweekDay = today.endOf('week');
-		const endOfMonthDay = today.endOf('month');
+		const today = moment().utc();
+		const endOfweekDay = moment().endOf('week');
+		const endOfMonthDay = moment().endOf('month');
 
 		// 過濾出符合前端所設定的 Volume 範圍資料
 		resp.data.forEach(value => {
@@ -76,9 +76,6 @@ const getMarkets = createAsyncThunk(
 
 		let filteredResultData: MarketsItemType[] = [];
 
-		console.log('Break dateValue', dateValue);
-		console.log('Break date', { userStartDate, userEndDate });
-
 		// 拿過濾 Volume 結束的資料，接著過濾出符合前端所設定的 Date 範圍資料
 		filteredVolumeData.forEach(value => {
 			switch (dateValue) {
@@ -91,13 +88,12 @@ const getMarkets = createAsyncThunk(
 					}
 					break;
 				case 'date-week':
-					console.log('date-week');
-					if (moment(endOfweekDay).isBefore(value.endDate)) {
+					if (moment(value.endDate).isBefore(endOfweekDay)) {
 						filteredResultData.push(value);
 					}
 					break;
 				case 'date-month':
-					if (moment(endOfMonthDay).isBefore(value.endDate)) {
+					if (moment(value.endDate).isBefore(endOfMonthDay)) {
 						filteredResultData.push(value);
 					}
 					break;

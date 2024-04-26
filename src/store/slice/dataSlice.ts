@@ -472,6 +472,7 @@ const dataSlice = createSlice({
 
 		// Date 更新 radio 選取狀態
 		handleDateRadio: (state, action) => {
+			console.log('handleDateRadio');
 			const { dateRadioValue, routerAsPath, startDate, endDate } = action.payload;
 
 			// http://localhost:3000/zh/markets?categories=volume-default,date-custom-Sun%20Dec%2017%202023%2000:00:00%20GMT+0800%20(%E5%8F%B0%E5%8C%97%E6%A8%99%E6%BA%96%E6%99%82%E9%96%93)-Sun%20Dec%2031%202023%2000:00:00%20GMT+0800%20(%E5%8F%B0%E5%8C%97%E6%A8%99%E6%BA%96%E6%99%82%E9%96%93),
@@ -508,7 +509,7 @@ const dataSlice = createSlice({
 		// 更新日期選擇
 		filterStartDateAndEndDateMarket: (state, action) => {
 			const { startDate, endDate, routerAsPath } = action.payload;
-
+			console.log('filterStartDateAndEndDateMarket =>', { startDate, endDate, routerAsPath });
 			// 更新完勾選狀態之後接著更新 router query url
 			let newRouterAsPath = routerAsPath;
 			let startDateQueryString = '';

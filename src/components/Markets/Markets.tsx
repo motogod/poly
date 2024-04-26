@@ -140,7 +140,7 @@ function Markets() {
 
 		// 篩選符合所篩選的 Date radio 選取值
 		const dateValue = routerStringArray.find(value => value.indexOf('date') > -1) as DateRadioType;
-
+		console.log('dateValue =>', dateValue);
 		// 若有排序 加排序加入至最後的 query 裡面
 		if (sortValue) {
 			queryString += `&sort=${sortValue}`;
