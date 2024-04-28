@@ -293,7 +293,7 @@ const LeftMenu = () => {
 							_hover={{ bg: 'gray.100' }}
 						>
 							<Stack position={'absolute'} right={0} left={3} top={1}>
-								<Text>{`${t('custom')}：${t('start_date')} - ${t('end_date')}`}</Text>
+								<Text>{`${t('custom')}：`}</Text>
 							</Stack>
 							<Radio
 								pr={{ lg: 6, md: 2, sm: 2 }}
