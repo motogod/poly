@@ -90,7 +90,9 @@ export default function LargeWithAppLinksAndSocial() {
 				<SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={6}>
 					<Stack align={'flex-start'}>
 						<Stack direction="row" alignItems="center" spacing={1}>
-							<Image src={logoImg} alt="logoImg" />
+							<Stack onClick={() => router.push('/')} cursor={'pointer'}>
+								<Image src={logoImg} alt="logoImg" />
+							</Stack>
 							<Heading cursor="pointer" size="md" color={PrimaryPink} mr={5}>
 								ox.market
 							</Heading>

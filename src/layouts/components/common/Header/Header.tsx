@@ -54,7 +54,9 @@ function Header() {
 		>
 			<Stack direction="row" alignItems="center" spacing={1}>
 				{/* <CircleIcon cursor="pointer" boxSize={12} color={PrimaryPink} /> */}
-				<Image src={logoImg} alt="logoImg" />
+				<Stack onClick={() => router.push('/')} cursor={'pointer'}>
+					<Image src={logoImg} alt="logoImg" />
+				</Stack>
 				<Heading
 					_hover={{ color: 'gray.600' }}
 					onClick={() => router.push('/')}

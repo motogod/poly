@@ -176,5 +176,6 @@
 	"order_creation_failed": "Order creation failed",
 	"withdrawal_suceesfully": "Withdrawal suceesfully",
 	"withdrawl_failed": "Withdrawl failed",
-	"value_per_share": "Value per Share"
+	"value_per_share": "Value per Share",
+	"if_you_are_a_gmail_connected_user": "If you are a Gmail-Connected user, please click the 'Deposit from wallet instead' below to proceed with your deposit.'"
 }

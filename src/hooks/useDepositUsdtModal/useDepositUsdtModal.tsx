@@ -25,6 +25,8 @@ import {
 	InputGroup,
 	InputRightElement,
 	Collapse,
+	HStack,
+	Box,
 } from '@chakra-ui/react';
 import { HiQrcode } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
@@ -166,13 +168,43 @@ function useDepositUsdtModal() {
 		}
 	}, [isSuccess, pendingChainId]);
 
-	const renderTitleMsg = useCallback(() => {
-		if (selectedEther === 'ethereum') {
-			return t('send_usdt_ethereum_msg');
+	const renderTitleSection = useCallback(() => {
+		if (!isShowInputLayout) {
+			return (
+				<Text fontSize={'sm'} mb={'6px'}>
+					{`${
+						selectedEther === 'ethereum' ? t('send_usdt_ethereum_msg') : t('send_usdt_arbitrum_msg')
+					}`}
+				</Text>
+			);
 		}
 
-		return t('send_usdt_arbitrum_msg');
-	}, [selectedEther, t]);
+		return (
+			<Stack mb={'6px'}>
+				<HStack>
+					<Text fontSize={'sm'}>1.</Text>
+					<Text cursor={'pointer'} color={'blue.400'} fontSize={'sm'}>
+						<a id="buy_usdt" href="https://stg.ox.market/home" target="_blank">
+							{`${t('buy_usdt')} `}
+						</a>
+					</Text>
+					<Text fontSize={'sm'}>{t('on_binance_or_another_exchange')}</Text>
+				</HStack>
+				<HStack>
+					<p>
+						2.
+						<a
+							id="deposit_withdraw"
+							href="https://stg.ox.market/home"
+							target="_blank"
+							style={{ color: '#4299E1', cursor: 'pointer' }}
+						>{` ${t('deposit_withdraw')} `}</a>
+						<span style={{ color: 'black' }}>{t('uSDT_to_the_address_below')}</span>
+					</p>
+				</HStack>
+			</Stack>
+		);
+	}, [isShowInputLayout, t, selectedEther]);
 
 	// 顯示 Select 第二個選項要顯示 Arbitrum Sepolia or Arbitrum One
 	const renderArbitrumName = useCallback(() => {
@@ -381,9 +413,16 @@ function useDepositUsdtModal() {
 					</ModalHeader>
 					<ModalCloseButton _focus={{ boxShadow: 'none' }} size={'lg'} m={'16px'} />
 					<ModalBody>
-						<Text fontSize={'sm'} mb={'20px'}>
-							{renderTitleMsg()}
+						<Text fontSize={'sm'} mb={'6px'}>
+							{renderTitleSection()}
 						</Text>
+						{isShowInputLayout ? (
+							<Stack mb={'14px'} />
+						) : (
+							<Text color={'pink.400'} fontSize={'sm'} mb={'20px'}>
+								{t('if_you_are_a_gmail_connected_user')}
+							</Text>
+						)}
 						<Grid
 							flexDirection={'row'}
 							templateColumns={{
@@ -487,7 +526,7 @@ function useDepositUsdtModal() {
 			confirm,
 			renderConfirmText,
 			isChainOnEtherOrArbitrum,
-			renderTitleMsg,
+			renderTitleSection,
 			isLoading,
 			renderInputLayoutSection,
 			seleectedAsset,
