@@ -534,8 +534,8 @@ function BuyOrSellContent(props?: Props) {
 							setSelectedType(e.target.value as SelectedType);
 						}}
 					>
-						<option value="MARKET">{t('markets')}</option>
-						<option value="LIMIT">{t('limit')}</option>
+						<option value="MARKET">{t('market_price')}</option>
+						<option value="LIMIT">{t('price_limit')}</option>
 					</Select>
 					<Box
 						as={motion.div}

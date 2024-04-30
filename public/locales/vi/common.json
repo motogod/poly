@@ -181,5 +181,7 @@
 	"buy_usdt": "Buy USDT",
 	"on_binance_or_another_exchange": "on Binance or another exchange.",
 	"deposit_withdraw": "Deposit/Withdraw",
-	"uSDT_to_the_address_below": "USDT to the address below and select Ethereum or Artbitrum as the network."
+	"uSDT_to_the_address_below": "USDT to the address below and select Ethereum or Artbitrum as the network.",
+	"price_limit": "Limit",
+	"market_price": "Markets"
 }
