@@ -181,11 +181,11 @@ function useDepositUsdtModal() {
 
 		return (
 			<Stack>
-				<HStack>
-					<Stack w={'20px'}>
-						<Text>1.</Text>
+				<HStack align={'start'}>
+					<Stack>
+						<Text w={'15px'}>1.</Text>
 					</Stack>
-					<Stack ml={'-6px'} direction={'row'}>
+					<Stack direction={'row'}>
 						<Text>
 							<span>
 								{' '}
@@ -200,14 +200,14 @@ function useDepositUsdtModal() {
 						</Text>
 					</Stack>
 				</HStack>
-				<HStack>
-					<Stack w={'20px'}>
-						<Text>2.</Text>
+				<HStack align={'start'}>
+					<Stack>
+						<Text w={'15px'}>2.</Text>
 					</Stack>
+
 					<Stack direction={'row'}>
 						<Text>
-							<span>
-								{' '}
+							<span style={{ alignSelf: 'start' }}>
 								<a
 									id="deposit_withdraw"
 									href="https://stg.ox.market/home"
