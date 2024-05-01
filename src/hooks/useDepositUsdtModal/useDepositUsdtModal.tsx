@@ -169,7 +169,7 @@ function useDepositUsdtModal() {
 	}, [isSuccess, pendingChainId]);
 
 	const renderTitleSection = useCallback(() => {
-		if (!isShowInputLayout) {
+		if (isShowInputLayout) {
 			return (
 				<Text fontSize={'sm'} mb={'6px'}>
 					{`${
@@ -433,7 +433,7 @@ function useDepositUsdtModal() {
 						<Text fontSize={'sm'} mb={'6px'}>
 							{renderTitleSection()}
 						</Text>
-						{isShowInputLayout ? (
+						{!isShowInputLayout ? (
 							<Stack mb={'14px'} />
 						) : (
 							<Text color={'pink.400'} fontSize={'sm'} mb={'20px'}>
@@ -449,52 +449,56 @@ function useDepositUsdtModal() {
 							}}
 							gap={2}
 						>
-							<Stack>
-								<FormControl>
-									<FormLabel fontWeight={'800'}>{t('asset')}</FormLabel>
-									<Select
-										cursor={'pointer'}
-										_focusVisible={{
-											outline: 'none',
-										}}
-										disabled={true}
-										border={'1px'}
-										borderColor={'gray.200'}
-										bg={'gray.300'}
-										placeholder=""
-										size="md"
-										value={seleectedAsset}
-										onChange={e => console.log(e.target.value)}
-									>
-										<option value="ethereumAsset">USDT</option>
-										<option value="">USDT</option>
-									</Select>
-								</FormControl>
-							</Stack>
-							<Stack>
-								<FormControl>
-									<FormLabel fontWeight={'800'}>{t('network')}</FormLabel>
-									<Select
-										_hover={{ bg: 'gray.100' }}
-										cursor={'pointer'}
-										_focusVisible={{
-											outline: 'none',
-										}}
-										border={'1px'}
-										borderColor={'gray.200'}
-										bg={'#fff'}
-										placeholder=""
-										size="md"
-										value={selectedEther}
-										onChange={(e: any) => {
-											changeNetwork(e.target.value);
-										}}
-									>
-										<option value="ethereum">Ethereum</option>
-										<option value="arbitrum">{renderArbitrumName()}</option>
-									</Select>
-								</FormControl>
-							</Stack>
+							{isShowInputLayout && (
+								<>
+									<Stack>
+										<FormControl>
+											<FormLabel fontWeight={'800'}>{t('asset')}</FormLabel>
+											<Select
+												cursor={'pointer'}
+												_focusVisible={{
+													outline: 'none',
+												}}
+												disabled={true}
+												border={'1px'}
+												borderColor={'gray.200'}
+												bg={'gray.300'}
+												placeholder=""
+												size="md"
+												value={seleectedAsset}
+												onChange={e => console.log(e.target.value)}
+											>
+												<option value="ethereumAsset">USDT</option>
+												<option value="">USDT</option>
+											</Select>
+										</FormControl>
+									</Stack>
+									<Stack>
+										<FormControl>
+											<FormLabel fontWeight={'800'}>{t('network')}</FormLabel>
+											<Select
+												_hover={{ bg: 'gray.100' }}
+												cursor={'pointer'}
+												_focusVisible={{
+													outline: 'none',
+												}}
+												border={'1px'}
+												borderColor={'gray.200'}
+												bg={'#fff'}
+												placeholder=""
+												size="md"
+												value={selectedEther}
+												onChange={(e: any) => {
+													changeNetwork(e.target.value);
+												}}
+											>
+												<option value="ethereum">Ethereum</option>
+												<option value="arbitrum">{renderArbitrumName()}</option>
+											</Select>
+										</FormControl>
+									</Stack>
+								</>
+							)}
 						</Grid>
 						<FormControl mt={'10px'}>{renderInputLayoutSection()}</FormControl>
 					</ModalBody>
