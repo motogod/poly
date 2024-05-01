@@ -180,27 +180,44 @@ function useDepositUsdtModal() {
 		}
 
 		return (
-			<Stack mb={'6px'}>
+			<Stack>
 				<HStack>
-					<Text fontSize={'sm'}>1.</Text>
-					<Text cursor={'pointer'} color={'blue.400'} fontSize={'sm'}>
-						<a id="buy_usdt" href="https://stg.ox.market/home" target="_blank">
-							{`${t('buy_usdt')} `}
-						</a>
-					</Text>
-					<Text fontSize={'sm'}>{t('on_binance_or_another_exchange')}</Text>
+					<Stack w={'20px'}>
+						<Text>1.</Text>
+					</Stack>
+					<Stack ml={'-6px'} direction={'row'}>
+						<Text>
+							<span>
+								{' '}
+								<a
+									id="deposit_withdraw"
+									href="https://stg.ox.market/home"
+									target="_blank"
+									style={{ color: '#4299E1', cursor: 'pointer' }}
+								>{`${t('buy_usdt')} `}</a>
+							</span>
+							{t('on_binance_or_another_exchange')}
+						</Text>
+					</Stack>
 				</HStack>
 				<HStack>
-					<p>
-						2.
-						<a
-							id="deposit_withdraw"
-							href="https://stg.ox.market/home"
-							target="_blank"
-							style={{ color: '#4299E1', cursor: 'pointer' }}
-						>{` ${t('deposit_withdraw')} `}</a>
-						<span style={{ color: 'black' }}>{t('uSDT_to_the_address_below')}</span>
-					</p>
+					<Stack w={'20px'}>
+						<Text>2.</Text>
+					</Stack>
+					<Stack direction={'row'}>
+						<Text>
+							<span>
+								{' '}
+								<a
+									id="deposit_withdraw"
+									href="https://stg.ox.market/home"
+									target="_blank"
+									style={{ color: '#4299E1', cursor: 'pointer' }}
+								>{`${t('deposit')} `}</a>
+							</span>
+							{t('uSDT_to_the_address_below')}
+						</Text>
+					</Stack>
 				</HStack>
 			</Stack>
 		);
