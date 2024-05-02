@@ -44,6 +44,7 @@ import {
 	Tooltip,
 	Legend,
 } from 'recharts';
+import { useMediaQuery } from 'react-responsive';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { HiChartBar, HiClock } from 'react-icons/hi';
 import { LineChartTabsIntervalType } from '@/api';
@@ -132,6 +133,10 @@ function LineChartCard() {
 
 	const { t } = useTranslation();
 
+	const isDesktop = useMediaQuery({
+		query: '(min-width: 768px)',
+	});
+
 	const {
 		isMarketDetailLoading,
 		marketDetailData,
@@ -178,9 +183,12 @@ function LineChartCard() {
 	};
 
 	const checkIntervalDistance = (dataLength: number) => {
-		const distance = Math.floor(dataLength / 8);
-
-		return distance;
+		console.log('checkIntervalDistance isDesktop', isDesktop);
+		if (isDesktop) {
+			return Math.floor(dataLength / 8);
+		} else {
+			return Math.floor(dataLength / 4);
+		}
 	};
 
 	const renderLineChart = () => {

@@ -167,7 +167,7 @@ export default function LargeWithAppLinksAndSocial() {
 					justify={{ md: 'space-between' }}
 					align={{ md: 'center' }}
 				>
-					<Text>© 2024 gomarket.com</Text>
+					<Text>© 2024 ox.market</Text>
 				</Container>
 			</Box>
 		</Box>
