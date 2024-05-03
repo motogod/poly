@@ -101,8 +101,8 @@ const getMarkets = createAsyncThunk(
 					// 比較 timestamp 實際上只需要過濾結束時間，
 					if (userStartDate && userEndDate) {
 						if (
-							moment(value.endDate).unix() > userStartDate &&
-							moment(value.endDate).unix() < userEndDate
+							moment(value.endDate).unix() >= userStartDate &&
+							moment(value.endDate).unix() <= userEndDate
 						) {
 							filteredResultData.push(value);
 						}
