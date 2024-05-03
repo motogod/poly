@@ -15,7 +15,7 @@
 	"bet_on_markets_spotlight": "Bet on markets spotlight",
 	"view_more": "View More",
 	"connect_wallet": "Connect Wallet",
-	"how_it_works_desc": "To trade, you'll need to fund your account, If you already own crypto, you can deposit funds directly fro a wallet or exchange.",
+	"how_it_works_desc": "To trade, you'll need to fund your account, If you already own crypto, you can deposit funds directly from a wallet or exchange.",
 	"choose_a_market": "Choose a Market",
 	"place_a_bet": "Place a Bet",
 	"earn_if_you_are_right": "Earn if You're Right",
@@ -177,7 +177,7 @@
 	"withdrawal_suceesfully": "Withdrawal suceesfully",
 	"withdrawl_failed": "Withdrawl failed",
 	"value_per_share": "Value per Share",
-	"if_you_are_a_gmail_connected_user": "If you are a Gmail-Connected user, please click the 'Deposit from wallet instead' below to proceed with your deposit.",
+	"if_you_are_a_gmail_connected_user": "If you are a Gmail-Connected user, please click the 'Send from exchange instead' below to proceed with your deposit.",
 	"price_limit": "Limit",
 	"market_price": "Markets"
 }

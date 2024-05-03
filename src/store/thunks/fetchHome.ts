@@ -98,17 +98,14 @@ const getMarkets = createAsyncThunk(
 					}
 					break;
 				case 'date-custom':
-					// 比較 timestamp 實際上只需要過濾結束時間
-					if (userEndDate) {
-						if (moment(value.endDate).unix() < userEndDate) {
+					// 比較 timestamp 實際上只需要過濾結束時間，
+					if (userStartDate && userEndDate) {
+						if (
+							moment(value.endDate).unix() > userStartDate &&
+							moment(value.endDate).unix() < userEndDate
+						) {
 							filteredResultData.push(value);
 						}
-						// if (
-						// 	moment(value.startDate).unix() > userStartDate &&
-						// 	moment(value.endDate).unix() < userEndDate
-						// ) {
-						// 	filteredResultData.push(value);
-						// }
 					} else {
 						filteredResultData.push(value);
 					}
