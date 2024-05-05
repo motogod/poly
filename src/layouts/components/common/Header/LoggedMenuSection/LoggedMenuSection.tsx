@@ -64,7 +64,7 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 				{t('leaderboard')}
 			</Text>
 			<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
-				{t('how_it_works')}
+				{t('how_it_work_center')}
 			</Text>
 			<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
 				{t('affiliate')}

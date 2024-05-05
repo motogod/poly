@@ -187,7 +187,7 @@ function HeaderRightSideSection() {
 							fontSize="2xl"
 							color="gray.800"
 						>
-							{t('how_it_works')}
+							{t('how_it_work_center')}
 						</Text>
 						<Text
 							onClick={() => alert('Affilate')}

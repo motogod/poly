@@ -183,5 +183,9 @@
 	"deposit_withdraw": "Deposit/Withdraw",
 	"uSDT_to_the_address_below": "USDT to the address below and select Ethereum or Artbitrum as the network.",
 	"price_limit": "Limit",
-	"market_price": "Markets"
+	"market_price": "Markets",
+	"no_relevant_topic": "Markets is currently no relevant topic information",
+	"how_it_work_center": "How it Works",
+	"topic": "Thị trường",
+	"connected": "Connected"
 }

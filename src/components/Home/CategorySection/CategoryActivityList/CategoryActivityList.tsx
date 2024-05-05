@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, GridItem, ScaleFade, Text, Stack } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { CategoryCard, SkeletonCard } from '@/components/common';
@@ -9,6 +10,7 @@ import styles from './categoryActivityList.module.scss';
 const dummyArrayCount = [...Array(3)];
 
 function CategoryActivityList() {
+	const { t } = useTranslation();
 	const { isHomeCategorySectionMarketsLoading, homeCategorySectionMarkets } = useSelector(
 		(state: RootState) => state.homeReducer
 	);
@@ -46,7 +48,7 @@ function CategoryActivityList() {
 							color={'gray.500'}
 							fontSize={{ lg: '2xl', md: '2xl', sm: 'xl' }}
 						>
-							{`Markets is currently no relevant topic information`}
+							{t('no_relevant_topic')}
 						</Text>
 					</ScaleFade>
 				</Stack>

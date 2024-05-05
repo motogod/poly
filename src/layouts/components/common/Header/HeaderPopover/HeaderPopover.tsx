@@ -108,7 +108,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 					{t('leaderboard')}
 				</Text>
 				<Text onClick={() => alert('How it works')} cursor="pointer" fontSize="md" color="gray.800">
-					{t('how_it_works')}
+					{t('how_it_work_center')}
 				</Text>
 				<Text
 					onClick={() => alert('Affilate')}

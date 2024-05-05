@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Stack, Button, useToast, Input } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import {
 	useAccount,
@@ -32,6 +33,7 @@ interface loginTypes {
 }
 
 function Home({ homePage = true }) {
+	const { t } = useTranslation();
 	const { address, status, isConnected, isConnecting } = useAccount();
 	const { signInWithEthereum, connectWallet } = useSiwe();
 
@@ -109,7 +111,7 @@ function Home({ homePage = true }) {
 						bg={status === 'disconnected' || 'connecting' ? 'teal.500' : 'red.500'}
 						color="#fff"
 					>
-						{status === 'disconnected' || 'connecting' ? 'Connect Wallet' : 'isconnect'}
+						{status === 'disconnected' || 'connecting' ? t('connect_wallet') : t('connected')}
 					</Button>
 				</Stack>
 			) : null}

@@ -227,7 +227,7 @@ function OrderBookCard() {
 				})}
 				<Tr>
 					<Td h={50} bg={'gray.100'} letterSpacing={1}>{`${t('last')}:$${orderData.last}`}</Td>
-					<Td bg={'gray.100'} letterSpacing={1}>{`Spread:$${getSpreadPrice(
+					<Td bg={'gray.100'} letterSpacing={1}>{`${t('spread')}:$${getSpreadPrice(
 						orderData.asks,
 						orderData.bids
 					)}`}</Td>

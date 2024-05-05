@@ -163,7 +163,7 @@
 	"email": "Email",
 	"email_is_required": "Email is required.",
 	"withdrawal_failed": "Withdrawal failed",
-	"please_enter_a_avlid_address": "Please enter a avlid address that starts with '0x'",
+	"please_enter_a_avlid_address": "Please enter a valid address that starts with '0x'",
 	"name_must_be_lowercase": "Name must be lowercase",
 	"there_was_an_error_with_your_amount": "There was an error with your amount. Please try again.",
 	"you": "You",
@@ -183,5 +183,9 @@
 	"deposit_withdraw": "Deposit/Withdraw",
 	"uSDT_to_the_address_below": "USDT to the address below and select Ethereum or Artbitrum as the network.",
 	"price_limit": "Limit",
-	"market_price": "Markets"
+	"market_price": "Markets",
+	"no_relevant_topic": "Markets is currently no relevant topic information",
+	"how_it_work_center": "How it Works",
+	"topic": "Markets",
+	"connected": "Connected"
 }
