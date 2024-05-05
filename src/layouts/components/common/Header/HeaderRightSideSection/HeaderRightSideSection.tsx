@@ -239,15 +239,20 @@ function HeaderRightSideSection() {
 
 	return (
 		<Stack direction="row" alignItems="center" spacing={6}>
-			<Stack direction={'row'} align={'center'} spacing={'32px'}>
+			<Stack
+				direction={'row'}
+				align={'center'}
+				spacing={{ base: '8px', sm: '8px', md: '32px', lg: '32px' }}
+			>
 				{isAuthenticated ? (
 					<Stack
-						display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline-flex' }}
+						// display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline-flex' }}
 						direction={'row'}
 						align={'center'}
 						spacing={'16px'}
 					>
 						<Stack
+							display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline-flex' }}
 							p={'12px'}
 							_hover={{ bg: 'gray.100', p: '12px', borderRadius: 6 }}
 							onClick={() => router.push('/portfolio')}
@@ -261,6 +266,7 @@ function HeaderRightSideSection() {
 							</Heading>
 						</Stack>
 						<Stack
+							display={{ base: 'none', sm: 'none', md: 'none', lg: 'inline-flex' }}
 							p={'12px'}
 							_hover={{ bg: 'gray.100', p: '12px', borderRadius: 6 }}
 							onClick={() => router.push('/funds')}
@@ -274,11 +280,10 @@ function HeaderRightSideSection() {
 							</Heading>
 						</Stack>
 						<Button
-							// isLoading={contractIsLoading}
 							onClick={() => depositModalOnOpen()}
 							// w={'108px'}
-							h={'40px'}
-							size="md"
+							// h={'40px'}
+							size={'md'}
 							colorScheme="teal"
 						>
 							{t('deposit')}
