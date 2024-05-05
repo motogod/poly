@@ -55,7 +55,11 @@ function useDepositUsdtModal() {
 	const [inputValue, setInputValue] = useState<string>('');
 	const [debounceInputValue] = useDebounce(inputValue, 500);
 
-	const [isShowInputLayout, setIsShowInputLayout] = useState(true);
+	const { origin } = useSelector((state: RootState) => state.authReducer.user);
+
+	const isWalletLogin = origin === 'google' ? false : true;
+
+	const [isShowInputLayout, setIsShowInputLayout] = useState(isWalletLogin);
 	const [isCopied, setIsCopied] = useState(false);
 
 	const { proxyWallet } = useSelector((state: RootState) => state.authReducer.userProfile);
@@ -115,8 +119,8 @@ function useDepositUsdtModal() {
 	useEffect(() => {
 		// 開啟 Modal 資料恢復為預設
 		setInputValue('');
-		setIsShowInputLayout(true);
-	}, [isOpen]);
+		setIsShowInputLayout(isWalletLogin);
+	}, [isOpen, isWalletLogin]);
 
 	useEffect(() => {
 		// disaptch(getCategories());
@@ -169,6 +173,7 @@ function useDepositUsdtModal() {
 	}, [isSuccess, pendingChainId]);
 
 	const renderTitleSection = useCallback(() => {
+		console.log('See isShowInputLayout', isShowInputLayout);
 		if (isShowInputLayout) {
 			return (
 				<Text fontSize={'sm'} mb={'6px'}>
@@ -436,9 +441,10 @@ function useDepositUsdtModal() {
 						{!isShowInputLayout ? (
 							<Stack mb={'14px'} />
 						) : (
-							<Text color={'pink.400'} fontSize={'sm'} mb={'20px'}>
-								{t('if_you_are_a_gmail_connected_user')}
-							</Text>
+							<Stack mb={'14px'} />
+							// <Text color={'pink.400'} fontSize={'sm'} mb={'20px'}>
+							// 	{t('if_you_are_a_gmail_connected_user')}
+							// </Text>
 						)}
 						<Grid
 							flexDirection={'row'}
@@ -518,7 +524,7 @@ function useDepositUsdtModal() {
 									{renderConfirmText()}
 								</Button>
 							)}
-							<Text
+							{/* <Text
 								mt={'12px'}
 								onClick={() => setIsShowInputLayout(value => !value)}
 								cursor={'pointer'}
@@ -528,7 +534,7 @@ function useDepositUsdtModal() {
 								{isShowInputLayout
 									? t('send_from_exchange_instead')
 									: t('deposit_from_wallet_instead')}
-							</Text>
+							</Text> */}
 						</Stack>
 					</ModalFooter>
 				</ModalContent>
