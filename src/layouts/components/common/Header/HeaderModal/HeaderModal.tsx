@@ -84,7 +84,7 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 						>
 							{t('affiliate')}
 						</Text>
-						<Link href="https://t.me/+0U48zkxj9Lw5NTc1">
+						<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal>
 							<Heading mt={'60px'} size={'md'} color={'gray.800'}>
 								{t('community')}
 							</Heading>
