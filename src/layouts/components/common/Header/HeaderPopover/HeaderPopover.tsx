@@ -17,6 +17,7 @@ import {
 	Icon,
 	Button,
 	PopoverBody,
+	Link,
 } from '@chakra-ui/react';
 import { BiSolidUserCircle, BiMenuAltLeft } from 'react-icons/bi';
 import LoggedInfoSection from '../LoggedInfoSection';
@@ -74,7 +75,9 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 						<Heading size={'sx'} color={'gray.800'} fontWeight={'800'}>
 							{t('community')}
 						</Heading>
-						<Icon mt={'16px'} cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} />
+						<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal>
+							<Icon mt={'16px'} cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} />
+						</Link>
 					</PopoverFooter>
 				</>
 			);
@@ -122,7 +125,9 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 				<Heading mt={'60px'} size={'md'} color={'gray.800'}>
 					{t('community')}
 				</Heading>
-				<Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} mt={'16px'} />
+				<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal>
+					<Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} mt={'16px'} />
+				</Link>
 			</Stack>
 		);
 	};

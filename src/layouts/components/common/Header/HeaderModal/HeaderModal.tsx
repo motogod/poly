@@ -22,6 +22,7 @@ import {
 	PopoverBody,
 	PopoverFooter,
 	Icon,
+	Link,
 } from '@chakra-ui/react';
 import { BiWalletAlt, BiSolidUserCircle, BiMenuAltLeft } from 'react-icons/bi';
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
@@ -83,9 +84,11 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 						>
 							{t('affiliate')}
 						</Text>
-						<Heading mt={'60px'} size={'md'} color={'gray.800'}>
-							{t('community')}
-						</Heading>
+						<Link href="https://t.me/+0U48zkxj9Lw5NTc1">
+							<Heading mt={'60px'} size={'md'} color={'gray.800'}>
+								{t('community')}
+							</Heading>
+						</Link>
 						<Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} mt={'16px'} />
 					</Stack>
 				</ModalBody>

@@ -14,6 +14,7 @@ import {
 	Heading,
 	Select,
 	Icon,
+	Link,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -145,7 +146,9 @@ export default function LargeWithAppLinksAndSocial() {
 					<Stack align={'flex-start'}>
 						<ListHeader>{t('support')}</ListHeader>
 						{/* <Icon cursor={'pointer'} as={SocialIcon} w={'36px'} h={'36px'} /> */}
-						<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
+						<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal>
+							<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
+						</Link>
 						{/* <AppStoreBadge />
 		        <PlayStoreBadge /> */}
 					</Stack>

@@ -29,6 +29,7 @@ import {
 	PopoverArrow,
 	PopoverCloseButton,
 	PopoverAnchor,
+	Link,
 } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -128,7 +129,9 @@ function HeaderRightSideSection() {
 							<Heading mt={'0px'} mb={'16px'} size={'xs'} color={'gray.800'}>
 								{t('community')}
 							</Heading>
-							<Image src={SocialPng} width={36} height={36} alt="socialPng" />
+							<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal>
+								<Image src={SocialPng} width={36} height={36} alt="socialPng" />
+							</Link>
 						</Stack>
 						<ModalFooter h={'100px'} />
 					</ModalBody>
@@ -201,7 +204,9 @@ function HeaderRightSideSection() {
 						<Heading mt={'60px'} size={'md'} color={'gray.800'} mb={'16px'}>
 							{t('community')}
 						</Heading>
-						<Image src={SocialPng} width={36} height={36} alt="socialPng" />
+						<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal>
+							<Image src={SocialPng} width={36} height={36} alt="socialPng" />
+						</Link>
 						{/* <Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} mt={'16px'} /> */}
 					</Stack>
 				</ModalBody>
