@@ -130,14 +130,15 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 	return (
 		<>
 			<Popover
-				placement="bottom-start"
-				// isOpen={isPopOpen}
+				placement="bottom-end"
+				isOpen={isPopOpen}
 				// onClose={() => {
 				// 	onPopClose();
 				// }}
 			>
 				<PopoverTrigger>
 					<Button
+						onClick={onToggle}
 						cursor={'pointer'}
 						w={'74px'}
 						h={'38px'}

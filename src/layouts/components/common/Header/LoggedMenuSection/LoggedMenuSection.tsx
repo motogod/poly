@@ -60,13 +60,34 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 			>
 				{t('markets')}
 			</Text>
-			<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
+			<Text
+				onClick={() => {
+					close();
+				}}
+				cursor={'pointer'}
+				size={'md'}
+				color={'gray.800'}
+			>
 				{t('leaderboard')}
 			</Text>
-			<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
+			<Text
+				onClick={() => {
+					close();
+				}}
+				cursor={'pointer'}
+				size={'md'}
+				color={'gray.800'}
+			>
 				{t('how_it_work_center')}
 			</Text>
-			<Text cursor={'pointer'} size={'md'} color={'gray.800'}>
+			<Text
+				onClick={() => {
+					close();
+				}}
+				cursor={'pointer'}
+				size={'md'}
+				color={'gray.800'}
+			>
 				{t('affiliate')}
 			</Text>
 			<Text
