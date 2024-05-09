@@ -17,9 +17,17 @@ function CategoryActivityList() {
 
 	const length = homeCategorySectionMarkets.length;
 
-	if (isHomeCategorySectionMarketsLoading) {
+	// if (isHomeCategorySectionMarketsLoading) {
+	if (true) {
 		return (
-			<Grid templateColumns={'repeat(3, 1fr)'} gap={6}>
+			<Grid
+				templateColumns={{
+					lg: length > 0 ? 'repeat(3, 1fr)' : 'repeat(1, 1fr)',
+					md: length > 0 ? 'repeat(2, 1fr)' : 'repeat(1, 1fr)',
+					sm: 'repeat(1, 1fr)',
+				}}
+				gap={6}
+			>
 				{dummyArrayCount.map((value, index) => {
 					return <SkeletonCard key={index} />;
 				})}
