@@ -17,8 +17,7 @@ function CategoryActivityList() {
 
 	const length = homeCategorySectionMarkets.length;
 
-	// if (isHomeCategorySectionMarketsLoading) {
-	if (true) {
+	if (isHomeCategorySectionMarketsLoading) {
 		return (
 			<Grid
 				templateColumns={{
