@@ -16,6 +16,7 @@ import {
 	Collapse,
 	Text,
 	Icon,
+	Toast,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { HiChartBar } from 'react-icons/hi';
@@ -723,6 +724,27 @@ function BuyOrSellContent(props?: Props) {
 					isLoading={isTradeOrdersLoading}
 					onClick={() => {
 						if (isAuthenticated) {
+							dispatch(
+								showToast({
+									title: JSON.stringify({
+										type: selectedType,
+										direction: isBuy ? 'BUY' : 'SELL',
+										outcome: isUserClickYesOrNo ? 'YES' : 'NO',
+										marketId: marketDetailData?.id,
+										price:
+											selectedType === 'MARKET'
+												? isUserClickYesOrNo
+													? marketDetailData?.outcome?.yes
+													: marketDetailData?.outcome?.no
+												: Number(limiInputValue),
+										quantity: isUserClickYesOrNo
+											? Number(shareInputValue.toFixed(2))
+											: Number(shareInputValue.toFixed(2)),
+									}),
+									isSuccess: true,
+								})
+							);
+
 							dispatch(
 								tradeOrders({
 									type: selectedType,

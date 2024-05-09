@@ -21,7 +21,8 @@ function ToastContext({ children }: Props) {
 					title: toastTitle,
 					position: 'top',
 					status: 'success',
-					duration: 5000,
+					// duration: 5000,
+					duration: 300000,
 					isClosable: true,
 				});
 			} else {
@@ -29,7 +30,8 @@ function ToastContext({ children }: Props) {
 					title: toastTitle,
 					position: 'top',
 					status: 'error',
-					duration: 5000,
+					// duration: 5000,
+					duration: 300000,
 					isClosable: true,
 				});
 			}
