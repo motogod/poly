@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
-import { Heading, Stack } from '@chakra-ui/react';
+import { Heading, Stack, Link } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, getUserFunds, RootState, getPortfolioValue } from '@/store';
@@ -78,15 +78,21 @@ function Header() {
 				>
 					{t('markets')}
 				</Heading>
-				<Heading
-					_hover={{ color: 'gray.600' }}
-					display={{ lg: 'inline', md: 'none', sm: 'none' }}
-					cursor="pointer"
-					size="sm"
-					color="gray.800"
+				<Link
+					href="https://oxmarket.gitbook.io/howitworks"
+					isExternal
+					_hover={{ textDecoration: 'none' }}
 				>
-					{t('how_it_works')}
-				</Heading>
+					<Heading
+						_hover={{ color: 'gray.600' }}
+						display={{ lg: 'inline', md: 'none', sm: 'none' }}
+						cursor="pointer"
+						size="sm"
+						color="gray.800"
+					>
+						{t('how_it_works')}
+					</Heading>
+				</Link>
 			</Stack>
 			<HeaderRightSideSection />
 		</Stack>

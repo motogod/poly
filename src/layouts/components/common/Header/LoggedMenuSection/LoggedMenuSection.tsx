@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useDisconnect } from 'wagmi';
 import { useSession, signOut } from 'next-auth/react';
-import { Stack, Text } from '@chakra-ui/react';
+import { Stack, Text, Link } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { logout, AppDispatch } from '@/store';
 
@@ -60,36 +60,22 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 			>
 				{t('markets')}
 			</Text>
-			<Text
-				onClick={() => {
-					close();
-				}}
-				cursor={'pointer'}
-				size={'md'}
-				color={'gray.800'}
+			<Link
+				href="https://oxmarket.gitbook.io/howitworks"
+				isExternal
+				_hover={{ textDecoration: 'none' }}
 			>
-				{t('leaderboard')}
-			</Text>
-			<Text
-				onClick={() => {
-					close();
-				}}
-				cursor={'pointer'}
-				size={'md'}
-				color={'gray.800'}
-			>
-				{t('how_it_work_center')}
-			</Text>
-			<Text
-				onClick={() => {
-					close();
-				}}
-				cursor={'pointer'}
-				size={'md'}
-				color={'gray.800'}
-			>
-				{t('affiliate')}
-			</Text>
+				<Text
+					onClick={() => {
+						close();
+					}}
+					cursor={'pointer'}
+					size={'md'}
+					color={'gray.800'}
+				>
+					{t('how_it_work_center')}
+				</Text>
+			</Link>
 			<Text
 				cursor={'pointer'}
 				onClick={() => {

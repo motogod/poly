@@ -59,32 +59,20 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 						>
 							{t('markets')}
 						</Text>
-						<Text
-							onClick={() => alert('Leaderboard')}
-							cursor="pointer"
-							fontSize="2xl"
-							color="gray.800"
+						<Link
+							href="https://oxmarket.gitbook.io/howitworks"
+							isExternal
+							_hover={{ textDecoration: 'none' }}
 						>
-							{t('leaderboard')}
-						</Text>
-						<Text
-							onClick={() => alert('How it works')}
-							cursor="pointer"
-							fontSize="2xl"
-							color="gray.800"
+							<Text cursor="pointer" fontSize="2xl" color="gray.800">
+								{t('how_it_works')}
+							</Text>
+						</Link>
+						<Link
+							href="https://t.me/+0U48zkxj9Lw5NTc1"
+							isExternal
+							_hover={{ textDecoration: 'none' }}
 						>
-							{t('how_it_works')}
-						</Text>
-						<Text
-							onClick={() => alert('Affilate')}
-							cursor="pointer"
-							fontSize="2xl"
-							color="gray.800"
-							fontWeight={'400'}
-						>
-							{t('affiliate')}
-						</Text>
-						<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal>
 							<Heading mt={'60px'} size={'md'} color={'gray.800'}>
 								{t('community')}
 							</Heading>

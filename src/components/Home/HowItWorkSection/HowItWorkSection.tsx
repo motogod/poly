@@ -1,4 +1,15 @@
-import { Center, Heading, Stack, Text, Grid, GridItem, Button, Icon, Box } from '@chakra-ui/react';
+import {
+	Center,
+	Heading,
+	Stack,
+	Text,
+	Grid,
+	GridItem,
+	Button,
+	Icon,
+	Box,
+	Link,
+} from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
@@ -24,9 +35,15 @@ function HowItWorkSection() {
 			<Stack mt={{ sm: '48px', md: '48px', lg: '120px' }} backgroundColor="gray.800">
 				<Stack px={paddingMainHorizontal}>
 					<Center>
-						<Heading mt="20" color="gray.50" size="xl">
-							{t('how_it_works')}
-						</Heading>
+						<Link
+							href="https://oxmarket.gitbook.io/howitworks"
+							isExternal
+							_hover={{ textDecoration: 'none' }}
+						>
+							<Heading mt="20" color="gray.50" size="xl">
+								{t('how_it_works')}
+							</Heading>
+						</Link>
 					</Center>
 					<Stack mt={{ md: '20', sm: '10' }} mb={{ md: '20', sm: '10' }} px={{ md: '40', sm: '6' }}>
 						<Grid templateColumns={{ md: 'repeat(2, 1fr)', sm: 'repeat(1, 1fr)' }} gap={5}>
@@ -75,15 +92,15 @@ function HowItWorkSection() {
 						</Grid>
 					</Stack>
 					<Center mb="40">
-						<Button
-							onClick={() => alert('Learn More')}
-							px="7"
-							py="6"
-							borderRadius="3xl"
-							colorScheme="teal"
+						<Link
+							href="https://oxmarket.gitbook.io/howitworks"
+							isExternal
+							_hover={{ textDecoration: 'none' }}
 						>
-							{t('learn_more')}
-						</Button>
+							<Button px="7" py="6" borderRadius="3xl" colorScheme="teal">
+								{t('learn_more')}
+							</Button>
+						</Link>
 					</Center>
 				</Stack>
 			</Stack>

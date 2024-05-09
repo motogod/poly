@@ -75,7 +75,11 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 						<Heading size={'sx'} color={'gray.800'} fontWeight={'800'}>
 							{t('community')}
 						</Heading>
-						<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal>
+						<Link
+							href="https://t.me/+0U48zkxj9Lw5NTc1"
+							isExternal
+							_hover={{ textDecoration: 'none' }}
+						>
 							<Icon mt={'16px'} cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} />
 						</Link>
 					</PopoverFooter>
@@ -107,25 +111,19 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 				>
 					{t('markets')}
 				</Text>
-				<Text onClick={() => alert('Leaderboard')} cursor="pointer" size={'md'} color={'gray.800'}>
-					{t('leaderboard')}
-				</Text>
-				<Text onClick={() => alert('How it works')} cursor="pointer" fontSize="md" color="gray.800">
-					{t('how_it_work_center')}
-				</Text>
-				<Text
-					onClick={() => alert('Affilate')}
-					cursor="pointer"
-					fontSize="md"
-					color="gray.800"
-					fontWeight={'400'}
+				<Link
+					href="https://oxmarket.gitbook.io/howitworks"
+					isExternal
+					_hover={{ textDecoration: 'none' }}
 				>
-					{t('affiliate')}
-				</Text>
+					<Text cursor="pointer" fontSize="md" color="gray.800">
+						{t('how_it_work_center')}
+					</Text>
+				</Link>
 				<Heading mt={'60px'} size={'md'} color={'gray.800'}>
 					{t('community')}
 				</Heading>
-				<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal>
+				<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal _hover={{ textDecoration: 'none' }}>
 					<Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} mt={'16px'} />
 				</Link>
 			</Stack>

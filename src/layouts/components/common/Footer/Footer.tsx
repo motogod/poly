@@ -132,21 +132,31 @@ export default function LargeWithAppLinksAndSocial() {
 
 					<Stack align={'flex-start'}>
 						<ListHeader>{t('markets')}</ListHeader>
-						<Box as="a" href={'#'} _hover={{ color: 'gray.600' }}>
-							{t('how_it_works')}
-						</Box>
-						<Box as="a" href={'#'} _hover={{ color: 'gray.600' }}>
-							{t('faq')}
-						</Box>
-						<Box as="a" href={'#'} _hover={{ color: 'gray.600' }}>
+						<Link
+							href="https://oxmarket.gitbook.io/howitworks"
+							isExternal
+							_hover={{ textDecoration: 'none' }}
+						>
+							<Box as="a" _hover={{ color: 'gray.600' }}>
+								{t('how_it_works')}
+							</Box>
+						</Link>
+						<Box as="a" _hover={{ color: 'gray.600' }}>
 							{t('privacy_policy')}
+						</Box>
+						<Box as="a" _hover={{ color: 'gray.600' }}>
+							{t('terms_of_use')}
 						</Box>
 					</Stack>
 
 					<Stack align={'flex-start'}>
 						<ListHeader>{t('support')}</ListHeader>
 						{/* <Icon cursor={'pointer'} as={SocialIcon} w={'36px'} h={'36px'} /> */}
-						<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal>
+						<Link
+							href="https://t.me/+0U48zkxj9Lw5NTc1"
+							isExternal
+							_hover={{ textDecoration: 'none' }}
+						>
 							<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
 						</Link>
 						{/* <AppStoreBadge />

@@ -196,9 +196,9 @@ function useDepositUsdtModal() {
 								{' '}
 								<a
 									id="deposit_withdraw"
-									href="https://stg.ox.market/home"
+									// href="https://stg.ox.market/home"
 									target="_blank"
-									style={{ color: '#4299E1', cursor: 'pointer' }}
+									// style={{ color: '#4299E1', cursor: 'pointer' }}
 								>{`${t('buy_usdt')} `}</a>
 							</span>
 							{t('on_binance_or_another_exchange')}
@@ -215,7 +215,7 @@ function useDepositUsdtModal() {
 							<span style={{ alignSelf: 'start' }}>
 								<a
 									id="deposit_withdraw"
-									href="https://stg.ox.market/home"
+									href="https://oxmarket.gitbook.io/howitworks/welcome-to-oxmarket/how-to-deposit/deposit-from-binance"
 									target="_blank"
 									style={{ color: '#4299E1', cursor: 'pointer' }}
 								>{`${t('deposit')} `}</a>

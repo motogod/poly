@@ -129,7 +129,11 @@ function HeaderRightSideSection() {
 							<Heading mt={'0px'} mb={'16px'} size={'xs'} color={'gray.800'}>
 								{t('community')}
 							</Heading>
-							<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal>
+							<Link
+								href="https://t.me/+0U48zkxj9Lw5NTc1"
+								isExternal
+								_hover={{ textDecoration: 'none' }}
+							>
 								<Image src={SocialPng} width={36} height={36} alt="socialPng" />
 							</Link>
 						</Stack>
@@ -176,35 +180,23 @@ function HeaderRightSideSection() {
 						>
 							{t('markets')}
 						</Text>
-						<Text
-							onClick={() => alert('Leaderboard')}
-							cursor="pointer"
-							fontSize="2xl"
-							color="gray.800"
+						<Link
+							href="https://oxmarket.gitbook.io/howitworks"
+							isExternal
+							_hover={{ textDecoration: 'none' }}
 						>
-							{t('leaderboard')}
-						</Text>
-						<Text
-							onClick={() => alert('How it works')}
-							cursor="pointer"
-							fontSize="2xl"
-							color="gray.800"
-						>
-							{t('how_it_work_center')}
-						</Text>
-						<Text
-							onClick={() => alert('Affilate')}
-							cursor="pointer"
-							fontSize="2xl"
-							color="gray.800"
-							fontWeight={'400'}
-						>
-							{t('affiliate')}
-						</Text>
+							<Text cursor="pointer" fontSize="2xl" color="gray.800">
+								{t('how_it_work_center')}
+							</Text>
+						</Link>
 						<Heading mt={'60px'} size={'md'} color={'gray.800'} mb={'16px'}>
 							{t('community')}
 						</Heading>
-						<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal>
+						<Link
+							href="https://t.me/+0U48zkxj9Lw5NTc1"
+							isExternal
+							_hover={{ textDecoration: 'none' }}
+						>
 							<Image src={SocialPng} width={36} height={36} alt="socialPng" />
 						</Link>
 						{/* <Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} mt={'16px'} /> */}
@@ -305,14 +297,6 @@ function HeaderRightSideSection() {
 							color="gray.800"
 						>
 							{t('connect')}
-						</Heading>
-						<Heading
-							display={{ lg: 'inline', md: 'none', sm: 'none' }}
-							cursor="pointer"
-							size="sm"
-							color="gray.800"
-						>
-							{t('leaderboard')}
 						</Heading>
 					</>
 				)}

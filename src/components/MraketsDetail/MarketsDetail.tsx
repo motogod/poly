@@ -27,7 +27,7 @@ import BuyOrSellCard from './BuyOrSellCard';
 import BuyOrSellButton from './Buttons/BuyOrSellButton';
 import BuyOrSellModal from './BuyOrSellModal';
 import { TransactionEnum } from './type';
-import { zIndexMarket } from '@/utils/zIndex';
+import { zIndexMarket, zIndexBuyOrSellModal } from '@/utils/zIndex';
 
 const empty_array = [...Array(13)];
 
@@ -109,8 +109,15 @@ function MarketsDetail() {
 				/>
 			</Stack>
 			<Modal preserveScrollBarGap size={'4xl'} isOpen={isModalOpen} onClose={onClose}>
-				<ModalOverlay />
-				<ModalContent marginBottom={0} alignSelf={'flex-end'} borderRadius={'20px 20px 0px 0px'}>
+				<ModalOverlay zIndex={zIndexBuyOrSellModal} />
+				<ModalContent
+					containerProps={{
+						zIndex: zIndexBuyOrSellModal,
+					}}
+					marginBottom={0}
+					alignSelf={'flex-end'}
+					borderRadius={'20px 20px 0px 0px'}
+				>
 					<ModalHeader fontWeight="700" color="gray.800"></ModalHeader>
 					<ModalCloseButton size="lg" mt={1} mr={2} />
 					<ModalBody overflowY={'scroll'}>
