@@ -36,7 +36,7 @@
 	"ends_this_month": "本月結束",
 	"custom": "定制",
 	"start_date": "开始日期",
-	"apply": "申请",
+	"apply": "确定",
 	"clear_all": "清除全部",
 	"done": "完成",
 	"trending": "热门",
@@ -77,7 +77,7 @@
 	"history": "历史纪录",
 	"portfolio_table_title_msg": "一旦您的订单创建完成，将会在 30 到 60 秒后出现。",
 	"active": "激活",
-	"claim": "索取",
+	"claim": "領取",
 	"trade": "交易",
 	"pending": "待处理",
 	"action": "操作",
@@ -153,7 +153,7 @@
 	"tools_wrap": "工具 // Wrap",
 	"toggle": "切换 // Wrap",
 	"check": "確認",
-	"default": "預設",
+	"default": "默认",
 	"above": "以上",
 	"below": "以下",
 	"no_results_found": "无结果",
@@ -188,5 +188,5 @@
 	"how_it_work_center": "说明中心",
 	"topic": "题目",
 	"connected": "已连接",
-	"terms_of_use": "Terms of Use"
+	"terms_of_use": "使用条款"
 }
