@@ -383,6 +383,25 @@ function useDepositUsdtModal() {
 		t,
 	]);
 
+	// 虛擬錢包登入的狀況下，要顯示可以切換的字體跟切換版面功能
+	const renderFooterText = useCallback(() => {
+		if (isWalletLogin) {
+			return (
+				<Text
+					mt={'12px'}
+					onClick={() => setIsShowInputLayout(value => !value)}
+					cursor={'pointer'}
+					fontWeight={'bold'}
+					color={'teal.500'}
+				>
+					{isShowInputLayout ? t('send_from_exchange_instead') : t('deposit_from_wallet_instead')}
+				</Text>
+			);
+		}
+
+		return null;
+	}, [isShowInputLayout, isWalletLogin, t]);
+
 	const confirm = useCallback(() => {
 		// 若在其他鏈上 不做交易 先讓使用者切換到 Arbitrum
 		if (!isChainOnEtherOrArbitrum()) {
@@ -512,29 +531,21 @@ function useDepositUsdtModal() {
 					<ModalFooter>
 						<Stack w={'100%'} align={'center'}>
 							{isShowInputLayout && (
-								<Button
-									isLoading={isLoading}
-									isDisabled={isChainOnEtherOrArbitrum() && !inputValue}
-									w={'100%'}
-									colorScheme="teal"
-									// bg={'teal.500'}
-									// color="#fff"
-									onClick={() => confirm()}
-								>
-									{renderConfirmText()}
-								</Button>
+								<>
+									<Button
+										isLoading={isLoading}
+										isDisabled={isChainOnEtherOrArbitrum() && !inputValue}
+										w={'100%'}
+										colorScheme="teal"
+										// bg={'teal.500'}
+										// color="#fff"
+										onClick={() => confirm()}
+									>
+										{renderConfirmText()}
+									</Button>
+								</>
 							)}
-							{/* <Text
-								mt={'12px'}
-								onClick={() => setIsShowInputLayout(value => !value)}
-								cursor={'pointer'}
-								fontWeight={'bold'}
-								color={'teal.500'}
-							>
-								{isShowInputLayout
-									? t('send_from_exchange_instead')
-									: t('deposit_from_wallet_instead')}
-							</Text> */}
+							{renderFooterText()}
 						</Stack>
 					</ModalFooter>
 				</ModalContent>
@@ -563,6 +574,7 @@ function useDepositUsdtModal() {
 			msgModalIsOpen,
 			msgModalDom,
 			t,
+			renderFooterText,
 		]
 	);
 
