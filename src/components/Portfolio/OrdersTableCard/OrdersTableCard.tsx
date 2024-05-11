@@ -83,11 +83,11 @@ function OrdersTableCard() {
 		return (
 			<Button
 				isLoading={userClickDeleteOrderId === orderId && isDeleteOrderLoading}
-				isDisabled={status !== 'PENDING' && status !== 'PARTIALLY_FILLED'}
+				isDisabled={status !== 'PENDING' && status !== 'PARTIALLY_FILLED' && status !== 'EXPIRED'}
 				onClick={e => {
 					e.stopPropagation();
 					// Delete
-					if (status === 'PENDING' || status === 'PARTIALLY_FILLED') {
+					if (status === 'PENDING' || status === 'PARTIALLY_FILLED' || status === 'EXPIRED') {
 						setUserClickDeleteOrderId(orderId);
 						dispatch(deleteOrder({ id: orderId }));
 					}
