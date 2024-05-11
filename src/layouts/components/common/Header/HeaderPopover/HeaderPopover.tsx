@@ -120,18 +120,11 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 						{t('how_it_work_center')}
 					</Text>
 				</Link>
-				<Heading mt={'20px'} size={'md'} color={'gray.800'}>
+				<Heading mt={'60px'} size={'md'} color={'gray.800'}>
 					{t('community')}
 				</Heading>
 				<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal _hover={{ textDecoration: 'none' }}>
-					<Icon
-						cursor={'pointer'}
-						as={CommunityIcon}
-						w={'36px'}
-						h={'36px'}
-						mt={'6px'}
-						mb={'10px'}
-					/>
+					<Icon cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} mt={'16px'} />
 				</Link>
 			</Stack>
 		);
