@@ -729,15 +729,15 @@ function BuyOrSellContent(props?: Props) {
 									title: JSON.stringify({
 										type: selectedType,
 										direction: isBuy ? 'BUY' : 'SELL',
-										outcome: isUserClickYesOrNo ? 'YES' : 'NO',
+										outcome: isYes ? 'YES' : 'NO',
 										marketId: marketDetailData?.id,
 										price:
 											selectedType === 'MARKET'
-												? isUserClickYesOrNo
+												? isYes
 													? marketDetailData?.outcome?.yes
 													: marketDetailData?.outcome?.no
 												: Number(limiInputValue),
-										quantity: isUserClickYesOrNo
+										quantity: isYes
 											? Number(shareInputValue.toFixed(2))
 											: Number(shareInputValue.toFixed(2)),
 									}),
@@ -749,15 +749,15 @@ function BuyOrSellContent(props?: Props) {
 								tradeOrders({
 									type: selectedType,
 									direction: isBuy ? 'BUY' : 'SELL',
-									outcome: isUserClickYesOrNo ? 'YES' : 'NO',
+									outcome: isYes ? 'YES' : 'NO',
 									marketId: marketDetailData?.id,
 									price:
 										selectedType === 'MARKET'
-											? isUserClickYesOrNo
+											? isYes
 												? marketDetailData?.outcome?.yes
 												: marketDetailData?.outcome?.no
 											: Number(limiInputValue),
-									quantity: isUserClickYesOrNo
+									quantity: isYes
 										? Number(shareInputValue.toFixed(2))
 										: Number(shareInputValue.toFixed(2)),
 								})
