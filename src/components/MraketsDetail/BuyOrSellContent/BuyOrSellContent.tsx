@@ -725,27 +725,6 @@ function BuyOrSellContent(props?: Props) {
 					onClick={() => {
 						if (isAuthenticated) {
 							dispatch(
-								showToast({
-									title: JSON.stringify({
-										type: selectedType,
-										direction: isBuy ? 'BUY' : 'SELL',
-										outcome: isYes ? 'YES' : 'NO',
-										marketId: marketDetailData?.id,
-										price:
-											selectedType === 'MARKET'
-												? isYes
-													? marketDetailData?.outcome?.yes
-													: marketDetailData?.outcome?.no
-												: Number(limiInputValue),
-										quantity: isYes
-											? Number(shareInputValue.toFixed(2))
-											: Number(shareInputValue.toFixed(2)),
-									}),
-									isSuccess: true,
-								})
-							);
-
-							dispatch(
 								tradeOrders({
 									type: selectedType,
 									direction: isBuy ? 'BUY' : 'SELL',
