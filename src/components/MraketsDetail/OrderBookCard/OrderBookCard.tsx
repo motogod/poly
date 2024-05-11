@@ -194,7 +194,6 @@ function OrderBookCard() {
 									fontSize={'md'}
 									color={'gray.700'}
 									fontWeight={'500'}
-									lineHeight={'20px'}
 								>
 									<Stack
 										justifyContent={'center'}
@@ -206,19 +205,13 @@ function OrderBookCard() {
 										<Text pl={6}>Ask</Text>
 									</Stack>
 								</Td>
-								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
+								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'}>
 									{`$${value.price}`}
 								</Td>
-								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} lineHeight={'20px'}>
+								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'}>
 									{value.quantity.toFixed(2)}
 								</Td>
-								<Td
-									fontSize={'md'}
-									color={'gray.700'}
-									fontWeight={'500'}
-									lineHeight={'20px'}
-									isNumeric
-								>
+								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'} isNumeric>
 									{`$${asksAccumulationTotalPrice[index].toFixed(2)}`}
 								</Td>
 							</Tr>
