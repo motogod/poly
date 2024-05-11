@@ -192,18 +192,16 @@ function OrderBookCard() {
 									p={0}
 									position={'relative'}
 									fontSize={'md'}
-									color={'gray.700'}
 									fontWeight={'500'}
 									lineHeight={'20px'}
 								>
 									<Stack
 										justifyContent={'center'}
-										// position={'absolute'}
 										bg={'red.100'}
 										w={`${barPercent > 10 ? barPercent : 10}%`}
 										h={'56px'}
 									>
-										<Text pl={6}>AskT</Text>
+										<Text pl={6}>Ask</Text>
 									</Stack>
 								</Td>
 								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'}>
@@ -244,8 +242,6 @@ function OrderBookCard() {
 								>
 									<Stack
 										justifyContent={'center'}
-										// position={'absolute'}
-										// top={-1}
 										bg={'green.100'}
 										w={`${barPercent > 10 ? barPercent : 10}%`}
 										h={'56px'}
