@@ -198,7 +198,7 @@ function OrderBookCard() {
 								>
 									<Stack
 										justifyContent={'center'}
-										position={'absolute'}
+										// position={'absolute'}
 										bg={'red.100'}
 										w={`${barPercent > 10 ? barPercent : 10}%`}
 										h={'56px'}
@@ -244,8 +244,8 @@ function OrderBookCard() {
 								>
 									<Stack
 										justifyContent={'center'}
-										position={'absolute'}
-										top={-1}
+										// position={'absolute'}
+										// top={-1}
 										bg={'green.100'}
 										w={`${barPercent > 10 ? barPercent : 10}%`}
 										h={'56px'}
