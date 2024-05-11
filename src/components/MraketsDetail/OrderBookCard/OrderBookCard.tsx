@@ -203,7 +203,7 @@ function OrderBookCard() {
 										w={`${barPercent > 10 ? barPercent : 10}%`}
 										h={'56px'}
 									>
-										<Text pl={6}>Ask</Text>
+										<Text pl={6}>AskT</Text>
 									</Stack>
 								</Td>
 								<Td fontSize={'md'} color={'gray.700'} fontWeight={'500'}>
