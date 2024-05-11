@@ -194,6 +194,7 @@ function OrderBookCard() {
 									fontSize={'md'}
 									color={'gray.700'}
 									fontWeight={'500'}
+									lineHeight={'20px'}
 								>
 									<Stack
 										justifyContent={'center'}
@@ -384,7 +385,7 @@ function OrderBookCard() {
 													fontSize={'xs'}
 													color={'gray.700'}
 													fontWeight={'700'}
-													lineHeight={'16px'}
+													// lineHeight={'16px'}
 												>
 													Trade No
 												</Th>
@@ -392,7 +393,7 @@ function OrderBookCard() {
 													fontSize={'xs'}
 													color={'gray.700'}
 													fontWeight={'700'}
-													lineHeight={'16px'}
+													// lineHeight={'16px'}
 												>
 													{t('prices')}
 												</Th>
@@ -400,7 +401,7 @@ function OrderBookCard() {
 													fontSize={'xs'}
 													color={'gray.700'}
 													fontWeight={'700'}
-													lineHeight={'16px'}
+													// lineHeight={'16px'}
 												>
 													{t('shares')}
 												</Th>
@@ -408,7 +409,7 @@ function OrderBookCard() {
 													fontSize={'xs'}
 													color={'gray.700'}
 													fontWeight={'700'}
-													lineHeight={'16px'}
+													// lineHeight={'16px'}
 													isNumeric
 												>
 													{t('total')}
