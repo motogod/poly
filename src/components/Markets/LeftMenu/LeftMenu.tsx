@@ -428,7 +428,7 @@ const LeftMenu = () => {
 								w={'100%'}
 								colorScheme="teal"
 							>
-								Apply
+								{t('apply')}
 							</Button>
 						</Stack>
 					</Stack>
