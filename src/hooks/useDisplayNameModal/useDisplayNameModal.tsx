@@ -59,7 +59,7 @@ function useDisplayNameModal() {
 					borderRadius={20}
 					borderBottomRadius={isDesktop ? 20 : 0}
 				>
-					<ModalHeader alignSelf={'center'}>{t('create_account')}</ModalHeader>
+					<ModalHeader alignSelf={'center'}>{t('create_an_account')}</ModalHeader>
 					<ModalBody>
 						<FormControl isRequired isInvalid={inputNameErrMsg !== ''}>
 							<FormLabel fontWeight={'800'}>{t('username')}</FormLabel>
