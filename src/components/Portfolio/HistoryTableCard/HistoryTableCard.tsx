@@ -133,7 +133,7 @@ function HistoryTableCard() {
 		const minutes = currentTime.diff(givenTime, 'minutes');
 
 		if (minutes < 60) {
-			return `${minutes} ${minutes === 1 ? t('min_ago') : t('mins_ago')}`;
+			return `${minutes} ${minutes <= 1 ? t('min_ago') : t('mins_ago')}`;
 		}
 
 		const hours = currentTime.diff(givenTime, 'hours');
