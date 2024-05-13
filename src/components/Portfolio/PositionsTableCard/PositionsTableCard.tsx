@@ -220,6 +220,7 @@ function PositionsTableCard() {
 									src={value?.market?.image || ''}
 									alt={value?.market?.title}
 									borderRadius="lg"
+									objectFit={'cover'}
 								/>
 								<Text minW={30} fontSize={'14px'} color={'gray.700'} mr={'16px'}>
 									{value?.market?.title}

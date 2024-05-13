@@ -111,7 +111,7 @@ function Funds() {
 						<Stack direction={'row'} mt={{ lg: '36px', md: '16px', sm: '16px' }}>
 							<Button
 								onClick={() => depositModalOnOpen()}
-								w={{ lg: '172px', md: '100px', sm: '100px' }}
+								// w={{ lg: '172px', md: '100px', sm: '100px' }}
 								h={{ lg: '48px', md: '40px', sm: '40px' }}
 								colorScheme="teal"
 							>
@@ -119,7 +119,7 @@ function Funds() {
 							</Button>
 							<Button
 								onClick={() => withdrawModalOnOpen()}
-								w={{ lg: '172px', md: '100px', sm: '100px' }}
+								// w={{ lg: '172px', md: '100px', sm: '100px' }}
 								h={{ lg: '48px', md: '40px', sm: '40px' }}
 								colorScheme="gray"
 							>
