@@ -76,7 +76,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 							{t('community')}
 						</Heading>
 						<Link
-							href="https://t.me/+0U48zkxj9Lw5NTc1"
+							href="https://t.me/+jXOishnrTjBmNWZl"
 							isExternal
 							_hover={{ textDecoration: 'none' }}
 						>
@@ -123,7 +123,7 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 				<Heading mt={'20px'} size={'md'} color={'gray.800'}>
 					{t('community')}
 				</Heading>
-				<Link href="https://t.me/+0U48zkxj9Lw5NTc1" isExternal _hover={{ textDecoration: 'none' }}>
+				<Link href="https://t.me/+jXOishnrTjBmNWZl" isExternal _hover={{ textDecoration: 'none' }}>
 					<Icon
 						cursor={'pointer'}
 						as={CommunityIcon}

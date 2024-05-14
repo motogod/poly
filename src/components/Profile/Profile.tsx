@@ -6,10 +6,10 @@ import {
 	Card,
 	CardBody,
 	Grid,
-	Heading,
 	Text,
 	Icon,
 	IconButton,
+	FormLabel,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useSession, signIn, signOut } from 'next-auth/react';
@@ -17,9 +17,12 @@ import { FcGoogle } from 'react-icons/fc';
 import { useTranslation } from 'next-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, putUserEmail } from '@/store';
-import AppContainer from '@/components/common/Container';
-import { headerHeight } from '../../utils/screen';
-import style from './profile.module.scss';
+import {
+	headerHeight,
+	paddingMainHorizontal,
+	paddingMainVertical,
+	paddingFundsContainerCardVertical,
+} from '@/utils/screen';
 
 // background: linear-gradient(90deg, #edf2f7 44%, #d53f8c 30%);
 function Profile() {
@@ -68,28 +71,35 @@ function Profile() {
 
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
-			<Stack pt={'60px'} pl={'200px'} h={'150px'} bg={'#0034EB'}></Stack>
 			<Stack
-				pl={'16px'}
-				pr={'16px'}
-				mt={-3}
-				className={style.skewRectangle}
+				ml={paddingMainHorizontal}
+				mr={paddingMainHorizontal}
+				mt={paddingMainVertical}
 				borderColor={'#0034EB'}
 			>
+				<Card borderRadius="3xl">
+					<Stack
+						w={'100%'}
+						h={{ lg: '243px', md: '90px', sm: '90px' }}
+						alignItems={'center'}
+						bg={'#2D3748'}
+						justify="space-between"
+						direction="row"
+						borderRadius="lg"
+					>
+						<FormLabel
+							ml={34}
+							color={'white'}
+							fontSize={{ lg: '36', md: '36', sm: '24' }}
+							fontWeight={900}
+						>
+							{t('profile_settings')}
+						</FormLabel>
+					</Stack>
+				</Card>
 				<Grid display={'flex'} justifyContent={'center'} templateColumns={'repeat(1, 1fr)'}>
-					<Card w={'1112px'} shadow="md" borderRadius="xl">
-						<CardBody>
-							<Heading
-								position={'absolute'}
-								top={-20}
-								cursor="pointer"
-								size="lg"
-								color="#FFF"
-								mr={5}
-							>
-								{t('profile_settings')}
-							</Heading>
-
+					<Card w={'100%'} mt={paddingFundsContainerCardVertical} shadow="md" borderRadius="xl">
+						<CardBody shadow="lg" border="1px solid #E2E8F0;" borderRadius="3xl">
 							<Text fontWeight={'800'} fontSize={'lg'}>
 								{t('account')}
 							</Text>

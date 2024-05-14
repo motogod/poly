@@ -24,7 +24,7 @@ import {
 } from '@chakra-ui/react';
 import { TbAlertTriangle } from 'react-icons/tb';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState, postWithdraw, showToast } from '@/store';
+import { AppDispatch, RootState, postWithdraw, showToast, getUserFunds } from '@/store';
 import { useContractForRead, useUtility, useBaseUrl, useSendTokens } from '@/hooks';
 import { zIndexLoginModal } from '@/utils/zIndex';
 import { UsdtIcon } from '@/../public/assets/svg';
@@ -77,7 +77,7 @@ function useWithdrawUsdtModal() {
 		}
 
 		// 如果使用者輸入的數值不符合正確格式或範圍內的 amount，返回不執行交易
-		if (inputValueAndEthValueMsg(amountValue, userFunds.hold, 'withdraw')) {
+		if (inputValueAndEthValueMsg(amountValue, userFunds.total, 'withdraw')) {
 			return;
 		}
 
@@ -87,7 +87,7 @@ function useWithdrawUsdtModal() {
 		amountValue,
 		inputAddressValueMsg,
 		inputValueAndEthValueMsg,
-		userFunds.hold,
+		userFunds.total,
 		disaptch,
 	]);
 
@@ -108,6 +108,8 @@ function useWithdrawUsdtModal() {
 						title: t('the_withdrawal_is_currently_under_review'),
 					})
 				);
+				// call API 去取得提款後的最新顯示金額
+				disaptch(getUserFunds({}));
 				onClose();
 			} else {
 				disaptch(showToast({ isSuccess: false, title: t('withdrawal_failed') }));
@@ -201,13 +203,13 @@ function useWithdrawUsdtModal() {
 								<Text
 									cursor={'pointer'}
 									onClick={() => {
-										setAmountValue(String(userFunds.hold));
+										setAmountValue(String(userFunds.total));
 										setIsAmountEmpay(false);
 									}}
 									fontSize={'small'}
 									color={'gray.500'}
 								>
-									{`$${userFunds.hold} ${t('available_max')}`}
+									{`$${userFunds?.total} ${t('available_max')}`}
 								</Text>
 							</Stack>
 							<Input
@@ -236,14 +238,14 @@ function useWithdrawUsdtModal() {
 								in={
 									isAmountEmpay
 										? true
-										: inputValueAndEthValueMsg(amountValue, userFunds.hold, 'withdraw') !== ''
+										: inputValueAndEthValueMsg(amountValue, userFunds.total, 'withdraw') !== ''
 								}
 								animateOpacity
 							>
 								<Text fontSize={'sm'} mt={1} color={'red.500'}>
 									{isAmountEmpay
 										? 'Please enter amount'
-										: inputValueAndEthValueMsg(amountValue, userFunds.hold, 'withdraw')}
+										: inputValueAndEthValueMsg(amountValue, userFunds.total, 'withdraw')}
 								</Text>
 							</Collapse>
 						</FormControl>
@@ -269,18 +271,18 @@ function useWithdrawUsdtModal() {
 			isDesktop,
 			isOpen,
 			onClose,
+			t,
+			address,
 			inputAddressValue,
 			isAddressEmpty,
 			inputAddressValueMsg,
-			userFunds.hold,
+			userFunds.total,
 			initInputAmountValue,
 			amountValue,
 			isAmountEmpay,
 			inputValueAndEthValueMsg,
 			isWithdrawLoading,
-			address,
 			confirm,
-			t,
 		]
 	);
 

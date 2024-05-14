@@ -62,7 +62,7 @@ function HowItWorkSection() {
 									{t('choose_a_market')}
 								</Heading>
 								<Text mt="2" color="gray.50" size="md">
-									{t('how_it_works_desc')}
+									{t('choose_a_market_desc')}
 								</Text>
 							</GridItem>
 						</Grid>
@@ -77,7 +77,7 @@ function HowItWorkSection() {
 									{t('place_a_bet')}
 								</Heading>
 								<Text mt="2" color="gray.50" size="md">
-									{t('how_it_works_desc')}
+									{t('place_a_bet_desc')}
 								</Text>
 							</GridItem>
 							<GridItem>
@@ -86,7 +86,7 @@ function HowItWorkSection() {
 									{t('earn_if_you_are_right')}
 								</Heading>
 								<Text mt="2" color="gray.50" size="md">
-									{t('how_it_works_desc')}
+									{t('earn_if_you_are_right_desc')}
 								</Text>
 							</GridItem>
 						</Grid>
