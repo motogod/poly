@@ -130,7 +130,7 @@ function HeaderRightSideSection() {
 								{t('community')}
 							</Heading>
 							<Link
-								href="https://t.me/+0U48zkxj9Lw5NTc1"
+								href="https://t.me/+jXOishnrTjBmNWZl"
 								isExternal
 								_hover={{ textDecoration: 'none' }}
 							>
@@ -193,7 +193,7 @@ function HeaderRightSideSection() {
 							{t('community')}
 						</Heading>
 						<Link
-							href="https://t.me/+0U48zkxj9Lw5NTc1"
+							href="https://t.me/+jXOishnrTjBmNWZl"
 							isExternal
 							_hover={{ textDecoration: 'none' }}
 						>

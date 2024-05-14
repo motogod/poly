@@ -145,7 +145,7 @@ export default function LargeWithAppLinksAndSocial() {
 							{t('privacy_policy')}
 						</Box>
 						<Box as="a" _hover={{ color: 'gray.600' }}>
-							{t('terms_of_use')}
+							{t('term_of_use')}
 						</Box>
 					</Stack>
 
@@ -153,7 +153,7 @@ export default function LargeWithAppLinksAndSocial() {
 						<ListHeader>{t('support')}</ListHeader>
 						{/* <Icon cursor={'pointer'} as={SocialIcon} w={'36px'} h={'36px'} /> */}
 						<Link
-							href="https://t.me/+0U48zkxj9Lw5NTc1"
+							href="https://t.me/+jXOishnrTjBmNWZl"
 							isExternal
 							_hover={{ textDecoration: 'none' }}
 						>
