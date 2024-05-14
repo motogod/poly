@@ -30,7 +30,7 @@ import {
 } from '@chakra-ui/react';
 import { HiQrcode } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState, showToast, getCategories } from '@/store';
+import { AppDispatch, RootState, showToast, getCategories, getUserFunds } from '@/store';
 import {
 	useContractForRead,
 	useUtility,
@@ -139,6 +139,8 @@ function useDepositUsdtModal() {
 	useEffect(() => {
 		if (isDepositSuccess) {
 			disaptch(showToast({ isSuccess: true, title: t('deposit_suceesfully') }));
+			// call API 去取得存款後的最新顯示金額
+			disaptch(getUserFunds({}));
 			onClose();
 		}
 	}, [isDepositSuccess, onClose, disaptch, t]);

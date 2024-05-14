@@ -94,7 +94,9 @@ function useUtility() {
 			}
 
 			if (Number(inputValue) > ethValue) {
-				return t('insufficient_funds_msg');
+				return type === 'deposit'
+					? t('insufficient_funds_msg')
+					: t('insufficient_withdraw_funds_msg');
 			}
 
 			// 提款金額最少要大於 5
