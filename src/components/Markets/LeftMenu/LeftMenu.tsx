@@ -111,11 +111,11 @@ const LeftMenu = () => {
 			case 'volume-default':
 				return t('default');
 			case 'volume-1000':
-				return `1000 USDT ${t('below')}`;
+				return `${t('1000_below')}`;
 			case 'volume-100000':
-				return `1,000 - 100,000 USDT`;
+				return `${t('1000_to_100000')}`;
 			case 'volume-over':
-				return `1,000 ${t('above')}`;
+				return `${t('1000_above')}`;
 			default:
 				return '';
 		}
