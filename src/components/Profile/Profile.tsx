@@ -71,13 +71,8 @@ function Profile() {
 
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
-			<Stack
-				ml={paddingMainHorizontal}
-				mr={paddingMainHorizontal}
-				mt={paddingMainVertical}
-				borderColor={'#0034EB'}
-			>
-				<Card borderRadius="3xl">
+			<Stack ml={paddingMainHorizontal} mr={paddingMainHorizontal} mt={paddingMainVertical}>
+				<Card borderRadius="2xl">
 					<Stack
 						w={'100%'}
 						h={{ lg: '243px', md: '90px', sm: '90px' }}
@@ -85,7 +80,7 @@ function Profile() {
 						bg={'#2D3748'}
 						justify="space-between"
 						direction="row"
-						borderRadius="lg"
+						borderRadius="2xl"
 					>
 						<FormLabel
 							ml={34}
@@ -98,8 +93,8 @@ function Profile() {
 					</Stack>
 				</Card>
 				<Grid display={'flex'} justifyContent={'center'} templateColumns={'repeat(1, 1fr)'}>
-					<Card w={'100%'} mt={paddingFundsContainerCardVertical} shadow="md" borderRadius="xl">
-						<CardBody shadow="lg" border="1px solid #E2E8F0;" borderRadius="3xl">
+					<Card w={'100%'} mt={paddingFundsContainerCardVertical} shadow="md" borderRadius="2xl">
+						<CardBody shadow="lg" border="1px solid #E2E8F0;" borderRadius="2xl">
 							<Text fontWeight={'800'} fontSize={'lg'}>
 								{t('account')}
 							</Text>

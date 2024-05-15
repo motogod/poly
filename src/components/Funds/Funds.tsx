@@ -79,7 +79,7 @@ function Funds() {
 				minH={'0px'}
 				shadow="lg"
 				border="1px solid #E2E8F0;"
-				borderRadius="3xl"
+				borderRadius="2xl"
 			>
 				<CardBody p={0}>
 					{/* <Stack
