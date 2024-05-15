@@ -138,15 +138,27 @@ export default function LargeWithAppLinksAndSocial() {
 							_hover={{ textDecoration: 'none' }}
 						>
 							<Box as="a" _hover={{ color: 'gray.600' }}>
-								{t('how_it_works')}
+								{t('footer_how_it_works')}
 							</Box>
 						</Link>
-						<Box as="a" _hover={{ color: 'gray.600' }}>
-							{t('privacy_policy')}
-						</Box>
-						<Box as="a" _hover={{ color: 'gray.600' }}>
-							{t('term_of_use')}
-						</Box>
+						<Link
+							href="https://docs.google.com/document/d/1kHC--JZZWXrTDdVhdk5wpZmjd02SM82xJPbLEWCGLTo/edit"
+							isExternal
+							_hover={{ textDecoration: 'none' }}
+						>
+							<Box as="a" _hover={{ color: 'gray.600' }}>
+								{t('privacy_policy')}
+							</Box>
+						</Link>
+						<Link
+							href="https://docs.google.com/document/d/1-1LFkMwYx0qV_ZJ6NDI9L7APLjHlekIJoXNmsbxg5AU/edit"
+							isExternal
+							_hover={{ textDecoration: 'none' }}
+						>
+							<Box as="a" _hover={{ color: 'gray.600' }}>
+								{t('term_of_use')}
+							</Box>
+						</Link>
 					</Stack>
 
 					<Stack align={'flex-start'}>

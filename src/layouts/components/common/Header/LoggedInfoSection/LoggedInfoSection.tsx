@@ -100,7 +100,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 							<Stack align={'center'} direction={'row'}>
 								<Icon as={HiCollection} w={'20px'} h={'20px'} />
 								<Text fontSize={'sm'} color={'gray.800'}>
-									{t('portfolio')}
+									{t('logged_menu_profile')}
 								</Text>
 							</Stack>
 							<Stack>
