@@ -142,9 +142,9 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 			<Popover
 				placement="bottom-end"
 				isOpen={isPopOpen}
-				// onClose={() => {
-				// 	onPopClose();
-				// }}
+				onClose={() => {
+					onPopClose();
+				}}
 			>
 				<PopoverTrigger>
 					<Button
