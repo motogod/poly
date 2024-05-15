@@ -6,7 +6,7 @@
 	"community": "Cộng đồng",
 	"portfolio": "Danh mục dự án",
 	"funds": "Quỹ",
-	"deposit": "Tiền gửi / Khoản đặt cọc",
+	"deposit": "Nạp tiền",
 	"logout": "Đăng xuất",
 	"sign_in_with_google": "Đăng nhập bằng Google",
 	"metamask": "Metamask",
@@ -184,7 +184,7 @@
 	"deposit_withdraw": "Nạp tiền/ Rút tiền",
 	"uSDT_to_the_address_below": "Gửi USDT vào địa chỉ bên dưới và chọn mạng blockchain chính xác (Ethereum hoặc Artbitrum)",
 	"price_limit": "Limit",
-	"market_price": "Markets",
+	"market_price": "Giá thị trường",
 	"no_relevant_topic": "Không có chủ đề tương ứng",
 	"how_it_work_center": "Trung tâm trợ giúp",
 	"topic": "Thị trường",
@@ -193,5 +193,10 @@
 	"choose_a_market_desc": "Đặt cược vào các sự kiện hiện nay, chính trị, thể thao và tham gia nhiều nội dung khác bất kỳ lúc nào. Giá thị trường phản ánh tỷ lệ cược trực tiếp của một sự kiện diễn ra.",
 	"place_a_bet_desc": "Khi bạn sẵn sàng giao dịch, chỉ cần chọn một kết quả và chỉ định số tiền bạn muốn đặt cược. Lệnh thị trường sẽ được thực hiện ngay lập tức theo tỷ lệ cược hiện tại, trong khi lệnh giới hạn cho phép bạn đặt tỷ lệ cược mong muốn để người khác giao dịch.",
 	"earn_if_you_are_right_desc": "Khi thị trường kết thúc, mỗi cổ phần sẽ có giá trị $1 nếu bạn đúng, hoặc $0 nếu bạn sai. Nếu bạn không muốn đợi đến cuối cùng, bạn có thể bán cổ phần của mình bất cứ lúc nào theo tỷ lệ cược hiện tại.",
-	"insufficient_withdraw_funds_msg": "Insufficient funds. You cannot withdraw more than your available balance."
+	"insufficient_withdraw_funds_msg": "Không đủ tiền, bạn không thể rút nhiều hơn số dư khả dụng của mình",
+	"footer_how_it_works": "Cách sử dụng",
+	"section_how_it_works": "Hướng dẫn",
+	"logged_menu_profile": "Hồ sơ",
+	"logged_menu_how_it_works": "Hướng dẫn",
+	"position_table_markets": "Thị trường"
 }

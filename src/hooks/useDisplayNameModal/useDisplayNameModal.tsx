@@ -18,6 +18,7 @@ import {
 	Checkbox,
 	FormHelperText,
 	FormErrorMessage,
+	Link,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { putUserProfile, AppDispatch, RootState, resetPutUserProfileErrMsg } from '@/store';
@@ -106,9 +107,19 @@ function useDisplayNameModal() {
 									Terms of Use
 								</Text>
 								<Text>and </Text> */}
-								<Text onClick={() => alert('Privacy Policy')} cursor={'pointer'} color={'blue.500'}>
-									{t('privacy_policy')}
-								</Text>
+								<Link
+									href="https://docs.google.com/document/d/1kHC--JZZWXrTDdVhdk5wpZmjd02SM82xJPbLEWCGLTo/edit"
+									isExternal
+									_hover={{ textDecoration: 'none' }}
+								>
+									<Text
+										onClick={() => alert('Privacy Policy')}
+										cursor={'pointer'}
+										color={'blue.500'}
+									>
+										{t('privacy_policy')}
+									</Text>
+								</Link>
 								<Text fontWeight={'500'} fontSize={'md'} color={'red'}>
 									*
 								</Text>

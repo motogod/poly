@@ -193,5 +193,10 @@
 	"choose_a_market_desc": "Bet on current events, politics, sports, and much more as the action unfolds. Market prices reflect the live odds of an event taking place.",
 	"place_a_bet_desc": "When you're ready to trade, simply choose an outcome and specify the amount you want to bet. Market orders execute instantly at the current odds, while limit orders let you set your desired odds for others to trade with.",
 	"earn_if_you_are_right_desc": "When the market ends, each share will either be worth $1 if you were right, or $0 if you were wrong. If you don't want to wait until the end, you can sell your shares at any time at the current odds.",
-	"insufficient_withdraw_funds_msg": "Insufficient funds. You cannot withdraw more than your available balance."
+	"insufficient_withdraw_funds_msg": "Insufficient funds. You cannot withdraw more than your available balance.",
+	"footer_how_it_works": "How it Works",
+	"section_how_it_works": "How it Works",
+	"logged_menu_profile": "Profile",
+	"logged_menu_how_it_works": "How it Works",
+	"position_table_markets": "Markets"
 }

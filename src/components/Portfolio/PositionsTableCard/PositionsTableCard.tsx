@@ -374,7 +374,7 @@ function PositionsTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								{t('markets')}
+								{t('position_table_markets')}
 							</Th>
 							<Th
 								textTransform={'none'}

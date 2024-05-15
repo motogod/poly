@@ -73,7 +73,7 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 					size={'md'}
 					color={'gray.800'}
 				>
-					{t('how_it_work_center')}
+					{t('logged_menu_how_it_works')}
 				</Text>
 			</Link>
 			<Text
