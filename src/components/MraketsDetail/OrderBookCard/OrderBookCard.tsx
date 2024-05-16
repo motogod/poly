@@ -288,7 +288,7 @@ function OrderBookCard() {
 							fontWeight={'500'}
 							lineHeight={'24px'}
 						>
-							Trade Yes
+							{t('trade_yes')}
 						</Tab>
 						<Tab
 							_hover={{ color: 'blue.600' }}
@@ -298,7 +298,7 @@ function OrderBookCard() {
 							fontWeight={'500'}
 							lineHeight={'24px'}
 						>
-							Trade No
+							{t('trade_no')}
 						</Tab>
 					</TabList>
 					{/* <TabIndicator mt="-1.5px" height="2px" bg="gray.700" borderRadius="1px" /> */}
@@ -324,7 +324,7 @@ function OrderBookCard() {
 													fontWeight={'700'}
 													lineHeight={'16px'}
 												>
-													Trade Yes
+													{t('trade_yes')}
 												</Th>
 												<Th
 													fontSize={'xs'}
@@ -383,7 +383,7 @@ function OrderBookCard() {
 													fontWeight={'700'}
 													// lineHeight={'16px'}
 												>
-													Trade No
+													{t('trade_no')}
 												</Th>
 												<Th
 													fontSize={'xs'}

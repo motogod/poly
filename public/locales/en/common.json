@@ -29,7 +29,7 @@
 	"volume": "Volume",
 	"any": "Any",
 	"1000_below": "1,000 Below",
-	"1000_above": "1,000 Above",
+	"100000_above": "100,000 Above",
 	"1000_to_100000": "1,000 - 100,000",
 	"end_date": "End Date",
 	"ends_today": "Ends today",

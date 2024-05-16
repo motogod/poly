@@ -65,7 +65,7 @@ const getMarkets = createAsyncThunk(
 					}
 					break;
 				case 'volume-over':
-					if (value.volume > 1000) {
+					if (value.volume > 100000) {
 						filteredVolumeData.push(value);
 					}
 					break;

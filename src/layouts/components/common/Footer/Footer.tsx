@@ -142,7 +142,7 @@ export default function LargeWithAppLinksAndSocial() {
 							</Box>
 						</Link>
 						<Link
-							href="https://docs.google.com/document/d/1kHC--JZZWXrTDdVhdk5wpZmjd02SM82xJPbLEWCGLTo/edit"
+							href="https://oxmarket.gitbook.io/howitworks/faq/privacy_policy"
 							isExternal
 							_hover={{ textDecoration: 'none' }}
 						>
@@ -151,7 +151,7 @@ export default function LargeWithAppLinksAndSocial() {
 							</Box>
 						</Link>
 						<Link
-							href="https://docs.google.com/document/d/1-1LFkMwYx0qV_ZJ6NDI9L7APLjHlekIJoXNmsbxg5AU/edit"
+							href="https://oxmarket.gitbook.io/howitworks/faq/terms-of-use"
 							isExternal
 							_hover={{ textDecoration: 'none' }}
 						>

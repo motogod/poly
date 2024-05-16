@@ -115,7 +115,7 @@ const LeftMenu = () => {
 			case 'volume-100000':
 				return `${t('1000_to_100000')}`;
 			case 'volume-over':
-				return `${t('1000_above')}`;
+				return `${t('100000_above')}`;
 			default:
 				return '';
 		}
