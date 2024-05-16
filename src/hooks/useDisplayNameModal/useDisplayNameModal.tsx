@@ -108,7 +108,7 @@ function useDisplayNameModal() {
 								</Text>
 								<Text>and </Text> */}
 								<Link
-									href="https://docs.google.com/document/d/1kHC--JZZWXrTDdVhdk5wpZmjd02SM82xJPbLEWCGLTo/edit"
+									href="https://oxmarket.gitbook.io/howitworks/faq/privacy_policy"
 									isExternal
 									_hover={{ textDecoration: 'none' }}
 								>
