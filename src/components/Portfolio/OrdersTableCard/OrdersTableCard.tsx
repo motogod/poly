@@ -86,6 +86,7 @@ function OrdersTableCard() {
 				isDisabled={status !== 'PENDING' && status !== 'PARTIALLY_FILLED' && status !== 'EXPIRED'}
 				onClick={e => {
 					e.stopPropagation();
+
 					// Delete
 					if (status === 'PENDING' || status === 'PARTIALLY_FILLED' || status === 'EXPIRED') {
 						setUserClickDeleteOrderId(orderId);
