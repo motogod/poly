@@ -72,7 +72,7 @@ const filetrData = (state: IpState, selectorStatus: string) => {
 		state.filteredPortfolioOrdersData = state.portfolioOrdersData.filter(value => {
 			const { status } = value;
 
-			if (status === 'PENDING' || status === 'PARTIALLY_FILLED') {
+			if (status === 'PARTIALLY_FILLED') {
 				return value;
 			}
 		});
