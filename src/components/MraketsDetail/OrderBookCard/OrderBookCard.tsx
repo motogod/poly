@@ -24,7 +24,13 @@ import {
 } from '@chakra-ui/react';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch, getMarketOrderBookYes, getMarketOrderBookNo } from '@/store';
+import {
+	RootState,
+	AppDispatch,
+	getMarketOrderBookYes,
+	getMarketOrderBookNo,
+	getMarketDetail,
+} from '@/store';
 import { transform } from 'typescript';
 import { OrderBookDataType } from '@/api';
 
@@ -114,6 +120,7 @@ function OrderBookCard() {
 				interval = setInterval(() => {
 					dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
 					dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
+					dispatch(getMarketDetail({ slug: marketDetailData.slug }));
 				}, 60000);
 			}
 		}
