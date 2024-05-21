@@ -37,6 +37,7 @@ import {
 	getUserPortfolioPositionsForHold,
 	getUserFunds,
 	getPortfolioValue,
+	getMarketDetail,
 } from '@/store';
 import { useLoginModal } from '@/hooks';
 import BuyOrSellButton from '../Buttons/BuyOrSellButton';
@@ -52,6 +53,8 @@ type Props = {
 
 function BuyOrSellContent(props?: Props) {
 	const router = useRouter();
+
+	const { marketSlug } = router.query;
 
 	const { t } = useTranslation();
 
@@ -175,6 +178,8 @@ function BuyOrSellContent(props?: Props) {
 			} else {
 				dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
 			}
+			// 交易成功，藉此 API 來更新 outcome 的 Yes No 價格
+			dispatch(getMarketDetail({ slug: marketSlug as string }));
 
 			dispatch(resetTradeOrdersStatus());
 			setValueUserClickYesOrNo(isYes);
