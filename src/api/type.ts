@@ -220,12 +220,12 @@ export enum PortfolioHistorySelectorStatus {
 }
 
 export type OrderStatusType =
-	| 'PENDING'
+	| 'PENDING' // 尚未有成交的單
 	| 'PARTIALLY_FILLED'
 	| 'FILLED'
 	| 'CANCELED'
 	| 'EXPIRED'
-	| 'TERMINATED';
+	| 'TERMINATED'; // 預留但尚未使用的一個狀態，預想是臨時下架的單使用的
 
 export type ProtfolioDataType = {
 	id: string;

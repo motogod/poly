@@ -65,30 +65,22 @@ function OrdersTableCard() {
 
 	const renderActionButton = (status: OrderStatusType, orderId: string) => {
 		const buttonText = () => {
-			if (status === 'PENDING' || status === 'PARTIALLY_FILLED' || status === 'EXPIRED') {
+			if (status === 'PENDING' || status === 'PARTIALLY_FILLED') {
 				return t('cancel');
 			}
 
-			if (status === 'CANCELED') {
-				return t('cancel');
-			}
-
-			if (status === 'FILLED') {
-				return t('filled');
-			}
-
-			return status;
+			return '';
 		};
 
 		return (
 			<Button
 				isLoading={userClickDeleteOrderId === orderId && isDeleteOrderLoading}
-				isDisabled={status !== 'PENDING' && status !== 'PARTIALLY_FILLED' && status !== 'EXPIRED'}
+				isDisabled={status !== 'PENDING' && status !== 'PARTIALLY_FILLED'}
 				onClick={e => {
 					e.stopPropagation();
 
 					// Delete
-					if (status === 'PENDING' || status === 'PARTIALLY_FILLED' || status === 'EXPIRED') {
+					if (status === 'PENDING' || status === 'PARTIALLY_FILLED') {
 						setUserClickDeleteOrderId(orderId);
 						dispatch(deleteOrder({ id: orderId }));
 					}
@@ -107,103 +99,103 @@ function OrdersTableCard() {
 
 	const renderTableRow = () => {
 		return filteredPortfolioOrdersData.map((value, index) => {
-			if (value.status === 'CANCELED' || value.status === 'FILLED') {
-				return null;
+			if (value.status === 'PENDING' || value.status === 'PARTIALLY_FILLED') {
+				const totalPrice = (Number(value.price) * Number(value.quantity)).toFixed(2);
+
+				return (
+					<>
+						<Tr
+							key={index}
+							onClick={() => router.push(`/marketsDetail?marketSlug=${value?.market?.slug}`)}
+							cursor={'pointer'}
+							_hover={{ bg: 'gray.100', borderRadius: 18 }}
+						>
+							<Td verticalAlign={'middle'} w={'0px'} pr={10}>
+								<Stack align={'center'} direction={'row'}>
+									<Image
+										height="48px"
+										width="48px"
+										src={value?.market?.image ? value?.market?.image : ''}
+										alt={value?.market?.title}
+										borderRadius="lg"
+									/>
+									<Text minWidth={30} fontSize={'14px'} color={'gray.700'} mr={'16px'}>
+										{value?.market?.title}
+									</Text>
+								</Stack>
+							</Td>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text>{value?.direction}</Text>
+							</Td>
+							<Td verticalAlign={'middle'}>
+								<Badge
+									px={'14px'}
+									py={'4px'}
+									variant="solid"
+									colorScheme={`${value?.outcome === 'NO' ? 'red' : 'green'}`}
+								>
+									{value?.outcome}
+								</Badge>
+							</Td>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text>{value?.price}</Text>
+							</Td>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text letterSpacing={1}>{`${value.closedQuantity}/${value.quantity}`}</Text>
+							</Td>
+							<Td
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								<Text>{totalPrice}</Text>
+							</Td>
+							<Td
+								textAlign={'center'}
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								{renderExpirationText(value.status)}
+							</Td>
+							<Td
+								textAlign={'center'}
+								verticalAlign={'middle'}
+								fontSize={'md'}
+								color={'gray.700'}
+								fontWeight={'500'}
+								lineHeight={'20px'}
+							>
+								{renderActionButton(value?.status, value.id)}
+							</Td>
+						</Tr>
+					</>
+				);
 			}
 
-			const totalPrice = (Number(value.price) * Number(value.quantity)).toFixed(2);
-
-			return (
-				<>
-					<Tr
-						key={index}
-						onClick={() => router.push(`/marketsDetail?marketSlug=${value?.market?.slug}`)}
-						cursor={'pointer'}
-						_hover={{ bg: 'gray.100', borderRadius: 18 }}
-					>
-						<Td verticalAlign={'middle'} w={'0px'} pr={10}>
-							<Stack align={'center'} direction={'row'}>
-								<Image
-									height="48px"
-									width="48px"
-									src={value?.market?.image ? value?.market?.image : ''}
-									alt={value?.market?.title}
-									borderRadius="lg"
-								/>
-								<Text minWidth={30} fontSize={'14px'} color={'gray.700'} mr={'16px'}>
-									{value?.market?.title}
-								</Text>
-							</Stack>
-						</Td>
-						<Td
-							verticalAlign={'middle'}
-							fontSize={'md'}
-							color={'gray.700'}
-							fontWeight={'500'}
-							lineHeight={'20px'}
-						>
-							<Text>{value?.direction}</Text>
-						</Td>
-						<Td verticalAlign={'middle'}>
-							<Badge
-								px={'14px'}
-								py={'4px'}
-								variant="solid"
-								colorScheme={`${value?.outcome === 'NO' ? 'red' : 'green'}`}
-							>
-								{value?.outcome}
-							</Badge>
-						</Td>
-						<Td
-							verticalAlign={'middle'}
-							fontSize={'md'}
-							color={'gray.700'}
-							fontWeight={'500'}
-							lineHeight={'20px'}
-						>
-							<Text>{value?.price}</Text>
-						</Td>
-						<Td
-							verticalAlign={'middle'}
-							fontSize={'md'}
-							color={'gray.700'}
-							fontWeight={'500'}
-							lineHeight={'20px'}
-						>
-							<Text letterSpacing={1}>{`${value.closedQuantity}/${value.quantity}`}</Text>
-						</Td>
-						<Td
-							verticalAlign={'middle'}
-							fontSize={'md'}
-							color={'gray.700'}
-							fontWeight={'500'}
-							lineHeight={'20px'}
-						>
-							<Text>{totalPrice}</Text>
-						</Td>
-						<Td
-							textAlign={'center'}
-							verticalAlign={'middle'}
-							fontSize={'md'}
-							color={'gray.700'}
-							fontWeight={'500'}
-							lineHeight={'20px'}
-						>
-							{renderExpirationText(value.status)}
-						</Td>
-						<Td
-							textAlign={'center'}
-							verticalAlign={'middle'}
-							fontSize={'md'}
-							color={'gray.700'}
-							fontWeight={'500'}
-							lineHeight={'20px'}
-						>
-							{renderActionButton(value?.status, value.id)}
-						</Td>
-					</Tr>
-				</>
-			);
+			return null;
 		});
 	};
 
