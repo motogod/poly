@@ -9,6 +9,7 @@ import {
 	getMarketOrderBookNo,
 	getMarketLineChart,
 	getMarketLineChartYesAndNo,
+	getMarketPrice,
 } from '../thunks/fetchHome';
 import {
 	GetMarketsType,
@@ -138,6 +139,25 @@ const homeSlice = createSlice({
 		builder.addCase(getMarketDetail.rejected, state => {
 			console.log('getMarketDetail rejected');
 			state.isMarketDetailLoading = false;
+		});
+
+		builder.addCase(getMarketPrice.pending, state => {
+			console.log('getMarketPrice pending');
+		});
+		builder.addCase(getMarketPrice.fulfilled, (state, action) => {
+			console.log('getMarketPrice fulfilled', action);
+			const { resp, outcome } = action.payload;
+
+			if (resp?.statusCode === 200) {
+				if (outcome === 'YES') {
+					state.marketDetailData.outcome.yes = resp?.data.price;
+				} else {
+					state.marketDetailData.outcome.no = resp?.data.price;
+				}
+			}
+		});
+		builder.addCase(getMarketPrice.rejected, state => {
+			console.log('getMarketPrice rejected');
 		});
 
 		builder.addCase(getMarketOrderBookYes.pending, state => {

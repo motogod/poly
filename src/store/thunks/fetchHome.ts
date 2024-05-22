@@ -14,6 +14,8 @@ import {
 	GetMarketLineChart,
 	GetMarketLineChartType,
 	LineChartTabsIntervalType,
+	GetMarketPrice,
+	GetMarketPriceType,
 } from '@/api';
 import { DateRadioType, VolumeType } from '@/store/slice/dataSlice';
 
@@ -159,6 +161,17 @@ const getMarketDetail = createAsyncThunk(
 	}
 );
 
+const getMarketPrice = createAsyncThunk(
+	'api/getMarketPrice',
+	async (params: { slug: string; outcome: 'YES' | 'NO' }) => {
+		const { slug, outcome } = params;
+		const resp = await GetMarketPrice<GetMarketPriceType>({ slug, outcome });
+		console.log('getMarketPrice resp', resp);
+
+		return { resp, outcome };
+	}
+);
+
 const getMarketLineChart = createAsyncThunk(
 	'api/getMarketLineChart',
 	async (params: { slug: string; outcome: 'YES' | 'NO'; interval: LineChartTabsIntervalType }) => {
@@ -253,4 +266,5 @@ export {
 	getMarketOrderBookNo,
 	getMarketLineChart,
 	getMarketLineChartYesAndNo,
+	getMarketPrice,
 };
