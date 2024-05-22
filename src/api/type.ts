@@ -32,6 +32,12 @@ export type GetMarketDetailType = {
 	data: MarketsItemType;
 };
 
+export type GetMarketPriceType = {
+	message: string;
+	statusCode: number;
+	data: { price: number };
+};
+
 export type LineChartType = {
 	time: string;
 	price: number;

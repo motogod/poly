@@ -20,6 +20,15 @@ export const GetMarketDetail = <T>(params: { slug: string }) =>
 		}
 	);
 
+export const GetMarketPrice = <T>(params: { slug: string; outcome: 'YES' | 'NO' }) =>
+	requestWithSession.get<T>(
+		`/markets/${params.slug}/share-price?outcome=${params.outcome}`,
+		{},
+		{
+			timeout: 15000,
+		}
+	);
+
 // 取得市場曲線圖的資料
 export const GetMarketLineChart = <T>(params: {
 	slug: string;

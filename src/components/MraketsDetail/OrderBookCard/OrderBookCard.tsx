@@ -29,7 +29,7 @@ import {
 	AppDispatch,
 	getMarketOrderBookYes,
 	getMarketOrderBookNo,
-	getMarketDetail,
+	getMarketPrice,
 } from '@/store';
 import { transform } from 'typescript';
 import { OrderBookDataType } from '@/api';
@@ -120,7 +120,8 @@ function OrderBookCard() {
 				interval = setInterval(() => {
 					dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
 					dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
-					dispatch(getMarketDetail({ slug: marketDetailData.slug }));
+					dispatch(getMarketPrice({ slug: marketDetailData.slug, outcome: 'YES' }));
+					dispatch(getMarketPrice({ slug: marketDetailData.slug, outcome: 'NO' }));
 				}, 60000);
 			}
 		}
