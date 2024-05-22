@@ -199,9 +199,20 @@ function BuyOrSellContent(props?: Props) {
 					setLimitInputValue(marketDetailData?.outcome?.no);
 					setSharesMax(Math.floor(total / marketDetailData?.outcome?.no));
 				}
+			} else {
+				// Limit 狀況下，使用者能買的最大值，會依據使用者輸入的價格不同變化
+				setSharesMax(Math.floor(total / (limiInputValue as number)));
 			}
 		}
-	}, [total, isUserClickYesOrNo, marketDetailData, router, selectedType, setLimitInputValue]);
+	}, [
+		total,
+		isUserClickYesOrNo,
+		marketDetailData,
+		router,
+		selectedType,
+		setLimitInputValue,
+		limiInputValue,
+	]);
 
 	// Shares
 	const [shareInputValue, setShareInputValue] = useState(0);
