@@ -555,6 +555,8 @@ function BuyOrSellContent(props?: Props) {
 						onClick={() => {
 							dispatch(getMarketOrderBookYes({ slug: marketDetailData.slug }));
 							dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
+							dispatch(getMarketPrice({ slug: marketDetailData.slug, outcome: 'YES' }));
+							dispatch(getMarketPrice({ slug: marketDetailData.slug, outcome: 'NO' }));
 
 							setRotateDeg(prev => prev + 360);
 							rotateFunction(rotateDeg);
