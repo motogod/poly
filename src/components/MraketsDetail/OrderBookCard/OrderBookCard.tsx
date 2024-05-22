@@ -30,6 +30,7 @@ import {
 	getMarketOrderBookYes,
 	getMarketOrderBookNo,
 	getMarketPrice,
+	getUserFunds,
 } from '@/store';
 import { transform } from 'typescript';
 import { OrderBookDataType } from '@/api';
@@ -122,6 +123,7 @@ function OrderBookCard() {
 					dispatch(getMarketOrderBookNo({ slug: marketDetailData.slug }));
 					dispatch(getMarketPrice({ slug: marketDetailData.slug, outcome: 'YES' }));
 					dispatch(getMarketPrice({ slug: marketDetailData.slug, outcome: 'NO' }));
+					dispatch(getUserFunds({}));
 				}, 60000);
 			}
 		}
