@@ -348,6 +348,9 @@ function BuyOrSellContent(props?: Props) {
 
 	const renderShareIsValidMsg = (): string => {
 		if (selectedType === 'MARKET') {
+			const yesPrice = marketDetailData.outcome.yes;
+			const noPrice = marketDetailData.outcome.no;
+
 			if (isBuy) {
 				// 輸入的 Share 不得大於 所能購買的 Share 最大量
 				if (shareInputValue > sharesMax) {
@@ -366,6 +369,17 @@ function BuyOrSellContent(props?: Props) {
 				}
 			}
 
+			// 使用者選得的數量跟當時的市場價格 不得大於 使用者擁有的 USDT
+			if (isYes) {
+				if (yesPrice * shareInputValue > hold) {
+					return t('insufficient_balance');
+				}
+			} else {
+				if (noPrice * shareInputValue > hold) {
+					return t('insufficient_balance');
+				}
+			}
+
 			return '';
 		}
 
@@ -374,6 +388,9 @@ function BuyOrSellContent(props?: Props) {
 			if (shareInputValue > 0 && shareInputValue < 30) {
 				return t('minimum_thirty_shares_for_limit_orders');
 			}
+
+			const userEnterLimitPrice = inputLimitPrice.value;
+			const userEnterLimitPriceCost = userEnterLimitPrice * shareInputValue;
 
 			if (isBuy) {
 				// 輸入的 Share 不得大於 所能掛單的 Share 最大量
@@ -393,6 +410,11 @@ function BuyOrSellContent(props?: Props) {
 				}
 			}
 
+			// 使用者掛單 選擇的數量跟價格 不得大於 使用者擁有的 USDT
+			if (userEnterLimitPriceCost > hold) {
+				return t('insufficient_balance');
+			}
+
 			return '';
 		}
 
@@ -406,6 +428,9 @@ function BuyOrSellContent(props?: Props) {
 		}
 
 		if (selectedType === 'MARKET') {
+			const yesPrice = marketDetailData.outcome.yes;
+			const noPrice = marketDetailData.outcome.no;
+
 			if (isBuy) {
 				return shareInputValue > sharesMax || shareInputValue === 0;
 			} else {
@@ -414,8 +439,18 @@ function BuyOrSellContent(props?: Props) {
 				}
 
 				if (isYes) {
+					// 使用者選得的數量跟當時的市場價格 不得大於 使用者擁有的 USDT
+					if (yesPrice * shareInputValue > hold) {
+						return true;
+					}
+
 					return shareInputValue > userMarketYesHold || userMarketYesHold === 0;
 				} else {
+					// 使用者選得的數量跟當時的市場價格 不得大於 使用者擁有的 USDT
+					if (noPrice * shareInputValue > hold) {
+						return true;
+					}
+
 					return shareInputValue > userMarketNoHold || userMarketNoHold === 0;
 				}
 			}
@@ -440,6 +475,14 @@ function BuyOrSellContent(props?: Props) {
 				} else {
 					return shareInputValue > userMarketNoHold;
 				}
+			}
+
+			const userEnterLimitPrice = inputLimitPrice.value;
+			const userEnterLimitPriceCost = userEnterLimitPrice * shareInputValue;
+
+			// 使用者掛單 選擇的數量跟價格 不得大於 使用者擁有的 USDT
+			if (userEnterLimitPriceCost > hold) {
+				return true;
 			}
 		}
 
