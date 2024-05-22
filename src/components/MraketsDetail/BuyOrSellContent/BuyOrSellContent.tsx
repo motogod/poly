@@ -193,11 +193,11 @@ function BuyOrSellContent(props?: Props) {
 		if (router.isReady && Object.keys(marketDetailData).length > 0) {
 			if (selectedType === 'MARKET') {
 				if (isUserClickYesOrNo) {
-					setLimitInputValue(marketDetailData.outcome.yes);
-					setSharesMax(Math.round(hold / marketDetailData.outcome.yes));
+					setLimitInputValue(marketDetailData?.outcome?.yes);
+					setSharesMax(Math.floor(hold / marketDetailData?.outcome?.yes));
 				} else {
-					setLimitInputValue(marketDetailData.outcome.no);
-					setSharesMax(Math.round(hold / marketDetailData.outcome.no));
+					setLimitInputValue(marketDetailData?.outcome?.no);
+					setSharesMax(Math.floor(hold / marketDetailData?.outcome?.no));
 				}
 			}
 		}
@@ -348,8 +348,8 @@ function BuyOrSellContent(props?: Props) {
 
 	const renderShareIsValidMsg = (): string => {
 		if (selectedType === 'MARKET') {
-			const yesPrice = marketDetailData.outcome.yes;
-			const noPrice = marketDetailData.outcome.no;
+			const yesPrice = marketDetailData?.outcome?.yes;
+			const noPrice = marketDetailData?.outcome?.no;
 
 			if (isBuy) {
 				// 輸入的 Share 不得大於 所能購買的 Share 最大量
@@ -428,8 +428,8 @@ function BuyOrSellContent(props?: Props) {
 		}
 
 		if (selectedType === 'MARKET') {
-			const yesPrice = marketDetailData.outcome.yes;
-			const noPrice = marketDetailData.outcome.no;
+			const yesPrice = marketDetailData?.outcome?.yes;
+			const noPrice = marketDetailData?.outcome?.no;
 
 			if (isBuy) {
 				return shareInputValue > sharesMax || shareInputValue === 0;
@@ -523,14 +523,14 @@ function BuyOrSellContent(props?: Props) {
 		if (selectedType === 'MARKET' && !isBuy) {
 			if (selectedType === 'MARKET' && !isBuy) {
 				if (isUserClickYesOrNo) {
-					const afterFeeCost = marketDetailData.outcome.yes * shareInputValue * 0.05;
+					const afterFeeCost = marketDetailData?.outcome?.yes * shareInputValue * 0.05;
 					const result = (marketDetailData?.outcome?.yes * shareInputValue - afterFeeCost).toFixed(
 						2
 					);
 
 					return `${result} USDT`;
 				} else {
-					const afterFeeCost = marketDetailData.outcome.no * shareInputValue * 0.05;
+					const afterFeeCost = marketDetailData?.outcome?.no * shareInputValue * 0.05;
 
 					const result = (marketDetailData?.outcome?.no * shareInputValue - afterFeeCost).toFixed(
 						2
