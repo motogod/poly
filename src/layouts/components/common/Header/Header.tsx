@@ -89,8 +89,26 @@ function Header() {
 						cursor="pointer"
 						size="sm"
 						color="gray.800"
+						mr={5}
 					>
 						{t('how_it_works')}
+					</Heading>
+				</Link>
+				<Link
+					// vi en zh-Hans
+					onClick={() => alert(router.locale)}
+					href="https://oxmarket.gitbook.io/howitworks"
+					isExternal
+					_hover={{ textDecoration: 'none' }}
+				>
+					<Heading
+						_hover={{ color: 'gray.600' }}
+						display={{ lg: 'inline', md: 'none', sm: 'none' }}
+						cursor="pointer"
+						size="sm"
+						color="gray.800"
+					>
+						{t('rewards')}
 					</Heading>
 				</Link>
 			</Stack>

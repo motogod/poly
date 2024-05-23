@@ -17,6 +17,7 @@ import { BiWalletAlt } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMarkets, getSpotlightMarkets, AppDispatch, RootState } from '@/store';
 import { useSiwe, useLoginModal, useLogout } from '@/hooks';
+import BannerSectioin from './BannerSectioin';
 import TopTopicSection from './TopTopicSection';
 import CategorySection from './CategorySection';
 import HowItWorkSection from './HowItWorkSection';
@@ -68,6 +69,9 @@ function Home({ homePage = true }) {
 	return (
 		<Stack backgroundColor="gray.50">
 			<Stack mt={headerHeight}>
+				<Stack>
+					<BannerSectioin />
+				</Stack>
 				<Stack>
 					<TopTopicSection />
 				</Stack>

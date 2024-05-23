@@ -76,6 +76,24 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 					{t('logged_menu_how_it_works')}
 				</Text>
 			</Link>
+			<Link
+				// vi en zh-Hans
+				onClick={() => alert(router.locale)}
+				href="https://oxmarket.gitbook.io/howitworks"
+				isExternal
+				_hover={{ textDecoration: 'none' }}
+			>
+				<Text
+					onClick={() => {
+						close();
+					}}
+					cursor={'pointer'}
+					size={'md'}
+					color={'gray.800'}
+				>
+					{t('rewards')}
+				</Text>
+			</Link>
 			<Text
 				cursor={'pointer'}
 				onClick={() => {

@@ -120,6 +120,25 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 						{t('how_it_work_center')}
 					</Text>
 				</Link>
+				<Link
+					// vi en zh-Hans
+					onClick={() => alert(router.locale)}
+					href="https://oxmarket.gitbook.io/howitworks"
+					isExternal
+					_hover={{ textDecoration: 'none' }}
+				>
+					<Text
+						onClick={() => {
+							onPopClose();
+							router.push('/markets');
+						}}
+						cursor="pointer"
+						fontSize="md"
+						color="gray.800"
+					>
+						{t('rewards')}
+					</Text>
+				</Link>
 				<Heading mt={'20px'} size={'md'} color={'gray.800'}>
 					{t('community')}
 				</Heading>
