@@ -20,6 +20,7 @@ import {
 	Link,
 } from '@chakra-ui/react';
 import { BiSolidUserCircle, BiMenuAltLeft } from 'react-icons/bi';
+import { useLink } from '@/hooks';
 import LoggedInfoSection from '../LoggedInfoSection';
 import LoggedMenuSection from '../LoggedMenuSection';
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
@@ -38,6 +39,8 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 	const router = useRouter();
 
 	const { t } = useTranslation();
+
+	const { link } = useLink();
 
 	// const { open } = useWeb3Modal();
 
@@ -111,22 +114,12 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 				>
 					{t('markets')}
 				</Text>
-				<Link
-					href="https://oxmarket.gitbook.io/howitworks"
-					isExternal
-					_hover={{ textDecoration: 'none' }}
-				>
+				<Link href={link().howItWorksLink} isExternal _hover={{ textDecoration: 'none' }}>
 					<Text cursor="pointer" fontSize="md" color="gray.800">
 						{t('how_it_work_center')}
 					</Text>
 				</Link>
-				<Link
-					// vi en zh-Hans
-					onClick={() => alert(router.locale)}
-					href="https://oxmarket.gitbook.io/howitworks"
-					isExternal
-					_hover={{ textDecoration: 'none' }}
-				>
+				<Link href={link().rewardsLink} isExternal _hover={{ textDecoration: 'none' }}>
 					<Text
 						onClick={() => {
 							onPopClose();

@@ -10,16 +10,15 @@ import {
 	Box,
 	Link,
 } from '@chakra-ui/react';
-import { SettingsIcon } from '@chakra-ui/icons';
-import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { HiCreditCard, PlaceIcon, ChooseMarketIcon, EarnIcon } from '../../../../public/assets/svg';
-import styles from './howItWork.module.scss';
-import Next from '../../../../public/next.svg';
+import { useLink } from '@/hooks';
 
 function HowItWorkSection() {
 	const { t } = useTranslation();
+
+	const { link } = useLink();
 
 	return (
 		<>
@@ -35,11 +34,7 @@ function HowItWorkSection() {
 			<Stack mt={{ sm: '48px', md: '48px', lg: '120px' }} backgroundColor="gray.800">
 				<Stack px={paddingMainHorizontal}>
 					<Center>
-						<Link
-							href="https://oxmarket.gitbook.io/howitworks"
-							isExternal
-							_hover={{ textDecoration: 'none' }}
-						>
+						<Link href={link().howItWorksLink} isExternal _hover={{ textDecoration: 'none' }}>
 							<Heading mt="20" color="gray.50" size="xl">
 								{t('how_it_works')}
 							</Heading>
@@ -92,11 +87,7 @@ function HowItWorkSection() {
 						</Grid>
 					</Stack>
 					<Center mb="40">
-						<Link
-							href="https://oxmarket.gitbook.io/howitworks"
-							isExternal
-							_hover={{ textDecoration: 'none' }}
-						>
+						<Link href={link().learnMoreLink} isExternal _hover={{ textDecoration: 'none' }}>
 							<Button px="7" py="6" borderRadius="3xl" colorScheme="teal">
 								{t('learn_more')}
 							</Button>

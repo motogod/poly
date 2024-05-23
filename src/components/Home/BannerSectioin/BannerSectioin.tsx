@@ -13,11 +13,13 @@ import {
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
-import { paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
-import fundsBackroundImg from '@/../public/fundsBackground.png';
+import { useLink } from '@/hooks';
+import earnItPng from '@/../public/earn-it.png';
 
 function BannerSectioin() {
 	const { t } = useTranslation();
+
+	const { link } = useLink();
 
 	return (
 		<>
@@ -31,7 +33,7 @@ function BannerSectioin() {
 				>
 					<Image
 						style={{ width: '100%', height: '100%', borderRadius: 20 }}
-						src={fundsBackroundImg}
+						src={earnItPng}
 						alt="funds_background"
 						fill
 						objectFit={'cover'}
@@ -52,11 +54,7 @@ function BannerSectioin() {
 							{t('earn_over_USDT')}
 						</Text>
 						<Center>
-							<Link
-								href="https://oxmarket.gitbook.io/howitworks/campaign/event"
-								isExternal
-								_hover={{ textDecoration: 'none' }}
-							>
+							<Link href={link().earnItLink} isExternal _hover={{ textDecoration: 'none' }}>
 								<Button
 									onClick={() => null}
 									px="7"

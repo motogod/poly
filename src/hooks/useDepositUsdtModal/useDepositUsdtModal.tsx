@@ -41,6 +41,7 @@ import {
 } from '@/hooks';
 import { zIndexLoginModal } from '@/utils/zIndex';
 import { UsdtIcon } from '@/../public/assets/svg';
+import { useLink } from '@/hooks';
 
 type assetType = 'ethereumAsset' | '';
 type etherType = 'ethereum' | 'arbitrum' | '';
@@ -49,6 +50,8 @@ function useDepositUsdtModal() {
 	const disaptch = useDispatch<AppDispatch>();
 
 	const { t } = useTranslation();
+
+	const { link } = useLink();
 
 	const [seleectedAsset, setSelectedAsset] = useState<assetType>('');
 	const [selectedEther, setSelectedEther] = useState<etherType>('');
@@ -217,7 +220,7 @@ function useDepositUsdtModal() {
 							<span style={{ alignSelf: 'start' }}>
 								<a
 									id="deposit_withdraw"
-									href="https://oxmarket.gitbook.io/howitworks/welcome-to-oxmarket/how-to-deposit/deposit-from-binance"
+									href={link().depositUSDTLink}
 									target="_blank"
 									style={{ color: '#4299E1', cursor: 'pointer' }}
 								>{`${t('deposit')} `}</a>
