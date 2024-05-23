@@ -22,7 +22,7 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { putUserProfile, AppDispatch, RootState, resetPutUserProfileErrMsg } from '@/store';
-import { useUtility } from '@/hooks';
+import { useUtility, useLink } from '@/hooks';
 
 function useDisplayNameModal() {
 	const [name, setName] = useState('');
@@ -31,6 +31,8 @@ function useDisplayNameModal() {
 	const disaptch = useDispatch<AppDispatch>();
 
 	const { t } = useTranslation();
+
+	const { link } = useLink();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -108,7 +110,7 @@ function useDisplayNameModal() {
 								</Text>
 								<Text>and </Text> */}
 								<Link
-									href="https://oxmarket.gitbook.io/howitworks/faq/privacy_policy"
+									href={link().privacyPolicyLink}
 									isExternal
 									_hover={{ textDecoration: 'none' }}
 								>

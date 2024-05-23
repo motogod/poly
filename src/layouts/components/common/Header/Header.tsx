@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, getUserFunds, RootState, getPortfolioValue } from '@/store';
 import HeaderRightSideSection from './HeaderRightSideSection';
 import logoImg from '@/../public/logo.png';
+import { useLink } from '@/hooks';
 
 import { PrimaryPink } from '@/utils/color';
 import { headerHeight, paddingMainHorizontal } from '@/utils/screen';
@@ -23,6 +24,8 @@ function Header() {
 	const router = useRouter();
 
 	const { t } = useTranslation();
+
+	const { link } = useLink();
 
 	const dispatch = useDispatch<AppDispatch>();
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
@@ -78,11 +81,19 @@ function Header() {
 				>
 					{t('markets')}
 				</Heading>
-				<Link
-					href="https://oxmarket.gitbook.io/howitworks"
-					isExternal
-					_hover={{ textDecoration: 'none' }}
-				>
+				<Link href={link().howItWorksLink} isExternal _hover={{ textDecoration: 'none' }}>
+					<Heading
+						_hover={{ color: 'gray.600' }}
+						display={{ lg: 'inline', md: 'none', sm: 'none' }}
+						cursor="pointer"
+						size="sm"
+						color="gray.800"
+						mr={5}
+					>
+						{t('how_it_works')}
+					</Heading>
+				</Link>
+				<Link href={link().rewardsLink} isExternal _hover={{ textDecoration: 'none' }}>
 					<Heading
 						_hover={{ color: 'gray.600' }}
 						display={{ lg: 'inline', md: 'none', sm: 'none' }}
@@ -90,7 +101,7 @@ function Header() {
 						size="sm"
 						color="gray.800"
 					>
-						{t('how_it_works')}
+						{t('rewards')}
 					</Heading>
 				</Link>
 			</Stack>

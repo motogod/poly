@@ -6,6 +6,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { Stack, Text, Link } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { logout, AppDispatch } from '@/store';
+import { useLink } from '@/hooks';
 
 type LoggedMenuSectionType = {
 	close: () => void;
@@ -17,6 +18,8 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 	const router = useRouter();
 
 	const { t } = useTranslation();
+
+	const { link } = useLink();
 
 	const { disconnect } = useDisconnect();
 	const { data: session } = useSession();
@@ -60,11 +63,7 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 			>
 				{t('markets')}
 			</Text>
-			<Link
-				href="https://oxmarket.gitbook.io/howitworks"
-				isExternal
-				_hover={{ textDecoration: 'none' }}
-			>
+			<Link href={link().howItWorksLink} isExternal _hover={{ textDecoration: 'none' }}>
 				<Text
 					onClick={() => {
 						close();
@@ -74,6 +73,18 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 					color={'gray.800'}
 				>
 					{t('logged_menu_how_it_works')}
+				</Text>
+			</Link>
+			<Link href={link().rewardsLink} isExternal _hover={{ textDecoration: 'none' }}>
+				<Text
+					onClick={() => {
+						close();
+					}}
+					cursor={'pointer'}
+					size={'md'}
+					color={'gray.800'}
+				>
+					{t('rewards')}
 				</Text>
 			</Link>
 			<Text

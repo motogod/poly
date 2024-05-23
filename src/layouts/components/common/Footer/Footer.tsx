@@ -30,6 +30,7 @@ import SocialIcon from '../../../../../public/assets/svg/socialIcons.png';
 import NextIcon from '../../../../../public/next.svg';
 import { LocalesEnum } from '@/../public/locales/type';
 import logoImg from '@/../public/logo.png';
+import { useLink } from '@/hooks';
 
 const selectorOptions = Object.entries(LocalesEnum).map(([value, label]) => ({
 	value,
@@ -46,6 +47,8 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 
 export default function LargeWithAppLinksAndSocial() {
 	const { t, i18n } = useTranslation();
+
+	const { link } = useLink();
 
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -132,29 +135,17 @@ export default function LargeWithAppLinksAndSocial() {
 
 					<Stack align={'flex-start'}>
 						<ListHeader>{t('markets')}</ListHeader>
-						<Link
-							href="https://oxmarket.gitbook.io/howitworks"
-							isExternal
-							_hover={{ textDecoration: 'none' }}
-						>
+						<Link href={link().learnMoreLink} isExternal _hover={{ textDecoration: 'none' }}>
 							<Box as="a" _hover={{ color: 'gray.600' }}>
 								{t('footer_how_it_works')}
 							</Box>
 						</Link>
-						<Link
-							href="https://oxmarket.gitbook.io/howitworks/faq/privacy_policy"
-							isExternal
-							_hover={{ textDecoration: 'none' }}
-						>
+						<Link href={link().privacyPolicyLink} isExternal _hover={{ textDecoration: 'none' }}>
 							<Box as="a" _hover={{ color: 'gray.600' }}>
 								{t('privacy_policy')}
 							</Box>
 						</Link>
-						<Link
-							href="https://oxmarket.gitbook.io/howitworks/faq/terms-of-use"
-							isExternal
-							_hover={{ textDecoration: 'none' }}
-						>
+						<Link href={link().termOfUseLink} isExternal _hover={{ textDecoration: 'none' }}>
 							<Box as="a" _hover={{ color: 'gray.600' }}>
 								{t('term_of_use')}
 							</Box>

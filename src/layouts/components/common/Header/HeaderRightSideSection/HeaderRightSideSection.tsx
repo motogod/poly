@@ -47,11 +47,13 @@ import HeaderPopover from '../HeaderPopover';
 import LoggedInfoSectioin from '../LoggedInfoSection';
 import LoggedMenuSection from '../LoggedMenuSection';
 import { zIndexHeader } from '@/utils/zIndex';
+import { useLink } from '@/hooks';
 
 function HeaderRightSideSection() {
 	const router = useRouter();
 
 	const { t } = useTranslation();
+	const { link } = useLink();
 	// const { open } = useWeb3Modal();
 	const { status } = useAccount();
 	const { disconnect } = useDisconnect();
@@ -180,11 +182,7 @@ function HeaderRightSideSection() {
 						>
 							{t('markets')}
 						</Text>
-						<Link
-							href="https://oxmarket.gitbook.io/howitworks"
-							isExternal
-							_hover={{ textDecoration: 'none' }}
-						>
+						<Link href={link().howItWorksLink} isExternal _hover={{ textDecoration: 'none' }}>
 							<Text cursor="pointer" fontSize="2xl" color="gray.800">
 								{t('how_it_work_center')}
 							</Text>

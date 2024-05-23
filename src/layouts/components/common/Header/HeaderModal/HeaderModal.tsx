@@ -27,6 +27,7 @@ import {
 import { BiWalletAlt, BiSolidUserCircle, BiMenuAltLeft } from 'react-icons/bi';
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
 import { zIndexHeader } from '@/utils/zIndex';
+import { useLink } from '@/hooks';
 
 type HeaderModalType = {
 	isLogin: boolean;
@@ -37,6 +38,8 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 	const { disconnect } = useDisconnect();
 
 	const { t } = useTranslation();
+
+	const { link } = useLink();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -59,11 +62,7 @@ function HeaderModal({ isLogin }: HeaderModalType) {
 						>
 							{t('markets')}
 						</Text>
-						<Link
-							href="https://oxmarket.gitbook.io/howitworks"
-							isExternal
-							_hover={{ textDecoration: 'none' }}
-						>
+						<Link href={link().howItWorksLink} isExternal _hover={{ textDecoration: 'none' }}>
 							<Text cursor="pointer" fontSize="2xl" color="gray.800">
 								{t('how_it_works')}
 							</Text>
