@@ -22,9 +22,11 @@ function useLink() {
 
 		if (language === 'vi') {
 			return {
-				rewardsLink: 'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/',
+				rewardsLink:
+					'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/deposit-methods/phan-thuong',
 				howItWorksLink: 'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/',
-				earnItLink: 'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/',
+				earnItLink:
+					'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/deposit-methods/kiem-tra',
 				learnMoreLink: 'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/',
 				privacyPolicyLink:
 					'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/faq/privacy_policy',
