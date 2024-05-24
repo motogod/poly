@@ -11,7 +11,7 @@ function useLink() {
 			return {
 				rewardsLink: 'https://oxmarket.gitbook.io/how-it-works-cn/deposit-methods/jiang-li',
 				howItWorksLink: 'https://oxmarket.gitbook.io/how-it-works-cn',
-				earnItLink: 'https://oxmarket.gitbook.io/howitworks/campaign/event',
+				earnItLink: 'https://oxmarket.gitbook.io/how-it-works-cn/deposit-methods/shi-jian',
 				learnMoreLink: 'https://oxmarket.gitbook.io/how-it-works-cn',
 				privacyPolicyLink: 'https://oxmarket.gitbook.io/how-it-works-cn/faq/privacy_policy',
 				termOfUseLink: 'https://oxmarket.gitbook.io/how-it-works-cn/faq/shi-yong-tiao-kuan',
@@ -22,9 +22,9 @@ function useLink() {
 
 		if (language === 'vi') {
 			return {
-				rewardsLink: 'https://oxmarket.gitbook.io/howitworks/campaign/rewards',
+				rewardsLink: 'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/',
 				howItWorksLink: 'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/',
-				earnItLink: 'https://oxmarket.gitbook.io/howitworks/campaign/event',
+				earnItLink: 'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/',
 				learnMoreLink: 'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/',
 				privacyPolicyLink:
 					'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/faq/privacy_policy',
