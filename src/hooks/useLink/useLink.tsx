@@ -9,9 +9,9 @@ function useLink() {
 
 		if (language === 'zh-Hans') {
 			return {
-				rewardsLink: 'https://oxmarket.gitbook.io/how-it-works-cn/deposit-methods/jiang-li',
+				rewardsLink: 'https://oxmarket.gitbook.io/how-it-works-cn/huo-dong/jiang-li',
 				howItWorksLink: 'https://oxmarket.gitbook.io/how-it-works-cn',
-				earnItLink: 'https://oxmarket.gitbook.io/how-it-works-cn/deposit-methods/shi-jian',
+				earnItLink: 'https://oxmarket.gitbook.io/how-it-works-cn/huo-dong/shi-jian',
 				learnMoreLink: 'https://oxmarket.gitbook.io/how-it-works-cn',
 				privacyPolicyLink: 'https://oxmarket.gitbook.io/how-it-works-cn/faq/privacy_policy',
 				termOfUseLink: 'https://oxmarket.gitbook.io/how-it-works-cn/faq/shi-yong-tiao-kuan',
