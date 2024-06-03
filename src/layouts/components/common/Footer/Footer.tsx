@@ -3,6 +3,7 @@
 import { ReactNode } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import { useTranslation } from 'next-i18next';
 import {
 	Box,
@@ -53,6 +54,8 @@ export default function LargeWithAppLinksAndSocial() {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const router = useRouter();
+
+	const currentPath = router.asPath.split('?')[0]; // 获取当前路径（不包括查询参数）
 
 	const changeLocale = (locale: LocalesEnum) => {
 		// 變更語系網址 shallow: true 避免刷新頁面
@@ -140,16 +143,34 @@ export default function LargeWithAppLinksAndSocial() {
 								{t('footer_how_it_works')}
 							</Box>
 						</Link>
-						<Link href={link().privacyPolicyLink} isExternal _hover={{ textDecoration: 'none' }}>
-							<Box as="a" _hover={{ color: 'gray.600' }}>
-								{t('privacy_policy')}
-							</Box>
-						</Link>
-						<Link href={link().termOfUseLink} isExternal _hover={{ textDecoration: 'none' }}>
-							<Box as="a" _hover={{ color: 'gray.600' }}>
-								{t('term_of_use')}
-							</Box>
-						</Link>
+						<Box
+							cursor={'pointer'}
+							onClick={() => {
+								router.push({ pathname: '/home/policy', hash: '~a' });
+								window.scrollTo({
+									top: 0,
+									behavior: 'smooth',
+								});
+							}}
+							as="a"
+							_hover={{ color: 'gray.600' }}
+						>
+							{t('privacy_policy')}
+						</Box>
+						<Box
+							cursor={'pointer'}
+							onClick={() => {
+								router.push({ pathname: '/home/policy', hash: '~b' });
+								window.scrollTo({
+									top: 0,
+									behavior: 'smooth',
+								});
+							}}
+							as="a"
+							_hover={{ color: 'gray.600' }}
+						>
+							{t('term_of_use')}
+						</Box>
 					</Stack>
 
 					<Stack align={'flex-start'}>
