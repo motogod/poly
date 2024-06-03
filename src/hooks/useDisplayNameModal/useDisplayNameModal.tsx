@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 import {
 	useDisclosure,
 	Modal,
@@ -31,6 +32,8 @@ function useDisplayNameModal() {
 	const disaptch = useDispatch<AppDispatch>();
 
 	const { t } = useTranslation();
+
+	const router = useRouter();
 
 	const { link } = useLink();
 
@@ -115,7 +118,7 @@ function useDisplayNameModal() {
 									_hover={{ textDecoration: 'none' }}
 								>
 									<Text
-										onClick={() => alert('Privacy Policy')}
+										onClick={() => router.push({ pathname: '/home/policy', hash: '~a' })}
 										cursor={'pointer'}
 										color={'blue.500'}
 									>
@@ -158,6 +161,8 @@ function useDisplayNameModal() {
 			putUsrProfileIsLoading,
 			putUsrProfileErrMsg,
 			t,
+			link,
+			router,
 		]
 	);
 
