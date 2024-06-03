@@ -266,12 +266,18 @@ function useDepositUsdtModal() {
 
 	const isChainOnEtherOrArbitrum = useCallback(() => {
 		const currentChainId = currentChain?.id;
-		if (currentChainId !== 1 && currentChainId !== 421614 && currentChainId !== 42161) {
-			return false;
+		if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
+			if (currentChainId !== 1 && currentChainId !== 421614 && currentChainId !== 42161) {
+				return false;
+			}
+		} else {
+			if (currentChainId !== 1 && currentChainId !== 42161) {
+				return false;
+			}
 		}
 
 		return true;
-	}, [currentChain]);
+	}, [baseUrl, currentChain?.id]);
 
 	const renderConfirmText = useCallback(() => {
 		if (!isChainOnEtherOrArbitrum()) {
