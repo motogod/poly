@@ -182,7 +182,7 @@
 	"buy_usdt": "购买USDT",
 	"on_binance_or_another_exchange": "在币安或其他交易所",
 	"deposit_withdraw": "存款/提款",
-	"uSDT_to_the_address_below": "存入USDT到以下地址并选择正确区块链网络(Ethereum 或 Artbitrum)",
+	"usdt_to_the_address_below": "存入USDT到以下地址并选择正确区块链网络(Ethereum 或 Artbitrum)注意：只能提领整数",
 	"price_limit": "限价",
 	"market_price": "市价",
 	"no_relevant_topic": "無對應議題",
@@ -201,5 +201,6 @@
 	"position_table_markets": "市场",
 	"earn_over_USDT": "开站奖励超过1万USDT",
 	"earn_it": "领取",
-	"rewards": "奖励"
+	"rewards": "奖励",
+	"position": "选择"
 }

@@ -310,7 +310,7 @@ function HistoryTableCard() {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								{t('outcome')}
+								{t('position')}
 							</Th>
 							<Th
 								textTransform={'none'}

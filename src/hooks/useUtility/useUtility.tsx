@@ -81,6 +81,7 @@ function useUtility() {
 		ethValue: number,
 		type: 'deposit' | 'withdraw'
 	) => {
+		console.log('inputValue 1', inputValue);
 		if (inputValue) {
 			if (Number(inputValue) === 0 && !inputValue.includes('.')) {
 				return t('the_amountcan_not_be_zero');
