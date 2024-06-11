@@ -182,6 +182,7 @@
 	"price_limit": "Limit",
 	"market_price": "Markets",
 	"no_relevant_topic": "Markets is currently no relevant topic information",
+	"usdt_to_the_address_below": "USDT to the address below and select Ethereum or Artbitrum as the network. Only integers can be withdrawn.",
 	"how_it_work_center": "How it Works",
 	"topic": "Markets",
 	"connected": "Connected",
@@ -197,5 +198,6 @@
 	"position_table_markets": "Markets",
 	"earn_over_USDT": "Earn over 10,000 USDT",
 	"earn_it": "Earn it",
-	"rewards": "Rewards"
+	"rewards": "Rewards",
+	"position": "Position"
 }

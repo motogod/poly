@@ -182,7 +182,7 @@
 	"buy_usdt": "Mua USDT",
 	"on_binance_or_another_exchange": "Trên Binance hoặc các sàn giao dịch khác",
 	"deposit_withdraw": "Nạp tiền/ Rút tiền",
-	"uSDT_to_the_address_below": "Gửi USDT vào địa chỉ bên dưới và chọn mạng blockchain chính xác (Ethereum hoặc Artbitrum)",
+	"usdt_to_the_address_below": "Gửi USDT vào địa chỉ bên dưới và chọn mạng blockchain chính xác (Ethereum hoặc Artbitrum) Chỉ có thể rút tiền số nguyên",
 	"price_limit": "Giới hạn",
 	"market_price": "Giá thị trường",
 	"no_relevant_topic": "Không có chủ đề tương ứng",
@@ -201,5 +201,6 @@
 	"position_table_markets": "Thị trường",
 	"earn_over_USDT": "Kiếm hơn 10,000 USDT",
 	"earn_it": "kiểm tra",
-	"rewards": "phần thưởng"
+	"rewards": "phần thưởng",
+	"position": "Lựa chọn"
 }

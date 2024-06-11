@@ -225,13 +225,13 @@ function useDepositUsdtModal() {
 									style={{ color: '#4299E1', cursor: 'pointer' }}
 								>{`${t('deposit')} `}</a>
 							</span>
-							{t('uSDT_to_the_address_below')}
+							{t('usdt_to_the_address_below')}
 						</Text>
 					</Stack>
 				</HStack>
 			</Stack>
 		);
-	}, [isShowInputLayout, t, selectedEther]);
+	}, [isShowInputLayout, t, link, selectedEther]);
 
 	// 顯示 Select 第二個選項要顯示 Arbitrum Sepolia or Arbitrum One
 	const renderArbitrumName = useCallback(() => {

@@ -120,7 +120,7 @@ function useRedeemModal() {
 							<Stack spacing={2}>
 								<Stack direction={'row'} align={'center'} justify={'space-between'}>
 									<Text fontSize="sm" color="gray.700">
-										{t('outcome')}
+										{t('position')}
 									</Text>
 									<Heading size="sm" color={modalData?.outcome === 'YES' ? 'green.500' : 'red.500'}>
 										{modalData?.outcome}
