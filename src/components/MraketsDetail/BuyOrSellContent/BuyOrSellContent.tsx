@@ -380,13 +380,13 @@ function BuyOrSellContent(props?: Props) {
 				}
 			}
 
-			// 使用者選得的數量跟當時的市場價格 不得大於 使用者擁有的 USDT
+			// 使用者選賣的數量不得大於 使用者擁有的
 			if (isYes) {
-				if (yesPrice * shareInputValue > total) {
+				if (shareInputValue > userMarketYesHold) {
 					return t('insufficient_balance');
 				}
 			} else {
-				if (noPrice * shareInputValue > total) {
+				if (shareInputValue > userMarketNoHold) {
 					return t('insufficient_balance');
 				}
 			}
@@ -450,15 +450,15 @@ function BuyOrSellContent(props?: Props) {
 				}
 
 				if (isYes) {
-					// 使用者選得的數量跟當時的市場價格 不得大於 使用者擁有的 USDT
-					if (yesPrice * shareInputValue > total) {
+					// 使用者賣的數量不得大於 使用者擁有的
+					if (shareInputValue > userMarketYesHold) {
 						return true;
 					}
 
 					return shareInputValue > userMarketYesHold || userMarketYesHold === 0;
 				} else {
-					// 使用者選得的數量跟當時的市場價格 不得大於 使用者擁有的 USDT
-					if (noPrice * shareInputValue > total) {
+					// 使用者選賣的數量 不得大於 使用者擁有的
+					if (shareInputValue > userMarketNoHold) {
 						return true;
 					}
 
