@@ -380,17 +380,6 @@ function BuyOrSellContent(props?: Props) {
 				}
 			}
 
-			// 使用者選賣的數量不得大於 使用者擁有的
-			if (isYes) {
-				if (shareInputValue > userMarketYesHold) {
-					return t('insufficient_balance');
-				}
-			} else {
-				if (shareInputValue > userMarketNoHold) {
-					return t('insufficient_balance');
-				}
-			}
-
 			return '';
 		}
 
