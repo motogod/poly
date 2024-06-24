@@ -257,7 +257,7 @@ function BuyOrSellContent(props?: Props) {
 				isUserClickYesOrNo ? marketDetailData?.outcome?.yes : marketDetailData?.outcome?.no
 			} USDT`;
 		}
-		console.log('CHECK HERE limiInputValue', limiInputValue);
+		// console.log('CHECK HERE limiInputValue', limiInputValue);
 		return limiInputValue;
 	};
 
@@ -397,6 +397,14 @@ function BuyOrSellContent(props?: Props) {
 				if (shareInputValue > sharesMax) {
 					return t('insufficient_balance');
 				}
+
+				const userEnterLimitPrice = inputLimitPrice.value;
+				const userEnterLimitPriceCost = userEnterLimitPrice * shareInputValue;
+
+				// 使用者掛單 選擇的數量跟價格 不得大於 使用者擁有的 USDT
+				if (userEnterLimitPriceCost > total) {
+					return t('insufficient_balance');
+				}
 			} else {
 				// 掛單的 Share 不得大於 所擁有的最大量
 				if (isYes) {
@@ -408,11 +416,6 @@ function BuyOrSellContent(props?: Props) {
 						return `${t('you')} ${t('own')} ${userMarketNoHold} ${t('shares')}`;
 					}
 				}
-			}
-
-			// 使用者掛單 選擇的數量跟價格 不得大於 使用者擁有的 USDT
-			if (userEnterLimitPriceCost > total) {
-				return t('insufficient_balance');
 			}
 
 			return '';
@@ -457,7 +460,11 @@ function BuyOrSellContent(props?: Props) {
 		}
 
 		if (selectedType === 'LIMIT') {
-			if (shareInputValue > sharesMax || shareInputValue === 0 || shareInputValue < 30) {
+			// if (shareInputValue > sharesMax || shareInputValue === 0 || shareInputValue < 30) {
+			// 	console.log('check point 11');
+			// 	return true;
+			// }
+			if (shareInputValue === 0 || shareInputValue < 30) {
 				return true;
 			}
 
@@ -471,18 +478,21 @@ function BuyOrSellContent(props?: Props) {
 			// Sell 的狀態下要觀察持有的 Share
 			if (!isBuy) {
 				if (isYes) {
-					return shareInputValue > userMarketYesHold;
+					if (shareInputValue > userMarketYesHold) {
+						return false;
+					}
 				} else {
 					return shareInputValue > userMarketNoHold;
 				}
-			}
+			} else {
+				// Buy 的狀態
+				const userEnterLimitPrice = inputLimitPrice.value;
+				const userEnterLimitPriceCost = userEnterLimitPrice * shareInputValue;
 
-			const userEnterLimitPrice = inputLimitPrice.value;
-			const userEnterLimitPriceCost = userEnterLimitPrice * shareInputValue;
-
-			// 使用者掛單 選擇的數量跟價格 不得大於 使用者擁有的 USDT
-			if (userEnterLimitPriceCost > total) {
-				return true;
+				// 使用者掛單 選擇的數量跟價格 不得大於 使用者擁有的 USDT
+				if (userEnterLimitPriceCost > total) {
+					return true;
+				}
 			}
 		}
 
