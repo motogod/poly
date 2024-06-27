@@ -11,6 +11,7 @@ import {
 	postWithdraw,
 	getPortfolioValue,
 } from '../thunks/fetchAuth';
+import { signOut } from 'next-auth/react';
 import { UserProfile, FundsType } from '@/api';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg, resetWithdrawStatus } from '../actions';
 
@@ -105,6 +106,8 @@ const authSlice = createSlice({
 		});
 		builder.addCase(loginWithGoogle.rejected, state => {
 			console.log('loginWithGoogle rejected');
+			// 若後端處理 google 登入失敗，前端瀏覽器一倂清空瀏覽器儲存的 google 資料
+			signOut();
 			state.isAuthenticated = false;
 			state.checkAuthSuccess = null;
 			state.checkAuthTitle = '';
