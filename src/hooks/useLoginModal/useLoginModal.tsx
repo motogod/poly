@@ -94,16 +94,17 @@ function useLoginModal() {
 		// Google 新視窗登入成功時，關閉原本的登入 Modal
 		console.log('sessionStatus', sessionStatus);
 		console.log('session', session);
-		if (isAuthenticated && sessionStatus === 'authenticated' && session) {
+		if (sessionStatus === 'authenticated' && session) {
 			if (setPopupGoogle && isOpen) {
 				const { idToken } = session as any;
 				dispatch(loginWithGoogle({ idToken }));
 				hasDispatch = true;
 				setPopupGoogle(false);
+				// 確認 Google 在後台端也登入成功才關閉視窗
 				onClose();
 			}
 		}
-	}, [sessionStatus, onClose, session, dispatch, isOpen, isAuthenticated]);
+	}, [sessionStatus, onClose, session, dispatch, isOpen]);
 
 	// 登入成功 關閉 LoginModal 視窗
 	useEffect(() => {
