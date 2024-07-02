@@ -13,7 +13,7 @@ function useUtility() {
 	const checkEngAndNumberName = (value: string) => {
 		// 至少六個字
 		if (value.length < 6) {
-			setInputNameErrMsg(t('at_least_six_characters'));
+			setInputNameErrMsg(t('at_least_six_characters_and_numbers'));
 			return;
 		}
 

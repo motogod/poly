@@ -88,7 +88,7 @@ function useDisplayNameModal() {
 						<FormErrorMessage>Email is required.</FormErrorMessage>
 						{putUsrProfileErrMsg === '' ? (
 							<Text fontWeight={'500'} fontSize={'sm'} mt={'14px'} color={'#7C7C7C'}>
-								{t('this_is_policy_visible')}
+								{t('the_username_can_only_include')}
 							</Text>
 						) : (
 							<Text fontWeight={'500'} fontSize={'sm'} mt={'14px'} color={'red.500'}>

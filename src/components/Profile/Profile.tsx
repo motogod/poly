@@ -168,7 +168,7 @@ function Profile() {
 								</Button> */}
 							</Stack>
 							<Text fontWeight={'500'} fontSize={'sm'} mt={'10px'} color={'#7C7C7C'}>
-								{t('this_is_policy_visible')}
+								{t('the_username_can_only_include')}
 							</Text>
 						</CardBody>
 					</Card>
