@@ -42,6 +42,9 @@ import {
 	useDepositUsdtModal,
 } from '@/hooks';
 import { CommunityIcon } from '../../../../../../public/assets/svg';
+import SocialIcon from '../../../../../../public/assets/svg/socialIcons.png';
+import XIcon from '../../../../../../public/assets/svg/xicon.png';
+import IgIcon from '../../../../../../public/assets/svg/igicon.png';
 import SocialPng from './social.png';
 import HeaderPopover from '../HeaderPopover';
 import LoggedInfoSectioin from '../LoggedInfoSection';
@@ -132,11 +135,21 @@ function HeaderRightSideSection() {
 								{t('community')}
 							</Heading>
 							<Link
-								href="https://t.me/+jXOishnrTjBmNWZl"
+								href="https://t.me/OXmarket_announcement"
 								isExternal
 								_hover={{ textDecoration: 'none' }}
 							>
-								<Image src={SocialPng} width={36} height={36} alt="socialPng" />
+								<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
+							</Link>
+							<Link href="https://x.com/OX__Market" isExternal _hover={{ textDecoration: 'none' }}>
+								<Image src={XIcon} width={36} height={36} alt="socialPng" />
+							</Link>
+							<Link
+								href="https://www.instagram.com/ox_market_/"
+								isExternal
+								_hover={{ textDecoration: 'none' }}
+							>
+								<Image src={IgIcon} width={36} height={36} alt="socialPng" />
 							</Link>
 						</Stack>
 						<ModalFooter h={'100px'} />

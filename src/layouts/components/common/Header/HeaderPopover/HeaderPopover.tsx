@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useMediaQuery } from 'react-responsive';
@@ -24,6 +25,9 @@ import { useLink } from '@/hooks';
 import LoggedInfoSection from '../LoggedInfoSection';
 import LoggedMenuSection from '../LoggedMenuSection';
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
+import SocialIcon from '../../../../../../public/assets/svg/socialIcons.png';
+import XIcon from '../../../../../../public/assets/svg/xicon.png';
+import IgIcon from '../../../../../../public/assets/svg/igicon.png';
 import { zIndexPop } from '@/utils/zIndex';
 
 type HeaderPopType = {
@@ -78,13 +82,25 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 						<Heading size={'sx'} color={'gray.800'} fontWeight={'800'}>
 							{t('community')}
 						</Heading>
-						<Link
-							href="https://t.me/+jXOishnrTjBmNWZl"
-							isExternal
-							_hover={{ textDecoration: 'none' }}
-						>
-							<Icon mt={'16px'} cursor={'pointer'} as={CommunityIcon} w={'36px'} h={'36px'} />
-						</Link>
+						<Stack flexDirection={'row'} gap={2} mt={2} mb={2}>
+							<Link
+								href="https://t.me/OXmarket_announcement"
+								isExternal
+								_hover={{ textDecoration: 'none' }}
+							>
+								<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
+							</Link>
+							<Link href="https://x.com/OX__Market" isExternal _hover={{ textDecoration: 'none' }}>
+								<Image src={XIcon} width={36} height={36} alt="socialPng" />
+							</Link>
+							<Link
+								href="https://www.instagram.com/ox_market_/"
+								isExternal
+								_hover={{ textDecoration: 'none' }}
+							>
+								<Image src={IgIcon} width={36} height={36} alt="socialPng" />
+							</Link>
+						</Stack>
 					</PopoverFooter>
 				</>
 			);
@@ -135,16 +151,25 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 				<Heading mt={'20px'} size={'md'} color={'gray.800'}>
 					{t('community')}
 				</Heading>
-				<Link href="https://t.me/+jXOishnrTjBmNWZl" isExternal _hover={{ textDecoration: 'none' }}>
-					<Icon
-						cursor={'pointer'}
-						as={CommunityIcon}
-						w={'36px'}
-						h={'36px'}
-						mt={'6px'}
-						mb={'10px'}
-					/>
-				</Link>
+				<Stack flexDirection={'row'} mb={6}>
+					<Link
+						href="https://t.me/OXmarket_announcement"
+						isExternal
+						_hover={{ textDecoration: 'none' }}
+					>
+						<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
+					</Link>
+					<Link href="https://x.com/OX__Market" isExternal _hover={{ textDecoration: 'none' }}>
+						<Image src={XIcon} width={36} height={36} alt="socialPng" />
+					</Link>
+					<Link
+						href="https://www.instagram.com/ox_market_/"
+						isExternal
+						_hover={{ textDecoration: 'none' }}
+					>
+						<Image src={IgIcon} width={36} height={36} alt="socialPng" />
+					</Link>
+				</Stack>
 			</Stack>
 		);
 	};
