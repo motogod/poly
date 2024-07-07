@@ -26,8 +26,9 @@ import {
 } from '@/store';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { PrimaryPink } from '@/utils/color';
-import { CommunityIcon } from '../../../../../public/assets/svg';
 import SocialIcon from '../../../../../public/assets/svg/socialIcons.png';
+import XIcon from '../../../../../public/assets/svg/xicon.png';
+import IgIcon from '../../../../../public/assets/svg/igicon.png';
 import NextIcon from '../../../../../public/next.svg';
 import { LocalesEnum } from '@/../public/locales/type';
 import logoImg from '@/../public/logo.png';
@@ -176,13 +177,25 @@ export default function LargeWithAppLinksAndSocial() {
 					<Stack align={'flex-start'}>
 						<ListHeader>{t('support')}</ListHeader>
 						{/* <Icon cursor={'pointer'} as={SocialIcon} w={'36px'} h={'36px'} /> */}
-						<Link
-							href="https://t.me/+jXOishnrTjBmNWZl"
-							isExternal
-							_hover={{ textDecoration: 'none' }}
-						>
-							<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
-						</Link>
+						<Stack flexDirection={'row'}>
+							<Link
+								href="https://t.me/OXmarket_announcement"
+								isExternal
+								_hover={{ textDecoration: 'none' }}
+							>
+								<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
+							</Link>
+							<Link href="https://x.com/OX__Market" isExternal _hover={{ textDecoration: 'none' }}>
+								<Image src={XIcon} width={36} height={36} alt="socialPng" />
+							</Link>
+							<Link
+								href="https://www.instagram.com/ox_market_/"
+								isExternal
+								_hover={{ textDecoration: 'none' }}
+							>
+								<Image src={IgIcon} width={36} height={36} alt="socialPng" />
+							</Link>
+						</Stack>
 						{/* <AppStoreBadge />
 		        <PlayStoreBadge /> */}
 					</Stack>
