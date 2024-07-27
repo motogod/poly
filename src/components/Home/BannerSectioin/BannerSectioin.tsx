@@ -11,15 +11,19 @@ import {
 	Link,
 	FormLabel,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { useLink } from '@/hooks';
 import earnItPng from '@/../public/earn-it.png';
+import parisPng from '@/../public/paris-2024.png';
 
 function BannerSectioin() {
 	const { t } = useTranslation();
 
 	const { link } = useLink();
+
+	const router = useRouter();
 
 	return (
 		<>
@@ -34,7 +38,7 @@ function BannerSectioin() {
 				>
 					<Image
 						style={{ width: '100%', height: '100%', borderRadius: 20 }}
-						src={earnItPng}
+						src={parisPng}
 						alt="funds_background"
 						fill
 						objectFit={'cover'}
@@ -56,18 +60,18 @@ function BannerSectioin() {
 						{t('earn_over_USDT')}
 					</Text>
 					<Center>
-						<Link href={link().earnItLink} isExternal _hover={{ textDecoration: 'none' }}>
-							<Button
-								onClick={() => null}
-								px="7"
-								py="6"
-								borderRadius="3xl"
-								bg={'gray.50'}
-								color={'gray.800'}
-							>
-								{t('earn_it')}
-							</Button>
-						</Link>
+						{/* <Link href={link().earnItLink} isExternal _hover={{ textDecoration: 'none' }}> */}
+						<Button
+							onClick={() => router.push(`/marketsDetail?marketSlug=Paris-2024-CN`)}
+							px="7"
+							py="6"
+							borderRadius="3xl"
+							bg={'gray.50'}
+							color={'gray.800'}
+						>
+							{t('earn_it')}
+						</Button>
+						{/* </Link> */}
 					</Center>
 				</Stack>
 			</Stack>
