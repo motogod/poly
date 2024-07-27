@@ -60,18 +60,18 @@ function BannerSectioin() {
 						{t('earn_over_USDT')}
 					</Text>
 					<Center>
-						{/* <Link href={link().earnItLink} isExternal _hover={{ textDecoration: 'none' }}> */}
-						<Button
-							onClick={() => router.push(`/marketsDetail?marketSlug=Paris-2024-CN`)}
-							px="7"
-							py="6"
-							borderRadius="3xl"
-							bg={'gray.50'}
-							color={'gray.800'}
-						>
-							{t('earn_it')}
-						</Button>
-						{/* </Link> */}
+						<Link href={link().earnItLink} isExternal _hover={{ textDecoration: 'none' }}>
+							<Button
+								onClick={() => null}
+								px="7"
+								py="6"
+								borderRadius="3xl"
+								bg={'gray.50'}
+								color={'gray.800'}
+							>
+								{t('earn_it')}
+							</Button>
+						</Link>
 					</Center>
 				</Stack>
 			</Stack>
