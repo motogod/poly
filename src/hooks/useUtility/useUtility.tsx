@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { isAddress } from 'web3-validator';
+import { format } from 'date-fns';
+import { zhTW } from 'date-fns/locale';
 import { useBaseUrl } from '@/hooks';
 
 function useUtility() {
@@ -125,6 +127,39 @@ function useUtility() {
 		return '';
 	};
 
+	const formatAllDate = (dateString: string) => {
+		if (dateString) {
+			const date = new Date(dateString);
+			const formattedDate = format(date, 'yyyy/MM/dd HH:MM', { locale: zhTW });
+			return formattedDate;
+		}
+
+		return '';
+	};
+
+	const checkPromotionsRedeemStatusCode = (code: number) => {
+		switch (code) {
+			case 201: // 兌換成功
+				return t('redemption_successful');
+			case 10101:
+				return t('insufficient_points');
+			case 10102:
+				return t('invalid_points_to_redeem');
+			case 10103:
+				return t('user_redemption_limit_reached');
+			case 10104:
+				return t('promotion_redemption_limit_reached');
+			case 10105:
+				return t('something_went_wrong_please_try_again_later');
+			case 10106:
+				return t('invalid_promotion');
+			case 404:
+				return t('promotion_is_not_found_or_expired');
+			default:
+				return '';
+		}
+	};
+
 	return {
 		checkEngAndNumberName,
 		inputNameErrMsg,
@@ -133,6 +168,8 @@ function useUtility() {
 		inputValueAndEthValueMsg,
 		initInputAmountValue,
 		inputAddressValueMsg,
+		formatAllDate,
+		checkPromotionsRedeemStatusCode,
 	};
 }
 

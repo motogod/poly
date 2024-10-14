@@ -39,7 +39,7 @@ const loginWithSiwe = createAsyncThunk('api/loginWithSiwe', async (params: any, 
 
 const loginWithGoogle = createAsyncThunk(
 	'api/loginWithGoogle',
-	async (params: { idToken: string }, { dispatch }) => {
+	async (params: { idToken: string; referral: { username: string } }, { dispatch }) => {
 		const resp = await LoginWithGoogle<LoginType>(params);
 		dispatch(getUserProfile({})); // 登入成功 更新使用者資料
 		console.log('loginWithGoogle resp is', resp);

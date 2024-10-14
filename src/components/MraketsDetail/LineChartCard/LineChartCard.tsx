@@ -129,7 +129,7 @@ const data = [
 // ];
 
 function LineChartCard() {
-	const [selectedTab, setSelectedTab] = useState<LineChartTabsIntervalType>('6h');
+	const [selectedTab, setSelectedTab] = useState<LineChartTabsIntervalType>('all'); // 會影響到預設 call API 抓取哪個標籤的資料
 
 	const { t } = useTranslation();
 
@@ -144,7 +144,7 @@ function LineChartCard() {
 		lineChartData,
 		yesAndNoLineChartData,
 	} = useSelector((state: RootState) => state.homeReducer);
-
+	console.log('check marketDetailData', marketDetailData);
 	const router = useRouter();
 
 	const toast = useToast();
@@ -317,50 +317,60 @@ function LineChartCard() {
 								w={'100%'}
 							>
 								<Stack direction="row" justify="space-between">
-									<Tag
-										px={4}
-										py={1}
-										border="1px"
-										bg="pink.500"
-										borderColor="pink.500"
-										size={'sm'}
-										colorScheme="undefined"
-										borderRadius={'md'}
-									>
-										<TagLabel
-											cursor={'pointer'}
+									<Stack direction="row" wrap={'wrap'}>
+										{marketDetailData?.categories.map(value => {
+											return (
+												<>
+													<Tag
+														px={4}
+														py={1}
+														border="1px"
+														bg="pink.500"
+														borderColor="pink.500"
+														size={'sm'}
+														colorScheme="undefined"
+														borderRadius={'md'}
+													>
+														<TagLabel
+															cursor={'pointer'}
+															onClick={() => {
+																// 變更 /markets 路徑下的目錄選單選取狀態
+																dispatch(
+																	queryUrlToChangeMenuStatus({
+																		queryString: `${value.slug},`,
+																	})
+																);
+																// 接著將頁面導回 markets 並附上 qeury 參數 讓 Markets 底下的 useEffect 去 call API
+																router.push(`/markets?categories=${value.slug},`);
+															}}
+															color="#fff"
+														>
+															{value.name}
+														</TagLabel>
+													</Tag>
+												</>
+											);
+										})}
+									</Stack>
+									<Stack>
+										<AttachmentIcon
+											cursor="pointer"
 											onClick={() => {
-												// 變更 /markets 路徑下的目錄選單選取狀態
-												dispatch(
-													queryUrlToChangeMenuStatus({
-														queryString: `${marketDetailData.category.slug},`,
-													})
-												);
-												// 接著將頁面導回 markets 並附上 qeury 參數 讓 Markets 底下的 useEffect 去 call API
-												router.push(`/markets?categories=${marketDetailData.category.slug},`);
+												if (typeof window !== 'undefined') {
+													const origin = window.location.origin;
+													const URL = `${origin}${router.asPath}`;
+													navigator.clipboard.writeText(URL);
+													toast({
+														title: t('copied'),
+														position: 'top',
+														status: 'success',
+														duration: 1000,
+														isClosable: true,
+													});
+												}
 											}}
-											color="#fff"
-										>
-											{marketDetailData?.category?.name}
-										</TagLabel>
-									</Tag>
-									<AttachmentIcon
-										cursor="pointer"
-										onClick={() => {
-											if (typeof window !== 'undefined') {
-												const origin = window.location.origin;
-												const URL = `${origin}${router.asPath}`;
-												navigator.clipboard.writeText(URL);
-												toast({
-													title: t('copied'),
-													position: 'top',
-													status: 'success',
-													duration: 1000,
-													isClosable: true,
-												});
-											}
-										}}
-									/>
+										/>
+									</Stack>
 								</Stack>
 								<Stack mt={'12px'}>
 									<Heading noOfLines={3} size="md" color="gray.800" lineHeight={'5'}>
@@ -401,6 +411,7 @@ function LineChartCard() {
 				)}
 				<Tabs
 					mt={'28px'}
+					defaultIndex={4} // 預設為 all
 					onChange={value => {
 						if (value === 0) {
 							setSelectedTab('6h');

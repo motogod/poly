@@ -14,6 +14,8 @@ import useMsgModal from './useMsgModal';
 import useWithdrawUsdtModal from './useWithdrawUsdtModal';
 import useRedeemModal from './useRedeemModal';
 import useLink from './useLink';
+import useReferral from './useReferral';
+import useEventsModal from './useEventsModal';
 
 export {
 	useCategoryTabsList,
@@ -32,4 +34,6 @@ export {
 	useWithdrawUsdtModal,
 	useRedeemModal,
 	useLink,
+	useReferral,
+	useEventsModal,
 };

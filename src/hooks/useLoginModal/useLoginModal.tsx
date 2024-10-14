@@ -28,7 +28,7 @@ import { useConnect, useDisconnect, useAccount, useSwitchNetwork, useNetwork } f
 import { useSDK } from '@metamask/sdk-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, loginWithGoogle, RootState } from '@/store';
-import { useSiwe } from '@/hooks';
+import { useSiwe, useReferral } from '@/hooks';
 import { MetaMaskIcon, WalletConnectIcon } from '../../../public/assets/svg';
 import { zIndexLoginModal } from '@/utils/zIndex';
 
@@ -41,6 +41,9 @@ function useLoginModal() {
 	const [errorMsg, setErrorMsg] = useState('');
 
 	const { t } = useTranslation();
+
+	// 若網址有推薦人 ?referral=推薦人姓名，登入時會用到
+	const referral = useReferral();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -61,7 +64,12 @@ function useLoginModal() {
 		async onSuccess(data, variables, context) {
 			const { account, chain } = data;
 			// pendingConnector 用何種方式登入錢包也告訴後端
-			await signInWithEthereum(account, chain.id, pendingConnector?.id as string);
+			await signInWithEthereum(
+				account,
+				chain.id,
+				pendingConnector?.id as string,
+				referral as string
+			);
 
 			// 切換 chainId 到 Arbitrum, 若尚未 connect 成功 switchNetwork 會是 undefined
 			// WalletConnect 會自動切換到設置的第一個 chainId，多插入一個切換會有 pending 的 bug
@@ -97,14 +105,15 @@ function useLoginModal() {
 		if (sessionStatus === 'authenticated' && session) {
 			if (setPopupGoogle && isOpen) {
 				const { idToken } = session as any;
-				dispatch(loginWithGoogle({ idToken }));
+
+				dispatch(loginWithGoogle({ idToken, referral: { username: referral as string } }));
 				hasDispatch = true;
 				setPopupGoogle(false);
 				// 確認 Google 在後台端也登入成功才關閉視窗
 				onClose();
 			}
 		}
-	}, [sessionStatus, onClose, session, dispatch, isOpen]);
+	}, [sessionStatus, onClose, session, dispatch, isOpen, referral]);
 
 	// 登入成功 關閉 LoginModal 視窗
 	useEffect(() => {

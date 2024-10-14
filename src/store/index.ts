@@ -25,6 +25,7 @@ import {
 	filterSortSelector,
 	changeRouterAsPathWithCategories,
 } from './slice/dataSlice';
+import { pointReducer, resetUserPromotionsRedeem } from './slice/pointSlice';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg, resetTradeOrdersStatus } from './actions';
 
 export const store = configureStore({
@@ -35,6 +36,7 @@ export const store = configureStore({
 		toastReducer,
 		dataReducer,
 		portfolioReducer,
+		pointReducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -72,6 +74,7 @@ export {
 	selectPortfolioPositions,
 	selectPortfolioHistory,
 	changeRouterAsPathWithCategories,
+	resetUserPromotionsRedeem,
 };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';

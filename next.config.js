@@ -13,7 +13,7 @@ const nextConfig = {
 		return config;
 	},
 	images: {
-		domains: ['media.newyorker.com'],
+		domains: ['media.newyorker.com', 'icons.iconarchive.com'],
 		formats: ['image/avif', 'image/webp'],
 	},
 	env: {

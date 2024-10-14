@@ -18,6 +18,7 @@ export interface MarketsItemType {
 	initialPrice: number;
 	settlePrice: number;
 	category: { slug: string; name: string };
+	categories: { slug: string; name: string }[];
 	description: string;
 }
 
@@ -336,3 +337,67 @@ export type DeleteOrderType = {
 	message: string;
 	statusCode: number;
 };
+
+export type PointData = {
+	data: {
+		payload: Payload;
+		meta: Meta;
+	};
+	message: string;
+	statusCode: number;
+};
+
+export interface Payload {
+	points: Point[];
+	balance: number;
+	earned: number;
+	claimed: number;
+}
+
+export interface Promotions {
+	id: string; //該筆點數兌換活動的 DB 識別 UUID
+	startAt: string; // 該筆點數兌換活動的開始時間
+	endAt: string; // 該筆點數兌換活動的結束時間
+	title: string; // 	兌換活動名稱，依照 Accept-Language 值決定回傳語言，預設英文。
+	description: string; // 兌換活動說明的 html，依照 Accept-Language 值決定回傳語言，預設英文。
+	image: string; // 兌換活動的圖片
+	exchangeRatio: number; // 點數兌換的匯率，多少點數兌換 1 USDT。
+	status: 'OPEN' | 'CLOSED'; // 活動呈現開啟或關閉
+}
+
+export type PromotionsData = {
+	data: Promotions[];
+	message: string;
+	statusCode: number;
+};
+
+export type PromotionsRedeemData = {
+	data: {
+		id: string; // 該筆兌換紀錄的 DB 識別 UUID
+		createdAt: string; // 該筆兌換紀錄的建立時間
+		value: number; // 該筆兌換紀錄獲得的 USDT 數量
+		pointUsed: number; // 該筆兌換紀錄消耗的點數數量
+	};
+	message: string;
+	statusCode: number;
+	error?: {
+		code: number;
+		message: string;
+	};
+};
+
+export interface Point {
+	id: string;
+	createdAt: string;
+	type: 'volume' | 'referral' | 'referral_volume' | 'other' | 'redemption';
+	value: number;
+}
+
+interface Meta {
+	page: number;
+	take: number;
+	itemCount: number;
+	pageCount: number;
+	hasPreviousPage: boolean;
+	hasNextPage: boolean;
+}

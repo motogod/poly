@@ -45,7 +45,7 @@ function Profile() {
 	const { username, email, origin } = user;
 
 	useEffect(() => {
-		if (!isAuthenticated) {
+		if (!isAuthenticated && isAuthenticated !== null) {
 			router.replace('./');
 		}
 	}, [router, isAuthenticated]);

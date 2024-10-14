@@ -129,4 +129,16 @@ export const DeletePortfolioOrder = <T>(params: { id: string }) =>
 export const PostRedeemClaim = <T>(params: { marketId: string; outcome: 'YES' | 'NO' }) =>
 	requestWithSession.post<T>('/accounts/portfolio/claim', params, { timeout: 15000 });
 
+// Get Points
+export const GetPoints = <T>(params: { page: number; take: number }) =>
+	requestWithSession.get<T>('/points', params, { timeout: 15000 });
+
+// Get promotions 查詢點數兌換活動列表
+export const GetPromotions = <T>(params: any) =>
+	requestWithSession.get<T>('/promotions', params, { timeout: 15000 });
+
+// Promotions Redeem
+export const PostPromotionsRedeem = <T>(params: { id: string }) =>
+	requestWithSession.post<T>(`/promotions/${params.id}/redeem`, {}, { timeout: 15000 });
+
 export * from './type';
