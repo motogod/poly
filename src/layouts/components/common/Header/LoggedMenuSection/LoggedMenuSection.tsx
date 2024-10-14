@@ -75,6 +75,39 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 					{t('logged_menu_how_it_works')}
 				</Text>
 			</Link>
+			<Text
+				onClick={() => {
+					router.push('/referral');
+					close();
+				}}
+				cursor={'pointer'}
+				size={'md'}
+				color={'gray.800'}
+			>
+				{t('referral_program')}
+			</Text>
+			<Text
+				onClick={() => {
+					router.push('/oxpoints');
+					close();
+				}}
+				cursor={'pointer'}
+				size={'md'}
+				color={'gray.800'}
+			>
+				OX Points
+			</Text>
+			<Text
+				onClick={() => {
+					router.push('/rewardtasks');
+					close();
+				}}
+				cursor={'pointer'}
+				size={'md'}
+				color={'gray.800'}
+			>
+				Reward Tasks
+			</Text>
 			<Link href={link().rewardsLink} isExternal _hover={{ textDecoration: 'none' }}>
 				<Text
 					onClick={() => {

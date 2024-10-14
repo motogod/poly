@@ -199,8 +199,17 @@
 	"logged_menu_profile": "Profile",
 	"logged_menu_how_it_works": "How it Works",
 	"position_table_markets": "Markets",
-	"earn_over_USDT": "Paris 2024",
-	"earn_it": "Join game",
+	"earn_over_USDT": "",
+	"earn_it": "More",
 	"rewards": "Rewards",
-	"position": "Position"
+	"position": "Position",
+	"referral_program": "Referral Program",
+	"redemption_successful": "Redemption successful",
+	"insufficient_points": "Insufficient points",
+	"invalid_points_to_redeem": "Invalid points to redeem.",
+	"user_redemption_limit_reached": "User redemption limit reached.",
+	"promotion_redemption_limit_reached": "Promotion redemption limit reached.",
+	"something_went_wrong_please_try_again_later": "Oops... Something went wrong. Please try again later.",
+	"invalid_promotion": "Invalid promotion.",
+	"promotion_is_not_found_or_expired": "Promotion is not found or expired"
 }

@@ -199,8 +199,17 @@
 	"logged_menu_profile": "个人资料",
 	"logged_menu_how_it_works": "说明",
 	"position_table_markets": "市场",
-	"earn_over_USDT": "奥林匹克运动会",
-	"earn_it": "预测结果",
+	"earn_over_USDT": "",
+	"earn_it": "更多发现",
 	"rewards": "奖励",
-	"position": "选择"
+	"position": "选择",
+	"referral_program": "推荐计划",
+	"redemption_successful": "兌換成功",
+	"insufficient_points": "点数不足",
+	"invalid_points_to_redeem": "无效的点数兑换数量，预留的错误码，暂时用不到。",
+	"user_redemption_limit_reached": "该用户已达该兑换活动，每人能兑换的次数限制。",
+	"promotion_redemption_limit_reached": "已达该兑换活动兑换总人次的限制",
+	"something_went_wrong_please_try_again_later": "发生未知的错误，请稍后再试。",
+	"invalid_promotion": "无效的兑换活动，预留的错误码，暂时用不到。",
+	"promotion_is_not_found_or_expired": "促销信息未找到或已过期"
 }

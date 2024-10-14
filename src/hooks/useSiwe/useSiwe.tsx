@@ -44,7 +44,12 @@ function useSiwe() {
 		return message.prepareMessage();
 	};
 
-	const signInWithEthereum = async (address: string, chainId: number, origin: string) => {
+	const signInWithEthereum = async (
+		address: string,
+		chainId: number,
+		origin: string,
+		referral: string
+	) => {
 		if (typeof window !== undefined) {
 			// const provider = new BrowserProvider(window.ethereum as any);
 
@@ -71,7 +76,10 @@ function useSiwe() {
 				// const signature = await signer.signMessage(message);
 				const signature = await signMessageAsync({ message });
 
-				// console.log('login params', JSON.stringify({ nonce, signature, message, origin }));
+				// console.log(
+				// 	'login params',
+				// 	JSON.stringify({ nonce, signature, message, origin, referral: { username: referral } })
+				// );
 
 				dispatch(
 					loginWithSiwe({
@@ -79,6 +87,7 @@ function useSiwe() {
 						message,
 						signature,
 						origin,
+						referral: { username: referral },
 					})
 				);
 			} catch (error) {

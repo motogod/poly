@@ -16,7 +16,7 @@ import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { useLink } from '@/hooks';
 import earnItPng from '@/../public/earn-it.png';
-import parisPng from '@/../public/paris-2024.png';
+import LuckylistPng from '@/../public/banner0912.png';
 
 function BannerSectioin() {
 	const { t } = useTranslation();
@@ -34,11 +34,11 @@ function BannerSectioin() {
 					ml={{ lg: '42px', md: '26px', sm: '16px' }}
 					mr={{ lg: '40px', md: '26px', sm: '16px' }}
 					borderRadius="3xl"
-					filter="brightness(60%)"
+					filter="brightness(100%)"
 				>
 					<Image
 						style={{ width: '100%', height: '100%', borderRadius: 20 }}
-						src={parisPng}
+						src={LuckylistPng}
 						alt="funds_background"
 						fill
 						objectFit={'cover'}
@@ -68,6 +68,11 @@ function BannerSectioin() {
 								borderRadius="3xl"
 								bg={'gray.50'}
 								color={'gray.800'}
+								style={{ opacity: 0.8,
+								position: 'absolute',
+								top: '105%',            
+								left: '50%',         
+								transform: 'translateX(-50%)'  }}
 							>
 								{t('earn_it')}
 							</Button>
