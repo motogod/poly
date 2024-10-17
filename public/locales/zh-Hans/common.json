@@ -211,5 +211,15 @@
 	"promotion_redemption_limit_reached": "已达该兑换活动兑换总人次的限制",
 	"something_went_wrong_please_try_again_later": "发生未知的错误，请稍后再试。",
 	"invalid_promotion": "无效的兑换活动，预留的错误码，暂时用不到。",
-	"promotion_is_not_found_or_expired": "促销信息未找到或已过期"
+	"promotion_is_not_found_or_expired": "促销信息未找到或已过期",
+	"earn_oX_points_for_each_friend_you_refer": "您推荐的每个朋友均可赚取 OX Points",
+	"referral_link": "推荐链接",
+	"share_your_referral_link_with_friends_to_earn_ox_points": "与朋友分享您的推荐链接并赚取OX Points ",
+	"the_referral_program_will_launch_in_november_2024": "推荐计划将于 2024 年 11 月启动。",
+	"invite_friends": "邀请朋友",
+	"share_your_referral_link_with_friends": "与朋友分享您的推荐链接",
+	"complete_tasks": "完成任务",
+	"your_friends_need_to_sign_up_and_make_a_transaction_more_than": "您的好友需要注册并交易超过 1 USDT",
+	"gain_ox_points": "获得OX Points",
+	"the_inviterreceives_ox_points": "邀请者获得 5,000 OX Points，被邀请者获得 2,500 OX Points。"
 }
