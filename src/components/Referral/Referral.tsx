@@ -37,7 +37,6 @@ import GiftIcon from '@/../public/assets/svg/icon-gift-01.png';
 import ReferralBannerImg from '@/../public/referral-banner-bg.png';
 import Footer from '@/layouts/components/common/Footer';
 
-// background: linear-gradient(90deg, #edf2f7 44%, #d53f8c 30%);
 function Referral() {
 	const [name, setName] = useState('');
 	const [userEmail, setUserEmail] = useState('');
@@ -64,7 +63,7 @@ function Referral() {
 	const { username, email, origin } = user;
 
 	useEffect(() => {
-		if (!isAuthenticated) {
+		if (!isAuthenticated && isAuthenticated !== null) {
 			router.replace('./');
 		}
 	}, [router, isAuthenticated]);
@@ -284,8 +283,8 @@ function Referral() {
 					h={'56px'}
 					flexWrap={'nowrap'}
 					border="1px"
-					backgroundColor="gray.50"
-					borderColor="gray.50"
+					backgroundColor="pink.50"
+					borderColor="pink.50"
 					size="lg"
 					colorScheme="undefined"
 					borderRadius={'md'}
