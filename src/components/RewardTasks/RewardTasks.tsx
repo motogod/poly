@@ -61,6 +61,8 @@ function RewardTasks() {
 		dispatch(getPoints({ page: 1, take: 20 }));
 	}, [dispatch]);
 
+	return null;
+
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
 			<Stack ml={paddingMainHorizontal} mr={paddingMainHorizontal} mt={paddingMainVertical}>

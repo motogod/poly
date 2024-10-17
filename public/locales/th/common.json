@@ -208,5 +208,15 @@
 	"promotion_redemption_limit_reached": "Promotion redemption limit reached.",
 	"something_went_wrong_please_try_again_later": "Oops... Something went wrong. Please try again later.",
 	"invalid_promotion": "Invalid promotion.",
-	"promotion_is_not_found_or_expired": "Promotion is not found or expired"
+	"promotion_is_not_found_or_expired": "Promotion is not found or expired",
+	"earn_oX_points_for_each_friend_you_refer": "Earn OX Points for each friend you refer",
+	"referral_link": "Referral Link",
+	"share_your_referral_link_with_friends_to_earn_ox_points": "Share your referral link with friends to earn OX Points ",
+	"the_referral_program_will_launch_in_november_2024": "The referral program will launch in November 2024.",
+	"invite_friends": "Invite Friends",
+	"share_your_referral_link_with_friends": "Share your referral link with friends",
+	"complete_tasks": "Complete tasks",
+	"your_friends_need_to_sign_up_and_make_a_transaction_more_than": "Your friends need to sign up and make a transaction  more than 1 USDT",
+	"gain_ox_points": "Gain OX Points",
+	"the_inviterreceives_ox_points": "The inviter receives 5,000 OX Points, and the Invitee receives 2,500 OX Points."
 }
