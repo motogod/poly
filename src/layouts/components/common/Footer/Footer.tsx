@@ -23,6 +23,7 @@ import {
 	getMarkets,
 	getSpotlightMarkets,
 	getHomeCategorySectionMarkets,
+	getCategories,
 } from '@/store';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { PrimaryPink } from '@/utils/color';
@@ -77,6 +78,7 @@ export default function LargeWithAppLinksAndSocial() {
 		setTimeout(() => {
 			dispatch(getSpotlightMarkets());
 			dispatch(getHomeCategorySectionMarkets({ childrenCategories: [] }));
+			dispatch(getCategories()); // 重新撈取分類選單
 			dispatch(
 				getMarkets({
 					categories: '',
