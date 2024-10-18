@@ -170,7 +170,7 @@ function Referral() {
 												borderRadius={'4px'}
 												onClick={() => {
 													navigator.clipboard.writeText(
-														`https://www.ox.market?referral=${username}`
+														`https://www.ox.market/home?referral=${username}`
 													);
 													toast({
 														title: t('copied'),
