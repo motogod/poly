@@ -284,7 +284,7 @@ function LineChartCard() {
 			</>
 		);
 	};
-
+	console.log('marketDetailData', marketDetailData);
 	return (
 		<Card shadow="lg" border="1px solid #E2E8F0;" borderRadius="3xl">
 			<CardBody>
@@ -318,7 +318,34 @@ function LineChartCard() {
 							>
 								<Stack direction="row" justify="space-between">
 									<Stack direction="row" wrap={'wrap'}>
-										{marketDetailData?.categories.map(value => {
+										<Tag
+											px={4}
+											py={1}
+											border="1px"
+											bg="pink.500"
+											borderColor="pink.500"
+											size={'sm'}
+											colorScheme="undefined"
+											borderRadius={'md'}
+										>
+											<TagLabel
+												cursor={'pointer'}
+												onClick={() => {
+													// 變更 /markets 路徑下的目錄選單選取狀態
+													dispatch(
+														queryUrlToChangeMenuStatus({
+															queryString: `${marketDetailData?.category.slug},`,
+														})
+													);
+													// 接著將頁面導回 markets 並附上 qeury 參數 讓 Markets 底下的 useEffect 去 call API
+													router.push(`/markets?categories=${marketDetailData?.category.slug},`);
+												}}
+												color="#fff"
+											>
+												{marketDetailData?.category?.name}
+											</TagLabel>
+										</Tag>
+										{/* {marketDetailData?.categories.map(value => {
 											return (
 												<>
 													<Tag
@@ -350,7 +377,7 @@ function LineChartCard() {
 													</Tag>
 												</>
 											);
-										})}
+										})} */}
 									</Stack>
 									<Stack>
 										<AttachmentIcon
