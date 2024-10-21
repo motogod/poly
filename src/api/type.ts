@@ -386,10 +386,30 @@ export type PromotionsRedeemData = {
 	};
 };
 
+export interface RewardsType {
+	completed: boolean;
+	completedAt: string;
+	description: string;
+	id: string;
+	name: string;
+}
+
+export interface RewardTasks {
+	deposit: RewardsType;
+	tradeVolume: RewardsType;
+	monthlyDraw: RewardsType;
+}
+
+export type RewardTasksData = {
+	data: RewardTasks;
+	message: string;
+	statusCode: number;
+};
+
 export interface Point {
 	id: string;
 	createdAt: string;
-	type: 'volume' | 'referral' | 'referral_volume' | 'other' | 'redemption';
+	type: 'volume' | 'referral' | 'referral_volume' | 'other' | 'redemption' | 'reward_tasks';
 	value: number;
 }
 

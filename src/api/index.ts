@@ -141,4 +141,12 @@ export const GetPromotions = <T>(params: any) =>
 export const PostPromotionsRedeem = <T>(params: { id: string }) =>
 	requestWithSession.post<T>(`/promotions/${params.id}/redeem`, {}, { timeout: 15000 });
 
+// Get RewardTasks 查詢使用者的兌換任務
+export const GetRewardTasks = <T>(params: any) =>
+	requestWithSession.get<T>('/reward-tasks', params, { timeout: 15000 });
+
+// 參加每月抽獎活動
+export const PostRewardTasksMonthlyDrawJoin = <T>(params: any) =>
+	requestWithSession.post<T>(`/reward-tasks/monthly-draw/join`, {}, { timeout: 15000 });
+
 export * from './type';

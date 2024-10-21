@@ -15,7 +15,9 @@ import {
 	TabPanel,
 	HStack,
 	Box,
+	Link,
 } from '@chakra-ui/react';
+import { CheckCircleIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
@@ -23,16 +25,16 @@ import { useTranslation } from 'next-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
-import OxImg from '@/../public/assets/svg/icon-ox-points-01.png';
-import RewardSignUpImg from '@/../public/assets/svg/image-rewards-01.png';
-import RewardFormImg from '@/../public/assets/svg/image-rewards-02.png';
+import RewardDepositImg from '@/../public/assets/svg/reward-deposit.png';
+import RewardTradeImg from '@/../public/assets/svg/reward-trade.png';
 import RewardDrawImg from '@/../public/assets/svg/image-rewards-03.png';
-import RedeemImg from '@/../public/assets/svg/icon-points-redeem-01.png';
-import ExchangeImg from '@/../public/assets/svg/image-exchange-01.png';
-import PointsHistoryImg from '@/../public/assets/svg/icon-points-history-01.png';
 import OxPointsBannerIcon from '@/../public/image-rewards-illustration.png';
 import OxPointsBannerImg from '@/../public/rewards-banner-bg.png';
-import { getPoints } from '@/store/thunks/fetchPoint';
+import {
+	getPoints,
+	getRewardTasks,
+	postRewardTasksMonthlyDrawJoin,
+} from '@/store/thunks/fetchPoint';
 
 // background: linear-gradient(90deg, #edf2f7 44%, #d53f8c 30%);
 function RewardTasks() {
@@ -47,7 +49,9 @@ function RewardTasks() {
 	});
 
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
-	const { userPointData } = useSelector((state: RootState) => state.pointReducer);
+	const { rewarkTasksData, isPostRewardTasksMonthlyDrawJoinLoading } = useSelector(
+		(state: RootState) => state.pointReducer
+	);
 
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -59,9 +63,9 @@ function RewardTasks() {
 
 	useEffect(() => {
 		dispatch(getPoints({ page: 1, take: 20 }));
-	}, [dispatch]);
 
-	return null;
+		dispatch(getRewardTasks());
+	}, [dispatch]);
 
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
@@ -131,15 +135,15 @@ function RewardTasks() {
 					>
 						<CardBody h={'100%'}>
 							<Stack h="112px" mt={'40px'} align={'center'}>
-								<Image src={RewardSignUpImg} width={77} alt="socialPng" />
+								<Image src={RewardDepositImg} width={77} alt="socialPng" />
 							</Stack>
 							<Stack h={'130px'}>
 								<Heading onClick={e => null} size="md" color="gray.800" textAlign={'center'}>
-									Sing Up to get 2500 OX Points
+									{rewarkTasksData?.deposit?.name}
 								</Heading>
 								<Stack>
 									<Text textAlign={'center'} noOfLines={3}>
-										Sing up via referral and complete 1 USDT transaction to earn 2,500 Points.
+										{rewarkTasksData?.deposit?.description}
 									</Text>
 								</Stack>
 							</Stack>
@@ -147,12 +151,34 @@ function RewardTasks() {
 								<Button
 									onClick={() => null}
 									borderWidth={1}
-									bg={'#fff'}
+									bg={rewarkTasksData?.deposit?.completed ? 'teal.500' : '#fff'}
 									borderColor={'teal.500'}
 									color={'teal.500'}
+									textColor={rewarkTasksData?.deposit?.completed ? '#fff' : 'teal.500'}
+									cursor={rewarkTasksData?.deposit?.completed ? 'default' : 'pointer'}
+									_hover={{ bg: rewarkTasksData?.deposit?.completed ? 'teal.500' : 'gray.200' }} // 關閉 hover 時的背景色變化
+									display={'flex'}
+									alignItems="center" // 垂直置中
+									justifyContent="center" // 水平置中
 								>
-									Earn Now
+									{rewarkTasksData?.deposit?.completed && (
+										<CheckCircleIcon w={4} h={4} color="#fff" mr={'8px'} />
+									)}
+									{rewarkTasksData?.deposit?.completed ? 'Completed' : 'Earn Now'}
 								</Button>
+								<Text textAlign={'center'} lineHeight={1.3}>
+									After you successfully deposit,{' '}
+									<Text
+										as="span"
+										onClick={() => router.push('./referral')}
+										cursor="pointer"
+										color="#4299E1"
+										size="sm"
+									>
+										OX Points
+									</Text>{' '}
+									will be credited within 60 minutes.
+								</Text>
 							</Stack>
 						</CardBody>
 					</Card>
@@ -170,15 +196,15 @@ function RewardTasks() {
 					>
 						<CardBody h={'100%'}>
 							<Stack h="112px" mt={'40px'} align={'center'}>
-								<Image src={RewardFormImg} width={77} alt="socialPng" />
+								<Image src={RewardTradeImg} width={77} alt="socialPng" />
 							</Stack>
 							<Stack h={'130px'}>
 								<Heading onClick={e => null} size="md" color="gray.800" textAlign={'center'}>
-									Fill Out the Form to Earn 5 USDT
+									{rewarkTasksData?.tradeVolume?.name}
 								</Heading>
 								<Stack>
 									<Text textAlign={'center'} noOfLines={3}>
-										Complete and submit the Google Form to earn 5 USDT.
+										{rewarkTasksData?.tradeVolume?.description}
 									</Text>
 								</Stack>
 							</Stack>
@@ -186,12 +212,34 @@ function RewardTasks() {
 								<Button
 									onClick={() => null}
 									borderWidth={1}
-									bg={'#fff'}
+									bg={rewarkTasksData?.tradeVolume?.completed ? 'teal.500' : '#fff'}
 									borderColor={'teal.500'}
 									color={'teal.500'}
+									textColor={rewarkTasksData?.tradeVolume?.completed ? '#fff' : 'teal.500'}
+									cursor={rewarkTasksData?.tradeVolume?.completed ? 'default' : 'pointer'}
+									_hover={{ bg: rewarkTasksData?.tradeVolume?.completed ? 'teal.500' : 'gray.200' }} // 關閉 hover 時的背景色變化
+									display={'flex'}
+									alignItems="center" // 垂直置中
+									justifyContent="center" // 水平置中
 								>
-									Earn Now
+									{rewarkTasksData?.tradeVolume?.completed && (
+										<CheckCircleIcon w={4} h={4} color="#fff" mr={'8px'} />
+									)}
+									{rewarkTasksData?.tradeVolume?.completed ? 'Completed' : 'Earn Now'}
 								</Button>
+								<Text textAlign={'center'} lineHeight={1.3}>
+									Complete the task get 10 USDT in your{' '}
+									<Text
+										as="span"
+										onClick={() => router.push('./funds')}
+										cursor="pointer"
+										color="#4299E1"
+										size="sm"
+									>
+										wallet{' '}
+									</Text>
+									within 60 minutes.
+								</Text>
 							</Stack>
 						</CardBody>
 					</Card>
@@ -200,7 +248,6 @@ function RewardTasks() {
 					<Card
 						flex={1}
 						onClick={() => null}
-						opacity={0.5}
 						shadow="md"
 						_hover={{ shadow: 'xl' }}
 						border="1px solid #EDF2F7;"
@@ -213,35 +260,48 @@ function RewardTasks() {
 							</Stack>
 							<Stack h={'130px'}>
 								<Heading onClick={e => null} size="md" color="gray.800" textAlign={'center'}>
-									Monthly Draw for 30 USDT
+									{rewarkTasksData?.monthlyDraw?.name}
 								</Heading>
 								<Stack>
 									<Text textAlign={'center'} noOfLines={3}>
-										Complete the first 2 tasks to join the monthly draw for 30 USDT.
+										{rewarkTasksData?.monthlyDraw?.description}
 									</Text>
 								</Stack>
 							</Stack>
 							<Stack>
 								<Button
-									onClick={() => null}
+									isLoading={isPostRewardTasksMonthlyDrawJoinLoading}
+									onClick={() => {
+										if (!rewarkTasksData?.monthlyDraw?.completed) {
+											dispatch(postRewardTasksMonthlyDrawJoin());
+										}
+									}}
 									borderWidth={1}
-									bg={'#fff'}
+									bg={rewarkTasksData?.monthlyDraw?.completed ? 'teal.500' : '#fff'}
 									borderColor={'teal.500'}
 									color={'teal.500'}
+									textColor={rewarkTasksData?.monthlyDraw?.completed ? '#fff' : 'teal.500'}
+									cursor={rewarkTasksData?.monthlyDraw?.completed ? 'default' : 'pointer'}
+									_hover={{ bg: rewarkTasksData?.monthlyDraw?.completed ? 'teal.500' : 'gray.200' }} // 關閉 hover 時的背景色變化
+									display={'flex'}
+									alignItems="center" // 垂直置中
+									justifyContent="center" // 水平置中
 								>
-									Join the Draw
+									{rewarkTasksData?.monthlyDraw?.completed && (
+										<CheckCircleIcon w={4} h={4} color="#fff" mr={'8px'} />
+									)}
+									{rewarkTasksData?.monthlyDraw?.completed ? 'Joined' : 'Join the Draw'}
 								</Button>
 								<Text textAlign={'center'} lineHeight={1.3}>
 									Winners will be announced on the 1st of each month in the{' '}
-									<Text
-										as="span"
-										onClick={() => router.push('./referral')}
-										cursor="pointer"
+									<Link
+										href="https://t.me/OXmarket_announcement"
+										isExternal
+										_hover={{ textDecoration: 'none' }}
 										color="#4299E1"
-										size="sm"
 									>
 										official Telegram channel.
-									</Text>
+									</Link>
 								</Text>
 							</Stack>
 						</CardBody>
@@ -262,7 +322,7 @@ function RewardTasks() {
 				<CardBody h={'100%'}>
 					<Stack>
 						<Heading size="md" color="gray.800">
-							Sing Up to get 2500 OX Points
+							How to complete tasks
 						</Heading>
 					</Stack>
 					<Stack mt={'18px'}>
@@ -273,21 +333,7 @@ function RewardTasks() {
 
 							<Stack direction={'row'}>
 								<Text>
-									{`To earn 2,500 OX Points, you need to sign up using a friend's`}{' '}
-									<Text
-										as="span"
-										onClick={() => router.push('./referral')}
-										cursor="pointer"
-										color="#4299E1"
-										size="sm"
-									>
-										referral link
-									</Text>
-									{` and complete a transaction of 1 USDT. The OX Points will be credited to your `}
-									<Text as="span" onClick={() => null} cursor="pointer" color="#4299E1" size="sm">
-										Points Center
-									</Text>
-									{` within 24 hours of completing the task.`}
+									{`Deposit 5 USDT into your account and instantly earn 2,000 OX Points, which will be credited to your account within 60 minutes.`}
 								</Text>
 							</Stack>
 						</HStack>
@@ -297,7 +343,10 @@ function RewardTasks() {
 							</Stack>
 
 							<Stack direction={'row'}>
-								<Text>Test</Text>
+								<Text>
+									Trade over 15 USDT and hold 3 markets to earn a 10 USDT reward, which will be sent
+									to your wallet within 60 minutes of completing the task.
+								</Text>
 							</Stack>
 						</HStack>
 						<HStack align={'start'}>
@@ -305,7 +354,10 @@ function RewardTasks() {
 								<Text w={'15px'}>3.</Text>
 							</Stack>
 							<Stack direction={'row'}>
-								<Text>Test</Text>
+								<Text>
+									Join the 30 USDT draw every month. Winners will be announced on the 1st of each
+									month on the official Telegram channel.
+								</Text>
 							</Stack>
 						</HStack>
 					</Stack>

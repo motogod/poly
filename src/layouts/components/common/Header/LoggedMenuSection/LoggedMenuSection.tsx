@@ -86,7 +86,7 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 			>
 				{t('referral_program')}
 			</Text>
-			{/* <Text
+			<Text
 				onClick={() => {
 					router.push('/oxpoints');
 					close();
@@ -107,7 +107,7 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 				color={'gray.800'}
 			>
 				Reward Tasks
-			</Text> */}
+			</Text>
 			<Link href={link().rewardsLink} isExternal _hover={{ textDecoration: 'none' }}>
 				<Text
 					onClick={() => {

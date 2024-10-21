@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'next-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState, putUserEmail } from '@/store';
+import { AppDispatch, RootState } from '@/store';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import { useEventsModal, useUtility } from '@/hooks';
 import RedemptionImg from '@/../public/assets/svg/image-0.png';

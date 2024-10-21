@@ -22,7 +22,7 @@ import { PositionsDataType, PortfoioPostionTableStatus, Point } from '@/api/type
 import { getPoints } from '@/store/thunks/fetchPoint';
 import { useUtility } from '@/hooks';
 
-type Category = 'volume' | 'referral' | 'referral_volume' | 'other' | 'redemption';
+type Category = 'volume' | 'referral' | 'referral_volume' | 'other' | 'redemption' | 'reward_tasks';
 
 type Props = {
 	pageCount: number;
@@ -51,15 +51,17 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 	const renderCategory = (category: Category) => {
 		switch (category) {
 			case 'volume':
-				return '交易滿額';
+				return '交易满额';
 			case 'referral':
-				return '推薦獎勵';
+				return '推荐奖励';
 			case 'referral_volume':
-				return '下線交易滿額';
+				return '下线交易满额';
 			case 'other':
 				return '其他';
 			case 'redemption':
-				return '點數兌換';
+				return '点数兑换';
+			case 'reward_tasks':
+				return '奖励任务';
 			default:
 				return '';
 		}
