@@ -67,8 +67,6 @@ function OxPoints() {
 		}
 	};
 
-	return null;
-
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
 			<Stack ml={paddingMainHorizontal} mr={paddingMainHorizontal} mt={paddingMainVertical}>

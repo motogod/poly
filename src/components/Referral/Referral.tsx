@@ -181,7 +181,7 @@ function Referral() {
 													});
 												}}
 											>
-												{`https://www.ox.market?referral=${username}`}
+												{`https://www.ox.market/home?referral=${username}`}
 											</Button>
 										</Stack>
 										<Stack align={'center'} direction={'row'}>
@@ -190,9 +190,8 @@ function Referral() {
 												{t('share_your_referral_link_with_friends_to_earn_ox_points')}
 											</Text>
 											<Text
-												// onClick={() => router.push('./oxpoints')}
-												onClick={() => null}
-												// cursor={'pointer'}
+												onClick={() => router.push('./oxpoints')}
+												cursor={'pointer'}
 												color="#4299E1"
 												size="sm"
 											>
@@ -235,7 +234,9 @@ function Referral() {
 											border={'0px'}
 											borderRadius={'4px'}
 											onClick={() => {
-												navigator.clipboard.writeText(`https://www.ox.market?referral=${username}`);
+												navigator.clipboard.writeText(
+													`https://www.ox.market/home?referral=${username}`
+												);
 												toast({
 													title: t('copied'),
 													position: 'top',
@@ -245,7 +246,7 @@ function Referral() {
 												});
 											}}
 										>
-											{sliceReferral(`https://www.ox.market?referral=${username}`)}
+											{sliceReferral(`https://www.ox.market/home?referral=${username}`)}
 										</Button>
 									</Stack>
 									<Stack direction={'row'} paddingRight={34}>

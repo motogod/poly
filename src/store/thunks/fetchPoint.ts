@@ -6,6 +6,9 @@ import {
 	PromotionsData,
 	PostPromotionsRedeem,
 	PromotionsRedeemData,
+	GetRewardTasks,
+	RewardTasksData,
+	PostRewardTasksMonthlyDrawJoin,
 } from '@/api';
 
 const getPoints = createAsyncThunk(
@@ -34,4 +37,25 @@ const postPromotionsRedeem = createAsyncThunk(
 	}
 );
 
-export { getPoints, getPromotions, postPromotionsRedeem };
+const getRewardTasks = createAsyncThunk('api/getRewardTasks', async () => {
+	const resp = await GetRewardTasks<RewardTasksData>({});
+	console.log('GetRewardTasks resp', resp);
+	return resp;
+});
+
+const postRewardTasksMonthlyDrawJoin = createAsyncThunk(
+	'api/postRewardTasksMonthlyDrawJoin',
+	async () => {
+		const resp = await PostRewardTasksMonthlyDrawJoin<any>({});
+		console.log('postRewardTasksMonthlyDrawJoin resp', resp);
+		return resp;
+	}
+);
+
+export {
+	getPoints,
+	getPromotions,
+	postPromotionsRedeem,
+	getRewardTasks,
+	postRewardTasksMonthlyDrawJoin,
+};
