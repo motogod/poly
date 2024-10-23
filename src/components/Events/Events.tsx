@@ -260,7 +260,7 @@ function Events() {
 								<Stack mt={'4px'}>
 									<Stack>
 										<Text color="gray.800" size="md">
-											Your Balance
+											Available Balance
 										</Text>
 									</Stack>
 									<Stack direction={'row'} align={'end'}>
