@@ -23,7 +23,7 @@ import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'next-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/store';
+import { AppDispatch, RootState, resetPostRewardTasksMonthlyDraw } from '@/store';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import RewardDepositImg from '@/../public/assets/svg/reward-deposit.png';
 import RewardTradeImg from '@/../public/assets/svg/reward-trade.png';
@@ -49,9 +49,11 @@ function RewardTasks() {
 	});
 
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
-	const { rewarkTasksData, isPostRewardTasksMonthlyDrawJoinLoading } = useSelector(
-		(state: RootState) => state.pointReducer
-	);
+	const {
+		rewarkTasksData,
+		isPostRewardTasksMonthlyDrawJoinLoading,
+		isPostRewardTasksMonthlyDrawStatusCode,
+	} = useSelector((state: RootState) => state.pointReducer);
 
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -66,6 +68,20 @@ function RewardTasks() {
 
 		dispatch(getRewardTasks());
 	}, [dispatch]);
+
+	useEffect(() => {
+		if (isPostRewardTasksMonthlyDrawStatusCode === 201) {
+			toast({
+				title: 'You have successfully joined the monthly draw.',
+				position: 'top',
+				status: 'success',
+				duration: 1000,
+				isClosable: true,
+			});
+
+			dispatch(resetPostRewardTasksMonthlyDraw({}));
+		}
+	}, [dispatch, isPostRewardTasksMonthlyDrawStatusCode, t, toast]);
 
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
@@ -125,7 +141,11 @@ function RewardTasks() {
 				<GridItem>
 					<Card
 						flex={1}
-						onClick={() => null}
+						onClick={() => {
+							if (!rewarkTasksData?.tradeVolume?.completed) {
+								router.push('./funds');
+							}
+						}}
 						opacity={1}
 						shadow="md"
 						_hover={{ shadow: 'xl' }}
@@ -170,7 +190,7 @@ function RewardTasks() {
 									After you successfully deposit,{' '}
 									<Text
 										as="span"
-										onClick={() => router.push('./referral')}
+										onClick={() => router.push('./oxpoints')}
 										cursor="pointer"
 										color="#4299E1"
 										size="sm"
@@ -186,7 +206,11 @@ function RewardTasks() {
 				<GridItem>
 					<Card
 						flex={1}
-						onClick={() => null}
+						onClick={() => {
+							if (!rewarkTasksData?.tradeVolume?.completed) {
+								router.push('./markets');
+							}
+						}}
 						opacity={1}
 						shadow="md"
 						_hover={{ shadow: 'xl' }}

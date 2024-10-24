@@ -26,6 +26,7 @@ type PointState = {
 	userPromotionsRedeemStatusCode: number;
 	rewarkTasksData: RewardTasks;
 	isPostRewardTasksMonthlyDrawJoinLoading: boolean;
+	isPostRewardTasksMonthlyDrawStatusCode: number;
 };
 
 const initialState: PointState = {
@@ -36,6 +37,7 @@ const initialState: PointState = {
 	userPromotionsRedeemStatusCode: 0,
 	rewarkTasksData: {} as RewardTasks,
 	isPostRewardTasksMonthlyDrawJoinLoading: false,
+	isPostRewardTasksMonthlyDrawStatusCode: 0,
 };
 
 const pointSlice = createSlice({
@@ -45,6 +47,10 @@ const pointSlice = createSlice({
 		resetUserPromotionsRedeem: (state, action) => {
 			state.isUserPromotionsRedeemLoading = false;
 			state.userPromotionsRedeemStatusCode = 0;
+		},
+		resetPostRewardTasksMonthlyDraw: (state, action) => {
+			state.isPostRewardTasksMonthlyDrawJoinLoading = false;
+			state.isPostRewardTasksMonthlyDrawStatusCode = 0;
 		},
 	},
 	extraReducers: builder => {
@@ -132,14 +138,16 @@ const pointSlice = createSlice({
 
 			if (statusCode === 201 && state.rewarkTasksData?.monthlyDraw) {
 				state.rewarkTasksData.monthlyDraw.completed = true;
+				state.isPostRewardTasksMonthlyDrawStatusCode = statusCode;
 			}
 		});
 		builder.addCase(postRewardTasksMonthlyDrawJoin.rejected, state => {
 			console.log('postRewardTasksMonthlyDrawJoin rejected');
 			state.isPostRewardTasksMonthlyDrawJoinLoading = false;
+			state.isPostRewardTasksMonthlyDrawStatusCode = 0;
 		});
 	},
 });
 
-export const { resetUserPromotionsRedeem } = pointSlice.actions;
+export const { resetUserPromotionsRedeem, resetPostRewardTasksMonthlyDraw } = pointSlice.actions;
 export const pointReducer = pointSlice.reducer;

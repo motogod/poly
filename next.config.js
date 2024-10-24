@@ -13,7 +13,12 @@ const nextConfig = {
 		return config;
 	},
 	images: {
-		domains: ['media.newyorker.com', 'icons.iconarchive.com', 'www.unlock-bc.com'],
+		domains: [
+			'media.newyorker.com',
+			'icons.iconarchive.com',
+			'www.unlock-bc.com',
+			'image.cnbcfm.com',
+		],
 		formats: ['image/avif', 'image/webp'],
 	},
 	env: {

@@ -11,8 +11,9 @@ import {
 	Heading,
 	GridItem,
 	Tag,
+	Image,
 } from '@chakra-ui/react';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'next-i18next';
@@ -56,7 +57,7 @@ function Events() {
 	const { userPointData, userPromotionsData } = useSelector(
 		(state: RootState) => state.pointReducer
 	);
-
+	console.log('userPromotionsData', userPromotionsData);
 	const dispatch = useDispatch<AppDispatch>();
 
 	useEffect(() => {
@@ -135,14 +136,16 @@ function Events() {
 										<Stack
 											rounded={'xl'}
 											w={'320px'}
+											h={'200px'}
 											alignItems={'center'}
 											justify={'center'}
 											bg={'gray.50'}
 										>
 											<Image
-												width={80}
-												height={80}
-												style={{ borderRadius: 10, objectFit: 'cover' }}
+												rounded="xl"
+												w="100%"
+												h="100%"
+												objectFit="cover"
 												src={image}
 												alt="funds_background"
 											/>
@@ -187,6 +190,14 @@ function Events() {
 											bg={'gray.50'}
 										>
 											<Image
+												rounded="xl"
+												w="100%"
+												h="100%"
+												objectFit="cover"
+												src={image}
+												alt="funds_background"
+											/>
+											{/* <Image
 												width={80}
 												height={80}
 												style={{
@@ -196,7 +207,7 @@ function Events() {
 												}}
 												src={image}
 												alt="funds_background"
-											/>
+											/> */}
 										</Stack>
 										<Stack justify={'space-between'} mt={'6px'}>
 											<Stack>
@@ -326,7 +337,7 @@ function Events() {
 							</Stack>
 						</Stack>
 					)}
-					<Image
+					<NextImage
 						width={0}
 						height={0}
 						style={{ width: '100%', height: '400px', borderRadius: 10, objectFit: 'cover' }}

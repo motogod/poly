@@ -49,8 +49,10 @@ function useDisplayNameModal() {
 		// 創建名字成功 關閉創建名字視窗
 		if (putUsrProfileIsLoading === false) {
 			onClose();
+			// 第一次創建名稱，畫面導向推薦獎勵頁面
+			router.push('/rewardtasks');
 		}
-	}, [putUsrProfileIsLoading, onClose]);
+	}, [putUsrProfileIsLoading, onClose, router]);
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
