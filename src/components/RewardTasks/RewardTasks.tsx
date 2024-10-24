@@ -141,11 +141,7 @@ function RewardTasks() {
 				<GridItem>
 					<Card
 						flex={1}
-						onClick={() => {
-							if (!rewarkTasksData?.tradeVolume?.completed) {
-								router.push('./funds');
-							}
-						}}
+						onClick={() => null}
 						opacity={1}
 						shadow="md"
 						_hover={{ shadow: 'xl' }}
@@ -169,7 +165,11 @@ function RewardTasks() {
 							</Stack>
 							<Stack>
 								<Button
-									onClick={() => null}
+									onClick={() => {
+										if (!rewarkTasksData?.tradeVolume?.completed) {
+											router.push('./funds');
+										}
+									}}
 									borderWidth={1}
 									bg={rewarkTasksData?.deposit?.completed ? 'teal.500' : '#fff'}
 									borderColor={'teal.500'}
@@ -206,11 +206,7 @@ function RewardTasks() {
 				<GridItem>
 					<Card
 						flex={1}
-						onClick={() => {
-							if (!rewarkTasksData?.tradeVolume?.completed) {
-								router.push('./markets');
-							}
-						}}
+						onClick={() => null}
 						opacity={1}
 						shadow="md"
 						_hover={{ shadow: 'xl' }}
@@ -234,7 +230,11 @@ function RewardTasks() {
 							</Stack>
 							<Stack>
 								<Button
-									onClick={() => null}
+									onClick={() => {
+										if (!rewarkTasksData?.tradeVolume?.completed) {
+											router.push('./markets');
+										}
+									}}
 									borderWidth={1}
 									bg={rewarkTasksData?.tradeVolume?.completed ? 'teal.500' : '#fff'}
 									borderColor={'teal.500'}
