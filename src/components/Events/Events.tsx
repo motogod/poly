@@ -197,17 +197,6 @@ function Events() {
 												src={image}
 												alt="funds_background"
 											/>
-											{/* <Image
-												width={80}
-												height={80}
-												style={{
-													width: 120,
-													borderRadius: 10,
-													objectFit: 'cover',
-												}}
-												src={image}
-												alt="funds_background"
-											/> */}
 										</Stack>
 										<Stack justify={'space-between'} mt={'6px'}>
 											<Stack>
