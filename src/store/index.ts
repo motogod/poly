@@ -25,7 +25,11 @@ import {
 	filterSortSelector,
 	changeRouterAsPathWithCategories,
 } from './slice/dataSlice';
-import { pointReducer, resetUserPromotionsRedeem } from './slice/pointSlice';
+import {
+	pointReducer,
+	resetUserPromotionsRedeem,
+	resetPostRewardTasksMonthlyDraw,
+} from './slice/pointSlice';
 import { resetCheckAuthToast, resetPutUserProfileErrMsg, resetTradeOrdersStatus } from './actions';
 
 export const store = configureStore({
@@ -75,6 +79,7 @@ export {
 	selectPortfolioHistory,
 	changeRouterAsPathWithCategories,
 	resetUserPromotionsRedeem,
+	resetPostRewardTasksMonthlyDraw,
 };
 export * from './thunks/fetchHome';
 export * from './thunks/fetchAuth';

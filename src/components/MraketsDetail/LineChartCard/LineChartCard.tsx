@@ -318,7 +318,7 @@ function LineChartCard() {
 							>
 								<Stack direction="row" justify="space-between">
 									<Stack direction="row" wrap={'wrap'}>
-										<Tag
+										{/* <Tag
 											px={4}
 											py={1}
 											border="1px"
@@ -344,8 +344,8 @@ function LineChartCard() {
 											>
 												{marketDetailData?.category?.name}
 											</TagLabel>
-										</Tag>
-										{/* {marketDetailData?.categories.map(value => {
+										</Tag> */}
+										{marketDetailData?.categories.map(value => {
 											return (
 												<>
 													<Tag
@@ -377,7 +377,7 @@ function LineChartCard() {
 													</Tag>
 												</>
 											);
-										})} */}
+										})}
 									</Stack>
 									<Stack>
 										<AttachmentIcon

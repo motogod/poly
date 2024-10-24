@@ -166,34 +166,36 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 					<Tbody>{renderTableRow()}</Tbody>
 				</Table>
 			</TableContainer>
-			<Box
-				align={{ base: 'center', md: 'center', sm: 'center', lg: 'end' }}
-				mt="30px"
-				mb={'10px'}
-				as={Stack}
-			>
-				<Select
-					onChange={event => dispatch(getPoints({ page: Number(event.target.value), take: 20 }))}
-					_hover={{ bg: 'gray.100' }}
-					cursor={'pointer'}
-					_focusVisible={{
-						outline: 'none',
-					}}
-					border={'1px'}
-					borderColor={'gray.200'}
-					bg={'#fff'}
-					w={isDesktop ? '200px' : '100%'}
-					placeholder=""
-					size="md"
-					defaultValue={'1'}
+			{pageCount > 1 && (
+				<Box
+					align={{ base: 'center', md: 'center', sm: 'center', lg: 'end' }}
+					mt="30px"
+					mb={'10px'}
+					as={Stack}
 				>
-					{selectorOptions.map((value, index) => (
-						<>
-							<option value={value.value}>{value.label}</option>
-						</>
-					))}
-				</Select>
-			</Box>
+					<Select
+						onChange={event => dispatch(getPoints({ page: Number(event.target.value), take: 20 }))}
+						_hover={{ bg: 'gray.100' }}
+						cursor={'pointer'}
+						_focusVisible={{
+							outline: 'none',
+						}}
+						border={'1px'}
+						borderColor={'gray.200'}
+						bg={'#fff'}
+						w={isDesktop ? '200px' : '100%'}
+						placeholder=""
+						size="md"
+						defaultValue={'1'}
+					>
+						{selectorOptions.map((value, index) => (
+							<>
+								<option value={value.value}>{value.label}</option>
+							</>
+						))}
+					</Select>
+				</Box>
+			)}
 		</>
 	);
 }

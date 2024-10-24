@@ -130,7 +130,7 @@ function useUtility() {
 	const formatAllDate = (dateString: string) => {
 		if (dateString) {
 			const date = new Date(dateString);
-			const formattedDate = format(date, 'yyyy/MM/dd HH:MM', { locale: zhTW });
+			const formattedDate = format(date, 'yyyy/MM/dd HH:mm', { locale: zhTW });
 			return formattedDate;
 		}
 
