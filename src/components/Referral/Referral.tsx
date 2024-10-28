@@ -53,6 +53,10 @@ function Referral() {
 		query: '(min-width: 960px)',
 	});
 
+	const isDesktopForLink = useMediaQuery({
+		query: '(min-width: 1200px)',
+	});
+
 	const { data: session } = useSession();
 	const { user, putUsrProfileIsLoading, isAuthenticated } = useSelector(
 		(state: RootState) => state.authReducer
@@ -139,12 +143,15 @@ function Referral() {
 									position="absolute"
 									w={'100%'}
 									padding={0}
+									paddingLeft={'72px'}
+									paddingRight={'72px'}
 									h={{ lg: '400px' }}
 									alignItems={'center'}
 									direction="row"
 									borderRadius="2xl"
+									gap={'80px'}
 								>
-									<Stack flex={2} minWidth="0">
+									<Stack flex={1} minWidth="0">
 										<FormLabel
 											color={'white'}
 											fontSize={{ lg: '36', md: '36', sm: '24' }}
@@ -154,11 +161,11 @@ function Referral() {
 											{t('earn_oX_points_for_each_friend_you_refer')}
 										</FormLabel>
 									</Stack>
-									<Stack flex={3} minWidth="0">
+									<Stack flex={2} minWidth="0" gap={'16px'}>
 										<Heading color="gray.50" size="md">
 											{t('referral_link')}
 										</Heading>
-										<Stack align={'center'} mt={'4px'} paddingRight={'80px'}>
+										<Stack align={'center'} w={isDesktopForLink ? '600px' : ''}>
 											<Button
 												w={'100%'}
 												ml={'4px'}
@@ -322,12 +329,12 @@ function Referral() {
 							<Stack direction="row" mt={'6px'}>
 								<Stack flex={1} align={'center'}>
 									<Heading onClick={e => null} size="md" color="gray.800" fontWeight={'700'}>
-										{t('invite_friends')}
+										Step1. {t('invite_friends')}
 									</Heading>
 								</Stack>
 							</Stack>
 							<Stack flex={1} align="center" mt={'24px'} spacing={2}>
-								<Text textAlign={'center'} fontSize="md" color="gray.800">
+								<Text textAlign={'center'} fontSize="md" color="gray.500">
 									{t('share_your_referral_link_with_friends')}
 								</Text>
 							</Stack>
@@ -351,12 +358,12 @@ function Referral() {
 							<Stack direction="row" mt={'6px'}>
 								<Stack flex={1} align={'center'}>
 									<Heading onClick={e => null} size="md" color="gray.800">
-										{t('complete_tasks')}
+										Step2. {t('complete_tasks')}
 									</Heading>
 								</Stack>
 							</Stack>
 							<Stack flex={1} align="center" mt={'24px'} spacing={2}>
-								<Text textAlign={'center'} fontSize="md" color="gray.800">
+								<Text textAlign={'center'} fontSize="md" color="gray.500">
 									{t('your_friends_need_to_sign_up_and_make_a_transaction_more_than')}
 								</Text>
 							</Stack>
@@ -379,12 +386,12 @@ function Referral() {
 							<Stack direction="row" mt={'6px'}>
 								<Stack flex={1} align={'center'}>
 									<Heading onClick={e => null} size="md" color="gray.800">
-										{t('gain_ox_points')}
+										Step3. {t('gain_ox_points')}
 									</Heading>
 								</Stack>
 							</Stack>
 							<Stack flex={1} align="center" mt={'24px'} spacing={2}>
-								<Text textAlign={'center'} fontSize="md" color="gray.800">
+								<Text textAlign={'center'} fontSize="md" color="gray.500">
 									{t('the_inviterreceives_ox_points')}
 								</Text>
 							</Stack>

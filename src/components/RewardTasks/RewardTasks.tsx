@@ -16,6 +16,7 @@ import {
 	HStack,
 	Box,
 	Link,
+	Image as ChakraImage,
 } from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import Image from 'next/image';
@@ -29,12 +30,13 @@ import RewardDepositImg from '@/../public/assets/svg/reward-deposit.png';
 import RewardTradeImg from '@/../public/assets/svg/reward-trade.png';
 import RewardDrawImg from '@/../public/assets/svg/image-rewards-03.png';
 import OxPointsBannerIcon from '@/../public/image-rewards-illustration.png';
-import OxPointsBannerImg from '@/../public/rewards-banner-bg.png';
+import OxPointsBannerImg from '@/../public/banner-redemption-events-bg-02.png';
 import {
 	getPoints,
 	getRewardTasks,
 	postRewardTasksMonthlyDrawJoin,
 } from '@/store/thunks/fetchPoint';
+import Footer from '@/layouts/components/common/Footer';
 
 // background: linear-gradient(90deg, #edf2f7 44%, #d53f8c 30%);
 function RewardTasks() {
@@ -92,7 +94,7 @@ function RewardTasks() {
 						position="absolute"
 						align={'center'}
 						w={'100%'}
-						padding={34}
+						padding={'72px'}
 						h={{ lg: '400px', md: '400px', sm: '400px' }}
 						direction="row"
 						borderRadius="2xl"
@@ -103,6 +105,7 @@ function RewardTasks() {
 								fontSize={{ lg: '36', md: '36', sm: '36' }}
 								fontWeight={900}
 								whiteSpace="normal" // 允許換行
+								zIndex={2}
 							>
 								Reward Tasks
 							</FormLabel>
@@ -116,13 +119,28 @@ function RewardTasks() {
 						alt="funds_background"
 					/>
 					<Box
-						zIndex={0}
+						position="absolute"
+						style={{ borderRadius: 10 }}
+						top="0"
+						left="0"
+						right="0"
+						bottom="0"
+						backgroundColor="rgba(26, 32, 44, 0.8)"
+						zIndex={1}
+					/>
+					<Box
+						zIndex={2}
 						position="absolute"
 						right={isDesktop ? '130' : '30'}
 						top="50%"
 						transform={'translateY(-50%)'}
 					>
-						<Image src={OxPointsBannerIcon} alt="socialPng" height={isDesktop ? 280 : 140} />
+						<Image
+							src={OxPointsBannerIcon}
+							alt="socialPng"
+							height={isDesktop ? 280 : 140}
+							width={isDesktop ? 280 : 140}
+						/>
 					</Box>
 				</Card>
 			</Stack>
@@ -138,6 +156,69 @@ function RewardTasks() {
 				mt={'22px'}
 				alignItems="stretch"
 			>
+				<GridItem>
+					<Card
+						flex={1}
+						onClick={() => null}
+						shadow="md"
+						_hover={{ shadow: 'xl' }}
+						border="1px solid #EDF2F7;"
+						borderRadius="lg"
+						h="100%"
+					>
+						<CardBody h={'100%'}>
+							<Stack h="112px" mt={'40px'} align={'center'}>
+								<Image src={RewardDrawImg} width={77} alt="socialPng" />
+							</Stack>
+							<Stack h={'130px'}>
+								<Heading onClick={e => null} size="md" color="gray.800" textAlign={'center'}>
+									{rewarkTasksData?.monthlyDraw?.name}
+								</Heading>
+								<Stack>
+									<Text textAlign={'center'} noOfLines={3} color={'gray.500'}>
+										{rewarkTasksData?.monthlyDraw?.description}
+									</Text>
+								</Stack>
+							</Stack>
+							<Stack>
+								<Button
+									isLoading={isPostRewardTasksMonthlyDrawJoinLoading}
+									onClick={() => {
+										if (!rewarkTasksData?.monthlyDraw?.completed) {
+											dispatch(postRewardTasksMonthlyDrawJoin());
+										}
+									}}
+									borderWidth={1}
+									bg={rewarkTasksData?.monthlyDraw?.completed ? 'teal.500' : '#fff'}
+									borderColor={'teal.500'}
+									color={'teal.500'}
+									textColor={rewarkTasksData?.monthlyDraw?.completed ? '#fff' : 'teal.500'}
+									cursor={rewarkTasksData?.monthlyDraw?.completed ? 'default' : 'pointer'}
+									_hover={{ bg: rewarkTasksData?.monthlyDraw?.completed ? 'teal.500' : 'gray.200' }} // 關閉 hover 時的背景色變化
+									display={'flex'}
+									alignItems="center" // 垂直置中
+									justifyContent="center" // 水平置中
+								>
+									{rewarkTasksData?.monthlyDraw?.completed && (
+										<CheckCircleIcon w={4} h={4} color="#fff" mr={'8px'} />
+									)}
+									{rewarkTasksData?.monthlyDraw?.completed ? 'Joined' : 'Join the Draw'}
+								</Button>
+								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3}>
+									Winners will be announced on the 1st of each month in the{' '}
+									<Link
+										href="https://t.me/OXmarket_announcement"
+										isExternal
+										_hover={{ textDecoration: 'none' }}
+										color="#4299E1"
+									>
+										official Telegram channel.
+									</Link>
+								</Text>
+							</Stack>
+						</CardBody>
+					</Card>
+				</GridItem>
 				<GridItem>
 					<Card
 						flex={1}
@@ -158,7 +239,7 @@ function RewardTasks() {
 									{rewarkTasksData?.deposit?.name}
 								</Heading>
 								<Stack>
-									<Text textAlign={'center'} noOfLines={3}>
+									<Text textAlign={'center'} noOfLines={3} color={'gray.500'}>
 										{rewarkTasksData?.deposit?.description}
 									</Text>
 								</Stack>
@@ -186,7 +267,7 @@ function RewardTasks() {
 									)}
 									{rewarkTasksData?.deposit?.completed ? 'Completed' : 'Earn Now'}
 								</Button>
-								<Text textAlign={'center'} lineHeight={1.3}>
+								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3}>
 									After you successfully deposit,{' '}
 									<Text
 										as="span"
@@ -223,7 +304,7 @@ function RewardTasks() {
 									{rewarkTasksData?.tradeVolume?.name}
 								</Heading>
 								<Stack>
-									<Text textAlign={'center'} noOfLines={3}>
+									<Text textAlign={'center'} noOfLines={3} color={'gray.500'}>
 										{rewarkTasksData?.tradeVolume?.description}
 									</Text>
 								</Stack>
@@ -251,7 +332,7 @@ function RewardTasks() {
 									)}
 									{rewarkTasksData?.tradeVolume?.completed ? 'Completed' : 'Earn Now'}
 								</Button>
-								<Text textAlign={'center'} lineHeight={1.3}>
+								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3}>
 									Complete the task get 10 USDT in your{' '}
 									<Text
 										as="span"
@@ -263,69 +344,6 @@ function RewardTasks() {
 										wallet{' '}
 									</Text>
 									within 60 minutes.
-								</Text>
-							</Stack>
-						</CardBody>
-					</Card>
-				</GridItem>
-				<GridItem>
-					<Card
-						flex={1}
-						onClick={() => null}
-						shadow="md"
-						_hover={{ shadow: 'xl' }}
-						border="1px solid #EDF2F7;"
-						borderRadius="lg"
-						h="100%"
-					>
-						<CardBody h={'100%'}>
-							<Stack h="112px" mt={'40px'} align={'center'}>
-								<Image src={RewardDrawImg} width={77} alt="socialPng" />
-							</Stack>
-							<Stack h={'130px'}>
-								<Heading onClick={e => null} size="md" color="gray.800" textAlign={'center'}>
-									{rewarkTasksData?.monthlyDraw?.name}
-								</Heading>
-								<Stack>
-									<Text textAlign={'center'} noOfLines={3}>
-										{rewarkTasksData?.monthlyDraw?.description}
-									</Text>
-								</Stack>
-							</Stack>
-							<Stack>
-								<Button
-									isLoading={isPostRewardTasksMonthlyDrawJoinLoading}
-									onClick={() => {
-										if (!rewarkTasksData?.monthlyDraw?.completed) {
-											dispatch(postRewardTasksMonthlyDrawJoin());
-										}
-									}}
-									borderWidth={1}
-									bg={rewarkTasksData?.monthlyDraw?.completed ? 'teal.500' : '#fff'}
-									borderColor={'teal.500'}
-									color={'teal.500'}
-									textColor={rewarkTasksData?.monthlyDraw?.completed ? '#fff' : 'teal.500'}
-									cursor={rewarkTasksData?.monthlyDraw?.completed ? 'default' : 'pointer'}
-									_hover={{ bg: rewarkTasksData?.monthlyDraw?.completed ? 'teal.500' : 'gray.200' }} // 關閉 hover 時的背景色變化
-									display={'flex'}
-									alignItems="center" // 垂直置中
-									justifyContent="center" // 水平置中
-								>
-									{rewarkTasksData?.monthlyDraw?.completed && (
-										<CheckCircleIcon w={4} h={4} color="#fff" mr={'8px'} />
-									)}
-									{rewarkTasksData?.monthlyDraw?.completed ? 'Joined' : 'Join the Draw'}
-								</Button>
-								<Text textAlign={'center'} lineHeight={1.3}>
-									Winners will be announced on the 1st of each month in the{' '}
-									<Link
-										href="https://t.me/OXmarket_announcement"
-										isExternal
-										_hover={{ textDecoration: 'none' }}
-										color="#4299E1"
-									>
-										official Telegram channel.
-									</Link>
 								</Text>
 							</Stack>
 						</CardBody>
@@ -352,22 +370,26 @@ function RewardTasks() {
 					<Stack mt={'18px'}>
 						<HStack align={'start'}>
 							<Stack>
-								<Text w={'15px'}>1.</Text>
+								<Text w={'15px'} color={'gray.800'}>
+									1.
+								</Text>
 							</Stack>
 
 							<Stack direction={'row'}>
-								<Text>
+								<Text color={'gray.800'} fontSize={'md'}>
 									{`Deposit 5 USDT into your account and instantly earn 2,000 OX Points, which will be credited to your account within 60 minutes.`}
 								</Text>
 							</Stack>
 						</HStack>
 						<HStack align={'start'}>
 							<Stack>
-								<Text w={'15px'}>2.</Text>
+								<Text w={'15px'} color={'gray.800'}>
+									2.
+								</Text>
 							</Stack>
 
 							<Stack direction={'row'}>
-								<Text>
+								<Text color={'gray.800'} fontSize={'md'}>
 									Trade over 15 USDT and hold 3 markets to earn a 10 USDT reward, which will be sent
 									to your wallet within 60 minutes of completing the task.
 								</Text>
@@ -375,10 +397,12 @@ function RewardTasks() {
 						</HStack>
 						<HStack align={'start'}>
 							<Stack>
-								<Text w={'15px'}>3.</Text>
+								<Text w={'15px'} color={'gray.800'}>
+									3.
+								</Text>
 							</Stack>
 							<Stack direction={'row'}>
-								<Text>
+								<Text color={'gray.800'} fontSize={'md'}>
 									Join the 30 USDT draw every month. Winners will be announced on the 1st of each
 									month on the official Telegram channel.
 								</Text>
@@ -387,17 +411,8 @@ function RewardTasks() {
 					</Stack>
 				</CardBody>
 			</Card>
-			<Card
-				flex={1}
-				mt={8}
-				ml={paddingMainHorizontal}
-				mr={paddingMainHorizontal}
-				onClick={() => null}
-				shadow="md"
-				_hover={{ shadow: 'xl' }}
-				border="1px solid #EDF2F7;"
-				borderRadius="lg"
-			/>
+			<Card />
+			<Footer />
 		</Stack>
 	);
 }

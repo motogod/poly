@@ -12,6 +12,7 @@ import {
 	GridItem,
 	Tag,
 	Image,
+	Box,
 } from '@chakra-ui/react';
 import NextImage from 'next/image';
 import { useRouter } from 'next/router';
@@ -27,6 +28,7 @@ import RewardsImg from '@/../public//assets/svg/image-2.png';
 import RedemptionBannerImg from '@/../public/redemption-banner-bg-01.png';
 import { getPoints, getPromotions } from '@/store/thunks/fetchPoint';
 import { Promotions } from '@/api';
+import Footer from '@/layouts/components/common/Footer';
 
 const dummyData = [
 	{ type: 'redemption', title: '50 USDT Redemption Event' },
@@ -152,16 +154,16 @@ function Events() {
 										</Stack>
 										<Stack justify={'space-between'} ml={'16px'}>
 											<Stack>
-												<Heading onClick={e => null} size="md" color="gray.800">
+												<Heading onClick={e => null} fontSize="md" color="gray.800">
 													{title}
 												</Heading>
-												<Text color={'#1A202C'} fontSize={'md'}>
+												<Text color={'gray.500'} fontSize={'sm'}>
 													{`${formatAllDate(startAt)} - ${formatAllDate(endAt)} (GMT+8)`}
 												</Text>
 											</Stack>
 											<Stack mt={4}>
 												<Stack>
-													<Heading onClick={e => null} size="sm" color="gray.800">
+													<Heading onClick={e => null} fontSize={'sm'} color="gray.800">
 														Instructions
 													</Heading>
 												</Stack>
@@ -241,7 +243,7 @@ function Events() {
 							position="absolute"
 							align={'center'}
 							w={'100%'}
-							padding={34}
+							padding={'72px'}
 							h={{ lg: '400px', md: '400px', sm: '400px' }}
 							direction="row"
 							borderRadius="2xl"
@@ -252,14 +254,15 @@ function Events() {
 									fontSize={{ lg: '36', md: '36', sm: '36' }}
 									fontWeight={900}
 									whiteSpace="normal" // 允許換行
+									zIndex={2}
 								>
 									OX Points
 								</FormLabel>
 							</Stack>
-							<Stack rounded={'lg'} flex={1} bg={'#fff'} p={'24px'} minWidth="0">
+							<Stack rounded={'lg'} flex={1} bg={'#fff'} p={'24px'} minWidth="0" zIndex={2}>
 								<Stack mt={'4px'}>
 									<Stack>
-										<Text color="gray.800" size="md">
+										<Text color="gray.800" fontSize="md">
 											Available Balance
 										</Text>
 									</Stack>
@@ -297,10 +300,11 @@ function Events() {
 									fontSize={{ lg: '36', md: '36', sm: '36' }}
 									fontWeight={900}
 									whiteSpace="normal" // 允許換行
+									zIndex={2}
 								>
 									OX Points
 								</FormLabel>
-								<Stack rounded={'lg'} flex={1} bg={'#fff'} p={'24px'} minWidth="0">
+								<Stack rounded={'lg'} flex={1} bg={'#fff'} p={'24px'} minWidth="0" zIndex={2}>
 									<Stack mt={'4px'}>
 										<Stack>
 											<Text color="gray.800" size="md">
@@ -333,6 +337,16 @@ function Events() {
 						src={RedemptionBannerImg}
 						alt="funds_background"
 					/>
+					<Box
+						style={{ borderRadius: 10 }}
+						position="absolute"
+						top="0"
+						left="0"
+						right="0"
+						bottom="0"
+						backgroundColor="rgba(26, 32, 44, 0.8)"
+						zIndex={1}
+					/>
 				</Card>
 			</Stack>
 			<Stack
@@ -354,7 +368,7 @@ function Events() {
 					colorScheme="undefined"
 					borderRadius={'md'}
 				>
-					<Text fontWeight={'400'} color={'gray.800'}>
+					<Text fontWeight={'400'} color={'gray.800'} fontSize={'md'}>
 						Use your OX Points to redeem rewards.
 					</Text>
 				</Tag>
@@ -371,18 +385,8 @@ function Events() {
 			>
 				{userPromotionsData.map(value => renderCardList(value))}
 			</Grid>
-			<Card
-				flex={1}
-				mt={8}
-				ml={paddingMainHorizontal}
-				mr={paddingMainHorizontal}
-				onClick={() => null}
-				opacity={1}
-				shadow="md"
-				_hover={{ shadow: 'xl' }}
-				border="1px solid #EDF2F7;"
-				borderRadius="lg"
-			></Card>
+			<Card />
+			<Footer />
 			{msgModalIsOpen && msgModalDom}
 		</Stack>
 	);
