@@ -38,11 +38,6 @@ import ReferralBannerImg from '@/../public/referral-banner-bg.png';
 import Footer from '@/layouts/components/common/Footer';
 
 function Referral() {
-	const [name, setName] = useState('');
-	const [userEmail, setUserEmail] = useState('');
-	const [isTriggerGoogle, setIsTriggerGoogle] = useState(false);
-	const [idToken, setIdToken] = useState('');
-
 	const router = useRouter();
 
 	const { t } = useTranslation();
@@ -71,25 +66,6 @@ function Referral() {
 			router.replace('./');
 		}
 	}, [router, isAuthenticated]);
-
-	// 從後端取得資料顯示 email
-	useEffect(() => {
-		// 沒有點擊過 Google 才用後端的 user email
-		if (!isTriggerGoogle) {
-			setUserEmail(email);
-		}
-	}, [email, isTriggerGoogle]);
-
-	// 若點擊 google icon 變更 email
-	useEffect(() => {
-		if (session) {
-			const { idToken } = session as any;
-			setIdToken(idToken); // 設置送 idToken 給後端儲存 google mail
-			setIsTriggerGoogle(true); // 表示使用者有點擊過 google 改變顯示畫面上的 email
-			setUserEmail(session.user?.email as string);
-			signOut({ redirect: false });
-		}
-	}, [session]);
 
 	const sliceReferral = (walletAddress: string | undefined) => {
 		if (walletAddress) {
@@ -133,7 +109,6 @@ function Referral() {
 							position="absolute"
 							align={'center'}
 							w={'100%'}
-							p={'42px'}
 							h={{ lg: '400px', md: '400px', sm: '400px' }}
 							direction="row"
 							borderRadius="2xl"
@@ -169,8 +144,11 @@ function Referral() {
 											<Button
 												w={'100%'}
 												ml={'4px'}
+												fontWeight={'400'}
 												style={{ justifyContent: 'space-between' }}
-												rightIcon={<Icon as={HiOutlineDocumentDuplicate} color={'gray.500'} />}
+												rightIcon={
+													<Icon as={HiOutlineDocumentDuplicate} color={'gray.500'} boxSize={5} />
+												}
 												bg={'gray.50'}
 												color={'gray.800'}
 												border={'0px'}
@@ -211,11 +189,13 @@ function Referral() {
 								<Stack
 									position="absolute"
 									w={'100%'}
-									paddingRight={'38px'}
+									paddingLeft={'24px'}
+									paddingRight={'24px'}
 									paddingTop={100}
 									paddingBottom={100}
 									h={{ lg: '400px' }}
 									borderRadius="2xl"
+									gap={4}
 									// bg={'blue'}
 								>
 									<FormLabel
@@ -226,16 +206,18 @@ function Referral() {
 									>
 										{t('earn_oX_points_for_each_friend_you_refer')}
 									</FormLabel>
-
-									<Heading color="gray.50" size="md">
+									<Heading mt="14px" color="gray.50" size="md">
 										{t('referral_link')}
 									</Heading>
 									<Stack align={'center'} paddingRight={34} mt={'4px'}>
 										<Button
 											w={'100%'}
 											ml={'4px'}
+											fontWeight={'400'}
 											style={{ justifyContent: 'space-between' }}
-											rightIcon={<Icon as={HiOutlineDocumentDuplicate} color={'gray.500'} />}
+											rightIcon={
+												<Icon as={HiOutlineDocumentDuplicate} color={'gray.500'} boxSize={5} />
+											}
 											bg={'gray.50'}
 											color={'gray.800'}
 											border={'0px'}
@@ -258,7 +240,7 @@ function Referral() {
 									</Stack>
 									<Stack direction={'row'} paddingRight={34}>
 										<Stack w={'6px'} h={'6px'} mt={2} borderRadius={'3px'} bg={'#fff'} />
-										<Text color="gray.50" size="sm">
+										<Text color="gray.50" fontSize="sm">
 											{t('share_your_referral_link_with_friends_to_earn_ox_points')}
 											<Text
 												as="span"

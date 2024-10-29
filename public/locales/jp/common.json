@@ -219,7 +219,7 @@
 	"invite_friends": "Invite Friends",
 	"share_your_referral_link_with_friends": "Share your referral link with friends",
 	"complete_tasks": "Complete tasks",
-	"your_friends_need_to_sign_up_and_make_a_transaction_more_than": "Your friends need to sign up and make a transaction  more than 1 USDT",
+	"your_friends_need_to_sign_up_and_make_a_transaction_more_than": "Your friends need to sign up and make a 1 USDT transaction.",
 	"gain_ox_points": "Gain OX Points",
-	"the_inviterreceives_ox_points": "The inviter receives 5,000 OX Points, and the Invitee receives 2,500 OX Points."
+	"the_inviterreceives_ox_points": "The inviter receives 5,000 OX Points, and their friends gets 2,500 OX Points."
 }
