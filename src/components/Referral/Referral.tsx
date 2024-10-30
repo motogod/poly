@@ -209,7 +209,7 @@ function Referral() {
 									<Heading mt="14px" color="gray.50" size="md">
 										{t('referral_link')}
 									</Heading>
-									<Stack align={'center'} paddingRight={34} mt={'4px'}>
+									<Stack align={'center'} mt={'4px'}>
 										<Button
 											w={'100%'}
 											ml={'4px'}
