@@ -2,11 +2,13 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
-import { Heading, Stack, Link } from '@chakra-ui/react';
+import { Heading, Stack, Link, Button, useDisclosure } from '@chakra-ui/react';
+import { HiFire } from 'react-icons/hi';
 import { Icon } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, getUserFunds, RootState, getPortfolioValue } from '@/store';
 import HeaderRightSideSection from './HeaderRightSideSection';
+import HeaderRewardsPopover from './HeaderRewardsPopover';
 import logoImg from '@/../public/logo.png';
 import { useLink } from '@/hooks';
 
@@ -26,6 +28,8 @@ function Header() {
 	const { t } = useTranslation();
 
 	const { link } = useLink();
+
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const dispatch = useDispatch<AppDispatch>();
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
@@ -93,17 +97,13 @@ function Header() {
 						{t('how_it_works')}
 					</Heading>
 				</Link>
-				<Link href={link().rewardsLink} isExternal _hover={{ textDecoration: 'none' }}>
-					<Heading
-						_hover={{ color: 'gray.600' }}
-						display={{ lg: 'inline', md: 'none', sm: 'none' }}
-						cursor="pointer"
-						size="sm"
-						color="gray.800"
-					>
-						{t('rewards')}
-					</Heading>
-				</Link>
+				{isAuthenticated && (
+					<HeaderRewardsPopover
+						isLogin={isAuthenticated !== null && isAuthenticated}
+						onModalOpen={onOpen}
+						onModalClose={onClose}
+					/>
+				)}
 			</Stack>
 			<HeaderRightSideSection />
 		</Stack>

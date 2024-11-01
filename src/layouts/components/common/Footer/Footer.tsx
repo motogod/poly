@@ -34,6 +34,7 @@ import NextIcon from '../../../../../public/next.svg';
 import { LocalesEnum } from '@/../public/locales/type';
 import logoImg from '@/../public/logo.png';
 import { useLink } from '@/hooks';
+import { LocalesType } from '@/../public/locales/type';
 
 const selectorOptions = Object.entries(LocalesEnum).map(([value, label]) => ({
 	value,
@@ -56,6 +57,8 @@ export default function LargeWithAppLinksAndSocial() {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const router = useRouter();
+
+	const locale = router.locale as LocalesType;
 
 	const currentPath = router.asPath.split('?')[0]; // 获取当前路径（不包括查询参数）
 
@@ -187,7 +190,13 @@ export default function LargeWithAppLinksAndSocial() {
 							>
 								<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
 							</Link>
-							<Link href="https://x.com/OX__Market" isExternal _hover={{ textDecoration: 'none' }}>
+							<Link
+								href={
+									locale === 'zh-Hans' ? 'https://x.com/OX_Market_CN' : 'https://x.com/OX__Market'
+								}
+								isExternal
+								_hover={{ textDecoration: 'none' }}
+							>
 								<Image src={XIcon} width={36} height={36} alt="socialPng" />
 							</Link>
 							<Link

@@ -30,7 +30,8 @@ import RewardDepositImg from '@/../public/assets/svg/reward-deposit.png';
 import RewardTradeImg from '@/../public/assets/svg/reward-trade.png';
 import RewardDrawImg from '@/../public/assets/svg/image-rewards-03.png';
 import OxPointsBannerIcon from '@/../public/image-rewards-illustration.png';
-import OxPointsBannerImg from '@/../public/banner-redemption-events-bg-02.png';
+// import OxPointsBannerImg from '@/../public/banner-redemption-events-bg-02.png';
+import OxPointsBannerImg from '@/../public/background-01.png';
 import {
 	getPoints,
 	getRewardTasks,
@@ -47,7 +48,7 @@ function RewardTasks() {
 	const toast = useToast();
 
 	const isDesktop = useMediaQuery({
-		query: '(min-width: 600px)',
+		query: '(min-width: 760px)',
 	});
 
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
@@ -102,7 +103,7 @@ function RewardTasks() {
 						<Stack flex={2} minWidth="0">
 							<FormLabel
 								color={'white'}
-								fontSize={{ lg: '36', md: '36', sm: '36' }}
+								fontSize={{ lg: '36', md: '36', sm: '24' }}
 								fontWeight={900}
 								whiteSpace="normal" // 允許換行
 								zIndex={2}
@@ -131,15 +132,15 @@ function RewardTasks() {
 					<Box
 						zIndex={2}
 						position="absolute"
-						right={isDesktop ? '130' : '30'}
+						right={isDesktop ? '130' : '50'}
 						top="50%"
 						transform={'translateY(-50%)'}
 					>
 						<Image
 							src={OxPointsBannerIcon}
 							alt="socialPng"
-							height={isDesktop ? 280 : 140}
-							width={isDesktop ? 280 : 140}
+							height={isDesktop ? 280 : 160}
+							width={isDesktop ? 280 : 160}
 						/>
 					</Box>
 				</Card>
@@ -170,7 +171,7 @@ function RewardTasks() {
 							<Stack h="112px" mt={'40px'} align={'center'}>
 								<Image src={RewardDrawImg} width={77} alt="socialPng" />
 							</Stack>
-							<Stack h={'130px'}>
+							<Stack h={'110px'}>
 								<Heading onClick={e => null} size="md" color="gray.800" textAlign={'center'}>
 									{rewarkTasksData?.monthlyDraw?.name}
 								</Heading>
@@ -183,28 +184,28 @@ function RewardTasks() {
 							<Stack>
 								<Button
 									isLoading={isPostRewardTasksMonthlyDrawJoinLoading}
+									size={'lg'}
 									onClick={() => {
 										if (!rewarkTasksData?.monthlyDraw?.completed) {
 											dispatch(postRewardTasksMonthlyDrawJoin());
 										}
 									}}
 									borderWidth={1}
-									bg={rewarkTasksData?.monthlyDraw?.completed ? 'teal.500' : '#fff'}
-									borderColor={'teal.500'}
-									color={'teal.500'}
-									textColor={rewarkTasksData?.monthlyDraw?.completed ? '#fff' : 'teal.500'}
+									bg={rewarkTasksData?.monthlyDraw?.completed ? 'gray.100' : '#fff'}
+									borderColor={'gray.100'}
+									textColor={'gray.800'}
 									cursor={rewarkTasksData?.monthlyDraw?.completed ? 'default' : 'pointer'}
-									_hover={{ bg: rewarkTasksData?.monthlyDraw?.completed ? 'teal.500' : 'gray.200' }} // 關閉 hover 時的背景色變化
+									_hover={{ bg: rewarkTasksData?.monthlyDraw?.completed ? 'gray.100' : 'gray.100' }} // 關閉 hover 時的背景色變化
 									display={'flex'}
 									alignItems="center" // 垂直置中
 									justifyContent="center" // 水平置中
 								>
 									{rewarkTasksData?.monthlyDraw?.completed && (
-										<CheckCircleIcon w={4} h={4} color="#fff" mr={'8px'} />
+										<CheckCircleIcon w={4} h={4} color="gray.800" mr={'8px'} />
 									)}
 									{rewarkTasksData?.monthlyDraw?.completed ? 'Joined' : 'Join the Draw'}
 								</Button>
-								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3}>
+								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3} mb={'24px'}>
 									Winners will be announced on the 1st of each month in the{' '}
 									<Link
 										href="https://t.me/OXmarket_announcement"
@@ -234,7 +235,7 @@ function RewardTasks() {
 							<Stack h="112px" mt={'40px'} align={'center'}>
 								<Image src={RewardDepositImg} width={77} alt="socialPng" />
 							</Stack>
-							<Stack h={'130px'}>
+							<Stack h={'110px'}>
 								<Heading onClick={e => null} size="md" color="gray.800" textAlign={'center'}>
 									{rewarkTasksData?.deposit?.name}
 								</Heading>
@@ -246,28 +247,28 @@ function RewardTasks() {
 							</Stack>
 							<Stack>
 								<Button
+									size={'lg'}
 									onClick={() => {
 										if (!rewarkTasksData?.tradeVolume?.completed) {
 											router.push('./funds');
 										}
 									}}
 									borderWidth={1}
-									bg={rewarkTasksData?.deposit?.completed ? 'teal.500' : '#fff'}
-									borderColor={'teal.500'}
-									color={'teal.500'}
-									textColor={rewarkTasksData?.deposit?.completed ? '#fff' : 'teal.500'}
+									bg={rewarkTasksData?.deposit?.completed ? 'gray.100' : '#fff'}
+									borderColor={'gray.100'}
+									textColor={'gray.800'}
 									cursor={rewarkTasksData?.deposit?.completed ? 'default' : 'pointer'}
-									_hover={{ bg: rewarkTasksData?.deposit?.completed ? 'teal.500' : 'gray.200' }} // 關閉 hover 時的背景色變化
+									_hover={{ bg: rewarkTasksData?.deposit?.completed ? 'gray.100' : 'gray.100' }} // 關閉 hover 時的背景色變化
 									display={'flex'}
 									alignItems="center" // 垂直置中
 									justifyContent="center" // 水平置中
 								>
 									{rewarkTasksData?.deposit?.completed && (
-										<CheckCircleIcon w={4} h={4} color="#fff" mr={'8px'} />
+										<CheckCircleIcon w={4} h={4} color="gray.800" mr={'8px'} />
 									)}
 									{rewarkTasksData?.deposit?.completed ? 'Completed' : 'Earn Now'}
 								</Button>
-								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3}>
+								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3} mb={'24px'}>
 									After you successfully deposit,{' '}
 									<Text
 										as="span"
@@ -299,7 +300,7 @@ function RewardTasks() {
 							<Stack h="112px" mt={'40px'} align={'center'}>
 								<Image src={RewardTradeImg} width={77} alt="socialPng" />
 							</Stack>
-							<Stack h={'130px'}>
+							<Stack h={'110px'}>
 								<Heading onClick={e => null} size="md" color="gray.800" textAlign={'center'}>
 									{rewarkTasksData?.tradeVolume?.name}
 								</Heading>
@@ -311,28 +312,28 @@ function RewardTasks() {
 							</Stack>
 							<Stack>
 								<Button
+									size={'lg'}
 									onClick={() => {
 										if (!rewarkTasksData?.tradeVolume?.completed) {
 											router.push('./markets');
 										}
 									}}
 									borderWidth={1}
-									bg={rewarkTasksData?.tradeVolume?.completed ? 'teal.500' : '#fff'}
-									borderColor={'teal.500'}
-									color={'teal.500'}
-									textColor={rewarkTasksData?.tradeVolume?.completed ? '#fff' : 'teal.500'}
+									bg={rewarkTasksData?.tradeVolume?.completed ? 'gray.100' : '#fff'}
+									borderColor={'gray.100'}
+									textColor={'gray.800'}
 									cursor={rewarkTasksData?.tradeVolume?.completed ? 'default' : 'pointer'}
-									_hover={{ bg: rewarkTasksData?.tradeVolume?.completed ? 'teal.500' : 'gray.200' }} // 關閉 hover 時的背景色變化
+									_hover={{ bg: rewarkTasksData?.tradeVolume?.completed ? 'gray.100' : 'gray.100' }} // 關閉 hover 時的背景色變化
 									display={'flex'}
 									alignItems="center" // 垂直置中
 									justifyContent="center" // 水平置中
 								>
 									{rewarkTasksData?.tradeVolume?.completed && (
-										<CheckCircleIcon w={4} h={4} color="#fff" mr={'8px'} />
+										<CheckCircleIcon w={4} h={4} color="gray.800" mr={'8px'} />
 									)}
 									{rewarkTasksData?.tradeVolume?.completed ? 'Completed' : 'Earn Now'}
 								</Button>
-								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3}>
+								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3} mb={'24px'}>
 									Complete the task get 10 USDT in your{' '}
 									<Text
 										as="span"

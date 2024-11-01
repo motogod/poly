@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import Image from 'next/image';
 import { useAccount, useBalance, useContractRead } from 'wagmi';
-import { Stack, Text, Button, Icon, useToast, Spinner } from '@chakra-ui/react';
+import { Stack, Text, Button, Icon, useToast, Spinner, Divider } from '@chakra-ui/react';
 import {
 	HiOutlineDocumentDuplicate,
 	HiCollection,
 	HiCreditCard,
 	HiChevronRight,
 } from 'react-icons/hi';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '@/store';
 import { useContractForRead } from '@/hooks';
+import { getPoints } from '@/store/thunks/fetchPoint';
+import OxImg from '@/../public/assets/svg/icon-ox-points-01.png';
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
 
 type LoggedInfoSectionType = {
@@ -25,6 +28,9 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 
 	const { proxyWallet } = useSelector((state: RootState) => state.authReducer.userProfile);
 	const { userFunds, portfolioValue } = useSelector((state: RootState) => state.authReducer);
+	const { userPointData } = useSelector((state: RootState) => state.pointReducer);
+
+	const dispatch = useDispatch<AppDispatch>();
 
 	const { ethValue } = useContractForRead();
 	const { address } = useAccount();
@@ -33,6 +39,10 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 		address: '0x05111E862280c8b135bCB5Ee173c557f3e1BBcD8',
 	});
 	const toast = useToast();
+
+	useEffect(() => {
+		dispatch(getPoints({ page: 1, take: 20 }));
+	}, [dispatch]);
 
 	const sliceWalletAddress = (walletAddress: string | undefined) => {
 		if (walletAddress) {
@@ -55,13 +65,13 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 
 	return (
 		<>
-			<Stack align={'center'} direction={'row'}>
+			<Stack align={'center'} direction={'row'} p={'12px'}>
 				<Icon as={ArbIcon} boxSize={6} borderRadius={'12px'} w={'26px'} h={'26px'} />
 				<Button
 					w={'100%'}
 					ml={'4px'}
 					style={{ justifyContent: 'space-between' }}
-					rightIcon={<Icon as={HiOutlineDocumentDuplicate} color={'gray.500'} />}
+					rightIcon={<Icon boxSize={5} as={HiOutlineDocumentDuplicate} color={'gray.500'} />}
 					bg={'gray.50'}
 					color={'gray.800'}
 					border={'0px'}
@@ -82,7 +92,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 					{sliceWalletAddress(proxyWallet)}
 				</Button>
 			</Stack>
-			<Stack mt={'12px'} gap={'12px'} align={'center'} direction={'row'} justify={'space-between'}>
+			<Stack align={'center'} direction={'row'} justify={'space-between'}>
 				<Stack
 					_hover={{ bg: 'gray.200' }}
 					borderRadius={6}
@@ -92,60 +102,94 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 						router.push('/portfolio');
 					}}
 					w={'100%'}
-					p={'8px'}
-					bg={'gray.50'}
+					pl={'14px'}
+					pr={'20px'}
+					pt={'12px'}
+					pb={'12px'}
 				>
 					<Stack align={'center'} direction={'row'}>
 						<Stack w={'100%'} align={'center'} direction={'row'} justify={'space-between'}>
-							<Stack align={'center'} direction={'row'}>
+							<Stack gap={'12px'} align={'center'} direction={'row'}>
 								<Icon as={HiCollection} w={'20px'} h={'20px'} />
 								<Text fontSize={'sm'} color={'gray.800'}>
 									{t('logged_menu_profile')}
 								</Text>
 							</Stack>
-							<Stack>
-								<Icon as={HiChevronRight} w={'20px'} h={'20px'} />
-							</Stack>
-						</Stack>
-					</Stack>
-					<Stack>
-						<Text fontSize={'md'} color={'gray.800'} fontWeight={'800'}>
-							{checkBalance()}
-						</Text>
-					</Stack>
-				</Stack>
-				<Stack
-					_hover={{ bg: 'gray.200' }}
-					borderRadius={6}
-					cursor={'pointer'}
-					onClick={() => {
-						close();
-						router.push('/funds');
-					}}
-					w={'100%'}
-					p={'8px'}
-					bg={'gray.50'}
-				>
-					<Stack align={'center'} direction={'row'}>
-						<Stack w={'100%'} align={'center'} direction={'row'} justify={'space-between'}>
-							<Stack align={'center'} direction={'row'}>
-								<Icon as={HiCreditCard} w={'20px'} h={'20px'} />
-								<Text fontSize={'sm'} color={'gray.800'}>
-									{t('funds')}
+							<Stack direction={'row'} alignItems={'center'}>
+								<Text fontSize={'md'} color={'gray.800'} fontWeight={'800'}>
+									{checkBalance()}
 								</Text>
-							</Stack>
-							<Stack>
 								<Icon as={HiChevronRight} w={'20px'} h={'20px'} />
 							</Stack>
 						</Stack>
-					</Stack>
-					<Stack>
-						<Text fontSize={'md'} color={'gray.800'} fontWeight={'800'}>
-							{`$${userFunds?.hold?.toFixed(2)}`}
-						</Text>
 					</Stack>
 				</Stack>
 			</Stack>
+			<Divider borderColor="gray.300" />
+			<Stack
+				_hover={{ bg: 'gray.200' }}
+				borderRadius={6}
+				cursor={'pointer'}
+				onClick={() => {
+					close();
+					router.push('/funds');
+				}}
+				w={'100%'}
+				pl={'14px'}
+				pr={'20px'}
+				pt={'12px'}
+				pb={'12px'}
+			>
+				<Stack align={'center'} direction={'row'}>
+					<Stack w={'100%'} align={'center'} direction={'row'} justify={'space-between'}>
+						<Stack gap={'12px'} align={'center'} direction={'row'}>
+							<Icon as={HiCreditCard} w={'20px'} h={'20px'} />
+							<Text fontSize={'sm'} color={'gray.800'}>
+								{t('funds')}
+							</Text>
+						</Stack>
+						<Stack direction={'row'} alignItems={'center'}>
+							<Text fontSize={'md'} color={'gray.800'} fontWeight={'800'}>
+								{`$${userFunds?.hold?.toFixed(2)}`}
+							</Text>
+							<Icon as={HiChevronRight} w={'20px'} h={'20px'} />
+						</Stack>
+					</Stack>
+				</Stack>
+			</Stack>
+			<Divider borderColor="gray.300" />
+			<Stack
+				_hover={{ bg: 'gray.200' }}
+				borderRadius={6}
+				cursor={'pointer'}
+				onClick={() => {
+					close();
+					router.push('/oxpoints');
+				}}
+				w={'100%'}
+				pl={'14px'}
+				pr={'20px'}
+				pt={'12px'}
+				pb={'12px'}
+			>
+				<Stack align={'center'} direction={'row'}>
+					<Stack w={'100%'} align={'center'} direction={'row'} justify={'space-between'}>
+						<Stack gap={'12px'} align={'center'} direction={'row'}>
+							<Image src={OxImg} width={20} height={20} alt="socialPng" />
+							<Text fontSize={'sm'} color={'gray.800'}>
+								OX Points
+							</Text>
+						</Stack>
+						<Stack direction={'row'} alignItems={'center'}>
+							<Text fontSize={'md'} color={'gray.800'} fontWeight={'800'}>
+								{userPointData.balance}
+							</Text>
+							<Icon as={HiChevronRight} w={'20px'} h={'20px'} />
+						</Stack>
+					</Stack>
+				</Stack>
+			</Stack>
+			<Divider borderColor="gray.300" />
 		</>
 	);
 }

@@ -154,7 +154,7 @@ function Events() {
 										</Stack>
 										<Stack justify={'space-between'} ml={'16px'}>
 											<Stack>
-												<Heading onClick={e => null} fontSize="md" color="gray.800">
+												<Heading onClick={e => null} fontSize="lg" color="gray.800">
 													{title}
 												</Heading>
 												<Text color={'gray.500'} fontSize={'sm'}>
@@ -373,18 +373,31 @@ function Events() {
 					</Text>
 				</Tag>
 			</Stack>
-			<Grid
-				ml={paddingMainHorizontal}
-				mr={paddingMainHorizontal}
-				templateColumns={{
-					lg: 'repeat(1, 1fr)',
-					md: 'repeat(1, 1fr)',
-					sm: 'repeat(1, 1fr)',
-				}}
-				gap={6}
-			>
-				{userPromotionsData.map(value => renderCardList(value))}
-			</Grid>
+			{userPromotionsData.length > 0 ? (
+				<Grid
+					ml={paddingMainHorizontal}
+					mr={paddingMainHorizontal}
+					templateColumns={{
+						lg: 'repeat(1, 1fr)',
+						md: 'repeat(1, 1fr)',
+						sm: 'repeat(1, 1fr)',
+					}}
+					gap={6}
+				>
+					{userPromotionsData.map(value => renderCardList(value))}
+				</Grid>
+			) : (
+				<Stack
+					alignItems={'center'}
+					mt={{ lg: '-40px', md: '-10px', sm: '-10px' }}
+					pt={'160px'}
+					pb={'160px'}
+				>
+					<Text color={'gray.800'} fontSize={'md'}>
+						No redemption events available at the moment.
+					</Text>
+				</Stack>
+			)}
 			<Card />
 			<Footer />
 			{msgModalIsOpen && msgModalDom}

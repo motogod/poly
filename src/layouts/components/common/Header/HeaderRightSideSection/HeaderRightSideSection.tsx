@@ -51,6 +51,7 @@ import LoggedInfoSectioin from '../LoggedInfoSection';
 import LoggedMenuSection from '../LoggedMenuSection';
 import { zIndexHeader } from '@/utils/zIndex';
 import { useLink } from '@/hooks';
+import { LocalesType } from '@/../public/locales/type';
 
 function HeaderRightSideSection() {
 	const router = useRouter();
@@ -64,6 +65,8 @@ function HeaderRightSideSection() {
 	// const { signInWithEthereum, connectWallet } = useSiwe();
 	// const { write, isLoading: contractIsLoading } = useContract();
 	const { ethValue } = useContractForRead();
+
+	const locale = router.locale as LocalesType;
 
 	const isMini = useMediaQuery({
 		query: '(min-width: 375px)',
@@ -141,7 +144,13 @@ function HeaderRightSideSection() {
 							>
 								<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
 							</Link>
-							<Link href="https://x.com/OX__Market" isExternal _hover={{ textDecoration: 'none' }}>
+							<Link
+								href={
+									locale === 'zh-Hans' ? 'https://x.com/OX_Market_CN' : 'https://x.com/OX__Market'
+								}
+								isExternal
+								_hover={{ textDecoration: 'none' }}
+							>
 								<Image src={XIcon} width={36} height={36} alt="socialPng" />
 							</Link>
 							<Link

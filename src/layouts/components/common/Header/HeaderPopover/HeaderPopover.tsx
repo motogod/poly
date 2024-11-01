@@ -29,6 +29,7 @@ import SocialIcon from '../../../../../../public/assets/svg/socialIcons.png';
 import XIcon from '../../../../../../public/assets/svg/xicon.png';
 import IgIcon from '../../../../../../public/assets/svg/igicon.png';
 import { zIndexPop } from '@/utils/zIndex';
+import { LocalesType } from '@/../public/locales/type';
 
 type HeaderPopType = {
 	isLogin: boolean;
@@ -41,6 +42,8 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 	const { isOpen: isPopOpen, onToggle, onClose: onPopClose, onOpen: onPopOpen } = useDisclosure();
 
 	const router = useRouter();
+
+	const locale = router.locale as LocalesType;
 
 	const { t } = useTranslation();
 
@@ -78,10 +81,11 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 						<LoggedInfoSection close={onPopClose} />
 					</PopoverHeader>
 					<LoggedMenuSection close={onPopClose} type="pop" isMini={isMini} />
-					<PopoverFooter>
-						<Heading size={'sx'} color={'gray.800'} fontWeight={'800'}>
+					<PopoverFooter mt={'16px'} mb={'16px'}>
+						<Heading fontSize={'xs'} color={'gray.800'} fontWeight={'700'}>
 							{t('community')}
 						</Heading>
+						<Stack h={'12px'} />
 						<Stack flexDirection={'row'} gap={2} mt={2} mb={2}>
 							<Link
 								href="https://t.me/OXmarket_announcement"
@@ -90,7 +94,13 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 							>
 								<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
 							</Link>
-							<Link href="https://x.com/OX__Market" isExternal _hover={{ textDecoration: 'none' }}>
+							<Link
+								href={
+									locale === 'zh-Hans' ? 'https://x.com/OX_Market_CN' : 'https://x.com/OX__Market'
+								}
+								isExternal
+								_hover={{ textDecoration: 'none' }}
+							>
 								<Image src={XIcon} width={36} height={36} alt="socialPng" />
 							</Link>
 							<Link
@@ -159,7 +169,11 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 					>
 						<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
 					</Link>
-					<Link href="https://x.com/OX__Market" isExternal _hover={{ textDecoration: 'none' }}>
+					<Link
+						href={locale === 'zh-Hans' ? 'https://x.com/OX_Market_CN' : 'https://x.com/OX__Market'}
+						isExternal
+						_hover={{ textDecoration: 'none' }}
+					>
 						<Image src={XIcon} width={36} height={36} alt="socialPng" />
 					</Link>
 					<Link

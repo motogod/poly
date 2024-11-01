@@ -378,7 +378,7 @@ function Markets() {
 					w="100%"
 					onScroll={(event: any) => handelScroll(event)}
 					overflowY={'scroll'}
-					templateColumns={markets?.length === 0 ? '' : 'repeat(auto-fill, minmax(290px, 1fr))'}
+					templateColumns={markets?.length === 0 ? '' : 'repeat(auto-fill, minmax(320px, 1fr))'}
 					gap={'20px'}
 					pt={'1px'}
 					pb={{
