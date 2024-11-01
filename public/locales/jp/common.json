@@ -205,7 +205,7 @@
 	"position": "Position",
 	"referral_program": "Referral Program",
 	"redemption_successful": "Redemption successful",
-	"insufficient_points": "Insufficient points",
+	"insufficient_points": "Insufficient OX Points",
 	"invalid_points_to_redeem": "Invalid points to redeem.",
 	"user_redemption_limit_reached": "User redemption limit reached.",
 	"promotion_redemption_limit_reached": "Promotion redemption limit reached.",

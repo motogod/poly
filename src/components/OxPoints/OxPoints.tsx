@@ -86,7 +86,7 @@ function OxPoints() {
 						<Stack flex={2} minWidth="0">
 							<FormLabel
 								color={'white'}
-								fontSize={{ lg: '36', md: '36', sm: '36' }}
+								fontSize={{ lg: '36', md: '36', sm: '24' }}
 								fontWeight={900}
 								whiteSpace="normal" // 允許換行
 							>
@@ -267,14 +267,14 @@ function OxPoints() {
 						</Stack>
 					) : (
 						<>
-							<Stack>
-								<Text textAlign={'end'}>
+							<Stack mt={'24px'} mb={'24px'}>
+								<Text textAlign={'end'} color="#1A202C" fontSize="sm">
 									Lifetime Earned:{' '}
 									<Text as="span" color="#1A202C" fontSize="sm">
 										{`${userPointData?.earned?.toLocaleString()} OX Points`}
 									</Text>
 								</Text>
-								<Text textAlign={'end'}>
+								<Text textAlign={'end'} color="#1A202C" fontSize="sm">
 									Total Redeemed:{' '}
 									<Text as="span" color="#1A202C" fontSize="sm">
 										{`${userPointData?.claimed?.toLocaleString()} OX Points`}

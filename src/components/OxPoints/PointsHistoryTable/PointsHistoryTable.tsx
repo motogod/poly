@@ -84,20 +84,18 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 			return (
 				<>
 					<Tr key={index} _hover={{ bg: 'gray.100', borderRadius: 18 }}>
-						<Td w={'0px'} pr={380} verticalAlign={'middle'}>
+						<Td w={'450px'} verticalAlign={'middle'}>
 							<Stack align={'center'} direction={'row'}>
 								<Text minW={30} fontSize={'14px'} color={'gray.700'} mr={'16px'}>
 									{renderCategory(value?.type)}
 								</Text>
 							</Stack>
 						</Td>
-						<Td w={'0px'} verticalAlign={'middle'}>
-							<Text textAlign={'end'} color={'gray.700'}>
-								{renderValue('Positive', value?.value)}
-							</Text>
+						<Td verticalAlign={'middle'} textAlign={'end'}>
+							<Text color={'gray.700'}>{renderValue('Positive', value?.value)}</Text>
 						</Td>
-						<Td w={'0px'} verticalAlign={'middle'}>
-							<Text textAlign={'end'} color={'gray.700'}>
+						<Td verticalAlign={'middle'}>
+							<Text color={'gray.700'} textAlign={'end'}>
 								{renderValue('Negative', value?.value)}
 							</Text>
 						</Td>
@@ -120,7 +118,11 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 	return (
 		<>
 			<TableContainer p={'12px'} mt={'0px'} border="1px solid #E2E8F0;" borderRadius={'10px'}>
-				<Table variant="simple" style={{ borderCollapse: 'separate', borderSpacing: '0 4px' }}>
+				<Table
+					// layout="fixed"
+					variant="simple"
+					style={{ borderCollapse: 'separate', borderSpacing: '0 4px' }}
+				>
 					<Thead>
 						<Tr>
 							<Th
@@ -133,6 +135,7 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 								Category
 							</Th>
 							<Th
+								textAlign={'end'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}
@@ -142,7 +145,7 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 								Earned Points
 							</Th>
 							<Th
-								textAlign={'center'}
+								textAlign={'end'}
 								textTransform={'none'}
 								fontSize={'xs'}
 								color={'gray.700'}

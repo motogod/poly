@@ -18,6 +18,8 @@ import {
 	PopoverArrow,
 	PopoverCloseButton,
 	PopoverBody,
+	TagLabel,
+	Tag,
 } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { HiChartBar } from 'react-icons/hi';
@@ -33,8 +35,8 @@ function CategoryCard({ data, isLoading }: { data: MarketsItemType; isLoading?: 
 
 	const { isOpen: isPopOpen, onToggle, onClose: onPopClose, onOpen: onPopOpen } = useDisclosure();
 
-	const { title, volume, category, image, outcome, slug } = data;
-
+	const { title, volume, category, image, outcome, slug, categories } = data;
+	console.log('data =>', data);
 	return (
 		<GridItem>
 			<Card
@@ -61,19 +63,37 @@ function CategoryCard({ data, isLoading }: { data: MarketsItemType; isLoading?: 
 							objectFit={'cover'}
 						/>
 						<Stack pl={1}>
-							<Heading
-								onClick={e => {
-									// 接著將頁面導回 markets 並附上 qeury 參數 讓 Markets 底下的 useEffect 去 call API
-									e.stopPropagation();
-									router.push(`/markets?categories=${category.slug},`);
-									dispatch(queryUrlToChangeMenuStatus({ queryString: `${category.slug},` }));
-								}}
-								size="xs"
-								color="gray.500"
-								_hover={{ color: 'gray.700' }}
-							>
-								{category.name}
-							</Heading>
+							<Stack direction="row" wrap={'wrap'}>
+								{categories.map(value => {
+									return (
+										<>
+											<Tag
+												px={4}
+												py={1}
+												border="1px"
+												bg="pink.500"
+												borderColor="pink.500"
+												size={'sm'}
+												colorScheme="undefined"
+												borderRadius={'md'}
+											>
+												<TagLabel
+													cursor={'pointer'}
+													onClick={e => {
+														// 接著將頁面導回 markets 並附上 qeury 參數 讓 Markets 底下的 useEffect 去 call API
+														e.stopPropagation();
+														router.push(`/markets?categories=${value.slug},`);
+														dispatch(queryUrlToChangeMenuStatus({ queryString: `${value.slug},` }));
+													}}
+													color="#fff"
+												>
+													{value.name}
+												</TagLabel>
+											</Tag>
+										</>
+									);
+								})}
+							</Stack>
 							<Stack mt={'2px'}>
 								<Heading noOfLines={3} size="sm" color="gray.800" lineHeight={'5'}>
 									{title}

@@ -140,7 +140,7 @@ function Referral() {
 										<Heading color="gray.50" size="md">
 											{t('referral_link')}
 										</Heading>
-										<Stack align={'center'} w={isDesktopForLink ? '600px' : ''}>
+										<Stack align={'center'}>
 											<Button
 												w={'100%'}
 												ml={'4px'}
@@ -260,30 +260,7 @@ function Referral() {
 					</Stack>
 				</Card>
 			</Stack>
-			<Stack
-				mt={{ lg: '20px', md: '10px', sm: '10px' }}
-				mb={{ lg: '20px', md: '10px', sm: '10px' }}
-				ml={paddingMainHorizontal}
-				mr={paddingMainHorizontal}
-			>
-				<Tag
-					alignItems={'center'}
-					justifyContent={'center'}
-					w={'100%'}
-					h={'56px'}
-					flexWrap={'nowrap'}
-					border="1px"
-					backgroundColor="pink.50"
-					borderColor="pink.50"
-					size="lg"
-					colorScheme="undefined"
-					borderRadius={'md'}
-				>
-					<Text fontWeight={'400'} color={'gray.800'}>
-						{t('the_referral_program_will_launch_in_november_2024')}
-					</Text>
-				</Tag>
-			</Stack>
+			<Stack mt={{ lg: '20px', md: '10px', sm: '10px' }} />
 			<Grid
 				ml={paddingMainHorizontal}
 				mr={paddingMainHorizontal}
