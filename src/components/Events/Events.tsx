@@ -154,20 +154,20 @@ function Events() {
 										</Stack>
 										<Stack justify={'space-between'} ml={'16px'}>
 											<Stack>
-												<Heading onClick={e => null} fontSize="lg" color="gray.800">
+												<Heading onClick={e => null} fontSize="20px" color="gray.800">
 													{title}
 												</Heading>
-												<Text color={'gray.500'} fontSize={'sm'}>
+												<Text color={'gray.500'} fontSize={'14px'}>
 													{`${formatAllDate(startAt)} - ${formatAllDate(endAt)} (GMT+8)`}
 												</Text>
 											</Stack>
 											<Stack mt={4}>
 												<Stack>
-													<Heading onClick={e => null} fontSize={'sm'} color="gray.800">
+													<Heading onClick={e => null} fontSize={'16px'} color="gray.800">
 														Instructions
 													</Heading>
 												</Stack>
-												<Stack ml={4}>
+												<Stack ml={4} fontSize={'16px'}>
 													<div dangerouslySetInnerHTML={{ __html: `${description}` }} />
 												</Stack>
 											</Stack>
@@ -289,22 +289,34 @@ function Events() {
 							position="absolute"
 							align={'center'}
 							w={'100%'}
-							padding={34}
+							pt={'61px'}
+							pb={'61px'}
+							pl={'24px'}
+							pr={'24px'}
 							h={{ lg: '400px', md: '400px', sm: '400px' }}
 							direction="row"
 							borderRadius="2xl"
 						>
-							<Stack flex={1} minWidth="0">
+							<Stack flex={1} alignItems={'center'} w={'100%'}>
 								<FormLabel
 									color={'white'}
-									fontSize={{ lg: '36', md: '36', sm: '36' }}
+									fontSize={{ lg: '36', md: '30', sm: '30' }}
 									fontWeight={900}
 									whiteSpace="normal" // 允許換行
 									zIndex={2}
 								>
-									OX Points
+									Redemption Events
 								</FormLabel>
-								<Stack rounded={'lg'} flex={1} bg={'#fff'} p={'24px'} minWidth="0" zIndex={2}>
+								<Stack
+									mt={'34px'}
+									rounded={'lg'}
+									w={'100%'}
+									flex={1}
+									bg={'#fff'}
+									p={'24px'}
+									minWidth="0"
+									zIndex={2}
+								>
 									<Stack mt={'4px'}>
 										<Stack>
 											<Text color="gray.800" size="md">
@@ -398,7 +410,7 @@ function Events() {
 					</Text>
 				</Stack>
 			)}
-			<Card />
+			<Stack mt={'120px'} />
 			<Footer />
 			{msgModalIsOpen && msgModalDom}
 		</Stack>

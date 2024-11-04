@@ -24,12 +24,14 @@ import { BiSolidUserCircle, BiMenuAltLeft } from 'react-icons/bi';
 import { useLink } from '@/hooks';
 import LoggedInfoSection from '../LoggedInfoSection';
 import LoggedMenuSection from '../LoggedMenuSection';
+import { BiDiamond, BiLogOut, BiHelpCircle, BiChart } from 'react-icons/bi';
 import { CommunityIcon, ArbIcon } from '../../../../../../public/assets/svg';
 import SocialIcon from '../../../../../../public/assets/svg/socialIcons.png';
 import XIcon from '../../../../../../public/assets/svg/xicon.png';
 import IgIcon from '../../../../../../public/assets/svg/igicon.png';
 import { zIndexPop } from '@/utils/zIndex';
 import { LocalesType } from '@/../public/locales/type';
+import SocialMenuSection from '../SocialMenuSection';
 
 type HeaderPopType = {
 	isLogin: boolean;
@@ -82,109 +84,60 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 					</PopoverHeader>
 					<LoggedMenuSection close={onPopClose} type="pop" isMini={isMini} />
 					<PopoverFooter mt={'16px'} mb={'16px'}>
-						<Heading fontSize={'xs'} color={'gray.800'} fontWeight={'700'}>
-							{t('community')}
-						</Heading>
-						<Stack h={'12px'} />
-						<Stack flexDirection={'row'} gap={2} mt={2} mb={2}>
-							<Link
-								href="https://t.me/OXmarket_announcement"
-								isExternal
-								_hover={{ textDecoration: 'none' }}
-							>
-								<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
-							</Link>
-							<Link
-								href={
-									locale === 'zh-Hans' ? 'https://x.com/OX_Market_CN' : 'https://x.com/OX__Market'
-								}
-								isExternal
-								_hover={{ textDecoration: 'none' }}
-							>
-								<Image src={XIcon} width={36} height={36} alt="socialPng" />
-							</Link>
-							<Link
-								href="https://www.instagram.com/ox_market_/"
-								isExternal
-								_hover={{ textDecoration: 'none' }}
-							>
-								<Image src={IgIcon} width={36} height={36} alt="socialPng" />
-							</Link>
-						</Stack>
+						<SocialMenuSection />
 					</PopoverFooter>
 				</>
 			);
 		}
 
 		return (
-			<Stack gap={'12px'} mt={'24px'} alignItems={'center'} position={'relative'}>
-				{/* <Text
-					onClick={() => {
-						onPopClose();
-						open();
-					}}
-					cursor="pointer"
-					fontSize="md"
-					color="gray.800"
+			<>
+				<Stack
+					position={'relative'}
+					py={'22px'}
+					mt={!isMini ? '32px' : ''}
+					mb={!isMini ? '44px' : ''}
+					mx={'16px'}
+					spacing={'4px'}
+					textAlign={'left'}
+					borderBottom={'1px'}
+					borderColor={'gray.100'}
+					gap={'14px'}
 				>
-					Connect
-				</Text> */}
-				<Text
-					onClick={() => {
-						onPopClose();
-						router.push('/markets');
-					}}
-					cursor="pointer"
-					fontSize="md"
-					color="gray.800"
-				>
-					{t('markets')}
-				</Text>
-				<Link href={link().howItWorksLink} isExternal _hover={{ textDecoration: 'none' }}>
-					<Text cursor="pointer" fontSize="md" color="gray.800">
-						{t('how_it_work_center')}
-					</Text>
-				</Link>
-				<Link href={link().rewardsLink} isExternal _hover={{ textDecoration: 'none' }}>
-					<Text
-						onClick={() => {
-							onPopClose();
-							router.push('/markets');
-						}}
-						cursor="pointer"
-						fontSize="md"
-						color="gray.800"
-					>
-						{t('rewards')}
-					</Text>
-				</Link>
-				<Heading mt={'20px'} size={'md'} color={'gray.800'}>
-					{t('community')}
-				</Heading>
-				<Stack flexDirection={'row'} mb={6}>
-					<Link
-						href="https://t.me/OXmarket_announcement"
-						isExternal
-						_hover={{ textDecoration: 'none' }}
-					>
-						<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
-					</Link>
-					<Link
-						href={locale === 'zh-Hans' ? 'https://x.com/OX_Market_CN' : 'https://x.com/OX__Market'}
-						isExternal
-						_hover={{ textDecoration: 'none' }}
-					>
-						<Image src={XIcon} width={36} height={36} alt="socialPng" />
-					</Link>
-					<Link
-						href="https://www.instagram.com/ox_market_/"
-						isExternal
-						_hover={{ textDecoration: 'none' }}
-					>
-						<Image src={IgIcon} width={36} height={36} alt="socialPng" />
-					</Link>
+					<Stack gap={'12px'} direction="row" alignItems={'center'}>
+						<Icon as={BiChart} w={'20px'} h={'20px'} />
+						<Text
+							onClick={() => {
+								router.push('/markets');
+								close();
+							}}
+							cursor={'pointer'}
+							size={'md'}
+							color={'gray.800'}
+						>
+							{t('markets')}
+						</Text>
+					</Stack>
+					<Stack gap={'12px'} direction="row" alignItems={'center'}>
+						<Icon as={BiHelpCircle} w={'20px'} h={'20px'} />
+						<Link href={link().howItWorksLink} isExternal _hover={{ textDecoration: 'none' }}>
+							<Text
+								onClick={() => {
+									close();
+								}}
+								cursor={'pointer'}
+								size={'md'}
+								color={'gray.800'}
+							>
+								{t('logged_menu_how_it_works')}
+							</Text>
+						</Link>
+					</Stack>
 				</Stack>
-			</Stack>
+				<Stack m={'16px'}>
+					<SocialMenuSection />
+				</Stack>
+			</>
 		);
 	};
 

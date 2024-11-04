@@ -28,6 +28,7 @@ import BuyOrSellButton from './Buttons/BuyOrSellButton';
 import BuyOrSellModal from './BuyOrSellModal';
 import { TransactionEnum } from './type';
 import { zIndexMarket, zIndexBuyOrSellModal } from '@/utils/zIndex';
+import Footer from '@/layouts/components/common/Footer';
 
 const empty_array = [...Array(13)];
 
@@ -127,6 +128,8 @@ function MarketsDetail() {
 					</ModalBody>
 				</ModalContent>
 			</Modal>
+			<Stack mt={'60px'} />
+			<Footer />
 		</Stack>
 	);
 }
