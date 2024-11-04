@@ -117,13 +117,22 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 
 	return (
 		<>
-			<TableContainer p={'12px'} mt={'0px'} border="1px solid #E2E8F0;" borderRadius={'10px'}>
+			<TableContainer
+				pl={'12px'}
+				pr={'12px'}
+				pb={'12px'}
+				mt={'0px'}
+				border="1px solid #E2E8F0;"
+				borderRadius={'10px'}
+				maxHeight={{ base: '600px', md: 'auto' }} // 設定最大高度
+				overflowY="auto"
+			>
 				<Table
 					// layout="fixed"
 					variant="simple"
 					style={{ borderCollapse: 'separate', borderSpacing: '0 4px' }}
 				>
-					<Thead>
+					<Thead position="sticky" top={0} bg={'white'} zIndex={10}>
 						<Tr>
 							<Th
 								textTransform={'none'}
@@ -131,6 +140,7 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 								color={'gray.700'}
 								fontWeight={'700'}
 								lineHeight={'16px'}
+								// p={'12px'}
 							>
 								Category
 							</Th>

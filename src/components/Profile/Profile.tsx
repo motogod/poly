@@ -11,6 +11,7 @@ import {
 	IconButton,
 	FormLabel,
 } from '@chakra-ui/react';
+import { useMediaQuery } from 'react-responsive';
 import { useRouter } from 'next/router';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { FcGoogle } from 'react-icons/fc';
@@ -23,6 +24,7 @@ import {
 	paddingMainVertical,
 	paddingFundsContainerCardVertical,
 } from '@/utils/screen';
+import Footer from '@/layouts/components/common/Footer';
 
 // background: linear-gradient(90deg, #edf2f7 44%, #d53f8c 30%);
 function Profile() {
@@ -32,6 +34,10 @@ function Profile() {
 	const [idToken, setIdToken] = useState('');
 
 	const router = useRouter();
+
+	const isDesktop = useMediaQuery({
+		query: '(min-width: 760px)',
+	});
 
 	const { t } = useTranslation();
 
@@ -75,8 +81,9 @@ function Profile() {
 				<Card borderRadius="2xl">
 					<Stack
 						w={'100%'}
-						h={{ lg: '243px', md: '90px', sm: '90px' }}
+						h={{ lg: '243px', md: '160px', sm: '160px' }}
 						alignItems={'center'}
+						justifyContent={isDesktop ? '' : 'center'}
 						bg={'#2D3748'}
 						justify="space-between"
 						direction="row"
@@ -174,6 +181,8 @@ function Profile() {
 					</Card>
 				</Grid>
 			</Stack>
+			<Stack mt={'120px'} />
+			<Footer />
 		</Stack>
 	);
 }

@@ -52,6 +52,7 @@ import LoggedMenuSection from '../LoggedMenuSection';
 import { zIndexHeader } from '@/utils/zIndex';
 import { useLink } from '@/hooks';
 import { LocalesType } from '@/../public/locales/type';
+import SocialMenuSection from '../SocialMenuSection';
 
 function HeaderRightSideSection() {
 	const router = useRouter();
@@ -134,32 +135,7 @@ function HeaderRightSideSection() {
 						</Stack>
 						<Stack align={'center'}>
 							<LoggedMenuSection close={onClose} type="modal" isMini={isMini} />
-							<Heading mt={'0px'} mb={'16px'} size={'xs'} color={'gray.800'}>
-								{t('community')}
-							</Heading>
-							<Link
-								href="https://t.me/OXmarket_announcement"
-								isExternal
-								_hover={{ textDecoration: 'none' }}
-							>
-								<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
-							</Link>
-							<Link
-								href={
-									locale === 'zh-Hans' ? 'https://x.com/OX_Market_CN' : 'https://x.com/OX__Market'
-								}
-								isExternal
-								_hover={{ textDecoration: 'none' }}
-							>
-								<Image src={XIcon} width={36} height={36} alt="socialPng" />
-							</Link>
-							<Link
-								href="https://www.instagram.com/ox_market_/"
-								isExternal
-								_hover={{ textDecoration: 'none' }}
-							>
-								<Image src={IgIcon} width={36} height={36} alt="socialPng" />
-							</Link>
+							<SocialMenuSection />
 						</Stack>
 						<ModalFooter h={'100px'} />
 					</ModalBody>

@@ -83,10 +83,10 @@ function OxPoints() {
 						direction="row"
 						borderRadius="2xl"
 					>
-						<Stack flex={2} minWidth="0">
+						<Stack alignItems={isDesktop ? '' : 'center'} flex={2} minWidth="0">
 							<FormLabel
 								color={'white'}
-								fontSize={{ lg: '36', md: '36', sm: '24' }}
+								fontSize={{ lg: '36', md: '30', sm: '30' }}
 								fontWeight={900}
 								whiteSpace="normal" // 允許換行
 							>
@@ -268,21 +268,21 @@ function OxPoints() {
 					) : (
 						<>
 							<Stack mt={'24px'} mb={'24px'}>
-								<Text textAlign={'end'} color="#1A202C" fontSize="sm">
+								<Text textAlign={'end'} color="#1A202C" fontSize="16px">
 									Lifetime Earned:{' '}
-									<Text as="span" color="#1A202C" fontSize="sm">
+									<Text as="span" color="#1A202C" fontSize="16px">
 										{`${userPointData?.earned?.toLocaleString()} OX Points`}
 									</Text>
 								</Text>
-								<Text textAlign={'end'} color="#1A202C" fontSize="sm">
+								<Text textAlign={'end'} color="#1A202C" fontSize="16px">
 									Total Redeemed:{' '}
-									<Text as="span" color="#1A202C" fontSize="sm">
+									<Text as="span" color="#1A202C" fontSize="16px">
 										{`${userPointData?.claimed?.toLocaleString()} OX Points`}
 									</Text>
 								</Text>
 							</Stack>
 							<Stack>
-								<Tabs mt={'28px'} index={0} onChange={handleTabsChange}>
+								<Tabs mt={'0px'} index={0} onChange={handleTabsChange}>
 									<TabPanels>
 										<TabPanel p={0}>
 											<PointsHistoryTable pageCount={meta.pageCount} />
@@ -294,7 +294,7 @@ function OxPoints() {
 					)}
 				</CardBody>
 			</Card>
-			<Card />
+			<Stack mt={'120px'} />
 			<Footer />
 		</Stack>
 	);

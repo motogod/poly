@@ -14,7 +14,7 @@ function About() {
 
 	return (
 		<Card
-			mb={{ lg: '0px', md: '80px', sm: '80px' }}
+			mb={{ lg: '0px', md: '0px', sm: '0px' }}
 			shadow="lg"
 			border="1px solid #E2E8F0;"
 			borderRadius="3xl"

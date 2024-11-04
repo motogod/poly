@@ -89,61 +89,121 @@ function RewardTasks() {
 	return (
 		<Stack mt={headerHeight} h={'100vh'}>
 			<Stack ml={paddingMainHorizontal} mr={paddingMainHorizontal} mt={paddingMainVertical}>
-				<Card position={'relative'} borderRadius="2xl">
-					<Stack
-						flex={1}
-						position="absolute"
-						align={'center'}
-						w={'100%'}
-						padding={'72px'}
-						h={{ lg: '400px', md: '400px', sm: '400px' }}
-						direction="row"
-						borderRadius="2xl"
-					>
-						<Stack flex={2} minWidth="0">
-							<FormLabel
-								color={'white'}
-								fontSize={{ lg: '36', md: '36', sm: '24' }}
-								fontWeight={900}
-								whiteSpace="normal" // 允許換行
-								zIndex={2}
-							>
-								Reward Tasks
-							</FormLabel>
+				{isDesktop ? (
+					<Card position={'relative'} borderRadius="2xl">
+						<Stack
+							flex={1}
+							position="absolute"
+							align={'center'}
+							w={'100%'}
+							padding={'72px'}
+							h={{ lg: '400px', md: '400px', sm: '400px' }}
+							direction="row"
+							borderRadius="2xl"
+						>
+							<Stack flex={2} minWidth="0">
+								<FormLabel
+									color={'white'}
+									fontSize={{ lg: '36', md: '30', sm: '30' }}
+									fontWeight={900}
+									whiteSpace="normal" // 允許換行
+									zIndex={2}
+								>
+									Reward Tasks
+								</FormLabel>
+							</Stack>
 						</Stack>
-					</Stack>
-					<Image
-						width={0}
-						height={0}
-						style={{ width: '100%', height: '400px', borderRadius: 10, objectFit: 'cover' }}
-						src={OxPointsBannerImg}
-						alt="funds_background"
-					/>
-					<Box
-						position="absolute"
-						style={{ borderRadius: 10 }}
-						top="0"
-						left="0"
-						right="0"
-						bottom="0"
-						backgroundColor="rgba(26, 32, 44, 0.8)"
-						zIndex={1}
-					/>
-					<Box
-						zIndex={2}
-						position="absolute"
-						right={isDesktop ? '130' : '50'}
-						top="50%"
-						transform={'translateY(-50%)'}
-					>
 						<Image
-							src={OxPointsBannerIcon}
-							alt="socialPng"
-							height={isDesktop ? 280 : 160}
-							width={isDesktop ? 280 : 160}
+							width={0}
+							height={0}
+							style={{ width: '100%', height: '400px', borderRadius: 10, objectFit: 'cover' }}
+							src={OxPointsBannerImg}
+							alt="funds_background"
 						/>
-					</Box>
-				</Card>
+						<Box
+							position="absolute"
+							style={{ borderRadius: 10 }}
+							top="0"
+							left="0"
+							right="0"
+							bottom="0"
+							backgroundColor="rgba(26, 32, 44, 0.8)"
+							zIndex={1}
+						/>
+						<Box
+							zIndex={2}
+							position="absolute"
+							right={isDesktop ? '130' : '50'}
+							top="50%"
+							transform={'translateY(-50%)'}
+						>
+							<Image
+								src={OxPointsBannerIcon}
+								alt="socialPng"
+								height={isDesktop ? 280 : 160}
+								width={isDesktop ? 280 : 160}
+							/>
+						</Box>
+					</Card>
+				) : (
+					<Card position={'relative'} borderRadius="2xl">
+						<Stack
+							flex={1}
+							position="absolute"
+							align={'center'}
+							w={'100%'}
+							pt={'60px'}
+							pb={'60px'}
+							pl={'24px'}
+							pr={'24px'}
+							h={'352px'}
+							borderRadius="2xl"
+						>
+							<Stack zIndex={2} flex={2} minWidth="0" justifyContent={'space-between'}>
+								<Image src={OxPointsBannerIcon} alt="socialPng" height={160} width={160} />
+								<FormLabel
+									color={'white'}
+									fontSize={{ lg: '36', md: '30', sm: '30' }}
+									fontWeight={900}
+									whiteSpace="normal" // 允許換行
+								>
+									Reward Tasks
+								</FormLabel>
+							</Stack>
+						</Stack>
+						<Image
+							width={0}
+							height={0}
+							style={{ width: '100%', height: '352px', borderRadius: 10, objectFit: 'cover' }}
+							src={OxPointsBannerImg}
+							alt="funds_background"
+						/>
+						<Box
+							position="absolute"
+							style={{ borderRadius: 10 }}
+							top="0"
+							left="0"
+							right="0"
+							bottom="0"
+							backgroundColor="rgba(26, 32, 44, 0.8)"
+							zIndex={1}
+						/>
+						<Box
+							zIndex={2}
+							position="absolute"
+							right={isDesktop ? '130' : '50'}
+							top="50%"
+							transform={'translateY(-50%)'}
+						>
+							{/* <Image
+								src={OxPointsBannerIcon}
+								alt="socialPng"
+								height={isDesktop ? 280 : 160}
+								width={isDesktop ? 280 : 160}
+							/> */}
+						</Box>
+					</Card>
+				)}
 			</Stack>
 			<Grid
 				ml={paddingMainHorizontal}
@@ -412,7 +472,7 @@ function RewardTasks() {
 					</Stack>
 				</CardBody>
 			</Card>
-			<Card />
+			<Stack mt={'120px'} />
 			<Footer />
 		</Stack>
 	);

@@ -358,6 +358,7 @@ function Referral() {
 					</Card>
 				</GridItem>
 			</Grid>
+			<Stack mt={'40px'} />
 			<Footer />
 		</Stack>
 	);

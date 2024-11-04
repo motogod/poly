@@ -13,6 +13,8 @@ import {
 	Icon,
 	Button,
 } from '@chakra-ui/react';
+import { HiOutlineUserAdd } from 'react-icons/hi';
+import { BiDiamond } from 'react-icons/bi';
 import { HiFire } from 'react-icons/hi';
 import { useLink } from '@/hooks';
 import OxImg from '@/../public/assets/svg/icon-ox-points-01.png';
@@ -58,7 +60,7 @@ function HeaderRewardsPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopT
 				gap={'14px'}
 			>
 				<Stack gap={'12px'} direction="row" alignItems={'center'}>
-					<Stack w={'20px'} h={'20px'} />
+					<Icon as={BiDiamond} w={'20px'} h={'20px'} />
 					<Text
 						onClick={() => {
 							router.push('/rewardtasks');
@@ -72,7 +74,7 @@ function HeaderRewardsPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopT
 					</Text>
 				</Stack>
 				<Stack gap={'12px'} direction="row" alignItems={'center'}>
-					<Stack w={'20px'} h={'20px'} />
+					<Icon as={HiOutlineUserAdd} w={'20px'} h={'20px'} />
 					<Text
 						onClick={() => {
 							router.push('/referral');
