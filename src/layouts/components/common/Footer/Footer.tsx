@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useSearchParams } from 'next/navigation';
@@ -25,6 +25,7 @@ import {
 	getHomeCategorySectionMarkets,
 	getCategories,
 } from '@/store';
+import { getRewardTasks } from '@/store/thunks/fetchPoint';
 import { paddingMainHorizontal } from '@/utils/screen';
 import { PrimaryPink } from '@/utils/color';
 import SocialIcon from '../../../../../public/assets/svg/socialIcons.png';
@@ -91,6 +92,13 @@ export default function LargeWithAppLinksAndSocial() {
 			);
 		}, 300);
 	};
+
+	useEffect(() => {
+		// 若當下在 rewardtasks 頁面，抓取 API 更新 rewardtasks 清單資料語系
+		if (router.isReady && currentPath.includes('rewardtasks')) {
+			dispatch(getRewardTasks());
+		}
+	}, [router, currentPath, dispatch]);
 
 	return (
 		<Box
