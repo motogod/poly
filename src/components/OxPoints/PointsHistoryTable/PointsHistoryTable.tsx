@@ -51,7 +51,7 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 	const renderCategory = (category: Category) => {
 		switch (category) {
 			case 'volume':
-				return 'Volume';
+				return t('transaction_rewards');
 			case 'referral':
 				return t('referral_for_category');
 			case 'referral_volume':
@@ -61,7 +61,7 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 			case 'redemption':
 				return t('points_redemption');
 			case 'reward_tasks':
-				return t('transaction_rewards');
+				return t('deposit_rewards');
 			default:
 				return '';
 		}
