@@ -26,9 +26,9 @@ import { useTranslation } from 'next-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, resetPostRewardTasksMonthlyDraw } from '@/store';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
-import RewardDepositImg from '@/../public/assets/svg/reward-deposit.png';
-import RewardTradeImg from '@/../public/assets/svg/reward-trade.png';
-import RewardDrawImg from '@/../public/assets/svg/image-rewards-03.png';
+import RewardDrawImg from '@/../public/assets/svg/reward-task-01.png';
+import RewardDepositImg from '@/../public/assets/svg/reward-task-02.png';
+import RewardTradeImg from '@/../public/assets/svg/reward-task-03.png';
 import OxPointsBannerIcon from '@/../public/image-rewards-illustration.png';
 // import OxPointsBannerImg from '@/../public/banner-redemption-events-bg-02.png';
 import OxPointsBannerImg from '@/../public/background-01.png';
@@ -127,7 +127,7 @@ function RewardTasks() {
 							left="0"
 							right="0"
 							bottom="0"
-							backgroundColor="rgba(26, 32, 44, 0.8)"
+							backgroundColor="rgba(26, 32, 44, 0.7)"
 							zIndex={1}
 						/>
 						<Box
@@ -185,7 +185,7 @@ function RewardTasks() {
 							left="0"
 							right="0"
 							bottom="0"
-							backgroundColor="rgba(26, 32, 44, 0.8)"
+							backgroundColor="rgba(26, 32, 44, 0.7)"
 							zIndex={1}
 						/>
 						<Box

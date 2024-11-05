@@ -27,7 +27,7 @@ import BuyOrSellCard from './BuyOrSellCard';
 import BuyOrSellButton from './Buttons/BuyOrSellButton';
 import BuyOrSellModal from './BuyOrSellModal';
 import { TransactionEnum } from './type';
-import { zIndexMarket, zIndexBuyOrSellModal } from '@/utils/zIndex';
+import { zIndexBottomBuyAndSell, zIndexBuyOrSellModal } from '@/utils/zIndex';
 import Footer from '@/layouts/components/common/Footer';
 
 const empty_array = [...Array(13)];
@@ -83,7 +83,7 @@ function MarketsDetail() {
 				direction="row"
 				position="fixed"
 				bottom={0}
-				zIndex={zIndexMarket}
+				zIndex={zIndexBottomBuyAndSell}
 				pl={6}
 				pr={6}
 				pt={4}

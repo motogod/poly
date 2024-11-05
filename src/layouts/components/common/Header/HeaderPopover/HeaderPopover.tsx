@@ -57,6 +57,12 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 		query: '(min-width: 375px)',
 	});
 
+	const isHeightMini = useMediaQuery({
+		query: '(min-height: 750px)',
+	});
+
+	console.log('isHeightMini', isHeightMini);
+
 	const renderTriggerIcon = () => {
 		if (isLogin) {
 			return (
@@ -175,6 +181,8 @@ function HeaderPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopType) {
 					borderRadius={'12px'}
 					bg={'#fff'}
 					shadow={'md'}
+					maxHeight={!isHeightMini ? '520px' : ''}
+					overflowY={!isHeightMini ? 'scroll' : 'auto'}
 				>
 					{renderContent()}
 				</PopoverContent>
