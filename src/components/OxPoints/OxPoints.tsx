@@ -79,7 +79,7 @@ function OxPoints() {
 						align={'center'}
 						w={'100%'}
 						padding={'72px'}
-						h={{ lg: '400px', md: '400px', sm: '400px' }}
+						h={{ lg: '400px', md: '352px', sm: '352px' }}
 						direction="row"
 						borderRadius="2xl"
 					>
@@ -97,7 +97,7 @@ function OxPoints() {
 					<Image
 						width={0}
 						height={0}
-						style={{ width: '100%', height: '400px', borderRadius: 10, objectFit: 'cover' }}
+						style={{ width: '100%', height: '352px', borderRadius: 10, objectFit: 'cover' }}
 						src={OxPointsBannerImg}
 						alt="funds_background"
 					/>
