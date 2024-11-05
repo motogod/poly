@@ -181,15 +181,17 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 			</TableContainer>
 			{pageCount > 1 && (
 				<Box
-					align={{ base: 'center', md: 'center', sm: 'center', lg: 'end' }}
+					align={{ base: 'end', md: 'end', sm: 'end', lg: 'end' }}
 					mt="30px"
 					mb={'10px'}
 					as={Stack}
 				>
 					<Stack alignItems={'center'} direction={'row'} gap={4}>
-						<Text color={'gray.700'} fontSize={'14px'}>
-							{t('page')}
-						</Text>
+						<Stack alignItems={'end'} w={'100px'}>
+							<Text color={'gray.700'} fontSize={'14px'}>
+								{t('page')}
+							</Text>
+						</Stack>
 						<Select
 							onChange={event =>
 								dispatch(getPoints({ page: Number(event.target.value), take: 20 }))
