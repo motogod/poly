@@ -127,7 +127,7 @@ function Referral() {
 											{t('earn_oX_points_for_each_friend_you_refer')}
 										</FormLabel>
 									</Stack>
-									<Stack w={'600px'} gap={'16px'}>
+									<Stack ml={'auto'} w={'600px'} gap={'16px'}>
 										<Heading color="gray.50" size="md">
 											{t('referral_link')}
 										</Heading>
