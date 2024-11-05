@@ -141,12 +141,12 @@ function useUtility() {
 		switch (code) {
 			case 201: // 兌換成功
 				return t('redemption_successful');
-			case 10101:
-				return t('insufficient_points');
+			case 10101: // 點數不足
+				return t('you_do_not_have_enough_ox_points');
 			case 10102:
 				return t('invalid_points_to_redeem');
-			case 10103:
-				return t('user_redemption_limit_reached');
+			case 10103: // 該用戶已達該兌換活動，每人能兌換的次數限制
+				return t('you_have_reached_the_maximum_number_of_redemptions');
 			case 10104:
 				return t('promotion_redemption_limit_reached');
 			case 10105:

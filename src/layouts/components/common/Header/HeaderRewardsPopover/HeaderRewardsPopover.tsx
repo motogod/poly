@@ -70,7 +70,7 @@ function HeaderRewardsPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopT
 						size={'md'}
 						color={'gray.800'}
 					>
-						Reward Tasks
+						{t('reward_tasks')}
 					</Text>
 				</Stack>
 				<Stack gap={'12px'} direction="row" alignItems={'center'}>
@@ -84,7 +84,7 @@ function HeaderRewardsPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopT
 						size={'md'}
 						color={'gray.800'}
 					>
-						{t('referral_program')}
+						{t('referral')}
 					</Text>
 				</Stack>
 				<Stack gap={'12px'} direction="row" alignItems={'center'}>
@@ -98,7 +98,7 @@ function HeaderRewardsPopover({ isLogin, onModalOpen, onModalClose }: HeaderPopT
 						size={'md'}
 						color={'gray.800'}
 					>
-						OX Points
+						{t('ox_points')}
 					</Text>
 				</Stack>
 			</Stack>

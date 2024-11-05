@@ -98,7 +98,7 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 					size={'md'}
 					color={'gray.800'}
 				>
-					{t('referral_program')}
+					{t('referral')}
 				</Text>
 			</Stack>
 			<Stack gap={'12px'} direction="row" alignItems={'center'}>
@@ -112,7 +112,7 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 					size={'md'}
 					color={'gray.800'}
 				>
-					Reward Tasks
+					{t('reward_tasks')}
 				</Text>
 			</Stack>
 			<Stack gap={'12px'} direction="row" alignItems={'center'}>

@@ -86,7 +86,7 @@ function useEventsModal() {
 								</Stack>
 								<Stack>
 									<Heading onClick={e => null} size="sm" color="gray.800">
-										Redemption Period
+										{t('redemption_period')}
 									</Heading>
 									<Text color={'#1A202C'} fontSize={'md'}>
 										{`${formatAllDate(modalData?.startAt || '')} - ${formatAllDate(
@@ -98,7 +98,7 @@ function useEventsModal() {
 							<Stack>
 								<Stack>
 									<Heading onClick={e => null} size="sm" color="gray.800">
-										Instructions
+										{t('instructions')}
 									</Heading>
 								</Stack>
 								<Stack ml={4}>
@@ -116,7 +116,7 @@ function useEventsModal() {
 									dispatch(postPromotionsRedeem({ id: modalData?.id as string }));
 								}}
 							>
-								Confirm Redeem
+								{t('confirm_redeem')}
 							</Button>
 							<Stack h={6}>
 								<Collapse in={true} animateOpacity>
@@ -144,6 +144,7 @@ function useEventsModal() {
 			modalData?.title,
 			onClose,
 			userPromotionsRedeemStatusCode,
+			t,
 		]
 	);
 

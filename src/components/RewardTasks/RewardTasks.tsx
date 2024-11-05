@@ -75,7 +75,7 @@ function RewardTasks() {
 	useEffect(() => {
 		if (isPostRewardTasksMonthlyDrawStatusCode === 201) {
 			toast({
-				title: 'You have successfully joined the monthly draw.',
+				title: t('you_have_successfully_joined_the_monthly_draw'),
 				position: 'top',
 				status: 'success',
 				duration: 1000,
@@ -109,7 +109,7 @@ function RewardTasks() {
 									whiteSpace="normal" // 允許換行
 									zIndex={2}
 								>
-									Reward Tasks
+									{t('reward_tasks')}
 								</FormLabel>
 							</Stack>
 						</Stack>
@@ -167,7 +167,7 @@ function RewardTasks() {
 									fontWeight={900}
 									whiteSpace="normal" // 允許換行
 								>
-									Reward Tasks
+									{t('reward_tasks')}
 								</FormLabel>
 							</Stack>
 						</Stack>
@@ -263,18 +263,19 @@ function RewardTasks() {
 									{rewarkTasksData?.monthlyDraw?.completed && (
 										<CheckCircleIcon w={4} h={4} color="gray.800" mr={'8px'} />
 									)}
-									{rewarkTasksData?.monthlyDraw?.completed ? 'Joined' : 'Join the Draw'}
+									{rewarkTasksData?.monthlyDraw?.completed ? t('joined') : t('join_the_draw')}
 								</Button>
 								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3} mb={'24px'}>
-									Winners will be announced on the 1st of each month in the{' '}
+									{t('monthly_reward_description_one')}
 									<Link
 										href="https://t.me/OXmarket_announcement"
 										isExternal
 										_hover={{ textDecoration: 'none' }}
 										color="#4299E1"
 									>
-										official Telegram channel.
+										{t('monthly_reward_description_two')}
 									</Link>
+									{t('monthly_reward_description_three')}
 								</Text>
 							</Stack>
 						</CardBody>
@@ -326,10 +327,10 @@ function RewardTasks() {
 									{rewarkTasksData?.deposit?.completed && (
 										<CheckCircleIcon w={4} h={4} color="gray.800" mr={'8px'} />
 									)}
-									{rewarkTasksData?.deposit?.completed ? 'Completed' : 'Earn Now'}
+									{rewarkTasksData?.deposit?.completed ? t('completed') : t('earn_now')}
 								</Button>
 								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3} mb={'24px'}>
-									After you successfully deposit,{' '}
+									{t('after_you_successfully_deposit')}
 									<Text
 										as="span"
 										onClick={() => router.push('./oxpoints')}
@@ -337,9 +338,9 @@ function RewardTasks() {
 										color="#4299E1"
 										size="sm"
 									>
-										OX Points
-									</Text>{' '}
-									will be credited within 60 minutes.
+										{t('ox_points')}
+									</Text>
+									{t('will_be_credited_within_minutes')}
 								</Text>
 							</Stack>
 						</CardBody>
@@ -391,10 +392,10 @@ function RewardTasks() {
 									{rewarkTasksData?.tradeVolume?.completed && (
 										<CheckCircleIcon w={4} h={4} color="gray.800" mr={'8px'} />
 									)}
-									{rewarkTasksData?.tradeVolume?.completed ? 'Completed' : 'Earn Now'}
+									{rewarkTasksData?.tradeVolume?.completed ? t('completed') : t('earn_now')}
 								</Button>
 								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3} mb={'24px'}>
-									Complete the task get 10 USDT in your{' '}
+									{t('task_reward_description_one')}
 									<Text
 										as="span"
 										onClick={() => router.push('./funds')}
@@ -402,9 +403,9 @@ function RewardTasks() {
 										color="#4299E1"
 										size="sm"
 									>
-										wallet{' '}
+										{t('task_reward_description_two')}
 									</Text>
-									within 60 minutes.
+									{t('task_reward_description_three')}
 								</Text>
 							</Stack>
 						</CardBody>
@@ -425,7 +426,7 @@ function RewardTasks() {
 				<CardBody h={'100%'}>
 					<Stack>
 						<Heading size="md" color="gray.800">
-							How to complete tasks
+							{t('how_to_complete_tasks')}
 						</Heading>
 					</Stack>
 					<Stack mt={'18px'}>
@@ -438,7 +439,7 @@ function RewardTasks() {
 
 							<Stack direction={'row'}>
 								<Text color={'gray.800'} fontSize={'md'}>
-									{`Deposit 5 USDT into your account and instantly earn 2,000 OX Points, which will be credited to your account within 60 minutes.`}
+									{t('deposit_usdt_into_your_account_and')}
 								</Text>
 							</Stack>
 						</HStack>
@@ -448,11 +449,9 @@ function RewardTasks() {
 									2.
 								</Text>
 							</Stack>
-
 							<Stack direction={'row'}>
 								<Text color={'gray.800'} fontSize={'md'}>
-									Trade over 15 USDT and hold 3 markets to earn a 10 USDT reward, which will be sent
-									to your wallet within 60 minutes of completing the task.
+									{t('hold_at_least_markets_and')}
 								</Text>
 							</Stack>
 						</HStack>
@@ -464,8 +463,7 @@ function RewardTasks() {
 							</Stack>
 							<Stack direction={'row'}>
 								<Text color={'gray.800'} fontSize={'md'}>
-									Join the 30 USDT draw every month. Winners will be announced on the 1st of each
-									month on the official Telegram channel.
+									{t('join_the_usdt_draw_every_month')}
 								</Text>
 							</Stack>
 						</HStack>

@@ -51,17 +51,17 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 	const renderCategory = (category: Category) => {
 		switch (category) {
 			case 'volume':
-				return '交易满额';
+				return 'Volume';
 			case 'referral':
-				return '推荐奖励';
+				return t('referral_for_category');
 			case 'referral_volume':
-				return '下线交易满额';
+				return t('referral_volume');
 			case 'other':
-				return '其他';
+				return t('other');
 			case 'redemption':
-				return '点数兑换';
+				return t('points_redemption');
 			case 'reward_tasks':
-				return '奖励任务';
+				return t('transaction_rewards');
 			default:
 				return '';
 		}
@@ -142,7 +142,7 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 								lineHeight={'16px'}
 								// p={'12px'}
 							>
-								Category
+								{t('category')}
 							</Th>
 							<Th
 								textAlign={'end'}
@@ -152,7 +152,7 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Earned Points
+								{t('earned_points')}
 							</Th>
 							<Th
 								textAlign={'end'}
@@ -162,7 +162,7 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Redeemed Points
+								{t('redeemed_points')}
 							</Th>
 							<Th
 								textAlign={'end'}
@@ -172,7 +172,7 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 								fontWeight={'700'}
 								lineHeight={'16px'}
 							>
-								Date
+								{t('date')}
 							</Th>
 						</Tr>
 					</Thead>
@@ -186,27 +186,34 @@ function PointsHistoryTable({ pageCount = 5 }: Props) {
 					mb={'10px'}
 					as={Stack}
 				>
-					<Select
-						onChange={event => dispatch(getPoints({ page: Number(event.target.value), take: 20 }))}
-						_hover={{ bg: 'gray.100' }}
-						cursor={'pointer'}
-						_focusVisible={{
-							outline: 'none',
-						}}
-						border={'1px'}
-						borderColor={'gray.200'}
-						bg={'#fff'}
-						w={isDesktop ? '200px' : '100%'}
-						placeholder=""
-						size="md"
-						defaultValue={'1'}
-					>
-						{selectorOptions.map((value, index) => (
-							<>
-								<option value={value.value}>{value.label}</option>
-							</>
-						))}
-					</Select>
+					<Stack alignItems={'center'} direction={'row'} gap={4}>
+						<Text color={'gray.700'} fontSize={'14px'}>
+							{t('page')}
+						</Text>
+						<Select
+							onChange={event =>
+								dispatch(getPoints({ page: Number(event.target.value), take: 20 }))
+							}
+							_hover={{ bg: 'gray.100' }}
+							cursor={'pointer'}
+							_focusVisible={{
+								outline: 'none',
+							}}
+							border={'1px'}
+							borderColor={'gray.200'}
+							bg={'#fff'}
+							w={isDesktop ? '200px' : '100%'}
+							placeholder=""
+							size="md"
+							defaultValue={'1'}
+						>
+							{selectorOptions.map((value, index) => (
+								<>
+									<option value={value.value}>{value.label}</option>
+								</>
+							))}
+						</Select>
+					</Stack>
 				</Box>
 			)}
 		</>
