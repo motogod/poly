@@ -171,7 +171,7 @@ function Referral() {
 												color="#4299E1"
 												size="sm"
 											>
-												OX Points
+												{t('ox_points')}
 											</Text>
 										</Stack>
 									</Stack>
@@ -241,7 +241,7 @@ function Referral() {
 												color="#4299E1"
 												size="sm"
 											>
-												OX Points
+												{t('ox_points')}
 											</Text>
 										</Text>
 									</Stack>
@@ -279,7 +279,7 @@ function Referral() {
 							<Stack direction="row" mt={'6px'}>
 								<Stack flex={1} align={'center'}>
 									<Heading onClick={e => null} size="md" color="gray.800" fontWeight={'700'}>
-										Step1. {t('invite_friends')}
+										{t('step_one_invite_friends')}
 									</Heading>
 								</Stack>
 							</Stack>
@@ -308,7 +308,7 @@ function Referral() {
 							<Stack direction="row" mt={'6px'}>
 								<Stack flex={1} align={'center'}>
 									<Heading onClick={e => null} size="md" color="gray.800">
-										Step2. {t('complete_tasks')}
+										{t('step_two_complete_tasks')}
 									</Heading>
 								</Stack>
 							</Stack>
@@ -336,7 +336,7 @@ function Referral() {
 							<Stack direction="row" mt={'6px'}>
 								<Stack flex={1} align={'center'}>
 									<Heading onClick={e => null} size="md" color="gray.800">
-										Step3. {t('gain_ox_points')}
+										{t('step_three_gain_ox_points')}
 									</Heading>
 								</Stack>
 							</Stack>

@@ -177,7 +177,7 @@ function LoggedInfoSection({ close }: LoggedInfoSectionType) {
 						<Stack gap={'12px'} align={'center'} direction={'row'}>
 							<Image src={OxImg} width={20} height={20} alt="socialPng" />
 							<Text fontSize={'sm'} color={'gray.800'}>
-								OX Points
+								{t('ox_points')}
 							</Text>
 						</Stack>
 						<Stack direction={'row'} alignItems={'center'}>

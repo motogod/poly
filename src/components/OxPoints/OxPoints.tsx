@@ -13,7 +13,7 @@ import {
 	Tabs,
 	TabPanels,
 	TabPanel,
-	Box,
+	Link,
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -90,7 +90,7 @@ function OxPoints() {
 								fontWeight={900}
 								whiteSpace="normal" // 允許換行
 							>
-								OX Points
+								{t('ox_points')}
 							</FormLabel>
 						</Stack>
 					</Stack>
@@ -130,14 +130,14 @@ function OxPoints() {
 										<Stack direction="row" align={'center'}>
 											<Image src={OxImg} width={24} height={24} alt="socialPng" />
 											<Heading onClick={e => null} size="md" color="gray.800">
-												OX Points
+												{t('ox_points')}
 											</Heading>
 										</Stack>
 									</Stack>
 
 									<Stack mt={'36px'}>
 										<Text color={'#1A202C'} fontSize={'md'}>
-											Available Balance
+											{t('available_balance')}
 										</Text>
 									</Stack>
 									<Stack mt={'16px'} align={'end'} direction={'row'}>
@@ -145,42 +145,41 @@ function OxPoints() {
 											{userPointData?.balance}
 										</Text>
 										<Text ml={'12px'} mb={'8px'} color={'#1A202C'} fontSize={'md'}>
-											OX Points
+											{t('ox_points')}
 										</Text>
 									</Stack>
 									<Stack>
 										<Text color={'pink.500'} fontSize={'sm'}>
-											Updated at 8:00 AM daily (GMT+8)
+											{t('updated_at_gmt')}
 										</Text>
 									</Stack>
 								</Stack>
 								<Stack>
 									<Stack mt={'50px'}>
-										<Stack>
-											<Text color={'gray.500'} fontSize={'md'}>
-												How to Earn OX Points?
-											</Text>
-										</Stack>
 										<Stack direction={'row'}>
-											<Stack w={'6px'} h={'6px'} mt={2} borderRadius={'3px'} bg={'#1A202C'} />
 											<Text color={'gray.500'} fontSize={'md'}>
-												The platform will send OX Points to you based on the proportion of daily
-												transactions.
-											</Text>
-										</Stack>
-										<Stack direction={'row'}>
-											<Stack w={'6px'} h={'6px'} mt={2} borderRadius={'3px'} bg={'#1A202C'} />
-											<Text color={'gray.500'} fontSize={'md'}>
-												By referring friends, you can earn OX points. Learn more about the{' '}
-												<Text
-													as="span"
-													onClick={() => router.push('./referral')}
-													cursor="pointer"
-													color="#4299E1"
-													size="sm"
+												{t('how_to_earn_ox_points')}
+												{/* <Link
+													ml={2}
+													color={'#3182ce'}
+													textDecoration={'none'}
+													href={''}
+													isExternal
 												>
-													referral programs.
-												</Text>
+													{t('learn_more')}
+												</Link> */}
+											</Text>
+										</Stack>
+										<Stack direction={'row'}>
+											<Stack w={'6px'} h={'6px'} mt={2} borderRadius={'3px'} bg={'#1A202C'} />
+											<Text color={'gray.500'} fontSize={'md'}>
+												{t('trade_markets_to_earn_daily_points')}
+											</Text>
+										</Stack>
+										<Stack direction={'row'}>
+											<Stack w={'6px'} h={'6px'} mt={2} borderRadius={'3px'} bg={'#1A202C'} />
+											<Text color={'gray.500'} fontSize={'md'}>
+												{t('successfully_refer_friends_and_earn')}
 											</Text>
 										</Stack>
 									</Stack>
@@ -207,7 +206,7 @@ function OxPoints() {
 											<Stack direction={'row'}>
 												<Image src={RedeemImg} width={24} height={24} alt="socialPng" />
 												<Heading onClick={e => null} size="md" color="gray.800">
-													Redemption Events
+													{t('redemption_events')}
 												</Heading>
 											</Stack>
 										</Stack>
@@ -217,7 +216,7 @@ function OxPoints() {
 									</Stack>
 									<Stack>
 										<Text textAlign={'center'} color={'gray.500'} fontSize={'md'}>
-											Use OX Points to redeem rewards such as USDT, airdrops, and popular products.
+											{t('use_ox_points_to_redeem')}
 										</Text>
 									</Stack>
 								</Stack>
@@ -228,7 +227,7 @@ function OxPoints() {
 										h={{ lg: '48px', md: '40px', sm: '40px' }}
 										colorScheme="teal"
 									>
-										View Events
+										{t('view_events')}
 									</Button>
 								</Stack>
 							</Stack>
@@ -254,7 +253,7 @@ function OxPoints() {
 							<Stack direction={'row'}>
 								<Image src={PointsHistoryImg} width={24} height={24} alt="socialPng" />
 								<Heading onClick={e => null} size="md" color="gray.800">
-									Points History
+									{t('points_history')}
 								</Heading>
 							</Stack>
 						</Stack>
@@ -262,22 +261,28 @@ function OxPoints() {
 					{meta?.page === 1 && userPointData?.points.length === 0 ? (
 						<Stack h={'100%'} justifyContent={'center'} align={'center'}>
 							<Text color={'#1A202C'} fontSize={'md'}>
-								There is no data availavle
+								{t('there_is_no_data_available')}
 							</Text>
 						</Stack>
 					) : (
 						<>
 							<Stack mt={'24px'} mb={'24px'}>
 								<Text textAlign={'end'} color="#1A202C" fontSize="16px">
-									Lifetime Earned:{' '}
+									{t('lifetime_earned')}{' '}
 									<Text as="span" color="#1A202C" fontSize="16px">
-										{`${userPointData?.earned?.toLocaleString()} OX Points`}
+										{`${userPointData?.earned?.toLocaleString()} `}
+									</Text>
+									<Text as="span" color="#1A202C" fontSize="16px">
+										{t('ox_points')}
 									</Text>
 								</Text>
 								<Text textAlign={'end'} color="#1A202C" fontSize="16px">
-									Total Redeemed:{' '}
+									{t('total_redeemed')}{' '}
 									<Text as="span" color="#1A202C" fontSize="16px">
-										{`${userPointData?.claimed?.toLocaleString()} OX Points`}
+										{`${userPointData?.claimed?.toLocaleString()} `}
+									</Text>
+									<Text as="span" color="#1A202C" fontSize="16px">
+										{t('ox_points')}
 									</Text>
 								</Text>
 							</Stack>

@@ -85,7 +85,7 @@ function Events() {
 					color={'#319795'}
 					minW={'200px'}
 				>
-					View Redemption
+					{t('redeem_now')}
 				</Button>
 			);
 		} else {
@@ -105,7 +105,7 @@ function Events() {
 						},
 					}}
 				>
-					Ended
+					{t('ended')}
 				</Button>
 			);
 		}
@@ -158,7 +158,7 @@ function Events() {
 											<Stack mt={4}>
 												<Stack>
 													<Heading onClick={e => null} fontSize={'16px'} color="gray.800">
-														Instructions
+														{t('instructions')}
 													</Heading>
 												</Stack>
 												<Stack ml={4} fontSize={'16px'}>
@@ -206,7 +206,7 @@ function Events() {
 											<Stack mt={'6px'}>
 												<Stack>
 													<Heading onClick={e => null} size="sm" color="gray.800">
-														Instructions
+														{t('instructions')}
 													</Heading>
 												</Stack>
 												<Stack ml={4}>
@@ -250,14 +250,14 @@ function Events() {
 									whiteSpace="normal" // 允許換行
 									zIndex={2}
 								>
-									Redemption Events
+									{t('redemption_events')}
 								</FormLabel>
 							</Stack>
 							<Stack rounded={'lg'} flex={1} bg={'#fff'} p={'24px'} minWidth="0" zIndex={2}>
 								<Stack mt={'4px'}>
 									<Stack>
 										<Text color="gray.800" fontSize="md">
-											Available Balance
+											{t('available_balance')}
 										</Text>
 									</Stack>
 									<Stack direction={'row'} align={'end'}>
@@ -271,7 +271,7 @@ function Events() {
 											color={'#1A202C'}
 											fontSize={'md'}
 										>
-											OX Points
+											{t('ox_points')}
 										</Text>
 									</Stack>
 								</Stack>
@@ -299,7 +299,7 @@ function Events() {
 									whiteSpace="normal" // 允許換行
 									zIndex={2}
 								>
-									Redemption Events
+									{t('redemption_events')}
 								</FormLabel>
 								<Stack
 									mt={'34px'}
@@ -314,7 +314,7 @@ function Events() {
 									<Stack mt={'4px'}>
 										<Stack>
 											<Text color="gray.800" size="md">
-												Your Balance
+												{t('available_balance')}
 											</Text>
 										</Stack>
 										<Stack direction={'row'} align={'end'}>
@@ -328,7 +328,7 @@ function Events() {
 												color={'#1A202C'}
 												fontSize={'md'}
 											>
-												OX Points
+												{t('ox_points')}
 											</Text>
 										</Stack>
 									</Stack>
@@ -375,7 +375,7 @@ function Events() {
 					borderRadius={'md'}
 				>
 					<Text fontWeight={'400'} color={'gray.800'} fontSize={'md'}>
-						Use your OX Points to redeem rewards.
+						{t('use_your_ox_points_to_redeem_rewards')}
 					</Text>
 				</Tag>
 			</Stack>
@@ -400,7 +400,7 @@ function Events() {
 					pb={'160px'}
 				>
 					<Text color={'gray.800'} fontSize={'md'}>
-						No redemption events available at the moment.
+						{t('no_redemption_events_available_at_the_moment')}
 					</Text>
 				</Stack>
 			)}
