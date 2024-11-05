@@ -269,5 +269,6 @@
 	"monthly_reward_description_three": "公布获奖者。",
 	"task_reward_description_one": "完成任务后，10 USDT将在60分钟内到账到您的",
 	"task_reward_description_two": "钱包",
-	"task_reward_description_three": "。"
+	"task_reward_description_three": "。",
+	"deposit_rewards": "存款奖励"
 }
