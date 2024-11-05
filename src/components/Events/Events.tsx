@@ -30,12 +30,6 @@ import { getPoints, getPromotions } from '@/store/thunks/fetchPoint';
 import { Promotions } from '@/api';
 import Footer from '@/layouts/components/common/Footer';
 
-const dummyData = [
-	{ type: 'redemption', title: '50 USDT Redemption Event' },
-	{ type: 'trading', title: '30 USDT Trading Fee Rebate' },
-	{ type: 'rewards', title: 'Double OX Points Rewards' },
-];
-
 function Events() {
 	const router = useRouter();
 
@@ -256,7 +250,7 @@ function Events() {
 									whiteSpace="normal" // 允許換行
 									zIndex={2}
 								>
-									OX Points
+									Redemption Events
 								</FormLabel>
 							</Stack>
 							<Stack rounded={'lg'} flex={1} bg={'#fff'} p={'24px'} minWidth="0" zIndex={2}>
@@ -356,7 +350,7 @@ function Events() {
 						left="0"
 						right="0"
 						bottom="0"
-						backgroundColor="rgba(26, 32, 44, 0.8)"
+						backgroundColor="rgba(26, 32, 44, 0.7)"
 						zIndex={1}
 					/>
 				</Card>

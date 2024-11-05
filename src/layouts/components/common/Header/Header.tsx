@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
+import { useMediaQuery } from 'react-responsive';
 import { Heading, Stack, Link, Button, useDisclosure } from '@chakra-ui/react';
 import { HiFire } from 'react-icons/hi';
 import { Icon } from '@chakra-ui/react';
@@ -26,6 +27,10 @@ function Header() {
 	const router = useRouter();
 
 	const { t } = useTranslation();
+
+	const isDesktop = useMediaQuery({
+		query: '(min-width: 600px)',
+	});
 
 	const { link } = useLink();
 
@@ -97,7 +102,7 @@ function Header() {
 						{t('how_it_works')}
 					</Heading>
 				</Link>
-				{isAuthenticated && (
+				{isAuthenticated && isDesktop && (
 					<HeaderRewardsPopover
 						isLogin={isAuthenticated !== null && isAuthenticated}
 						onModalOpen={onOpen}

@@ -48,18 +48,9 @@ function Referral() {
 		query: '(min-width: 960px)',
 	});
 
-	const isDesktopForLink = useMediaQuery({
-		query: '(min-width: 1200px)',
-	});
+	const { user, isAuthenticated } = useSelector((state: RootState) => state.authReducer);
 
-	const { data: session } = useSession();
-	const { user, putUsrProfileIsLoading, isAuthenticated } = useSelector(
-		(state: RootState) => state.authReducer
-	);
-
-	const dispatch = useDispatch<AppDispatch>();
-
-	const { username, email, origin } = user;
+	const { username } = user;
 
 	useEffect(() => {
 		if (!isAuthenticated && isAuthenticated !== null) {
@@ -102,7 +93,7 @@ function Referral() {
 							left="0"
 							right="0"
 							bottom="0"
-							backgroundColor="rgba(26, 32, 44, 0.8)"
+							backgroundColor="rgba(26, 32, 44, 0.7)"
 						/>
 						<Stack
 							flex={1}
@@ -126,7 +117,7 @@ function Referral() {
 									borderRadius="2xl"
 									gap={'80px'}
 								>
-									<Stack flex={1} minWidth="0">
+									<Stack>
 										<FormLabel
 											color={'white'}
 											fontSize={{ lg: '36', md: '36', sm: '24' }}
@@ -136,7 +127,7 @@ function Referral() {
 											{t('earn_oX_points_for_each_friend_you_refer')}
 										</FormLabel>
 									</Stack>
-									<Stack flex={2} minWidth="0" gap={'16px'}>
+									<Stack w={'600px'} gap={'16px'}>
 										<Heading color="gray.50" size="md">
 											{t('referral_link')}
 										</Heading>
