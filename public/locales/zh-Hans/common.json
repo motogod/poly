@@ -206,12 +206,12 @@
 	"referral": "推荐",
 	"redemption_successful": "兌換成功",
 	"insufficient_points": "点数不足",
-	"invalid_points_to_redeem": "无效的点数兑换数量，预留的错误码，暂时用不到。",
+	"invalid_points_to_redeem": "无效的点数兑换量",
 	"you_have_reached_the_maximum_number_of_redemptions": "您已达到最大兑换次数。",
 	"promotion_redemption_limit_reached": "已达该兑换活动兑换总人次的限制",
-	"something_went_wrong_please_try_again_later": "发生未知的错误，请稍后再试。",
-	"invalid_promotion": "无效的兑换活动，预留的错误码，暂时用不到。",
-	"promotion_is_not_found_or_expired": "促销信息未找到或已过期",
+	"something_went_wrong_please_try_again_later": "发生未知的错误，请稍后再试",
+	"invalid_promotion": "无效的兑换活动",
+	"promotion_is_not_found_or_expired": "未找到促销或促销已过期",
 	"earn_oX_points_for_each_friend_you_refer": "每推荐一位朋友即可获得OX积分",
 	"referral_link": "推荐链接",
 	"share_your_referral_link_with_friends_to_earn_ox_points": "将您的推荐链接分享给朋友赚取 ",
@@ -270,5 +270,6 @@
 	"task_reward_description_one": "完成任务后，10 USDT将在60分钟内到账到您的",
 	"task_reward_description_two": "钱包",
 	"task_reward_description_three": "。",
-	"deposit_rewards": "存款奖励"
+	"deposit_rewards": "存款奖励",
+	"trade_now": "立即交易"
 }

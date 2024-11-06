@@ -206,12 +206,12 @@
 	"referral": "Giới thiệu",
 	"redemption_successful": "Đổi thưởng thành công",
 	"insufficient_points": "Insufficient OX Points",
-	"invalid_points_to_redeem": "Invalid points to redeem.",
+	"invalid_points_to_redeem": "Số lượng điểm đổi không hợp lệ",
 	"you_have_reached_the_maximum_number_of_redemptions": "Bạn đã đạt đến số lần đổi thưởng tối đa.",
-	"promotion_redemption_limit_reached": "Promotion redemption limit reached.",
-	"something_went_wrong_please_try_again_later": "Oops... Something went wrong. Please try again later.",
-	"invalid_promotion": "Invalid promotion.",
-	"promotion_is_not_found_or_expired": "Promotion is not found or expired",
+	"promotion_redemption_limit_reached": "Đã đạt đến giới hạn tổng số lượt đổi của hoạt động đổi này",
+	"something_went_wrong_please_try_again_later": "Đã xảy ra lỗi không xác định, vui lòng thử lại sau",
+	"invalid_promotion": "Hoạt động đổi không hợp lệ",
+	"promotion_is_not_found_or_expired": "Khuyến mãi không tìm thấy hoặc đã hết hạn.",
 	"earn_oX_points_for_each_friend_you_refer": "Kiếm điểm OX cho mỗi người bạn mà bạn giới thiệu",
 	"referral_link": "Liên kết giới thiệu",
 	"share_your_referral_link_with_friends_to_earn_ox_points": "Chia sẻ liên kết giới thiệu của bạn tới bạn bè để kiếm ",
@@ -270,5 +270,6 @@
 	"task_reward_description_one": "Hoàn thành nhiệm vụ và nhận 10 USDT vào",
 	"task_reward_description_two": " ví ",
 	"task_reward_description_three": "của bạn trong vòng 60 phút.",
-	"deposit_rewards": "Deposit Rewards"
+	"deposit_rewards": "Tiền thưởng tiền gửi",
+	"trade_now": "Giao Dịch Ngay"
 }

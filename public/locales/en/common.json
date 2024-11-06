@@ -211,7 +211,7 @@
 	"promotion_redemption_limit_reached": "Promotion redemption limit reached.",
 	"something_went_wrong_please_try_again_later": "Oops... Something went wrong. Please try again later.",
 	"invalid_promotion": "Invalid promotion.",
-	"promotion_is_not_found_or_expired": "Promotion is not found or expired",
+	"promotion_is_not_found_or_expired": "Promotion is not found or expired.",
 	"earn_oX_points_for_each_friend_you_refer": "Earn OX Points for each friend you refer",
 	"referral_link": "Referral Link",
 	"share_your_referral_link_with_friends_to_earn_ox_points": "Share your referral link with friends to earn ",
@@ -254,7 +254,7 @@
 	"confirm_redeem": "Confirm Redeem",
 	"join_the_draw": "Join the Draw",
 	"joined": "Joined",
-	"earn_now": "Earn Now",
+	"deposit_now": "Deposit Now",
 	"completed": "Completed",
 	"after_you_successfully_deposit": "After you successfully deposit, ",
 	"will_be_credited_within_minutes": " will be credited within 60 minutes.",
@@ -270,5 +270,6 @@
 	"task_reward_description_one": "Complete the task and get 10 USDT in your",
 	"task_reward_description_two": " wallet ",
 	"task_reward_description_three": "within 60 minutes.",
-	"deposit_rewards": "Deposit Rewards"
+	"deposit_rewards": "Deposit Rewards",
+	"trade_now": "Trade Now"
 }

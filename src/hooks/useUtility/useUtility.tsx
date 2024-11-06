@@ -143,17 +143,17 @@ function useUtility() {
 				return t('redemption_successful');
 			case 10101: // 點數不足
 				return t('you_do_not_have_enough_ox_points');
-			case 10102:
+			case 10102: // 无效的点数兑换量
 				return t('invalid_points_to_redeem');
 			case 10103: // 該用戶已達該兌換活動，每人能兌換的次數限制
 				return t('you_have_reached_the_maximum_number_of_redemptions');
-			case 10104:
+			case 10104: // 未知的錯誤
 				return t('promotion_redemption_limit_reached');
-			case 10105:
+			case 10105: // 無效的兌換活動
 				return t('something_went_wrong_please_try_again_later');
-			case 10106:
+			case 10106: // 无效的兑换活动
 				return t('invalid_promotion');
-			case 404:
+			case 404: // 未找到促销或促销已过期
 				return t('promotion_is_not_found_or_expired');
 			default:
 				return '';

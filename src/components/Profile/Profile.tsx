@@ -81,7 +81,7 @@ function Profile() {
 				<Card borderRadius="2xl">
 					<Stack
 						w={'100%'}
-						h={{ lg: '243px', md: '160px', sm: '160px' }}
+						h={{ lg: '280px', md: '160px', sm: '160px' }}
 						alignItems={'center'}
 						justifyContent={isDesktop ? '' : 'center'}
 						bg={'#2D3748'}

@@ -96,7 +96,9 @@ export default function LargeWithAppLinksAndSocial() {
 	useEffect(() => {
 		// 若當下在 rewardtasks 頁面，抓取 API 更新 rewardtasks 清單資料語系
 		if (router.isReady && currentPath.includes('rewardtasks')) {
-			dispatch(getRewardTasks());
+			setTimeout(() => {
+				dispatch(getRewardTasks());
+			}, 300);
 		}
 	}, [router, currentPath, dispatch]);
 
