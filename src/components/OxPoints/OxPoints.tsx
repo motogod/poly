@@ -21,6 +21,7 @@ import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'next-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
+import { useLink } from '@/hooks';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import OxImg from '@/../public/assets/svg/icon-ox-points-01.png';
 import RedeemImg from '@/../public/assets/svg/icon-points-redeem-01.png';
@@ -38,6 +39,8 @@ function OxPoints() {
 	const { t } = useTranslation();
 
 	const toast = useToast();
+
+	const { link } = useLink();
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 960px)',
@@ -159,15 +162,15 @@ function OxPoints() {
 										<Stack direction={'row'}>
 											<Text color={'gray.500'} fontSize={'md'}>
 												{t('how_to_earn_ox_points')}
-												{/* <Link
+												<Link
 													ml={2}
 													color={'#3182ce'}
 													textDecoration={'none'}
-													href={''}
+													href={link().oxPointsLearnMoreLine}
 													isExternal
 												>
 													{t('learn_more')}
-												</Link> */}
+												</Link>
 											</Text>
 										</Stack>
 										<Stack direction={'row'}>
