@@ -48,8 +48,7 @@ function useLink() {
 			termOfUseLink: 'https://oxmarket.gitbook.io/howitworks/faq/terms-of-use',
 			depositUSDTLink:
 				'https://oxmarket.gitbook.io/howitworks/welcome-to-oxmarket/how-to-deposit/deposit-from-binance',
-			oxPointsLearnMoreLine:
-				'https://oxmarket.gitbook.io/howitworks/~/changes/8V398Clvivm4OtKk1laH/ox-points/learn-more',
+			oxPointsLearnMoreLine: 'https://oxmarket.gitbook.io/howitworks/ox-points/learn-more',
 		};
 	};
 
