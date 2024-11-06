@@ -17,6 +17,8 @@ function useLink() {
 				termOfUseLink: 'https://oxmarket.gitbook.io/how-it-works-cn/faq/shi-yong-tiao-kuan',
 				depositUSDTLink:
 					'https://oxmarket.gitbook.io/how-it-works-cn/deposit-methods/cong-bi-an-chong-zhi',
+				oxPointsLearnMoreLine:
+					'https://oxmarket.gitbook.io/how-it-works-cn/ox-ji-fen/liao-jie-geng-duo',
 			};
 		}
 
@@ -32,6 +34,8 @@ function useLink() {
 					'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/faq/dieu-khoan-su-dung',
 				depositUSDTLink:
 					'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/deposit-methods/nap-tien-tu-binance',
+				oxPointsLearnMoreLine:
+					'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/diem-ox/tim-hieu-them',
 			};
 		}
 
@@ -44,6 +48,8 @@ function useLink() {
 			termOfUseLink: 'https://oxmarket.gitbook.io/howitworks/faq/terms-of-use',
 			depositUSDTLink:
 				'https://oxmarket.gitbook.io/howitworks/welcome-to-oxmarket/how-to-deposit/deposit-from-binance',
+			oxPointsLearnMoreLine:
+				'https://oxmarket.gitbook.io/howitworks/~/changes/8V398Clvivm4OtKk1laH/ox-points/learn-more',
 		};
 	};
 
