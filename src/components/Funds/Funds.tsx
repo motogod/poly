@@ -78,7 +78,7 @@ function Funds() {
 					<Image
 						width={0}
 						height={0}
-						style={{ width: '100%', height: '160px' }}
+						style={{ width: '100%', height: isDesktop ? '400px' : '160px' }}
 						src={fundsBackroundImg}
 						alt="funds_background"
 					/>

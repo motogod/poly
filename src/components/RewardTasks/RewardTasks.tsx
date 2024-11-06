@@ -327,7 +327,7 @@ function RewardTasks() {
 									{rewarkTasksData?.deposit?.completed && (
 										<CheckCircleIcon w={4} h={4} color="gray.800" mr={'8px'} />
 									)}
-									{rewarkTasksData?.deposit?.completed ? t('completed') : t('earn_now')}
+									{rewarkTasksData?.deposit?.completed ? t('completed') : t('deposit_now')}
 								</Button>
 								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3} mb={'24px'}>
 									{t('after_you_successfully_deposit')}
@@ -392,7 +392,7 @@ function RewardTasks() {
 									{rewarkTasksData?.tradeVolume?.completed && (
 										<CheckCircleIcon w={4} h={4} color="gray.800" mr={'8px'} />
 									)}
-									{rewarkTasksData?.tradeVolume?.completed ? t('completed') : t('earn_now')}
+									{rewarkTasksData?.tradeVolume?.completed ? t('completed') : t('trade_now')}
 								</Button>
 								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3} mb={'24px'}>
 									{t('task_reward_description_one')}

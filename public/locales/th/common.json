@@ -267,5 +267,6 @@
 	"task_reward_description_one": "Complete the task and get 10 USDT in your",
 	"task_reward_description_two": " wallet ",
 	"task_reward_description_three": "within 60 minutes.",
-	"deposit_rewards": "Deposit Rewards"
+	"deposit_rewards": "Deposit Rewards",
+	"trade_now": "Trade Now"
 }
