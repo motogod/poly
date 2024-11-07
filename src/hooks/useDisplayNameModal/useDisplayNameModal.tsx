@@ -28,6 +28,7 @@ import { useUtility, useLink } from '@/hooks';
 function useDisplayNameModal() {
 	const [name, setName] = useState('');
 	const [checked, setChecked] = useState<boolean>(false);
+	const [hasNavigated, setHasNavigated] = useState(false);
 
 	const disaptch = useDispatch<AppDispatch>();
 
@@ -47,12 +48,13 @@ function useDisplayNameModal() {
 
 	useEffect(() => {
 		// 創建名字成功 關閉創建名字視窗
-		if (putUsrProfileIsLoading === false) {
+		if (putUsrProfileIsLoading === false && !hasNavigated) {
 			onClose();
 			// 第一次創建名稱，畫面導向推薦獎勵頁面
 			router.push('/rewardtasks');
+			setHasNavigated(true); // 避免重複導航
 		}
-	}, [putUsrProfileIsLoading, onClose, router]);
+	}, [putUsrProfileIsLoading, onClose, router, hasNavigated]);
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 768px)',
