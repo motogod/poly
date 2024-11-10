@@ -24,6 +24,7 @@ import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'next-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLink } from '@/hooks';
 import { AppDispatch, RootState, resetPostRewardTasksMonthlyDraw } from '@/store';
 import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
 import RewardDrawImg from '@/../public/assets/svg/reward-task-01.png';
@@ -46,6 +47,8 @@ function RewardTasks() {
 	const { t } = useTranslation();
 
 	const toast = useToast();
+
+	const { link } = useLink();
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 760px)',
@@ -268,7 +271,7 @@ function RewardTasks() {
 								<Text fontSize={'sm'} textAlign={'center'} lineHeight={1.3} mb={'24px'}>
 									{t('monthly_reward_description_one')}
 									<Link
-										href="https://t.me/OXmarket_announcement"
+										href={link().twitterChannel}
 										isExternal
 										_hover={{ textDecoration: 'none' }}
 										color="#4299E1"

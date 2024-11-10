@@ -108,7 +108,8 @@ function AuthProvider({ children }: Props) {
 				// 使用者切換 account，登出，確保讓使用者重新登入 跟後端溝通是切換後的 account
 				dispatch(logout({}));
 				disconnect();
-				router.replace('./');
+				// router.replace('./'); 有導致閃屏現象，暫且改為直接 push 到首頁
+				router.push('/home');
 			} else if (chain) {
 				console.log('new chain', { account, chain });
 			}
