@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { Heading, Stack, Link } from '@chakra-ui/react';
+import { useLink } from '@/hooks';
 import SocialIcon from '../../../../../../public/assets/svg/socialIcons.png';
 import XIcon from '../../../../../../public/assets/svg/xicon.png';
 import IgIcon from '../../../../../../public/assets/svg/igicon.png';
@@ -12,6 +13,8 @@ function SocialMenuSection() {
 	const router = useRouter();
 
 	const { t } = useTranslation();
+
+	const { link } = useLink();
 
 	const locale = router.locale as LocalesType;
 
@@ -30,11 +33,7 @@ function SocialMenuSection() {
 				>
 					<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
 				</Link>
-				<Link
-					href={locale === 'zh-Hans' ? 'https://x.com/OX_Market_CN' : 'https://x.com/OX__Market'}
-					isExternal
-					_hover={{ textDecoration: 'none' }}
-				>
+				<Link href={link().twitterChannel} isExternal _hover={{ textDecoration: 'none' }}>
 					<Image src={XIcon} width={36} height={36} alt="socialPng" />
 				</Link>
 				<Link

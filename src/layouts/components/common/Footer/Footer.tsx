@@ -200,13 +200,7 @@ export default function LargeWithAppLinksAndSocial() {
 							>
 								<Image src={SocialIcon} width={36} height={36} alt="socialPng" />
 							</Link>
-							<Link
-								href={
-									locale === 'zh-Hans' ? 'https://x.com/OX_Market_CN' : 'https://x.com/OX__Market'
-								}
-								isExternal
-								_hover={{ textDecoration: 'none' }}
-							>
+							<Link href={link().twitterChannel} isExternal _hover={{ textDecoration: 'none' }}>
 								<Image src={XIcon} width={36} height={36} alt="socialPng" />
 							</Link>
 							<Link
