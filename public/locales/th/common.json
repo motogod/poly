@@ -268,5 +268,11 @@
 	"task_reward_description_two": " wallet ",
 	"task_reward_description_three": "within 60 minutes.",
 	"deposit_rewards": "Deposit Rewards",
-	"trade_now": "Trade Now"
+	"trade_now": "Trade Now",
+	"monthly_draw_up_to_200_usdt": "Monthly Draw Up To 200 USDT",
+	"join_the_monthly_draw": "Join the monthly draw now and win a 200 USDT prize.",
+	"deposit_to_earnox_points": "Deposit to Earn OX Points",
+	"deposit_usdt_now": "Deposit 5 USDT now and instantly earn 2,000 OX Points.",
+	"earn_a_usdt_reward": "Earn a 10 USDT reward",
+	"hold_at_least_markets": "Hold at least 3 markets and trade 15 USDT to receive a 10 USDT reward."
 }
