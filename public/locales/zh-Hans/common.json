@@ -271,5 +271,11 @@
 	"task_reward_description_two": "钱包",
 	"task_reward_description_three": "。",
 	"deposit_rewards": "存款奖励",
-	"trade_now": "立即交易"
+	"trade_now": "立即交易",
+	"monthly_draw_up_to_200_usdt": "200 USDT每月抽奖",
+	"join_the_monthly_draw": "立即加入每月抽奖，赢取 200 USDT奖励。",
+	"deposit_to_earnox_points": "存款以赚取OX积分",
+	"deposit_usdt_now": "存入5 USDT，立即获得2,000 OX积分。",
+	"earn_a_usdt_reward": "获得10 USDT奖励",
+	"hold_at_least_markets": "持有至少3个市场并交易15 USDT即可获得10 USDT奖励。"
 }

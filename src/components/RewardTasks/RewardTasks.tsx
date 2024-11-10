@@ -236,11 +236,11 @@ function RewardTasks() {
 							</Stack>
 							<Stack h={'110px'}>
 								<Heading onClick={e => null} size="md" color="gray.800" textAlign={'center'}>
-									{rewarkTasksData?.monthlyDraw?.name}
+									{t('monthly_draw_up_to_200_usdt')}
 								</Heading>
 								<Stack>
 									<Text textAlign={'center'} noOfLines={3} color={'gray.500'}>
-										{rewarkTasksData?.monthlyDraw?.description}
+										{t('join_the_monthly_draw')}
 									</Text>
 								</Stack>
 							</Stack>
@@ -301,11 +301,11 @@ function RewardTasks() {
 							</Stack>
 							<Stack h={'110px'}>
 								<Heading onClick={e => null} size="md" color="gray.800" textAlign={'center'}>
-									{rewarkTasksData?.deposit?.name}
+									{t('deposit_to_earnox_points')}
 								</Heading>
 								<Stack>
 									<Text textAlign={'center'} noOfLines={3} color={'gray.500'}>
-										{rewarkTasksData?.deposit?.description}
+										{t('deposit_usdt_now')}
 									</Text>
 								</Stack>
 							</Stack>
@@ -366,11 +366,11 @@ function RewardTasks() {
 							</Stack>
 							<Stack h={'110px'}>
 								<Heading onClick={e => null} size="md" color="gray.800" textAlign={'center'}>
-									{rewarkTasksData?.tradeVolume?.name}
+									{t('earn_a_usdt_reward')}
 								</Heading>
 								<Stack>
 									<Text textAlign={'center'} noOfLines={3} color={'gray.500'}>
-										{rewarkTasksData?.tradeVolume?.description}
+										{t('hold_at_least_markets')}
 									</Text>
 								</Stack>
 							</Stack>
