@@ -12,7 +12,6 @@ function useLogout() {
 			signOut();
 			return;
 		}
-
 		disconnect();
 	};
 
