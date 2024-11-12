@@ -130,7 +130,8 @@ function LoggedMenuSection({ close, type, isMini }: LoggedMenuSectionType) {
 						disconnect();
 						// 關閉彈跳視窗
 						close();
-						router.replace('./');
+						// router.replace('./'); 有導致閃屏現象，暫且改為直接 push 到首頁
+						router.push('/home');
 					}}
 					size={'md'}
 					color={'gray.800'}
