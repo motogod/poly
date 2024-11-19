@@ -15,7 +15,7 @@ function useSiwe() {
 	const dispatch = useDispatch<AppDispatch>();
 
 	useEffect(() => {
-		if (typeof window !== undefined) {
+		if (typeof window !== undefined && typeof window.ethereum !== 'undefined') {
 			const provider = new BrowserProvider(window.ethereum as any);
 			setProvider(provider);
 		}
