@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
 	Stack,
 	Button,
-	Input,
 	Card,
 	CardBody,
 	Grid,
@@ -14,23 +13,16 @@ import {
 	Heading,
 	GridItem,
 	Box,
-	Tag,
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import { HiOutlineDocumentDuplicate } from 'react-icons/hi';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { FcGoogle } from 'react-icons/fc';
 import { useTranslation } from 'next-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState, putUserEmail } from '@/store';
-import {
-	headerHeight,
-	paddingMainHorizontal,
-	paddingMainVertical,
-	paddingFundsContainerCardVertical,
-} from '@/utils/screen';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { headerHeight, paddingMainHorizontal, paddingMainVertical } from '@/utils/screen';
+import { useBaseUrl } from '@/hooks';
 import AddFriendsIcon from '@/../public/assets/svg/icon-add-friends-01.png';
 import TaskIcon from '@/../public/assets/svg/icon-task-01.png';
 import GiftIcon from '@/../public/assets/svg/icon-gift-01.png';
@@ -43,6 +35,8 @@ function Referral() {
 	const { t } = useTranslation();
 
 	const toast = useToast();
+
+	const baseUrl = useBaseUrl();
 
 	const isDesktop = useMediaQuery({
 		query: '(min-width: 960px)',
@@ -145,9 +139,7 @@ function Referral() {
 												border={'0px'}
 												borderRadius={'4px'}
 												onClick={() => {
-													navigator.clipboard.writeText(
-														`https://www.ox.market/home?referral=${username}`
-													);
+													navigator.clipboard.writeText(`${baseUrl}/home?referral=${username}`);
 													toast({
 														title: t('copied'),
 														position: 'top',
@@ -157,7 +149,7 @@ function Referral() {
 													});
 												}}
 											>
-												{`https://www.ox.market/home?referral=${username}`}
+												{`${baseUrl}/home?referral=${username}`}
 											</Button>
 										</Stack>
 										<Stack align={'center'} direction={'row'}>
@@ -214,9 +206,7 @@ function Referral() {
 											border={'0px'}
 											borderRadius={'4px'}
 											onClick={() => {
-												navigator.clipboard.writeText(
-													`https://www.ox.market/home?referral=${username}`
-												);
+												navigator.clipboard.writeText(`${baseUrl}/home?referral=${username}`);
 												toast({
 													title: t('copied'),
 													position: 'top',
@@ -226,7 +216,7 @@ function Referral() {
 												});
 											}}
 										>
-											{sliceReferral(`https://www.ox.market/home?referral=${username}`)}
+											{sliceReferral(`${baseUrl}/home?referral=${username}`)}
 										</Button>
 									</Stack>
 									<Stack direction={'row'} paddingRight={34}>
