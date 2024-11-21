@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { WarningIcon } from '@chakra-ui/icons';
 import { FcGoogle } from 'react-icons/fc';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { useConnect, useDisconnect, useAccount, useSwitchNetwork, useNetwork } from 'wagmi';
 import { useSDK } from '@metamask/sdk-react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -99,18 +99,25 @@ function useLoginModal() {
 	}, [disconnect, isOpen]);
 
 	useEffect(() => {
-		// Google 新視窗登入成功時，關閉原本的登入 Modal
-		console.log('sessionStatus', sessionStatus);
-		console.log('session', session);
 		if (sessionStatus === 'authenticated' && session) {
+			// Google 新視窗登入成功時，關閉原本的登入 Modal
 			if (setPopupGoogle && isOpen) {
 				const { idToken } = session as any;
 
-				dispatch(loginWithGoogle({ idToken, referral: { username: referral as string } }));
-				hasDispatch = true;
-				setPopupGoogle(false);
-				// 確認 Google 在後台端也登入成功才關閉視窗
-				onClose();
+				// authSlice 有處理成功失敗後的邏輯，當下這邊 useEffect 也有處理 =>
+				// 與後端確認 google 成功才關視窗
+				dispatch(loginWithGoogle({ idToken, referral: { username: referral as string } }))
+					.then(value => {
+						// 確認 Google 在後台端也登入成功才關閉視窗
+						onClose();
+						hasDispatch = true;
+						setPopupGoogle(false);
+					})
+					.catch(err => {
+						console.log('loginWithGoogle err', err);
+						// 與後端確認失敗，清掉瀏覽器的 google cookie
+						signOut({ redirect: false });
+					});
 			}
 		}
 	}, [sessionStatus, onClose, session, dispatch, isOpen, referral]);

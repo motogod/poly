@@ -171,6 +171,7 @@ const authSlice = createSlice({
 				const { isAuthenticated, user } = data;
 
 				state.isAuthenticated = isAuthenticated;
+
 				state.user = user;
 			}
 		});
