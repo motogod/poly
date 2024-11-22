@@ -59,7 +59,8 @@ const config = createConfig({
 		new WalletConnectConnector({
 			chains,
 			options: {
-				projectId: process.env.WALLET_CONNECT_PROJECT_ID,
+				// projectId: process.env.WALLET_CONNECT_PROJECT_ID,
+				projectId: '',
 				showQrModal: true,
 			},
 		}),
