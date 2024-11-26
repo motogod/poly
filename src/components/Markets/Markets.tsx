@@ -48,6 +48,7 @@ import {
 	volumeRadioArray,
 	dateRadioArray,
 } from '@/store/slice/dataSlice';
+import styles from './markets.module.scss';
 
 const additionalHeight = '100px';
 
@@ -299,7 +300,7 @@ function Markets() {
 		dispatch(resetVolumeAndDateStatus({})); // 恢復 Volume 和 Date 相關選單資料為預設值
 		router.push('/markets', undefined, { shallow: true }); // 恢復預設網址 但不重新刷新網頁
 	};
-
+	console.log('markets', markets);
 	return (
 		<Stack
 			h={`calc(100vh - ${headerHeight} - ${additionalHeight})`}
@@ -377,7 +378,8 @@ function Markets() {
 				<Grid
 					w="100%"
 					onScroll={(event: any) => handelScroll(event)}
-					overflowY={'scroll'}
+					className={styles.hideScrollBar}
+					// overflowY={'auto'}
 					templateColumns={markets?.length === 0 ? '' : 'repeat(auto-fill, minmax(320px, 1fr))'}
 					gap={'20px'}
 					pt={'1px'}

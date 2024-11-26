@@ -84,7 +84,7 @@ const config = createConfig({
 
 // 3. Create modal
 // createWeb3Modal({ wagmiConfig, projectId: '88df17cf1fa66c336efceb21027d647f', chains });
-console.log('getServerSideProps index app.tsx');
+
 const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 	Component,
 	pageProps: { session, ...pageProps },

@@ -144,7 +144,11 @@ function useDisplayNameModal() {
 							bg={'teal.500'}
 							color="#fff"
 							onClick={() => {
-								disaptch(putUserProfile({ username: name }));
+								disaptch(putUserProfile({ username: name })).then(() => {
+									// 重複不同帳號註冊，會有上次成功輸入完的姓名暫留，故只要有成功，一律 reset name
+									setName('');
+									setHasNavigated(false);
+								});
 							}}
 						>
 							{t('continue')}

@@ -5,3 +5,12 @@
 	bottom: 0;
 	left: 0;
 }
+
+.hideScrollBar {
+	overflow-y: scroll;
+	scrollbar-width: none; // for FireFox
+	flex-direction: row;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
