@@ -107,11 +107,20 @@ function useLoginModal() {
 				// authSlice 有處理成功失敗後的邏輯，當下這邊 useEffect 也有處理 =>
 				// 與後端確認 google 成功才關視窗
 				dispatch(loginWithGoogle({ idToken, referral: { username: referral as string } }))
+					.unwrap()
 					.then(value => {
-						// 確認 Google 在後台端也登入成功才關閉視窗
-						onClose();
-						hasDispatch = true;
-						setPopupGoogle(false);
+						console.log('loginWithGoogle value', value);
+						const { statusCode } = value;
+
+						if (statusCode === 201) {
+							// 確認 Google 在後台端也登入成功才關閉視窗
+							onClose();
+							hasDispatch = true;
+							setPopupGoogle(false);
+						} else {
+							// 與後端確認失敗，清掉瀏覽器的 google cookie
+							signOut({ redirect: false });
+						}
 					})
 					.catch(err => {
 						console.log('loginWithGoogle err', err);

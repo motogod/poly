@@ -53,7 +53,13 @@ function OxPoints() {
 
 	useEffect(() => {
 		if (!isAuthenticated && isAuthenticated !== null) {
-			router.replace('./');
+			// router.replace('./'); 有導致閃屏現象，暫且改為直接 push 到首頁
+			router.push('/home');
+		}
+
+		// 結果是未登入狀態直接開啟頁面
+		if (isAuthenticated === false) {
+			router.push('/home');
 		}
 	}, [router, isAuthenticated]);
 
