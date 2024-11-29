@@ -209,6 +209,7 @@ function useLoginModal() {
 										onClick={() => setIsShowMetaMaskRemind(false)}
 										boxSize={7}
 										cursor={'pointer'}
+										mb={'1px'}
 									/>
 								)}
 								<Heading size="md" color="gray.700" mr={5}>
@@ -356,7 +357,7 @@ function useLoginModal() {
 												</Stack>
 											</ScaleFade>
 										) : (
-											<Stack mt={'21px'} />
+											<Stack mt={'0px'} />
 										)}
 									</Box>
 									<Stack direction={'row'}>
