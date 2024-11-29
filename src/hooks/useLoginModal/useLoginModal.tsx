@@ -20,15 +20,16 @@ import {
 	AbsoluteCenter,
 	Text,
 	ScaleFade,
+	Link,
 } from '@chakra-ui/react';
-import { WarningIcon } from '@chakra-ui/icons';
+import { WarningIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { FcGoogle } from 'react-icons/fc';
 import { useSession, signOut } from 'next-auth/react';
 import { useConnect, useDisconnect, useAccount, useSwitchNetwork, useNetwork } from 'wagmi';
 import { useSDK } from '@metamask/sdk-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, loginWithGoogle, RootState } from '@/store';
-import { useSiwe, useReferral } from '@/hooks';
+import { useSiwe, useReferral, useLink } from '@/hooks';
 import { MetaMaskIcon, WalletConnectIcon } from '../../../public/assets/svg';
 import { zIndexLoginModal } from '@/utils/zIndex';
 
@@ -39,8 +40,12 @@ let hasDispatch = false;
 function useLoginModal() {
 	const [popupGoogle, setPopupGoogle] = useState<boolean | null>(null);
 	const [errorMsg, setErrorMsg] = useState('');
+	const [isShowMetaMaskRemind, setIsShowMetaMaskRemind] = useState(false);
+	const [metaMaskConnector, setMetaMaskConnector] = useState<any>();
 
 	const { t } = useTranslation();
+
+	const { link } = useLink();
 
 	// 若網址有推薦人 ?referral=推薦人姓名，登入時會用到
 	const referral = useReferral();
@@ -70,6 +75,9 @@ function useLoginModal() {
 				pendingConnector?.id as string,
 				referral as string
 			);
+
+			// connect 錢包，將可能為非預設狀態的畫面切到預設狀態
+			setIsShowMetaMaskRemind(false);
 
 			// 切換 chainId 到 Arbitrum, 若尚未 connect 成功 switchNetwork 會是 undefined
 			// WalletConnect 會自動切換到設置的第一個 chainId，多插入一個切換會有 pending 的 bug
@@ -179,6 +187,7 @@ function useLoginModal() {
 						disconnect(); // 斷開錢包連接
 						resetSignIn(); // 斷開當下簽名請求
 						setErrorMsg('');
+						setIsShowMetaMaskRemind(false); // 視窗恢復為預設初始狀態
 						onClose(); // 關閉視窗
 					}}
 				>
@@ -194,94 +203,172 @@ function useLoginModal() {
 						p={'16px'}
 					>
 						<ModalHeader>
-							<Heading size="md" color="gray.700" mr={5}>
-								{t('connect')}
-							</Heading>
-						</ModalHeader>
-						<ModalCloseButton _focus={{ boxShadow: 'none' }} size={'lg'} m={'16px'} />
-						<ModalBody>
-							<Stack>
-								{isSignInLoading ? (
-									<ScaleFade initialScale={0.9} in={true}>
-										<Heading size={'md'} color={'gray.500'}>
-											{t('please_sign_the_message')}
-										</Heading>
-									</ScaleFade>
-								) : (
-									<Button
-										isLoading={isSignInLoading}
-										onClick={() => {
-											setErrorMsg('');
-											setPopupGoogle(true);
-										}}
-										leftIcon={<Icon as={FcGoogle} />}
-										w={'100%'}
-										size="lg"
-										bg={'#fff'}
-										border="2px solid #E2E8F0;"
-										color="black"
-									>
-										{t('sign_in_with_google')}
-									</Button>
+							<Stack direction={'row'} alignItems={'center'}>
+								{isShowMetaMaskRemind && (
+									<ChevronLeftIcon
+										onClick={() => setIsShowMetaMaskRemind(false)}
+										boxSize={7}
+										cursor={'pointer'}
+									/>
 								)}
-
-								<Box position="relative" pt={5} pb={5} pl={20} pr={20}>
-									{errorMsg ? (
+								<Heading size="md" color="gray.700" mr={5}>
+									{t('connect')}
+								</Heading>
+							</Stack>
+						</ModalHeader>
+						{!isShowMetaMaskRemind && (
+							<ModalCloseButton _focus={{ boxShadow: 'none' }} size={'lg'} m={'16px'} />
+						)}
+						<ModalBody>
+							{!isShowMetaMaskRemind ? (
+								<Stack>
+									{isSignInLoading ? (
 										<ScaleFade initialScale={0.9} in={true}>
-											<Stack align={'center'} justify={'center'} direction={'row'}>
-												<Icon as={WarningIcon} color={'red.500'} />
-												<Text fontSize="xs" lineHeight="18px" color={'red.500'}>
-													{errorMsg}
-												</Text>
-											</Stack>
+											<Heading size={'md'} color={'gray.500'}>
+												{t('please_sign_the_message')}
+											</Heading>
 										</ScaleFade>
 									) : (
-										<>
-											<Divider color={'gray.500'} />
-											<AbsoluteCenter color={'gray.500'} bg="white" px="4">
-												{t('or')}
-											</AbsoluteCenter>
-										</>
+										<Button
+											isLoading={isSignInLoading}
+											onClick={() => {
+												setErrorMsg('');
+												setPopupGoogle(true);
+											}}
+											leftIcon={<Icon as={FcGoogle} />}
+											w={'100%'}
+											size="lg"
+											bg={'#fff'}
+											border="2px solid #E2E8F0;"
+											color="black"
+										>
+											{t('sign_in_with_google')}
+										</Button>
 									)}
-								</Box>
-								<Stack direction={'row'}>
-									{connectors.map((connector, index) => (
-										<Stack w={'100%'} key={index}>
+
+									<Box position="relative" pt={5} pb={5} pl={20} pr={20}>
+										{errorMsg ? (
+											<ScaleFade initialScale={0.9} in={true}>
+												<Stack align={'center'} justify={'center'} direction={'row'}>
+													<Icon as={WarningIcon} color={'red.500'} />
+													<Text fontSize="xs" lineHeight="18px" color={'red.500'}>
+														{errorMsg}
+													</Text>
+												</Stack>
+											</ScaleFade>
+										) : (
+											<>
+												<Divider color={'gray.500'} />
+												<AbsoluteCenter color={'gray.500'} bg="white" px="4">
+													{t('or')}
+												</AbsoluteCenter>
+											</>
+										)}
+									</Box>
+									<Stack direction={'row'}>
+										{connectors.map((connector, index) => (
+											<Stack w={'100%'} key={index}>
+												<Button
+													isLoading={isSignInLoading}
+													leftIcon={
+														<Icon
+															as={connector.id === 'metaMask' ? MetaMaskIcon : WalletConnectIcon}
+														/>
+													}
+													key={connector.id}
+													fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
+													onClick={() => {
+														const agent = isWebsiteAgent();
+														setErrorMsg('');
+														if (agent === 'web') {
+															// 網頁端可先判斷是否有 MetaMask
+															if (!connector.ready && connector.id === 'metaMask') {
+																window.open('https://metamask.io/download/', '_blank');
+															} else {
+																// 在 connect 之前因為會有錢包打架的狀況，所以先呈現提醒視窗
+																setIsShowMetaMaskRemind(true);
+																setMetaMaskConnector(connector);
+																// connect({ connector });
+															}
+														} else if (agent === 'Android') {
+															if (connector.id === 'metaMask') {
+																triggerIntoMetaMaskAppWebView();
+															} else {
+																connect({ connector });
+															}
+														} else if (agent === 'iPhone') {
+															if (connector.id === 'metaMask') {
+																triggerIntoMetaMaskAppWebView();
+															} else {
+																connect({ connector });
+															}
+														} else {
+															// 手機端的 MetaMask APP 裡面的 WebView 狀況下
+															connect({ connector });
+														}
+													}}
+													w={'100%'}
+													size="lg"
+													_hover={{ bg: 'teal.600' }}
+													bg={'teal.500'}
+													color="#fff"
+													// justifyContent={'start'}
+												>
+													{connector.name}
+													{/* {isLoading && connector.id === pendingConnector?.id && ' (connecting)'} */}
+												</Button>
+											</Stack>
+										))}
+									</Stack>
+								</Stack>
+							) : (
+								<Stack>
+									{isSignInLoading ? (
+										<ScaleFade initialScale={0.9} in={true}>
+											<Heading fontSize={'md'} color={'gray.500'}>
+												{t('please_sign_the_message')}
+											</Heading>
+										</ScaleFade>
+									) : (
+										<Stack direction={'row'}>
+											<Text>
+												<span style={{ alignSelf: 'start' }}>
+													{t('if_you_have_trouble_connecting_wallet')}
+													<a
+														id="howItWorksLink"
+														href={link().howItWorksLink}
+														target="_blank"
+														style={{ color: '#4299E1', cursor: 'pointer' }}
+													>{` ${t('how_it_works')}`}</a>
+												</span>
+											</Text>
+										</Stack>
+									)}
+
+									<Box position="relative" pt={5} pb={5} pl={20} pr={20}>
+										{errorMsg ? (
+											<ScaleFade initialScale={0.9} in={true}>
+												<Stack align={'center'} justify={'center'} direction={'row'}>
+													<Icon as={WarningIcon} color={'red.500'} />
+													<Text fontSize="xs" lineHeight="18px" color={'red.500'}>
+														{errorMsg}
+													</Text>
+												</Stack>
+											</ScaleFade>
+										) : (
+											<Stack mt={'21px'} />
+										)}
+									</Box>
+									<Stack direction={'row'}>
+										<Stack w={'100%'}>
 											<Button
 												isLoading={isSignInLoading}
-												leftIcon={
-													<Icon
-														as={connector.id === 'metaMask' ? MetaMaskIcon : WalletConnectIcon}
-													/>
-												}
-												key={connector.id}
+												leftIcon={<Icon as={MetaMaskIcon} />}
+												key={metaMaskConnector.id}
 												fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
 												onClick={() => {
-													const agent = isWebsiteAgent();
 													setErrorMsg('');
-													if (agent === 'web') {
-														// 網頁端可先判斷是否有 MetaMask
-														if (!connector.ready && connector.id === 'metaMask') {
-															window.open('https://metamask.io/download/', '_blank');
-														} else {
-															connect({ connector });
-														}
-													} else if (agent === 'Android') {
-														if (connector.id === 'metaMask') {
-															triggerIntoMetaMaskAppWebView();
-														} else {
-															connect({ connector });
-														}
-													} else if (agent === 'iPhone') {
-														if (connector.id === 'metaMask') {
-															triggerIntoMetaMaskAppWebView();
-														} else {
-															connect({ connector });
-														}
-													} else {
-														// 手機端的 MetaMask APP 裡面的 WebView 狀況下
-														connect({ connector });
-													}
+													connect({ connector: metaMaskConnector });
 												}}
 												w={'100%'}
 												size="lg"
@@ -290,13 +377,13 @@ function useLoginModal() {
 												color="#fff"
 												// justifyContent={'start'}
 											>
-												{connector.name}
+												{metaMaskConnector.name}
 												{/* {isLoading && connector.id === pendingConnector?.id && ' (connecting)'} */}
 											</Button>
 										</Stack>
-									))}
+									</Stack>
 								</Stack>
-							</Stack>
+							)}
 						</ModalBody>
 
 						{/* <ModalFooter></ModalFooter> */}
@@ -321,18 +408,21 @@ function useLoginModal() {
 			</>
 		),
 		[
-			isOpen,
-			onClose,
-			connect,
-			connectors,
 			isDesktop,
+			isOpen,
+			isShowMetaMaskRemind,
+			t,
+			isSignInLoading,
+			errorMsg,
+			connectors,
+			link,
+			metaMaskConnector,
 			popupGoogle,
 			session,
-			isSignInLoading,
 			disconnect,
 			resetSignIn,
-			errorMsg,
-			t,
+			onClose,
+			connect,
 		]
 	);
 

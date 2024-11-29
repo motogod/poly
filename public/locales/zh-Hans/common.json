@@ -277,5 +277,6 @@
 	"deposit_to_earnox_points": "存款以赚取OX积分",
 	"deposit_usdt_now": "存入5 USDT，立即获得2,000 OX积分。",
 	"earn_a_usdt_reward": "获得10 USDT奖励",
-	"hold_at_least_markets": "持有至少3个市场并交易15 USDT即可获得10 USDT奖励。"
+	"hold_at_least_markets": "持有至少3个市场并交易15 USDT即可获得10 USDT奖励。",
+	"if_you_have_trouble_connecting_wallet": "如果您在连接钱包时遇到问题，请参考"
 }
