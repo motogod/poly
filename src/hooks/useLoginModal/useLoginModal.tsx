@@ -337,7 +337,7 @@ function useLoginModal() {
 													{t('if_you_have_trouble_connecting_wallet')}
 													<a
 														id="howItWorksLink"
-														href={link().howItWorksLink}
+														href={link().howItWorksMetaMaskLink}
 														target="_blank"
 														style={{ color: '#4299E1', cursor: 'pointer' }}
 													>{` ${t('how_it_works')}`}</a>
