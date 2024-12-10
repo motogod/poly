@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'next-i18next';
 import NewWindow from 'react-new-window';
@@ -25,7 +25,7 @@ import {
 import { WarningIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { FcGoogle } from 'react-icons/fc';
 import { useSession, signOut } from 'next-auth/react';
-import { useConnect, useDisconnect, useAccount, useSwitchNetwork, useNetwork } from 'wagmi';
+import { useConnect, useDisconnect, useAccount } from 'wagmi';
 import { useSDK } from '@metamask/sdk-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, loginWithGoogle, RootState } from '@/store';
@@ -40,8 +40,7 @@ let hasDispatch = false;
 function useLoginModal() {
 	const [popupGoogle, setPopupGoogle] = useState<boolean | null>(null);
 	const [errorMsg, setErrorMsg] = useState('');
-	const [isShowMetaMaskRemind, setIsShowMetaMaskRemind] = useState(false);
-	const [metaMaskConnector, setMetaMaskConnector] = useState<any>();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const { t } = useTranslation();
 
@@ -53,8 +52,8 @@ function useLoginModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const { disconnect } = useDisconnect();
-	const { chain } = useNetwork();
-	const { switchNetwork } = useSwitchNetwork();
+	// const { chain } = useNetwork();
+	// const { switchNetwork } = useSwitchNetwork();
 
 	const { signInWithEthereum, isLoading: isSignInLoading, reset: resetSignIn } = useSiwe();
 
@@ -65,40 +64,27 @@ function useLoginModal() {
 	const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
 
 	// callback onSuccess 登入成功時，簽名
-	const { connect, connectors, error, isLoading, pendingConnector } = useConnect({
-		async onSuccess(data, variables, context) {
-			const { account, chain } = data;
-			// pendingConnector 用何種方式登入錢包也告訴後端
-			await signInWithEthereum(
-				account,
-				chain.id,
-				pendingConnector?.id as string,
-				referral as string
-			);
+	// const { connect, connectors, error, connectAsync } = useConnect({
+	// 	mutation: {
+	// 		onSuccess: async (data, variables: any, context) => {
+	// 			const { accounts, chainId } = data;
 
-			// connect 錢包，將可能為非預設狀態的畫面切到預設狀態
-			setIsShowMetaMaskRemind(false);
-
-			// 切換 chainId 到 Arbitrum, 若尚未 connect 成功 switchNetwork 會是 undefined
-			// WalletConnect 會自動切換到設置的第一個 chainId，多插入一個切換會有 pending 的 bug
-			// 所以只有連接 MetaMask 才執行手動切換
-			if (variables.connector.id === 'metaMask') {
-				// Arbitrum Sepolia or Arbitrum
-				// process.env.NODE_ENV === 'development' ? switchNetwork?.(421614) : switchNetwork?.(42161);
-			}
-		},
-		onError(error, variables, context) {
-			// console.log('error', { error, variables, context });
-			// 觸發 MetaMask 時，登入視窗出現 未填密碼直接關閉，再次觸發 MetaMask 時的 error 處理
-			if (variables.connector.id === 'metaMask') {
-				// setErrorMsg('An unexpected error occurred.');
-				setErrorMsg(error.message);
-			}
-		},
-	});
+	// // variables.connector.type 用何種方式登入錢包也告訴後端
+	// await signInWithEthereum(
+	// 	accounts[0],
+	// 	chainId,
+	// 	variables.connector.type,
+	// 	referral as string
+	// );
+	// 		},
+	// 		onError: (error, variables, context) => {
+	// 			setErrorMsg(error.message);
+	// 		},
+	// 	},
+	// });
+	const { connect, connectors, connectAsync } = useConnect();
 
 	// const { sdk, connected, connecting, provider, chainId, account: metaAccount } = useSDK();
-
 	// 確保登入視窗打開時，清除 connect 的狀態，避免 ConnectorAlreadyConnectedError
 	useEffect(() => {
 		if (isOpen) {
@@ -173,6 +159,61 @@ function useLoginModal() {
 		window.open(`https://metamask.app.link/dapp/${window.location.host}`);
 	};
 
+	console.log('connectors =>', connectors);
+
+	const handleConnect = useCallback(
+		async (connector: any) => {
+			await connectAsync({ connector })
+				.then(async value => {
+					console.log('handleConnect success', value);
+					const { accounts, chainId } = value;
+
+					// 用何種方式登入錢包也告訴後端
+					await signInWithEthereum(accounts[0], chainId, connector.type, referral as string);
+				})
+				.catch(err => {
+					console.log('handleConnect err', err);
+					// 若未發現到 OKX Wallet
+					if (err.message.includes('Provider not found') && connector.name === 'OKX Wallet') {
+						window.open(`https://www.okx.com/`);
+					}
+					setErrorMsg(err.message);
+				});
+		},
+		[connectAsync, signInWithEthereum, referral, setErrorMsg]
+	);
+
+	const renderOKXWalletButton = useMemo(() => {
+		const okxConnector = connectors.find(value => value.id === 'com.okex.wallet');
+
+		return (
+			<Stack w={'100%'}>
+				<Button
+					isLoading={isSignInLoading}
+					leftIcon={<Icon as={WalletConnectIcon} />}
+					key={okxConnector?.name}
+					fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
+					onClick={async () => {
+						setErrorMsg('');
+
+						if (okxConnector) {
+							handleConnect(okxConnector);
+						} else {
+							window.open('https://www.okx.com');
+						}
+					}}
+					w={'100%'}
+					size="lg"
+					_hover={{ bg: 'teal.600' }}
+					bg={'teal.500'}
+					color="#fff"
+				>
+					OKX Wallet
+				</Button>
+			</Stack>
+		);
+	}, [connectors, handleConnect, isSignInLoading]);
+
 	// 第一階段 isLoading: connect 錢包中 不做偵測處理; 第二階段 isSignInLoading: 簽名中： 顯示 loading 狀態
 	// 兩階段皆完成才會通過 Login 關閉視窗
 	const ModalDom = useMemo(
@@ -187,7 +228,6 @@ function useLoginModal() {
 						disconnect(); // 斷開錢包連接
 						resetSignIn(); // 斷開當下簽名請求
 						setErrorMsg('');
-						setIsShowMetaMaskRemind(false); // 視窗恢復為預設初始狀態
 						onClose(); // 關閉視窗
 					}}
 				>
@@ -204,187 +244,112 @@ function useLoginModal() {
 					>
 						<ModalHeader>
 							<Stack direction={'row'} alignItems={'center'}>
-								{isShowMetaMaskRemind && (
-									<ChevronLeftIcon
-										onClick={() => setIsShowMetaMaskRemind(false)}
-										boxSize={7}
-										cursor={'pointer'}
-										mb={'1px'}
-									/>
-								)}
 								<Heading size="md" color="gray.700" mr={5}>
 									{t('connect')}
 								</Heading>
 							</Stack>
 						</ModalHeader>
-						{!isShowMetaMaskRemind && (
-							<ModalCloseButton _focus={{ boxShadow: 'none' }} size={'lg'} m={'16px'} />
-						)}
+						<ModalCloseButton _focus={{ boxShadow: 'none' }} size={'lg'} m={'16px'} />
 						<ModalBody>
-							{!isShowMetaMaskRemind ? (
-								<Stack>
-									{isSignInLoading ? (
+							<Stack>
+								{isSignInLoading ? (
+									<ScaleFade initialScale={0.9} in={true}>
+										<Heading size={'md'} color={'gray.500'}>
+											{t('please_sign_the_message')}
+										</Heading>
+									</ScaleFade>
+								) : (
+									<Button
+										isLoading={isSignInLoading}
+										onClick={() => {
+											setErrorMsg('');
+											setPopupGoogle(true);
+										}}
+										leftIcon={<Icon as={FcGoogle} />}
+										w={'100%'}
+										size="lg"
+										bg={'#fff'}
+										border="2px solid #E2E8F0;"
+										color="black"
+									>
+										{t('sign_in_with_google')}
+									</Button>
+								)}
+
+								<Box position="relative" pt={5} pb={5} pl={20} pr={20}>
+									{errorMsg ? (
 										<ScaleFade initialScale={0.9} in={true}>
-											<Heading size={'md'} color={'gray.500'}>
-												{t('please_sign_the_message')}
-											</Heading>
+											<Stack align={'center'} justify={'center'} direction={'row'}>
+												<Icon as={WarningIcon} color={'red.500'} />
+												<Text fontSize="xs" lineHeight="18px" color={'red.500'}>
+													{errorMsg}
+												</Text>
+											</Stack>
 										</ScaleFade>
 									) : (
+										<>
+											<Divider color={'gray.500'} />
+											<AbsoluteCenter color={'gray.500'} bg="white" px="4">
+												{t('or')}
+											</AbsoluteCenter>
+										</>
+									)}
+								</Box>
+								<Stack>
+									<Stack w={'100%'}>
 										<Button
 											isLoading={isSignInLoading}
-											onClick={() => {
+											leftIcon={<Icon as={MetaMaskIcon} />}
+											key={connectors[0].name}
+											fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
+											onClick={async () => {
+												const agent = isWebsiteAgent();
 												setErrorMsg('');
-												setPopupGoogle(true);
+												if (agent === 'web') {
+													handleConnect(connectors[0]);
+												} else if (agent === 'Android') {
+													triggerIntoMetaMaskAppWebView();
+												} else if (agent === 'iPhone') {
+													triggerIntoMetaMaskAppWebView();
+												} else {
+													// 手機端的 MetaMask APP 裡面的 WebView 狀況下
+													handleConnect(connectors[0]);
+												}
 											}}
-											leftIcon={<Icon as={FcGoogle} />}
 											w={'100%'}
 											size="lg"
-											bg={'#fff'}
-											border="2px solid #E2E8F0;"
-											color="black"
+											_hover={{ bg: 'teal.600' }}
+											bg={'teal.500'}
+											color="#fff"
+											// justifyContent={'start'}
 										>
-											{t('sign_in_with_google')}
+											{connectors[0].name}
 										</Button>
-									)}
+									</Stack>
+									{renderOKXWalletButton}
+									<Stack w={'100%'}>
+										<Button
+											isLoading={isSignInLoading}
+											leftIcon={<Icon as={WalletConnectIcon} />}
+											key={connectors[1].name}
+											fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
+											onClick={async () => {
+												setErrorMsg('');
 
-									<Box position="relative" pt={5} pb={5} pl={20} pr={20}>
-										{errorMsg ? (
-											<ScaleFade initialScale={0.9} in={true}>
-												<Stack align={'center'} justify={'center'} direction={'row'}>
-													<Icon as={WarningIcon} color={'red.500'} />
-													<Text fontSize="xs" lineHeight="18px" color={'red.500'}>
-														{errorMsg}
-													</Text>
-												</Stack>
-											</ScaleFade>
-										) : (
-											<>
-												<Divider color={'gray.500'} />
-												<AbsoluteCenter color={'gray.500'} bg="white" px="4">
-													{t('or')}
-												</AbsoluteCenter>
-											</>
-										)}
-									</Box>
-									<Stack direction={'row'}>
-										{connectors.map((connector, index) => (
-											<Stack w={'100%'} key={index}>
-												<Button
-													isLoading={isSignInLoading}
-													leftIcon={
-														<Icon
-															as={connector.id === 'metaMask' ? MetaMaskIcon : WalletConnectIcon}
-														/>
-													}
-													key={connector.id}
-													fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
-													onClick={() => {
-														const agent = isWebsiteAgent();
-														setErrorMsg('');
-														if (agent === 'web') {
-															// 網頁端可先判斷是否有 MetaMask
-															if (!connector.ready && connector.id === 'metaMask') {
-																window.open('https://metamask.io/download/', '_blank');
-															} else {
-																// 在 connect 之前因為會有錢包打架的狀況，所以先呈現提醒視窗
-																setIsShowMetaMaskRemind(true);
-																setMetaMaskConnector(connector);
-																// connect({ connector });
-															}
-														} else if (agent === 'Android') {
-															if (connector.id === 'metaMask') {
-																triggerIntoMetaMaskAppWebView();
-															} else {
-																connect({ connector });
-															}
-														} else if (agent === 'iPhone') {
-															if (connector.id === 'metaMask') {
-																triggerIntoMetaMaskAppWebView();
-															} else {
-																connect({ connector });
-															}
-														} else {
-															// 手機端的 MetaMask APP 裡面的 WebView 狀況下
-															connect({ connector });
-														}
-													}}
-													w={'100%'}
-													size="lg"
-													_hover={{ bg: 'teal.600' }}
-													bg={'teal.500'}
-													color="#fff"
-													// justifyContent={'start'}
-												>
-													{connector.name}
-													{/* {isLoading && connector.id === pendingConnector?.id && ' (connecting)'} */}
-												</Button>
-											</Stack>
-										))}
+												handleConnect(connectors[1]);
+											}}
+											w={'100%'}
+											size="lg"
+											_hover={{ bg: 'teal.600' }}
+											bg={'teal.500'}
+											color="#fff"
+											// justifyContent={'start'}
+										>
+											{connectors[1].name}
+										</Button>
 									</Stack>
 								</Stack>
-							) : (
-								<Stack>
-									{isSignInLoading ? (
-										<ScaleFade initialScale={0.9} in={true}>
-											<Heading fontSize={'md'} color={'gray.500'}>
-												{t('please_sign_the_message')}
-											</Heading>
-										</ScaleFade>
-									) : (
-										<Stack direction={'row'}>
-											<Text>
-												<span style={{ alignSelf: 'start' }}>
-													{t('if_you_have_trouble_connecting_wallet')}
-													<a
-														id="howItWorksLink"
-														href={link().howItWorksMetaMaskLink}
-														target="_blank"
-														style={{ color: '#4299E1', cursor: 'pointer' }}
-													>{` ${t('how_it_works')}`}</a>
-												</span>
-											</Text>
-										</Stack>
-									)}
-
-									<Box position="relative" pt={5} pb={5} pl={20} pr={20}>
-										{errorMsg ? (
-											<ScaleFade initialScale={0.9} in={true}>
-												<Stack align={'center'} justify={'center'} direction={'row'}>
-													<Icon as={WarningIcon} color={'red.500'} />
-													<Text fontSize="xs" lineHeight="18px" color={'red.500'}>
-														{errorMsg}
-													</Text>
-												</Stack>
-											</ScaleFade>
-										) : (
-											<Stack mt={'0px'} />
-										)}
-									</Box>
-									<Stack direction={'row'}>
-										<Stack w={'100%'}>
-											<Button
-												isLoading={isSignInLoading}
-												leftIcon={<Icon as={MetaMaskIcon} />}
-												key={metaMaskConnector.id}
-												fontSize={{ base: 14, sm: 14, md: 15, lg: 17 }}
-												onClick={() => {
-													setErrorMsg('');
-													connect({ connector: metaMaskConnector });
-												}}
-												w={'100%'}
-												size="lg"
-												_hover={{ bg: 'teal.600' }}
-												bg={'teal.500'}
-												color="#fff"
-												// justifyContent={'start'}
-											>
-												{metaMaskConnector.name}
-												{/* {isLoading && connector.id === pendingConnector?.id && ' (connecting)'} */}
-											</Button>
-										</Stack>
-									</Stack>
-								</Stack>
-							)}
+							</Stack>
 						</ModalBody>
 
 						{/* <ModalFooter></ModalFooter> */}
@@ -411,19 +376,17 @@ function useLoginModal() {
 		[
 			isDesktop,
 			isOpen,
-			isShowMetaMaskRemind,
 			t,
 			isSignInLoading,
 			errorMsg,
 			connectors,
-			link,
-			metaMaskConnector,
+			renderOKXWalletButton,
 			popupGoogle,
 			session,
 			disconnect,
 			resetSignIn,
 			onClose,
-			connect,
+			handleConnect,
 		]
 	);
 

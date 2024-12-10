@@ -2,15 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Stack, Button, useToast, Input } from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import {
-	useAccount,
-	useDisconnect,
-	useConnect,
-	useEnsName,
-	useNetwork,
-	useSwitchNetwork,
-} from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
+import { useAccount, useDisconnect, useConnect, useEnsName } from 'wagmi';
+// import { InjectedConnector } from 'wagmi/connectors/injected';
 import { useSession } from 'next-auth/react';
 import { Icon } from '@chakra-ui/react';
 import { BiWalletAlt } from 'react-icons/bi';
@@ -40,7 +33,7 @@ function Home({ homePage = true }) {
 
 	const { isAuthenticated, user } = useSelector((state: RootState) => state.authReducer);
 	const { markets } = useSelector((state: RootState) => state.homeReducer);
-	const { chain, chains } = useNetwork();
+
 	const { categoriesData } = useSelector((state: RootState) => state.dataReducer);
 
 	const {

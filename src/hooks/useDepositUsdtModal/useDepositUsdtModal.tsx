@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useNetwork, useSwitchNetwork } from 'wagmi';
+import { ethers } from 'ethers';
+import { useAccount, useSwitchChain, useSwitchAccount, useWriteContract } from 'wagmi';
 import { useDebounce } from 'use-debounce';
 import { useMediaQuery } from 'react-responsive';
 import {
@@ -42,6 +43,7 @@ import {
 import { zIndexLoginModal } from '@/utils/zIndex';
 import { UsdtIcon } from '@/../public/assets/svg';
 import { useLink } from '@/hooks';
+import { arbitrumContractAbi } from '@/utils/arbitrumAbi';
 
 type assetType = 'ethereumAsset' | '';
 type etherType = 'ethereum' | 'arbitrum' | '';
@@ -67,15 +69,18 @@ function useDepositUsdtModal() {
 
 	const { proxyWallet } = useSelector((state: RootState) => state.authReducer.userProfile);
 
-	const { chain: currentChain } = useNetwork();
-	const { pendingChainId, switchNetwork, isSuccess } = useSwitchNetwork();
+	const { chain: currentChain } = useAccount();
+	const { switchChain, isSuccess } = useSwitchChain();
 
-	const {
-		write,
-		isLoading,
-		isSuccess: isDepositSuccess,
-		prepareContractWriteError,
-	} = useSendTokens({ usdtValue: debounceInputValue });
+	// const {
+	// 	writeContract,
+	// 	isPending,
+	// 	isSuccess: isDepositSuccess,
+	// 	prepareContractWriteError,
+	// } = useSendTokens({ usdtValue: debounceInputValue });
+
+	const { writeContract, isSuccess: isDepositSuccess, isPending, error } = useWriteContract();
+
 	const { ethValue, tokenDecimals, contractReadError } = useContractForRead();
 
 	const { getContractAddress, inputValueAndEthValueMsg, initInputAmountValue } = useUtility();
@@ -109,14 +114,14 @@ function useDepositUsdtModal() {
 	const changeNetwork = useCallback(
 		(ether: etherType) => {
 			if (ether === 'ethereum') {
-				switchNetwork?.(1);
+				switchChain?.({ chainId: 1 });
 			} else {
 				process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')
-					? switchNetwork?.(421614)
-					: switchNetwork?.(42161);
+					? switchChain?.({ chainId: 421614 })
+					: switchChain?.({ chainId: 42161 });
 			}
 		},
-		[switchNetwork, baseUrl]
+		[switchChain, baseUrl]
 	);
 
 	useEffect(() => {
@@ -167,7 +172,7 @@ function useDepositUsdtModal() {
 	useEffect(() => {
 		if (isSuccess) {
 			// 切換鏈成功 改變 Select 上的值
-			if (pendingChainId === 1) {
+			if (currentChain?.id === 1) {
 				setSelectedAsset('ethereumAsset');
 				setSelectedEther('ethereum');
 			} else {
@@ -175,7 +180,7 @@ function useDepositUsdtModal() {
 				setSelectedEther('arbitrum');
 			}
 		}
-	}, [isSuccess, pendingChainId]);
+	}, [isSuccess, currentChain]);
 
 	const renderTitleSection = useCallback(() => {
 		console.log('See isShowInputLayout', isShowInputLayout);
@@ -417,9 +422,9 @@ function useDepositUsdtModal() {
 		// 若在其他鏈上 不做交易 先讓使用者切換到 Arbitrum
 		if (!isChainOnEtherOrArbitrum()) {
 			if (process.env.NODE_ENV === 'development' || baseUrl?.includes('stg')) {
-				switchNetwork?.(421614);
+				switchChain?.({ chainId: 421614 });
 			} else {
-				switchNetwork?.(42161);
+				switchChain?.({ chainId: 42161 });
 			}
 
 			return;
@@ -430,15 +435,31 @@ function useDepositUsdtModal() {
 			return;
 		}
 
-		write?.();
+		// ethers.parseUnits 塞入的的值不得為空 ; 且小數點後不能超過 6 位數 否則報錯
+		const unitsValue = debounceInputValue ? Number(debounceInputValue).toFixed(6) : '0';
+		const decimals = currentChain?.id === 421614 ? 6 : 6;
+
+		writeContract?.({
+			address: getContractAddress(currentChain?.id as number), // MetaMask USDT token contract address
+			abi: arbitrumContractAbi,
+			functionName: 'transfer',
+			args: [
+				proxyWallet, // proxyWallet address
+				ethers.parseUnits(String(unitsValue), decimals),
+			],
+		});
 	}, [
-		baseUrl,
 		isChainOnEtherOrArbitrum,
-		switchNetwork,
 		inputValueAndEthValueMsg,
-		ethValue,
 		inputValue,
-		write,
+		ethValue,
+		debounceInputValue,
+		currentChain?.id,
+		writeContract,
+		getContractAddress,
+		proxyWallet,
+		baseUrl,
+		switchChain,
 	]);
 
 	const ModalDom = useMemo(
@@ -544,7 +565,7 @@ function useDepositUsdtModal() {
 							{isShowInputLayout && (
 								<>
 									<Button
-										isLoading={isLoading}
+										isLoading={isPending}
 										isDisabled={isChainOnEtherOrArbitrum() && !inputValue}
 										w={'100%'}
 										colorScheme="teal"
@@ -576,7 +597,7 @@ function useDepositUsdtModal() {
 			renderConfirmText,
 			isChainOnEtherOrArbitrum,
 			renderTitleSection,
-			isLoading,
+			isPending,
 			renderInputLayoutSection,
 			seleectedAsset,
 			isShowInputLayout,

@@ -17,6 +17,7 @@ import { resetCheckAuthToast, resetPutUserProfileErrMsg, resetWithdrawStatus } f
 
 type AuthState = {
 	isAuthenticated: boolean | null; // 是否已登入的判斷
+	isFirstLogin: boolean | null; // 是不是第一次登入，當作 watchAccount 判斷用
 	user: {
 		address: string;
 		email: string;
@@ -37,6 +38,7 @@ type AuthState = {
 
 const initialState: AuthState = {
 	isAuthenticated: null,
+	isFirstLogin: true,
 	user: { address: '', email: '', id: '', username: '', origin: '' },
 	userFunds: {
 		hold: 0.0,
@@ -70,6 +72,10 @@ const authSlice = createSlice({
 			const { isShow, title } = action.payload;
 			state.checkAuthSuccess = isShow;
 			state.checkAuthTitle = title;
+		},
+		setIsFirstLogin: (state, action) => {
+			console.log('setIsFirstLogin action', action);
+			state.isFirstLogin = action.payload;
 		},
 	},
 	extraReducers: builder => {
@@ -123,6 +129,7 @@ const authSlice = createSlice({
 			if (statusCode === 201) {
 				state.user = data.user;
 				state.isAuthenticated = true;
+				state.isFirstLogin = false;
 				state.checkAuthSuccess = true;
 				state.checkAuthTitle = 'Login suceesfully';
 			}
@@ -130,6 +137,7 @@ const authSlice = createSlice({
 		builder.addCase(loginWithSiwe.rejected, (state, action) => {
 			console.log('loginWithSiwe rejected', action);
 			state.isAuthenticated = false;
+			state.isFirstLogin = null;
 			state.checkAuthSuccess = null;
 			state.checkAuthTitle = '';
 		});
@@ -324,5 +332,5 @@ const authSlice = createSlice({
 	},
 });
 
-export const { showAuthToast } = authSlice.actions;
+export const { showAuthToast, setIsFirstLogin } = authSlice.actions;
 export const authReducer = authSlice.reducer;
