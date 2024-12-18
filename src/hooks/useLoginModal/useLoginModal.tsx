@@ -285,8 +285,11 @@ function useLoginModal() {
 															// 網頁端可先判斷是否有 MetaMask
 															if (!connector.ready && connector.id === 'metaMask') {
 																window.open('https://metamask.io/download/', '_blank');
+															} else if (connector.id === 'walletConnect') {
+																// 是 WalletConnect 則直接觸發 connect
+																connect({ connector });
 															} else {
-																// 在 connect 之前因為會有錢包打架的狀況，所以先呈現提醒視窗
+																// 若是剩下 MetaMask 則在 connect 之前因為會有錢包打架的狀況，所以先呈現提醒視窗
 																setIsShowMetaMaskRemind(true);
 																setMetaMaskConnector(connector);
 																// connect({ connector });
