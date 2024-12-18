@@ -126,19 +126,19 @@ function AuthProvider({ children }: Props) {
 				// console.log('HERE data', data);
 				// console.log('HERE isAuthenticated', isAuthenticated);
 				// console.log('HERE isFirstLogin', isFirstLogin);
-				if (checkAuthSuccess && !isFirstLogin) {
+				if (!isFirstLogin && checkAuthTitle !== 'Login suceesfully') {
 					console.log('HERE 1');
 					if (data?.address) {
 						// console.log('HERE 2');
 						// // 使用者切換 account，登出，確保讓使用者重新登入 跟後端溝通是切換後的 account
-						dispatch(logout({}));
-						disconnect();
-						router.push('/home');
+						// dispatch(logout({}));
+						// disconnect();
+						// router.push('/home');
 					}
 				}
 			},
 		});
-	}, [disconnect, dispatch, router, isAuthenticated, isFirstLogin, checkAuthSuccess]);
+	}, [disconnect, dispatch, router, checkAuthTitle, isFirstLogin]);
 
 	useEffect(() => {
 		if (isFirst) {
