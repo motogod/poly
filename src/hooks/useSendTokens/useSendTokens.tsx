@@ -1,6 +1,14 @@
-import { useSimulateContract, useWriteContract, useAccount } from 'wagmi';
+import {
+	usePrepareContractWrite,
+	useContractWrite,
+	useContractRead,
+	useWaitForTransaction,
+	erc20ABI,
+	useNetwork,
+} from 'wagmi';
 import { ethers } from 'ethers';
 import { parseUnits, formatUnits } from 'viem';
+import { useAccount } from 'wagmi';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '@/store';
 import { useUtility } from '@/hooks';
@@ -15,7 +23,8 @@ function useSendTokens(props?: Props) {
 	const { proxyWallet } = useSelector((state: RootState) => state.authReducer.userProfile);
 
 	// 使用者所連接自己錢包的 addressu
-	const { address, chain } = useAccount();
+	const { address } = useAccount();
+	const { chain } = useNetwork();
 
 	const { getContractAddress } = useUtility();
 
@@ -23,7 +32,7 @@ function useSendTokens(props?: Props) {
 	const unitsValue = props?.usdtValue ? Number(props?.usdtValue).toFixed(6) : '0';
 	const decimals = chain?.id === 421614 ? 6 : 6;
 	console.log('unitsValue =>', unitsValue);
-	const { data, error: prepareContractWriteError } = useSimulateContract({
+	const { config, error: prepareContractWriteError } = usePrepareContractWrite({
 		address: getContractAddress(chain?.id as number), // MetaMask USDT token contract address
 		abi: arbitrumContractAbi,
 		functionName: 'transfer',
@@ -33,7 +42,7 @@ function useSendTokens(props?: Props) {
 		],
 	});
 
-	const { writeContract, isSuccess, isPending, error } = useWriteContract();
+	const { write, data, error, isError, isSuccess, isLoading } = useContractWrite(config);
 
 	// console.log('useSendTokens status', {
 	// 	address,
@@ -46,7 +55,7 @@ function useSendTokens(props?: Props) {
 	// 	prepareContractWriteError,
 	// });
 
-	return { writeContract, isPending, data, isSuccess, prepareContractWriteError };
+	return { write, data, isSuccess, isLoading, prepareContractWriteError };
 }
 
 export default useSendTokens;

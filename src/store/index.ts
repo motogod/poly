@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { homeReducer, userClickYesOrNoButton } from './slice/homeSlice';
-import { authReducer, showAuthToast, setIsFirstLogin } from './slice/authSlice';
+import { authReducer, showAuthToast } from './slice/authSlice';
 import { ipReducer, setIpState } from './slice/ipSlice';
 import { toastReducer, showToast, resetToast } from './slice/toastSlice';
 import {
@@ -59,7 +59,6 @@ export {
 	resetPutUserProfileErrMsg,
 	setIpState,
 	showAuthToast,
-	setIsFirstLogin,
 	showToast,
 	resetToast,
 	handleClickMenu,

@@ -1,15 +1,12 @@
 import { ReactNode, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-// import { headers } from 'next/headers';
 // import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { WagmiProvider, cookieToInitialState } from 'wagmi';
+import { WagmiConfig, configureChains, createConfig } from 'wagmi';
 import { arbitrum, mainnet, arbitrumGoerli, arbitrumSepolia } from 'wagmi/chains';
-// import { publicProvider } from 'wagmi/providers/public';
-import { metaMask, walletConnect, injected } from 'wagmi/connectors';
-// import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-// import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
+import { publicProvider } from 'wagmi/providers/public';
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 // need to be install for mobile device detect MetaMask APP
 import { MetaMaskProvider } from '@metamask/sdk-react';
 import { setLanguageHeader } from '@/api/request';
@@ -41,54 +38,35 @@ import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';
 import type { NextComponentType } from 'next';
 import Header from '@/layouts/components/common/Header';
 import { LocalesType } from '../../public/locales/type';
-import { config } from '@/config';
 
 // avoid ssr rendering, fix wagmi config server side Hydration error
 const Layout = dynamic(() => import('@/layouts/Layout'), { ssr: false });
-
-const queryClient = new QueryClient();
 
 const chainsArray =
 	process.env.NODE_ENV === 'development'
 		? [arbitrumSepolia, arbitrum, mainnet]
 		: [arbitrumSepolia, arbitrum, mainnet];
 
-// const { chains, publicClient, webSocketPublicClient } = configureChains(
-// 	chainsArray, // Array index 第一個為主要的 chain WalletConnect 會要求切換至這一個
-// 	[publicProvider()]
-// );
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+	chainsArray, // Array index 第一個為主要的 chain WalletConnect 會要求切換至這一個
+	[publicProvider()]
+);
 
-// const config = createConfig({
-// 	chains: [mainnet, arbitrum, arbitrumSepolia],
-// 	connectors: [
-// 		metaMask(),
-// 		walletConnect({
-// 			projectId: process.env.WALLET_CONNECT_PROJECT_ID as string,
-// 			showQrModal: true,
-// 		}),
-// 	],
-// 	transports: {
-// 		[mainnet.id]: http(),
-// 		[arbitrum.id]: http(),
-// 		[arbitrumSepolia.id]: http(),
-// 	},
-// });
-
-// const config = createConfig({
-// 	autoConnect: false,
-// 	connectors: [
-// 		new MetaMaskConnector({ chains }),
-// 		new WalletConnectConnector({
-// 			chains,
-// 			options: {
-// 				projectId: process.env.WALLET_CONNECT_PROJECT_ID,
-// 				showQrModal: true,
-// 			},
-// 		}),
-// 	],
-// 	publicClient,
-// 	webSocketPublicClient,
-// });
+const config = createConfig({
+	autoConnect: false,
+	connectors: [
+		new MetaMaskConnector({ chains }),
+		new WalletConnectConnector({
+			chains,
+			options: {
+				projectId: process.env.WALLET_CONNECT_PROJECT_ID,
+				showQrModal: true,
+			},
+		}),
+	],
+	publicClient,
+	webSocketPublicClient,
+});
 
 // 1. Get projectId
 // const projectId = process.env.WALLET_CONNECT_PROJECT_ID as string;
@@ -135,9 +113,6 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 		console.log = function () {};
 	}
 
-	// Wagmi cookie
-	// const initialState = cookieToInitialState(config, headers().get('cookie'));
-
 	setLanguageHeader(i18n?.language as LocalesType);
 
 	return (
@@ -154,24 +129,22 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 							},
 						}}
 					> */}
-					<WagmiProvider config={config}>
-						<QueryClientProvider client={queryClient}>
-							<ChakraProvider theme={theme}>
-								<Head>
-									<title>{`ox.market`}</title>
-									<meta name="description" content={`ox.market`} />
-									<meta name="keywords" content="ox.market" />
-									<meta name="viewport" content="initial-scale=1, width=device-width" />
-								</Head>
-								{/* <Header /> */}
-								<AuthProvider>
-									<ToastProvider>
-										<IpProvider>{getLayout(<Component {...pageProps} />)}</IpProvider>
-									</ToastProvider>
-								</AuthProvider>
-							</ChakraProvider>
-						</QueryClientProvider>
-					</WagmiProvider>
+					<WagmiConfig config={config}>
+						<ChakraProvider theme={theme}>
+							<Head>
+								<title>{`ox.market`}</title>
+								<meta name="description" content={`ox.market`} />
+								<meta name="keywords" content="ox.market" />
+								<meta name="viewport" content="initial-scale=1, width=device-width" />
+							</Head>
+							{/* <Header /> */}
+							<AuthProvider>
+								<ToastProvider>
+									<IpProvider>{getLayout(<Component {...pageProps} />)}</IpProvider>
+								</ToastProvider>
+							</AuthProvider>
+						</ChakraProvider>
+					</WagmiConfig>
 					{/* </MetaMaskProvider> */}
 				</SessionProvider>
 			</Provider>

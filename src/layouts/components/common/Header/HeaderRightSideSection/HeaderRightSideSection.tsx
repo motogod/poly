@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { useMediaQuery } from 'react-responsive';
 import { useAccount, useDisconnect, useConnect, useBalance } from 'wagmi';
 import {
@@ -96,6 +97,14 @@ function HeaderRightSideSection() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const isLogin = status === 'connected' ? true : false;
+
+	const triggerMeta = async () => {
+		const { account, chain } = await connectAsync({
+			connector: new MetaMaskConnector({}),
+		});
+
+		// signInWithEthereum(account);
+	};
 
 	const checkBalance = () => {
 		if (isLoading)

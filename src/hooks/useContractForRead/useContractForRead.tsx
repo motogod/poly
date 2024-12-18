@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-import { useReadContract, useAccount, useBalance } from 'wagmi';
+import { useContractRead, useAccount, useBalance, useNetwork } from 'wagmi';
 import { useUtility } from '@/hooks';
 import { arbitrumContractAbi } from '@/utils/arbitrumAbi';
 
@@ -8,11 +8,11 @@ function useContractForRead() {
 	const [ethValue, setEthValue] = useState<number>(0);
 	const [tokenDecimals, setTokenDecimals] = useState<number>(0);
 
-	const { address, chain } = useAccount();
-
+	const { address } = useAccount();
+	const { chain } = useNetwork();
 	const { getContractAddress, roundDown } = useUtility();
 
-	const { data: balanceData, error: contractReadError } = useReadContract({
+	const { data: balanceData, error: contractReadError } = useContractRead({
 		address: getContractAddress(chain?.id as number), // token contract address
 		abi: arbitrumContractAbi,
 		functionName: 'balanceOf',
