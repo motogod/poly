@@ -64,6 +64,7 @@ export default function LargeWithAppLinksAndSocial() {
 	const currentPath = router.asPath.split('?')[0]; // 获取当前路径（不包括查询参数）
 
 	const changeLocale = (locale: LocalesEnum) => {
+		console.log('locale is', locale);
 		// 變更語系網址 shallow: true 避免刷新頁面
 		// 設為 true 避免刷新頁面 有時更換語言會失效
 		router.push(
