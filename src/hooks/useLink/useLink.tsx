@@ -4,7 +4,7 @@ function useLink() {
 	const router = useRouter();
 
 	const link = () => {
-		// en zh-Hans vi
+		// en zh-Hans vi th
 		const language = router.locale;
 
 		if (language === 'zh-Hans') {
@@ -23,7 +23,7 @@ function useLink() {
 					'https://oxmarket.gitbook.io/how-it-works-cn/login-problem/metamask',
 			};
 		}
-
+		// 越南文
 		if (language === 'vi') {
 			return {
 				rewardsLink: 'https://oxmarket.gitbook.io/chao-mung-den-voi-oxmarket/campaign/phan-thuong',
@@ -42,7 +42,23 @@ function useLink() {
 					'https://oxmarket.gitbook.io/how-it-works-vn/login-problem/metamask',
 			};
 		}
-
+		// 泰文
+		if (language === 'th') {
+			return {
+				rewardsLink: 'https://oxmarket.gitbook.io/howitworks/campaign/rewards',
+				howItWorksLink: 'https://oxmarket.gitbook.io/howitworks',
+				earnItLink: 'https://oxmarket.gitbook.io/howitworks/rewards/campaign',
+				learnMoreLink: 'https://oxmarket.gitbook.io/howitworks',
+				privacyPolicyLink: 'https://oxmarket.gitbook.io/howitworks/faq/privacy_policy',
+				termOfUseLink: 'https://oxmarket.gitbook.io/howitworks/faq/terms-of-use',
+				depositUSDTLink:
+					'https://oxmarket.gitbook.io/howitworks/welcome-to-oxmarket/how-to-deposit/deposit-from-binance',
+				oxPointsLearnMoreLine: 'https://oxmarket.gitbook.io/howitworks/ox-points/learn-more',
+				twitterChannel: 'https://x.com/OX__Market',
+				howItWorksMetaMaskLink: 'https://oxmarket.gitbook.io/howitworks/login-problem/metamask',
+			};
+		}
+		// 英文
 		return {
 			rewardsLink: 'https://oxmarket.gitbook.io/howitworks/campaign/rewards',
 			howItWorksLink: 'https://oxmarket.gitbook.io/howitworks',

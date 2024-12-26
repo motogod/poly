@@ -38,6 +38,7 @@ import { CategoriesType, ChildrenCategoriesType, MenuType, SubMenuType } from '@
 import styles from './leftMenu.module.scss';
 import zh from 'date-fns/locale/zh-TW';
 import vi from 'date-fns/locale/vi';
+import th from 'date-fns/locale/th';
 import { LocalesType } from '@/../public/locales/type';
 import { VolumeType, volumeRadioArray } from '@/store/slice/dataSlice';
 
@@ -78,6 +79,10 @@ const LeftMenu = () => {
 
 		if (locale === 'vi') {
 			registerLocale('vi', vi);
+		}
+
+		if (locale === 'th') {
+			registerLocale('th', th);
 		}
 
 		const { startDate, endDate } = router.query;
